@@ -1,14 +1,18 @@
 @charset "utr-8";
+@import url('https://fonts.googleapis.com/css2?family=D2+Coding+Ligature&display=swap');
+
 
 * {
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: "D2 Coding Ligature", monospace;
     color: black;
 }
+
 
 body {
     position: relative;
     margin: 0 auto;
 }
+
 
 .clearfix::before, .clearfix::after {
     display: block;
