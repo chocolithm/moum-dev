@@ -9,7 +9,7 @@
 <!--    <div th:insert="~{header :: header}"></div>-->
 
     <h1>실행 오류!</h1>
-    <img th:src="@{/images/home.png}">
+    <img src="/images/home.png">
     <pre>
     <span th:if="${exception != null}">
         <span th:text="${#strings.escapeJavaScript(#strings.toString(exception))}"></span>
