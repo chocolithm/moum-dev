@@ -19,5 +19,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @AllArgsConstructor
 @Log4j2
+
 public class SecurityConfig {
 }
