@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>실행 오류</title>
+</head>
+<body>
+
+<!--    <div th:insert="~{header :: header}"></div>-->
+
+    <h1>실행 오류!</h1>
+    <img th:src="@{/images/home.png}">
+    <pre>
+    <span th:if="${exception != null}">
+        <span th:text="${#strings.escapeJavaScript(#strings.toString(exception))}"></span>
+    </span>
+</pre>
+
+</body>
+</html>

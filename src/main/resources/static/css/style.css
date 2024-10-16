@@ -1,0 +1,285 @@
+@charset "utr-8";
+
+* {
+    font-family: "Noto Sans KR", sans-serif;
+    color: black;
+}
+
+body {
+    position: relative;
+    margin: 0 auto;
+}
+
+.clearfix::before, .clearfix::after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+/* header */
+header {
+    padding: 30px;
+    position: relative;
+    border-bottom: 1px solid black;
+}
+
+header > h1 {
+    display: inline;
+    font-size: 14px;
+}
+
+header img {
+    vertical-align: middle;
+    height: 20px;
+}
+
+header > nav {
+    display: inline;
+}
+
+header > nav > ul {
+    list-style-type: none;
+    display: inline;
+}
+
+/* main */
+main {
+    padding: 20px 30px;
+    overflow: hidden;
+}
+
+main .main-image {
+    background: black;
+    position: relative;
+    height: 320px;
+    width: 120%;
+    left: -10%;
+    text-align: center;
+}
+
+main .main-image-text h1 {
+    padding-top: 100px;
+}
+
+main .main-image-text * {
+    color: white;
+}
+
+main .main-image-text .btn {
+    background: white;
+    color: black;
+    font-size: 16px;
+}
+
+main .main-middle {
+    margin-top: 160px;
+}
+
+main .main-middle .main-middle-box {
+    width: 28%;
+    height: 380px;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    border: 1px solid lightgrey;
+    border-radius: 45px;
+    float: left;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+main .main-middle .main-middle-box h2 {
+    position: relative;
+    top: -80px;
+}
+
+main .main-middle .main-middle-box .main-middle-image {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    top: -50px;
+}
+
+main .main-bottom {
+    margin-top: 80px;
+    text-align: center;
+}
+
+main .main-bottom .main-bottom-box {
+    width: 28%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    float: left;
+    text-align: center;
+}
+
+main .main-bottom .main-bottom-box .main-bottom-image {
+    width: 100%;
+    max-height: 80%;
+    object-fit: contain;
+}
+
+/* myhome */
+
+.sidemenu {
+    width: 15%;
+    max-width: 250px;
+    height: 400px;
+    margin: 2.5% 40px;
+    float: left;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+}
+
+.myhome-collections {
+    border-radius: 15px;
+    background: lightgrey;
+    width: 75%;
+    padding: 10px;
+    margin-top: 40px;
+    float: left;
+}
+
+.myhome-collections .collection-box {
+    width: 250px;
+    height: 280px;
+    margin: 20px;
+    padding: 15px 0;
+    border-radius: 4px;
+    background: white;
+    text-align: center;
+    float: left;
+}
+
+.myhome-collections .collection-box .collection-image {
+    width: 100%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.myhome-collections .collection-box .collection-title {
+    font-weight: bold;
+}
+
+
+/* footer */
+footer {
+    height: 100px;
+}
+
+
+/* btn */
+.btn {
+    display: inline-block;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+.btn:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.btn a {
+    text-decoration: none;
+    color: black;
+}
+
+.btn-light {
+    background-color: white;
+}
+
+.btn-join {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.btn-login {
+    background-color: black;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: darkgreen;
+    color: white;
+}
+
+.pos-right {
+    position: absolute;
+    right: 30px;
+}
+
+.login-state {
+    display: inline;
+}
+
+/* layer */
+
+.layer {
+    background: white;
+    width: 700px;
+    height: 600px;
+    margin: 0 auto;
+    border-radius: 25px;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.overlay {
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.x {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 5%;
+    left: 90%;
+}
+
+.x:hover {
+    cursor: pointer;
+}
+
+
+/* table */
+table {
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+
+table, tr, td {
+    border: 1px solid black;
+}
+
+th {
+    background-color: #c2c2c2;
+    padding: 5px;
+}
+
+td {
+    padding: 5px;
+}
