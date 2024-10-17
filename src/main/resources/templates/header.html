@@ -21,19 +21,24 @@
     </nav>
 
     <div class="login-state pos-right">
-      <div th:if="${#authentication.name == 'anonymous'}">
-        <button class="btn btn-join">회원가입</button>
-        <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>
-      </div>
-      <div th:if="${#authentication.name != 'anonymous'}">
-        <a th:href="@{/app/user/view(no=${#authentication.principal.no})}" class="btn btn-light"
-           th:text="${#authentication.principal.name}">사용자 이름</a>
-        <a th:href="@{/app/auth/logout}" class="btn btn-secondary">로그아웃</a>
-      </div>
+      <button class="btn btn-join">회원가입</button>
+      <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>
+
+<!--      향후 authentication 설정 후에 다시 테스트-->
+
+<!--      <div th:if="${#authentication.name == 'anonymous'}">-->
+<!--        <button class="btn btn-join">회원가입</button>-->
+<!--        <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>-->
+<!--      </div>-->
+<!--      <div th:if="${#authentication.name != 'anonymous'}">-->
+<!--        <a th:href="@{/app/user/view(no=${#authentication.principal.no})}" class="btn btn-light"-->
+<!--           th:text="${#authentication.principal.name}">사용자 이름</a>-->
+<!--        <a th:href="@{/app/auth/logout}" class="btn btn-secondary">로그아웃</a>-->
+<!--      </div>-->
     </div>
   </header>
 
-  <div class="overlay" onClick="closePopup();">
+  <div th:fragment="loginPopup" class="overlay" onClick="closePopup();">
     <div class="layer login_layer" onClick="event.stopPropagation();">
       <img class="x" th:src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
       <h2>Login</h2>
@@ -55,7 +60,7 @@
     </div>
   </div>
 
-  <script src="/js/common.js"></script>
+  <script th:fragment="commonjs" src="/js/common.js"></script>
 
 </body>
 </html>
