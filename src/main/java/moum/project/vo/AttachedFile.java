@@ -1,7 +1,12 @@
 package moum.project.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 
+@Getter
+@Setter
 public class AttachedFile {
   private int no;
   private String filepath;
@@ -29,19 +34,4 @@ public class AttachedFile {
     return Objects.hashCode(no);
   }
 
-  public int getNo() {
-    return no;
-  }
-
-  public void setNo(int no) {
-    this.no = no;
-  }
-
-  public String getFilepath() {
-    return filepath;
-  }
-
-  public void setFilepath(String filepath) {
-    this.filepath = filepath;
-  }
 }
