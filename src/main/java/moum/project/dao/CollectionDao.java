@@ -3,8 +3,6 @@ package moum.project.dao;
 import java.util.List;
 import moum.project.vo.Collection;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 @Mapper
 public interface CollectionDao {

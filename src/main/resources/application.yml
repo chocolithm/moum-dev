@@ -26,5 +26,7 @@ mybatis:
 
 logging:
   level:
-    org.springframework.security.web: trace
-    moum.project: debug
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    moum.project: DEBUG
