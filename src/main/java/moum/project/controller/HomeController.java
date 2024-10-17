@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
   /**
-   * 이 메서드는 "/home" URL로 들어오는 GET 요청을 처리합니다.
-   * 현재 접속 불가능
+   * 이 메서드는 "/", "/home" URL로 들어오는 GET 요청을 처리합니다.
+   * header.html 문제로 home.html의 header 부분 주석 처리로 현재 접속 가능
    *
    * @return "home" 뷰 이름을 반환합니다.
    */
-  @GetMapping( "/home")
+  @GetMapping( {"/","/home"})
   public String home() {
     return "home";
   }
