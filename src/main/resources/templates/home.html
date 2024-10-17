@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>모음 - 나만의 수집품 관리</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script th:fragment="commonjs" src="/js/common.js"></script>
 </head>
 <body>
 
@@ -14,9 +15,10 @@
             <div class="main-image-text">
                 <h1>모음으로 나만의 수집품 관리</h1>
                 <h5>모으기, 관리하기, 자랑하기</h5>
-                <a class='btn' th:href="@{/}">지금 시작하기</a>
+                <a class='btn' onclick="openLoginPopup();">지금 시작하기</a>
             </div>
         </div>
+
 
         <div class="main-middle clearfix">
             <div class="main-middle-box">
@@ -65,4 +67,13 @@
     <div th:insert="~{footer :: footer}"></div>
 
 </body>
+
+
+
+<footer>
+    <!-- <foot>
+    **Footer의 내용을 입력하세요! (임의) **
+    글자를 넣던지, 이미지를 넣던지 가능!
+    </foot> !-->
+</footer>
 </html>
