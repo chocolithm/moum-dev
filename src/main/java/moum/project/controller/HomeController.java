@@ -1,6 +1,8 @@
 package moum.project.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -25,7 +27,8 @@ public class HomeController {
    * @return "home" 뷰 이름을 반환합니다.
    */
   @GetMapping( {"/","/home"})
-  public String home() {
+  public String home(HttpServletRequest request, Model model) {
+    model.addAttribute("requestUri", request.getRequestURI());
     return "home";
   }
 

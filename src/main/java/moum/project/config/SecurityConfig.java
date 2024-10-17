@@ -26,24 +26,24 @@ import org.springframework.security.web.SecurityFilterChain;
 @Log4j2
 public class SecurityConfig {
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**").permitAll()
-            .anyRequest().authenticated()
-        )
-        .formLogin((form) -> form
-            .loginPage("/login")
-            .permitAll()
-        )
-        .logout((logout) -> logout.permitAll());
-
-    return http.build();
-  }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+//  @Bean
+//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    http
+//        .authorizeHttpRequests((requests) -> requests
+//            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**").permitAll()
+//            .anyRequest().authenticated()
+//        )
+//        .formLogin((form) -> form
+//            .loginPage("/login")
+//            .permitAll()
+//        )
+//        .logout((logout) -> logout.permitAll());
+//
+//    return http.build();
+//  }
+//
+//  @Bean
+//  public PasswordEncoder passwordEncoder() {
+//    return new BCryptPasswordEncoder();
+//  }
 }

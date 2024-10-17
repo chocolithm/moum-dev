@@ -9,7 +9,7 @@
 
 <body>
 
-    <div th:insert="~{header :: header}"></div>
+    <div th:replace="~{header}"></div>
 
     <main>
         <aside class="sidemenu clearfix">
@@ -38,7 +38,7 @@
         </div>
     </main>
 
-    <div th:insert="~{footer :: footer}"></div>
+    <div th:replace="~{footer}"></div>
 
 </body>
 </html>

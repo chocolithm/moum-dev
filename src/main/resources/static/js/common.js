@@ -1,10 +1,7 @@
+// 공통
+
 function openOverlay() {
   fadeIn(document.getElementsByClassName("overlay")[0]);
-}
-
-function openLoginPopup() {
-  openOverlay();
-  fadeIn(document.getElementsByClassName("login_layer")[0]);
 }
 
 function closePopup() {
@@ -24,4 +21,11 @@ function fadeOut(element) {
   setTimeout(function () {
     element.style.display = "none";
   }, 500);
+}
+
+// 로그인
+
+function openLoginPopup() {
+  openOverlay();
+  fadeIn(document.getElementsByClassName("login_layer")[0]);
 }

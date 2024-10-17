@@ -21,8 +21,14 @@
     </nav>
 
     <div class="login-state pos-right">
-      <button class="btn btn-join">회원가입</button>
-      <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>
+      <th:block th:if="${requestUri != null and requestUri == '/'}">
+        <button class="btn btn-join">회원가입</button>
+        <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>
+      </th:block>
+      <th:block th:unless="${requestUri != null and requestUri == '/'}">
+        <a th:href="@{/myHome}" class="btn">사용자</a>
+        <a th:href="@{/}" class="btn btn-logout">로그아웃</a>
+      </th:block>
 
 <!--      향후 authentication 설정 후에 다시 테스트-->
 
@@ -45,7 +51,7 @@
       <div th:if="${param.error != null}">
         <p style="color: red;">Invalid username or password.</p>
       </div>
-      <form th:action="@{/app/myHome}" method="post">
+      <form th:action="@{/myHome}" method="post">
         <div>
           <label for="username">Username:</label>
           <input type="text" id="username" name="username" required>
