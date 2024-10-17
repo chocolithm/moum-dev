@@ -9,6 +9,8 @@
 
 <body>
 
+  <div class="overlay" onClick="closePopup();"></div>
+
   <header th:fragment="header">
     <a th:href="@{/}"><img th:src="@{/images/home.gif}" alt="홈"></a>
     <nav>
@@ -44,26 +46,24 @@
     </div>
   </header>
 
-  <div th:fragment="loginPopup" class="overlay" onClick="closePopup();">
-    <div class="layer login_layer" onClick="event.stopPropagation();">
-      <img class="x" th:src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
-      <h2>Login</h2>
-      <div th:if="${param.error != null}">
-        <p style="color: red;">Invalid username or password.</p>
-      </div>
-      <form th:action="@{/myHome}" method="post">
-        <div>
-          <label for="username">Username:</label>
-          <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required>
-        </div>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        <button type="submit">Login</button>
-      </form>
+  <div th:fragment="loginPopup" class="layer login-layer">
+    <img class="x" th:src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
+    <h2>Login</h2>
+    <div th:if="${param.error != null}">
+      <p style="color: red;">Invalid username or password.</p>
     </div>
+    <form th:action="@{/myHome}" method="post">
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="default" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="qrqrqr" required>
+      </div>
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <button type="submit">Login</button>
+    </form>
   </div>
 
   <script th:fragment="commonjs" src="/js/common.js"></script>

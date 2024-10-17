@@ -136,6 +136,11 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     border-radius: 25px;
 }
 
+.myhome-upper-buttons {
+    float: left;
+    text-align: right;
+}
+
 .myhome-collections {
     border-radius: 15px;
     background: lightgrey;
@@ -164,6 +169,81 @@ main .main-bottom .main-bottom-box .main-bottom-image {
 
 .myhome-collections .collection-box .collection-title {
     font-weight: bold;
+}
+
+.collection-add-layer {
+    vertical-align: middle;
+}
+
+.collection-add-layer .left-side {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    float: left;
+}
+
+.collection-add-layer .left-side .empty-image {
+    width: 100%;
+    height: 80%;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.collection-add-layer .right-side {
+    width: 55%;
+    float: left;
+}
+
+.collection-add-layer .right-side table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+.collection-add-layer .right-side table tr {
+    border: none;
+}
+
+.collection-add-layer .right-side table td {
+    border: none;
+}
+
+.collection-add-layer .right-side label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.collection-add-layer .right-side input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.collection-add-layer .right-side input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.collection-add-layer .right-side select {
+    width: 48%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 
@@ -227,6 +307,7 @@ footer {
 /* layer */
 
 .layer {
+    text-align: center;
     background: white;
     width: 700px;
     height: 600px;
@@ -239,10 +320,10 @@ footer {
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+    z-index: 2;
 }
 
 .overlay {
-    text-align: center;
     position: fixed;
     top: 0;
     left: 0;
@@ -255,6 +336,7 @@ footer {
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+    z-index: 1;
 }
 
 .x {

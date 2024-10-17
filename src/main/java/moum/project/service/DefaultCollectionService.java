@@ -4,6 +4,7 @@ import java.util.List;
 import moum.project.dao.CollectionDao;
 import moum.project.vo.Collection;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Service
 public class DefaultCollectionService implements CollectionService {
@@ -16,7 +17,7 @@ public class DefaultCollectionService implements CollectionService {
 
   @Override
   public void add(Collection collection) throws Exception {
-
+    collectionDao.insert(collection);
   }
 
   @Override

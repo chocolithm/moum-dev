@@ -6,7 +6,9 @@ function openOverlay() {
 
 function closePopup() {
   fadeOut(document.getElementsByClassName("overlay")[0]);
-  fadeOut(document.getElementsByClassName("layer")[0]);
+  for (i = 0; i < document.getElementsByClassName("layer").length; i++) {
+    fadeOut(document.getElementsByClassName("layer")[i]);
+  }
 }
 
 function fadeIn(element) {
@@ -27,5 +29,17 @@ function fadeOut(element) {
 
 function openLoginPopup() {
   openOverlay();
-  fadeIn(document.getElementsByClassName("login_layer")[0]);
+  fadeIn(document.getElementsByClassName("login-layer")[0]);
 }
+
+// 마이홈
+function openCollectionAddPopup() {
+    openOverlay();
+    fadeIn(document.getElementsByClassName("collection-add-layer")[0]);
+}
+
+function openCollectionViewPopup(no) {
+    openOverlay();
+    fadeIn(document.getElementsByClassName("collection-view-layer")[0]);
+}
+
