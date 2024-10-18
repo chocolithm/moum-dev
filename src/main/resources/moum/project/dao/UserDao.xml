@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="moum.project.dao.UserDao">
+
+    <resultMap id="UserMap" type="moum.project.vo.User">
+        <id column="user_id" property="no"/>
+        <result column="name" property="name"/>
+        <result column="nickname" property="nickname"/>
+        <result column="email" property="email"/>
+        <result column="pwd" property="password"/>
+        <result column="admin" property="admin"/>
+    </resultMap>
+
+    <select id="list" resultMap="UserMap">
+        select
+        user_id,
+        name,
+        nickname,
+        email,
+        admin
+        from
+        users
+        order by
+        user_id asc
+    </select>
+
+    <insert id="insert" parameterType="moum.project.vo.User">
+        insert into users(name, nickname, email, pwd, admin)
+        values (#{name}, #{nickname}, #{email}, sha1(#{password}), #{admin})
+    </insert>
+
+    <select id="findBy" resultMap="UserMap" parameterType="int">
+        select
+        user_id,
+        name,
+        nickname,
+        email,
+        admin
+        from
+        users
+        where
+        user_id=#{no}
+    </select>
+
+    <select id="findByEmailAndPassword" resultMap="UserMap">
+        select
+        user_id,
+        name,
+        nickname,
+        email,
+        admin
+        from
+        users
+        where
+        email=#{email} and pwd=sha1(#{password})
+    </select>
+
+    <update id="update" parameterType="moum.project.vo.User">
+        update users set
+        name=#{name},
+        nickname=#{nickname},
+        email=#{email},
+        pwd=sha1(#{password}),
+        admin=#{admin}
+        where
+        user_id=#{no}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from users
+        where user_id=#{no}
+    </delete>
+</mapper>
