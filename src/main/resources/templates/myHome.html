@@ -19,26 +19,84 @@
                 <li>신발</li>
             </ul>
         </aside>
-        
+        <div class="myhome-upper-buttons">
+            <button class="btn" onClick="openCollectionAddPopup();">수집품 등록</button>
+            <button class="btn">POST</button>
+        </div>
         <div class="myhome-collections clearfix">
             <div th:if="${#lists.isEmpty(collectionList)}">
                 <p>소집품이 없습니다.</p>
             </div>
             <div th:if="${not #lists.isEmpty(collectionList)}">
-                <div th:each="collection : ${collectionList}" class="collection-box clearfix">
+                <button th:each="collection : ${collectionList}" class="collection-box btn clearfix"
+                        th:attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'">
                     <img th:if="${not #lists.isEmpty(collection.attachedFiles)}"
                          th:src="${collection.attachedFiles[0].filepath}"
                          class="collection-image" />
                     <img th:if="${#lists.isEmpty(collection.attachedFiles)}"
-                         src="/images/common/empty-frame.png"
+                         src="/images/collections/empty-collection.png"
                          class="collection-image" />
                     <div class="collection-title" th:text="${collection.name}"></div>
-                </div>
+                </button>
             </div>
         </div>
     </main>
 
     <div th:replace="~{footer}"></div>
+
+    <!--  수집품 등록 화면  -->
+    <div class="layer collection-add-layer">
+        <img class="x" th:src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
+        <div class="left-side">
+            <img class="empty-image" th:src="@{/images/collections/empty-collection.png}" alt="수집품 이미지 등록"
+            onClick="document.getElementById('files').click()">
+        </div>
+        <form class="right-side" action="/collection/add" method="post" enctype="multipart/form-data">
+            <input type="file" name="files" id="files" style="display: none;">
+            <table>
+<!--                <tr>-->
+<!--                    <td><label for="en_name">상품 영문명</label></td>-->
+<!--                    <td><input type="text" name="en_name" id="en_name"></td>-->
+<!--                </tr>-->
+                <tr>
+                    <td><label for="name">상품 한글명</label></td>
+                    <td><input type="text" name="name" id="name"></td>
+                </tr>
+                <tr>
+                    <td><label for="price">가격</label></td>
+                    <td><input type="text" name="price" id="price"></td>
+                </tr>
+                <tr>
+                    <td><label for="maincategoryNo">제품</label></td>
+                    <td><input type="text" name="maincategoryNo" id="maincategoryNo"></td>
+                </tr>
+                <tr>
+                    <td><label for="subcategoryNo">메이커</label></td>
+                    <td><input type="text" name="subcategoryNo" id="subcategoryNo"></td>
+                </tr>
+                <tr>
+                    <td><label for="purchasePlace">구매처</label></td>
+                    <td><input type="text" name="purchasePlace" id="purchasePlace"></td>
+                </tr>
+                <tr>
+                    <td><label for="storageLocation">보관장소</label></td>
+                    <td><input type="text" name="storageLocation" id="storageLocation"></td>
+                </tr>
+                <tr>
+                    <td><label for="statusNo">상태</label></td>
+                    <td><input type="text" name="statusNo" id="statusNo"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="upload"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <!--  수집품 상세 화면  -->
+    <div class="layer collection-view-layer">
+        <img class="x" th:src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
+    </div>
 
 </body>
 </html>

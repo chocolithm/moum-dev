@@ -23,8 +23,12 @@
     </collection>
   </resultMap>
 
-  <insert id="insert">
-
+  <insert id="insert" parameterType="moum.project.vo.Collection"
+          useGeneratedKeys="true" keyColumn="collection_id" keyProperty="no">
+    insert into collection(user_id, subcategory_id, name, status_id,
+      purchase_date, purchase_place, price, storage_location)
+    values(#{userNo}, #{subcategoryNo}, #{name}, #{status}, #{purchaseDate},
+      #{purchasePlace}, #{price}, #{storage_location})
   </insert>
 
   <select id="list" resultMap="CollectionMap">
