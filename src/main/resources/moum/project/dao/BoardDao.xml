@@ -6,7 +6,7 @@
 <mapper namespace="moum.project.dao.BoardDao">
 
     <!-- BoardMap: Board 객체와 매핑 -->
-    <resultMap id="BoardMap" type="moum.project.domain.community.vo.Board">
+    <resultMap id="BoardMap" type="moum.project.vo.Board">
         <id column="board_id" property="no"/>
         <result column="title" property="title"/>
         <result column="content" property="content"/>
@@ -54,13 +54,13 @@
     </select>
 
     <!-- 새 게시글 생성 (insert) -->
-    <insert id="insert" parameterType="moum.project.domain.community.vo.Board" useGeneratedKeys="true" keyProperty="no" keyColumn="board_id">
+    <insert id="insert" parameterType="moum.project.vo.Board" useGeneratedKeys="true" keyProperty="no" keyColumn="board_id">
         INSERT INTO board (title, content, user_id, post_date, view_count, is_public, is_deleted)
         VALUES (#{title}, #{content}, #{userNo}, NOW(), #{viewCount}, #{isPublic}, #{isDeleted})
     </insert>
 
     <!-- 게시글 수정 (update) -->
-    <update id="update" parameterType="moum.project.domain.community.vo.Board">
+    <update id="update" parameterType="moum.project.vo.Board">
         UPDATE board
         SET
         title = #{title},

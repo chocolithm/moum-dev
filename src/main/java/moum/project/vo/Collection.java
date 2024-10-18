@@ -15,6 +15,7 @@ public class Collection implements Serializable {
 
   private int no;
   private int userNo;
+  private int maincategoryNo;
   private int subcategoryNo;
   private String name;
   private int statusNo;
@@ -37,7 +38,8 @@ public class Collection implements Serializable {
     return "Collection{" +
         "no=" + no +
         ", userNo=" + userNo +
-        ", subCategoryNo=" + subcategoryNo +
+        ", maincategoryNo=" + maincategoryNo +
+        ", subcategoryNo=" + subcategoryNo +
         ", name='" + name + '\'' +
         ", statusNo=" + statusNo +
         ", purchaseDate=" + purchaseDate +
