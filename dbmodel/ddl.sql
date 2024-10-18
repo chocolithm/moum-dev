@@ -117,7 +117,7 @@ CREATE TABLE board (
   user_id    INTEGER      NOT NULL COMMENT '작성자 번호', -- 작성자 번호
   post_date  DATETIME     NOT NULL DEFAULT now() COMMENT '작성일자', -- 작성일자
   view_cout  INTEGER      NOT NULL DEFAULT 0 COMMENT '조회수', -- 조회수
-  public     TINYINT      NOT NULL DEFAULT 1 COMMENT '공개', -- 공개
+  is_public     TINYINT      NOT NULL DEFAULT 1 COMMENT '공개', -- 공개
   is_deleted TINYINT      NOT NULL DEFAULT 0 COMMENT '삭제' -- 삭제
 )
 COMMENT '게시글';
@@ -140,7 +140,7 @@ CREATE TABLE comment (
   content            TEXT     NOT NULL COMMENT '작성내용', -- 작성내용
   date               DATETIME NOT NULL DEFAULT now() COMMENT '작성일시', -- 작성일시
   orginal_comment_id INTEGER  NULL     COMMENT '상위 댓글 번호', -- 상위 댓글 번호
-  public             TINYINT  NOT NULL DEFAULT 1 COMMENT '공개' -- 공개
+  is_public             TINYINT  NOT NULL DEFAULT 1 COMMENT '공개' -- 공개
 )
 COMMENT '댓글';
 

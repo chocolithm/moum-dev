@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moum.project.dao.BoardDao">
+
+    <!-- BoardMap: Board 객체와 매핑 -->
+    <resultMap id="BoardMap" type="moum.project.domain.community.vo.Board">
+        <id column="board_id" property="no"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="user_id" property="userNo"/>
+        <result column="post_date" property="postDate"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="is_public" property="isPublic"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!-- 모든 게시글 조회 (list) -->
+    <select id="list" resultMap="BoardMap">
+        SELECT
+        board_id,
+        title,
+        content,
+        user_id,
+        post_date,
+        view_count,
+        is_public,
+        is_deleted
+        FROM
+        board
+        WHERE
+        is_deleted = 0
+        ORDER BY
+        post_date DESC
+    </select>
+
+    <!-- 특정 게시글 조회 (selectById) -->
+    <select id="selectById" resultMap="BoardMap" parameterType="int">
+        SELECT
+        board_id,
+        title,
+        content,
+        user_id,
+        post_date,
+        view_count,
+        is_public,
+        is_deleted
+        FROM
+        board
+        WHERE
+        board_id = #{boardId} AND is_deleted = 0
+    </select>
+
+    <!-- 새 게시글 생성 (insert) -->
+    <insert id="insert" parameterType="moum.project.domain.community.vo.Board" useGeneratedKeys="true" keyProperty="no" keyColumn="board_id">
+        INSERT INTO board (title, content, user_id, post_date, view_count, is_public, is_deleted)
+        VALUES (#{title}, #{content}, #{userNo}, NOW(), #{viewCount}, #{isPublic}, #{isDeleted})
+    </insert>
+
+    <!-- 게시글 수정 (update) -->
+    <update id="update" parameterType="moum.project.domain.community.vo.Board">
+        UPDATE board
+        SET
+        title = #{title},
+        content = #{content},
+        view_count = #{viewCount},
+        is_public = #{isPublic}
+        WHERE
+        board_id = #{no}
+    </update>
+
+    <!-- 논리적 삭제 (delete) -->
+    <update id="delete" parameterType="int">
+        UPDATE board
+        SET is_deleted = 1
+        WHERE board_id = #{boardId}
+    </update>
+
+    <!-- 조회수 증가 (increaseViewCount) -->
+    <update id="increaseViewCount" parameterType="int">
+        UPDATE board
+        SET view_count = view_count + 1
+        WHERE board_id = #{boardId}
+    </update>
+
+    <!-- 특정 사용자의 게시글 조회 (selectByUserId) -->
+    <select id="selectByUserId" resultMap="BoardMap" parameterType="int">
+        SELECT
+        board_id,
+        title,
+        content,
+        user_id,
+        post_date,
+        view_count,
+        is_public,
+        is_deleted
+        FROM
+        board
+        WHERE
+        user_id = #{userId} AND is_deleted = 0
+    </select>
+
+    <!-- 최근 게시글 조회 (selectRecent) -->
+    <select id="selectRecent" resultMap="BoardMap" parameterType="int">
+        SELECT
+        board_id,
+        title,
+        content,
+        user_id,
+        post_date,
+        view_count,
+        is_public,
+        is_deleted
+        FROM
+        board
+        WHERE
+        is_deleted = 0
+        ORDER BY
+        post_date DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>
