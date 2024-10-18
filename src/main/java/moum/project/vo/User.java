@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
-public class User implements UserDetails, Serializable {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     private int no;
     private String nickname;
@@ -24,36 +24,5 @@ public class User implements UserDetails, Serializable {
 
     public User(int no) {
         this.no = no;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return admin ? Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
-                     : Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }
