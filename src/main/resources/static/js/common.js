@@ -43,3 +43,29 @@ function openCollectionViewPopup(no) {
     fadeIn(document.getElementsByClassName("collection-view-layer")[0]);
 }
 
+function fetchSubcategories(maincategoryNo) {
+    const subcategorySelect = document.getElementById("subcategoryNo");
+    subcategorySelect.innerHTML = "";
+
+    if (maincategoryNo == 0) {
+        subcategorySelect.disabled = true;
+    } else if (maincategoryNo > 0) {
+        subcategorySelect.disabled = false;
+        fetch(`/subcategory/list?maincategoryNo=${maincategoryNo}`)
+                .then(response => response.json())
+                .then(data => {
+
+
+                    data.forEach(subcategory => {
+                        const option = document.createElement("option");
+                        option.value = subcategory.no;
+                        option.text = subcategory.name;
+                        subcategorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching subcategories:", error);
+                });
+    }
+}
+
