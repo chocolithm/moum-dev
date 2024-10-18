@@ -218,6 +218,15 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     display: block;
 }
 
+.collection-add-layer .right-side select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
 .collection-add-layer .right-side input[type="text"] {
     width: 100%;
     padding: 8px;
@@ -235,15 +244,6 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.collection-add-layer .right-side select {
-    width: 48%;
-    padding: 8px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
 

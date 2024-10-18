@@ -3,8 +3,8 @@ spring:
     name: moum
 
   datasource:
-    url: jdbc:mysql://db-pfr3l-kr.vpc-pub-cdb.ntruss.com/studydb
-    username: study
+    url: jdbc:mysql://db-pfr3l-kr.vpc-pub-cdb.ntruss.com/moum
+    username: moum
     password: bitcamp123!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
 

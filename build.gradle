@@ -52,3 +52,14 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+eclipse {
+    project {
+        name = "moum"
+    }
+    jdt {
+        sourceCompatibility = 21
+        targetCompatibility = 21
+        javaRuntimeName = "JavaSE-21"
+    }
+}

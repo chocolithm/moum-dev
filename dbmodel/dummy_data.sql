@@ -94,11 +94,11 @@ INSERT INTO collection_status (status_id, status_name) VALUES
 
 
 -- 수집품 데이터
-INSERT INTO collection (user_id, subcategory_id, name, status_id, purchase_date, purchase_place, price, storage_location) VALUES
-(2, 15, '레고 시티 경찰서', 1, '2023-01-15', '레고 공식 스토어', 200000, '선반'),
-(2, 4, '나이키 에어맥스', 3, '2023-02-20', '나이키 매장', 150000, '신발장'),
-(3, 7, 'HG 건담 바바토스', 2, '2023-03-10', '건담베이스', 20000, '진열장'),
-(1, 2, '레고 밀레니엄 팔콘', 1, '2023-04-05', '레고 공식 스토어', 300000, '책상');
+INSERT INTO collection (user_id, subcategory_id, name, en_name, status_id, purchase_date, purchase_place, price, storage_location) VALUES
+(2, 15, '레고 시티 경찰서', 'Lego City Police', 1, '2023-01-15', '레고 공식 스토어', 200000, '선반'),
+(2, 4, '나이키 에어맥스', 'Nike Airmax', 3, '2023-02-20', '나이키 매장', 150000, '신발장'),
+(3, 7, 'HG 건담 바바토스', 'HG Babatos', 2, '2023-03-10', '건담베이스', 20000, '진열장'),
+(1, 2, '레고 밀레니엄 팔콘', 'Lego Millenium Falcon', 1, '2023-04-05', '레고 공식 스토어', 300000, '책상');
 
 
 -- 게시글 데이터
