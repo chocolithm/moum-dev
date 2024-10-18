@@ -18,7 +18,9 @@ public class CollectionController {
 
   @PostMapping("add")
   public String add(Collection collection) throws Exception {
+    System.out.println("service 호출 전");
     collectionService.add(collection);
+    System.out.println("service 호출 후");
     return "redirect:/myHome";
   }
 }

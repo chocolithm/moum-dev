@@ -52,6 +52,7 @@
             onClick="document.getElementById('files').click()">
         </div>
         <form class="right-side" action="/collection/add" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <input type="file" name="files" id="files" style="display: none;">
             <table>
 <!--                <tr>-->
