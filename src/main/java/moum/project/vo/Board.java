@@ -1,4 +1,4 @@
-package moum.project.domain.community.vo;
+package moum.project.vo;
 
 import lombok.Getter;
 import lombok.Setter;

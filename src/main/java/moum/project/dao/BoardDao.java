@@ -1,4 +1,4 @@
-package moum.project.domain.community.dao;
+package moum.project.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 

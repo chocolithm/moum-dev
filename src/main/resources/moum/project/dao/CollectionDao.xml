@@ -8,6 +8,7 @@
   <resultMap id="CollectionMap" type="moum.project.vo.Collection">
     <id column="collection_id" property="no"/>
     <result column="user_id" property="userNo"/>
+    <result column="maincategory_id" property="maincategoryNo"/>
     <result column="subcategory_id" property="subcategoryNo"/>
     <result column="name" property="name"/>
     <result column="status_id" property="statusNo"/>
