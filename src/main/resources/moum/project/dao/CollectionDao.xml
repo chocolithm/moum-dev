@@ -27,8 +27,8 @@
           useGeneratedKeys="true" keyColumn="collection_id" keyProperty="no">
     insert into collection(user_id, subcategory_id, name, status_id,
       purchase_date, purchase_place, price, storage_location)
-    values(#{userNo}, #{subcategoryNo}, #{name}, #{status}, #{purchaseDate},
-      #{purchasePlace}, #{price}, #{storage_location})
+    values(#{userNo}, #{subcategoryNo}, #{name}, #{statusNo}, #{purchaseDate},
+      #{purchasePlace}, #{price}, #{storageLocation})
   </insert>
 
   <select id="list" resultMap="CollectionMap">
