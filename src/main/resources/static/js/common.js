@@ -33,14 +33,36 @@ function openLoginPopup() {
 }
 
 // 마이홈
-function openCollectionAddPopup() {
+function openCollectionFormPopup() {
+    fetchCollectionForm();
+
     openOverlay();
-    fadeIn(document.getElementsByClassName("collection-add-layer")[0]);
+    fadeIn(document.querySelector(".collection-form-layer"));
 }
 
 function openCollectionViewPopup(no) {
     openOverlay();
     fadeIn(document.getElementsByClassName("collection-view-layer")[0]);
+}
+
+function fetchCollectionForm() {
+    fetch(`/collection/form`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            document.querySelector('.collection-form-layer').innerHTML =
+                doc.querySelector('.collection-form-layer').innerHTML;
+        })
+        .catch(error => {
+            console.error("Error fetching collection form:", error);
+        });
 }
 
 function fetchSubcategories(maincategoryNo) {
@@ -54,8 +76,6 @@ function fetchSubcategories(maincategoryNo) {
         fetch(`/subcategory/list?maincategoryNo=${maincategoryNo}`)
                 .then(response => response.json())
                 .then(data => {
-
-
                     data.forEach(subcategory => {
                         const option = document.createElement("option");
                         option.value = subcategory.no;

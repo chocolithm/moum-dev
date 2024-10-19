@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moum.project.dao.CollectionStatusDao">
+
+  <resultMap id="CollectionStatusMap" type="moum.project.vo.CollectionStatus">
+    <id column="status_id" property="no"/>
+    <result column="status_name" property="name"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="moum.project.vo.CollectionStatus">
+
+  </insert>
+
+  <select id="list" resultMap="CollectionStatusMap">
+    select
+      status_id,
+      status_name
+    from
+      collection_status
+  </select>
+
+  <select id="findBy">
+
+  </select>
+
+  <update id="update">
+
+  </update>
+
+  <delete id="delete">
+
+  </delete>
+</mapper>

@@ -171,18 +171,18 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     font-weight: bold;
 }
 
-.collection-add-layer {
+.collection-form-layer {
     vertical-align: middle;
 }
 
-.collection-add-layer .left-side {
+.collection-form-layer .left-side {
     display: flex;
     flex-direction: column;
     width: 40%;
     float: left;
 }
 
-.collection-add-layer .left-side .empty-image {
+.collection-form-layer .left-side .empty-image {
     width: 100%;
     height: 80%;
     background-color: #f0f0f0;
@@ -192,33 +192,33 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     cursor: pointer;
 }
 
-.collection-add-layer .right-side {
+.collection-form-layer .right-side {
     width: 55%;
     float: left;
 }
 
-.collection-add-layer .right-side table {
+.collection-form-layer .right-side table {
     width: 100%;
     border-collapse: collapse;
     border: none;
 }
 
-.collection-add-layer .right-side table tr {
+.collection-form-layer .right-side table tr {
     border: none;
 }
 
-.collection-add-layer .right-side table td {
+.collection-form-layer .right-side table td {
     border: none;
 }
 
-.collection-add-layer .right-side label {
+.collection-form-layer .right-side label {
     font-size: 14px;
     color: #555;
     margin-bottom: 5px;
     display: block;
 }
 
-.collection-add-layer .right-side select {
+.collection-form-layer .right-side select {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
@@ -227,7 +227,7 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     margin-bottom: 15px;
 }
 
-.collection-add-layer .right-side input[type="text"] {
+.collection-form-layer .right-side input[type="text"] {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
@@ -236,7 +236,7 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     margin-bottom: 15px;
 }
 
-.collection-add-layer .right-side input[type="submit"] {
+.collection-form-layer .right-side input[type="submit"] {
     width: 100%;
     padding: 10px;
     background-color: black;

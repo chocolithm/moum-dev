@@ -1,35 +1,17 @@
 package moum.project.vo;
 
 import java.util.Objects;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Maincategory {
+  @EqualsAndHashCode.Include
   int no;
   String name;
-
-  @Override
-  public String toString() {
-    return "Maincategory{" +
-        "no=" + no +
-        ", name='" + name + '\'' +
-        '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    Maincategory that = (Maincategory) o;
-    return no == that.no;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(no);
-  }
 }
