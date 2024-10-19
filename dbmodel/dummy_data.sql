@@ -102,7 +102,7 @@ INSERT INTO collection (user_id, subcategory_id, name, en_name, status_id, purch
 
 
 -- 게시글 데이터
-INSERT INTO board (board_id, title, content, user_id, view_cout) VALUES
+INSERT INTO board (board_id, title, content, user_id, view_count) VALUES
 (1, '레고 시티 경찰서 조립기', '새로 산 레고 시티 경찰서 조립 과정과 후기입니다...', 1, 100),
 (2, '나이키 에어맥스 리뷰', '편안한 나이키 에어맥스 사용 후기입니다...', 2, 50),
 (3, 'HG 건담 바바토스 조립 팁', 'HG 건담 바바토스 조립 시 주의할 점과 팁 공유...', 3, 200),
