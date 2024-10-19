@@ -1,18 +1,18 @@
 package moum.project.service;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import moum.project.dao.CollectionDao;
 import moum.project.vo.Collection;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class DefaultCollectionService implements CollectionService {
 
-  CollectionDao collectionDao;
 
-  public DefaultCollectionService(CollectionDao collectionDao) {
-    this.collectionDao = collectionDao;
-  }
+  CollectionDao collectionDao;
 
   @Override
   public void add(Collection collection) throws Exception {

@@ -30,14 +30,4 @@ public class HomeController {
     model.addAttribute("requestUri", request.getRequestURI());
     return "home";
   }
-
-  /**
-   * 이 메서드는 테스트용으로 "/home2" URL로 들어오는 GET 요청을 처리합니다.
-   *
-   * @return 순수 html인 "home2" 뷰 이름을 반환합니다.
-   */
-  @GetMapping( "/home2")
-  public String home2() {
-    return "home2";
-  }
 }

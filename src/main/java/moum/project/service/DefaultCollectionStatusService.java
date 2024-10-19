@@ -1,6 +1,8 @@
 package moum.project.service;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import moum.project.dao.CollectionDao;
 import moum.project.dao.CollectionStatusDao;
 import moum.project.vo.Collection;
@@ -8,13 +10,10 @@ import moum.project.vo.CollectionStatus;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class DefaultCollectionStatusService implements CollectionStatusService {
 
   CollectionStatusDao collectionStatusDao;
-
-  public DefaultCollectionStatusService(CollectionStatusDao collectionStatusDao) {
-    this.collectionStatusDao = collectionStatusDao;
-  }
 
   @Override
   public void add(CollectionStatus status) throws Exception {

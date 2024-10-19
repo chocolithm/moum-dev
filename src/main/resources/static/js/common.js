@@ -27,6 +27,28 @@ function fadeOut(element) {
 
 // 로그인
 
+var modal = document.getElementById("loginModal");
+var btn = document.getElementById("openModalBtn");
+
+function openLoginModal() {
+    var modal = document.getElementById("loginModal");
+    modal.style.display = "block";
+}
+
+window.onclick = function(event) {
+    var modal = document.getElementById("loginModal");
+    if (event.target === modal) {
+        closeLoginModal();
+    }
+}
+
+
+function closeLoginModal() {
+    var modal = document.getElementById("loginModal");
+    modal.style.display = "none";
+}
+
+
 function openLoginPopup() {
   openOverlay();
   fadeIn(document.getElementsByClassName("login-layer")[0]);
