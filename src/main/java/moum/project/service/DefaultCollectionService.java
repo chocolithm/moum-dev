@@ -2,6 +2,7 @@ package moum.project.service;
 
 import java.util.List;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.CollectionDao;
 import moum.project.vo.Collection;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultCollectionService implements CollectionService {
 
-
+  @NonNull
   CollectionDao collectionDao;
 
   @Override

@@ -2,6 +2,7 @@ package moum.project.service;
 
 import java.util.List;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.CollectionDao;
 import moum.project.dao.CollectionStatusDao;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultCollectionStatusService implements CollectionStatusService {
 
+  @NonNull
   CollectionStatusDao collectionStatusDao;
 
   @Override

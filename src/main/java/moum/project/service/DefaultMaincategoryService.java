@@ -2,6 +2,7 @@ package moum.project.service;
 
 import java.util.List;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.MaincategoryDao;
 import moum.project.vo.Maincategory;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultMaincategoryService implements MaincategoryService {
 
+  @NonNull
   MaincategoryDao maincategoryDao;
 
   @Override
