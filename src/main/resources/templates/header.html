@@ -25,7 +25,7 @@
     <div class="login-state pos-right">
       <th:block th:if="${requestUri != null and requestUri == '/'}">
         <button class="btn btn-join">회원가입</button>
-        <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>
+        <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
       </th:block>
       <th:block th:unless="${requestUri != null and requestUri == '/'}">
         <a th:href="@{/myHome}" class="btn">사용자</a>
@@ -46,24 +46,33 @@
     </div>
   </header>
 
-  <div th:fragment="loginPopup" class="layer login-layer">
-    <img class="x" th:src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
-    <h2>Login</h2>
-    <div th:if="${param.error != null}">
-      <p style="color: red;">Invalid username or password.</p>
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2>Login</h2>
+
+      <!-- This section will only be visible if there's an error -->
+      <div th:if="${param.error != null}">
+        <p style="color: red;">Invalid username or password.</p>
+      </div>
+
+      <!-- Form submission via POST to /myHome with CSRF protection -->
+      <form th:action="@{/myHome}" method="post">
+        <div>
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" value="default" required>
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" value="qrqrqr" required>
+        </div>
+
+        <!-- CSRF Token for security -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <button type="submit">Login</button>
+      </form>
     </div>
-    <form th:action="@{/myHome}" method="post">
-      <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="default" required>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" value="qrqrqr" required>
-      </div>
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-      <button type="submit">Login</button>
-    </form>
   </div>
 
   <script th:fragment="commonjs" src="/js/common.js"></script>

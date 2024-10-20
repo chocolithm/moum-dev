@@ -1,18 +1,17 @@
 package moum.project.service;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import moum.project.dao.MaincategoryDao;
 import moum.project.vo.Maincategory;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class DefaultMaincategoryService implements MaincategoryService {
 
   MaincategoryDao maincategoryDao;
-
-  public DefaultMaincategoryService(MaincategoryDao maincategoryDao) {
-    this.maincategoryDao = maincategoryDao;
-  }
 
   @Override
   public void add(Maincategory maincategory) throws Exception {

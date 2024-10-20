@@ -1,6 +1,8 @@
 package moum.project.service;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import moum.project.dao.MaincategoryDao;
 import moum.project.dao.SubcategoryDao;
 import moum.project.vo.Maincategory;
@@ -8,13 +10,10 @@ import moum.project.vo.Subcategory;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class DefaultSubcategoryService implements SubcategoryService {
 
   SubcategoryDao subcategoryDao;
-
-  public DefaultSubcategoryService(SubcategoryDao subcategoryDao) {
-    this.subcategoryDao = subcategoryDao;
-  }
 
   @Override
   public void add(Subcategory subcategory) throws Exception {
