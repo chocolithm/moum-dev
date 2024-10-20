@@ -1,6 +1,8 @@
 package moum.project.controller;
 
 import java.util.List;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import moum.project.service.SubcategoryService;
 import moum.project.vo.Collection;
 import moum.project.vo.Maincategory;
@@ -13,12 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/subcategory")
+@RequiredArgsConstructor
 public class SubcategoryController {
-  SubcategoryService subcategoryService;
 
-  public SubcategoryController(SubcategoryService subcategoryService) {
-    this.subcategoryService = subcategoryService;
-  }
+  @NonNull SubcategoryService subcategoryService;
 
   @GetMapping("list")
   @ResponseBody

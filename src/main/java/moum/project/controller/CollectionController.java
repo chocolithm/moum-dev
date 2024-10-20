@@ -1,6 +1,8 @@
 package moum.project.controller;
 
 import java.util.List;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import moum.project.service.CollectionService;
 import moum.project.service.CollectionStatusService;
 import moum.project.service.MaincategoryService;
@@ -17,23 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/collection")
+@RequiredArgsConstructor
 public class CollectionController {
 
-  CollectionService collectionService;
-  MaincategoryService maincategoryService;
-  SubcategoryService subcategoryService;
-  CollectionStatusService collectionStatusService;
-
-  public CollectionController(
-      CollectionService collectionService,
-      MaincategoryService maincategoryService,
-      SubcategoryService subcategoryService,
-      CollectionStatusService collectionStatusService) {
-    this.collectionService = collectionService;
-    this.maincategoryService = maincategoryService;
-    this.subcategoryService = subcategoryService;
-    this.collectionStatusService = collectionStatusService;
-  }
+  @NonNull CollectionService collectionService;
+  @NonNull MaincategoryService maincategoryService;
+  @NonNull SubcategoryService subcategoryService;
+  @NonNull CollectionStatusService collectionStatusService;
 
   @GetMapping("form")
   public String form(Model model) throws Exception {
@@ -66,5 +58,11 @@ public class CollectionController {
     model.addAttribute("collectionStatusList", collectionStatusList);
 
     return "collection/view";
+  }
+
+  @PostMapping("update")
+  public String update(Collection collection) throws Exception {
+    collectionService.update(collection);
+    return "redirect:/myHome";
   }
 }

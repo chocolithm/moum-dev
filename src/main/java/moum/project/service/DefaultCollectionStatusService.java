@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultCollectionStatusService implements CollectionStatusService {
 
-  @NonNull
-  CollectionStatusDao collectionStatusDao;
+  @NonNull CollectionStatusDao collectionStatusDao;
 
   @Override
   public void add(CollectionStatus status) throws Exception {

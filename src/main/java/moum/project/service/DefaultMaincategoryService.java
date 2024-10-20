@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultMaincategoryService implements MaincategoryService {
 
-  @NonNull
-  MaincategoryDao maincategoryDao;
+  @NonNull MaincategoryDao maincategoryDao;
 
   @Override
   public void add(Maincategory maincategory) throws Exception {

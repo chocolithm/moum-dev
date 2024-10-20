@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultSubcategoryService implements SubcategoryService {
 
-  @NonNull
-  SubcategoryDao subcategoryDao;
+  @NonNull SubcategoryDao subcategoryDao;
 
   @Override
   public void add(Subcategory subcategory) throws Exception {

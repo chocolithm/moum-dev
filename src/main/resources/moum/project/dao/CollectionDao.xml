@@ -27,10 +27,10 @@
 
   <insert id="insert" parameterType="moum.project.vo.Collection"
           useGeneratedKeys="true" keyColumn="collection_id" keyProperty="no">
-    insert into collection(user_id, subcategory_id, name, status_id,
+    insert into collection(user_id, subcategory_id, name, en_name, status_id,
       purchase_date, purchase_place, price, storage_location)
-    values(#{userNo}, #{subcategoryNo}, #{name}, #{statusNo}, #{purchaseDate},
-      #{purchasePlace}, #{price}, #{storageLocation})
+    values(#{userNo}, #{subcategoryNo}, #{name}, #{enName}, #{statusNo},
+      #{purchaseDate}, #{purchasePlace}, #{price}, #{storageLocation})
   </insert>
 
   <select id="list" resultMap="CollectionMap">
@@ -52,6 +52,7 @@
 
   <select id="findBy" resultMap="CollectionMap" parameterType="int">
     select
+      c.collection_id,
       c.name,
       c.en_name,
       c.price,
@@ -74,7 +75,19 @@
   </select>
 
   <update id="update">
-
+    update
+      collection
+    set
+      name = #{name},
+      en_name = #{enName},
+      subcategory_id = #{subcategoryNo},
+      status_id = #{statusNo},
+      purchase_date = #{purchaseDate},
+      purchase_place = #{purchasePlace},
+      price = #{price},
+      storage_location = #{storageLocation}
+    where
+      collection_id = #{no}
   </update>
 
   <delete id="delete">

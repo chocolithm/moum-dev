@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultCollectionService implements CollectionService {
 
-  @NonNull
-  CollectionDao collectionDao;
+  @NonNull CollectionDao collectionDao;
 
   @Override
   public void add(Collection collection) throws Exception {
@@ -32,7 +31,7 @@ public class DefaultCollectionService implements CollectionService {
 
   @Override
   public boolean update(Collection collection) throws Exception {
-    return false;
+    return collectionDao.update(collection);
   }
 
   @Override

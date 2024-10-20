@@ -1,6 +1,8 @@
 package moum.project.controller;
 
 import java.util.List;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import moum.project.service.CollectionService;
 import moum.project.service.CollectionStatusService;
 import moum.project.service.MaincategoryService;
@@ -12,13 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class MyHomeController {
 
-  CollectionService collectionService;
-
-  public MyHomeController(CollectionService collectionService) {
-    this.collectionService = collectionService;
-  }
+  @NonNull CollectionService collectionService;
 
   @RequestMapping("/myHome")
   public void myHome(Model model) throws Exception {
