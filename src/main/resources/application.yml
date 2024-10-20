@@ -7,6 +7,10 @@ spring:
     username: moum
     password: bitcamp123!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost/moum
+#    username: moum
+#    password: 1111
+#    driver-class-name: com.mysql.cj.jdbc.Driver
 
   thymeleaf:
     cache: false

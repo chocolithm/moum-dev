@@ -11,6 +11,7 @@
     <result column="maincategory_id" property="maincategoryNo"/>
     <result column="subcategory_id" property="subcategoryNo"/>
     <result column="name" property="name"/>
+    <result column="en_name" property="enName"/>
     <result column="status_id" property="statusNo"/>
     <result column="purchase_date" property="purchaseDate"/>
     <result column="purchase_place" property="purchasePlace"/>
@@ -49,8 +50,27 @@
       c.user_id = 2
   </select>
 
-  <select id="findBy">
-
+  <select id="findBy" resultMap="CollectionMap" parameterType="int">
+    select
+      c.name,
+      c.en_name,
+      c.price,
+      sc.maincategory_id,
+      c.subcategory_id,
+      c.purchase_date,
+      c.purchase_place,
+      c.storage_location,
+      c.status_id,
+      cs.status_name,
+      cp.photo_id,
+      cp.filepath
+    from
+      collection c
+      left join collection_status cs on c.status_id = cs.status_id
+      left join collection_photo cp on c.collection_id = cp.collection_id
+      left join subcategory sc on c.subcategory_id = sc.subcategory_id
+    where
+      c.collection_id = #{no}
   </select>
 
   <update id="update">

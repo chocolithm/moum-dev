@@ -27,24 +27,29 @@ function fadeOut(element) {
 
 // 로그인
 
+  // 로그인 화면 열기
 function openLoginPopup() {
   openOverlay();
   fadeIn(document.getElementsByClassName("login-layer")[0]);
 }
 
 // 마이홈
+
+  // 수집품 등록 화면 열기
 function openCollectionFormPopup() {
     fetchCollectionForm();
-
     openOverlay();
     fadeIn(document.querySelector(".collection-form-layer"));
 }
 
+  // 수집품 조회 화면 열기
 function openCollectionViewPopup(no) {
+    fetchCollectionView(no);
     openOverlay();
     fadeIn(document.getElementsByClassName("collection-view-layer")[0]);
 }
 
+  // 수집품 등록 화면 내용 가져오기
 function fetchCollectionForm() {
     fetch(`/collection/form`)
         .then(response => {
@@ -65,6 +70,28 @@ function fetchCollectionForm() {
         });
 }
 
+  // 수집품 조회 화면 내용 가져오기
+function fetchCollectionView(no) {
+    fetch(`/collection/view?no=${no}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            document.querySelector('.collection-view-layer').innerHTML =
+                doc.querySelector('.collection-view-layer').innerHTML;
+        })
+        .catch(error => {
+            console.error("Error fetching collection view:", error);
+        });
+}
+
+  // 소분류 데이터 가져오기
 function fetchSubcategories(maincategoryNo) {
     const subcategorySelect = document.getElementById("subcategoryNo");
     subcategorySelect.innerHTML = "";

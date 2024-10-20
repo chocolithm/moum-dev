@@ -15,16 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MyHomeController {
 
   CollectionService collectionService;
-  MaincategoryService maincategoryService;
-  CollectionStatusService collectionStatusService;
 
-  public MyHomeController(
-      CollectionService collectionService,
-      MaincategoryService maincategoryService,
-      CollectionStatusService collectionStatusService) {
+  public MyHomeController(CollectionService collectionService) {
     this.collectionService = collectionService;
-    this.maincategoryService = maincategoryService;
-    this.collectionStatusService = collectionStatusService;
   }
 
   @RequestMapping("/myHome")

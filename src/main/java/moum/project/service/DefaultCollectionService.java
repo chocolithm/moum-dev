@@ -26,7 +26,7 @@ public class DefaultCollectionService implements CollectionService {
 
   @Override
   public Collection get(int no) throws Exception {
-    return null;
+    return collectionDao.findBy(no);
   }
 
   @Override

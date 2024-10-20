@@ -22,6 +22,7 @@ public class Collection implements Serializable {
   private int maincategoryNo;
   private int subcategoryNo;
   private String name;
+  private String enName;
   private int statusNo;
   private java.sql.Date purchaseDate;
   private String purchasePlace;
