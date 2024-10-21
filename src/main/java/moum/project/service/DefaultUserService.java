@@ -36,6 +36,7 @@ public class DefaultUserService implements UserService {
      */
     @Transactional
     public void add(User user) throws Exception {
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
       userDao.insert(user);
     }
 
