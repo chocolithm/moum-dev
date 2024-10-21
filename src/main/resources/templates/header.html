@@ -9,73 +9,106 @@
 
 <body>
 
-  <div class="overlay" onClick="closePopup();"></div>
+<div class="overlay" onClick="closePopup();"></div>
 
-  <header th:fragment="header">
-    <a th:href="@{/}"><img th:src="@{/images/home.gif}" alt="홈"></a>
-    <nav>
-      <ul>
-        <li class="btn"><a th:href="@{/}">마이홈</a></li>
-        <li class="btn"><a th:href="@{/}">게시판</a></li>
-        <li class="btn"><a th:href="@{/}">수집품거래</a></li>
-        <li class="btn"><a th:href="@{/}">하비위키</a></li>
-      </ul>
-    </nav>
+<header th:fragment="header">
+  <a th:href="@{/}"><img th:src="@{/images/home.gif}" alt="홈"></a>
+  <nav>
+    <ul>
+      <li class="btn" onclick="openMemberOnlyPopup();"><a href="#">마이홈</a></li>
+      <li class="btn" onclick="openMemberOnlyPopup();"><a href="#">게시판</a></li>
+      <li class="btn" onclick="openMemberOnlyPopup();"><a href="#">수집품거래</a></li>
+      <li class="btn"><a th:href="@{/}">하비위키</a></li>
+    </ul>
+  </nav>
 
-    <div class="login-state pos-right">
-      <th:block th:if="${requestUri != null and requestUri == '/'}">
-        <button class="btn btn-join">회원가입</button>
-        <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
-      </th:block>
-      <th:block th:unless="${requestUri != null and requestUri == '/'}">
-        <a th:href="@{/myHome}" class="btn">사용자</a>
-        <a th:href="@{/}" class="btn btn-logout">로그아웃</a>
-      </th:block>
 
-<!--      향후 authentication 설정 후에 다시 테스트-->
+  <div class="login-state pos-right">
+    <th:block th:if="${requestUri != null and requestUri == '/'}">
+      <button class="btn btn-join">회원가입</button>
+      <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
+    </th:block>
+    <th:block th:unless="${requestUri != null and requestUri == '/'}">
+      <a th:href="@{/myHome}" class="btn">사용자</a>
+      <a th:href="@{/}" class="btn btn-logout">로그아웃</a>
+    </th:block>
 
-<!--      <div th:if="${#authentication.name == 'anonymous'}">-->
-<!--        <button class="btn btn-join">회원가입</button>-->
-<!--        <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>-->
-<!--      </div>-->
-<!--      <div th:if="${#authentication.name != 'anonymous'}">-->
-<!--        <a th:href="@{/app/user/view(no=${#authentication.principal.no})}" class="btn btn-light"-->
-<!--           th:text="${#authentication.principal.name}">사용자 이름</a>-->
-<!--        <a th:href="@{/app/auth/logout}" class="btn btn-secondary">로그아웃</a>-->
-<!--      </div>-->
+    <!--      향후 authentication 설정 후에 다시 테스트-->
+
+    <!--      <div th:if="${#authentication.name == 'anonymous'}">-->
+    <!--        <button class="btn btn-join">회원가입</button>-->
+    <!--        <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>-->
+    <!--      </div>-->
+    <!--      <div th:if="${#authentication.name != 'anonymous'}">-->
+    <!--        <a th:href="@{/app/user/view(no=${#authentication.principal.no})}" class="btn btn-light"-->
+    <!--           th:text="${#authentication.principal.name}">사용자 이름</a>-->
+    <!--        <a th:href="@{/app/auth/logout}" class="btn btn-secondary">로그아웃</a>-->
+    <!--      </div>-->
+  </div>
+</header>
+
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeLoginModal()">&times;</span>
+    <h2>Login</h2>
+
+    <!-- This section will only be visible if there's an error -->
+    <div th:if="${param.error != null}">
+      <p style="color: red;">Invalid username or password.</p>
     </div>
-  </header>
 
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeLoginModal()">&times;</span>
-      <h2>Login</h2>
-
-      <!-- This section will only be visible if there's an error -->
-      <div th:if="${param.error != null}">
-        <p style="color: red;">Invalid username or password.</p>
+    <!-- Form submission via POST to /myHome with CSRF protection -->
+    <form th:action="@{/myHome}" method="post">
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="default" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="qrqrqr" required>
       </div>
 
-      <!-- Form submission via POST to /myHome with CSRF protection -->
-      <form th:action="@{/myHome}" method="post">
-        <div>
-          <label for="username">Username:</label>
-          <input type="text" id="username" name="username" value="moum" required>
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" value="moum" required>
-        </div>
+      <!-- CSRF Token for security -->
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-        <!-- CSRF Token for security -->
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
-        <button type="submit">Login</button>
-      </form>
-    </div>
+      <button type="submit">Login</button>
+    </form>
   </div>
+</div>
 
-  <script th:fragment="commonjs" src="/js/common.js"></script>
+<!-- 회원 전용 팝업 -->
+<div id="memberOnlyPopup" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeMemberOnlyPopup()">&times;</span>
+    <p>회원 전용 메뉴입니다!</p>
+    <button class="btn btn-login" onclick="openLoginModal();">확인</button>
+  </div>
+</div>
+
+<script th:fragment="commonjs" src="/js/common.js"></script>
+
+<script>
+  function openMemberOnlyPopup() { // 추가: 팝업 열기 함수
+      document.getElementById('memberOnlyPopup').style.display = 'block';
+  }
+
+  function closeMemberOnlyPopup() { // 추가: 팝업 닫기 함수
+      document.getElementById('memberOnlyPopup').style.display = 'none';
+  }
+
+  function openLoginModal() { // 로그인 모달 열기 함수
+      closeMemberOnlyPopup(); // 회원 전용 팝업 닫기
+      document.getElementById('loginModal').style.display = 'block'; // 로그인 모달 열기
+  }
+
+  // 팝업 외부 클릭 시 닫기
+  window.onclick = function(event) { // 추가: 외부 클릭 시 팝업 닫기
+      const popup = document.getElementById('memberOnlyPopup');
+      if (event.target === popup) {
+          closeMemberOnlyPopup();
+      }
+  };
+</script>
 
 </body>
 </html>
