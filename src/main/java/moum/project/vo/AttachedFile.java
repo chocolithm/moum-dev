@@ -1,37 +1,22 @@
 package moum.project.vo;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Objects;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class AttachedFile {
-  private int no;
-  private String filepath;
+  public static final int COLLECTION = 1;
+  public static final int BOARD = 2;
 
-  @Override
-  public String toString() {
-    return "AttachedFile{" +
-        "no=" + no +
-        ", filepath='" + filepath + '\'' +
-        '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    AttachedFile that = (AttachedFile) o;
-    return no == that.no;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(no);
-  }
-
+  @EqualsAndHashCode.Include private int no;
+  @EqualsAndHashCode.Include private int fileCategory; // 수집품(1) or 게시글(2)
+  private String filename;
+  private String originFilename;
 }

@@ -16,8 +16,7 @@ import lombok.ToString;
 public class Collection implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  @EqualsAndHashCode.Include
-  private int no;
+  @EqualsAndHashCode.Include private int no;
   private int userNo;
   private int maincategoryNo;
   private int subcategoryNo;

@@ -11,7 +11,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Maincategory {
-  @EqualsAndHashCode.Include
-  int no;
+  @EqualsAndHashCode.Include int no;
   String name;
 }

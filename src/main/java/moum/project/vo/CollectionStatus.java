@@ -10,7 +10,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CollectionStatus {
-  @EqualsAndHashCode.Include
-  private int no;
+  @EqualsAndHashCode.Include private int no;
   private String name;
 }
