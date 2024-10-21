@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 15.        narilee       최초 생성
- * 24. 10. 21.        narilee       passwordEncoder 주석처리
+ * 24. 10. 21.        narilee       passwordEncoder 주석 처리
  */
 @Configuration
 @EnableWebSecurity
