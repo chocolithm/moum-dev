@@ -8,7 +8,9 @@ import moum.project.service.UserService;
 import moum.project.vo.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * packageName    : moum.project.controller
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
+ * 24. 10. 21.        narilee       회원가입 추가
  */
 @Controller
 @RequestMapping("/auth")
@@ -86,5 +89,23 @@ public class AuthController {
   public String logout(HttpSession session) {
     session.invalidate();
     return "redirect:/";
+  }
+
+  @PostMapping("signup")
+  public String signup(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+    try {
+      userService.add(user);
+      redirectAttributes.addFlashAttribute("signupSuccess", true);
+      return "redirect:/auth/form";
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("signupError", "회원가입 중 오류가 발생했습니다.");
+      return "redirect:/auth/signup";
+    }
+  }
+
+  @GetMapping("signup")
+  public String signupForm(Model model) {
+    model.addAttribute("user", new User());
+    return "auth/signup";
   }
 }

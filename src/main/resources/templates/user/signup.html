@@ -6,6 +6,7 @@
 </head>
 <body>
 <h2>회원가입</h2>
+<form th:action="@{/auth/signup}" method="post" th:object="${user}">
     <div>
         <label for="name">이름:</label>
         <input type="text" id="name" th:field="*{name}" required>

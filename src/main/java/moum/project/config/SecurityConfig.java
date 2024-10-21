@@ -21,7 +21,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 15.        narilee       최초 생성
- * 24. 10. 21.        narilee       passwordEncoder 주석 처리
+ * 24. 10. 21.        narilee       /myHome, /auth, /user 예외처리
  */
 @Configuration
 @EnableWebSecurity

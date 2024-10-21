@@ -244,3 +244,10 @@ function previewImage(event) {
         filenames.innerHTML = "";
     }
 }
+function submitLoginForm() {
+    document.getElementById('loginForm').submit();
+}
+
+function submitSignupForm() {
+    document.getElementById('signupForm').submit();
+}

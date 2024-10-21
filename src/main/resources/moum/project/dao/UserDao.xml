@@ -6,7 +6,6 @@
 
     <resultMap id="UserMap" type="moum.project.vo.User">
         <id column="user_id" property="no"/>
-        <result column="name" property="name"/>
         <result column="nickname" property="nickname"/>
         <result column="email" property="email"/>
         <result column="password" property="password"/>
@@ -16,30 +15,28 @@
     <select id="list" resultMap="UserMap">
         select
         user_id,
-        name,
         nickname,
         email,
         admin
         from
-        users
+        user
         order by
         user_id asc
     </select>
 
     <insert id="insert" parameterType="moum.project.vo.User">
-        insert into users(name, nickname, email, password, admin)
-        values (#{name}, #{nickname}, #{email}, #{password}, #{admin})
+        insert into user(nickname, email, password, admin)
+        values (#{nickname}, #{email}, #{password}, #{admin})
     </insert>
 
     <select id="findBy" resultMap="UserMap" parameterType="int">
         select
         user_id,
-        name,
         nickname,
         email,
         admin
         from
-        users
+        user
         where
         user_id=#{no}
     </select>
@@ -53,7 +50,7 @@
         password,
         admin
         from
-        users
+        user
         where
         email=#{email}
     </select>
@@ -61,19 +58,17 @@
     <select id="findByEmailAndPassword" resultMap="UserMap">
         select
         user_id,
-        name,
         nickname,
         email,
         admin
         from
-        users
+        user
         where
         email=#{email} and password=#{password}
     </select>
 
     <update id="update" parameterType="moum.project.vo.User">
-        update users set
-        name=#{name},
+        update user set
         nickname=#{nickname},
         email=#{email},
         password=#{password},
@@ -83,7 +78,7 @@
     </update>
 
     <delete id="delete" parameterType="int">
-        delete from users
+        delete from user
         where user_id=#{no}
     </delete>
 </mapper>
