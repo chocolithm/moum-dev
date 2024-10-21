@@ -132,4 +132,10 @@ public class CollectionController {
     collectionService.update(collection);
     return "redirect:/myHome";
   }
+
+  @GetMapping("delete")
+  public String delete(int no) throws Exception {
+    collectionService.delete(no);
+    return "redirect:/myHome";
+  }
 }

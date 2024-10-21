@@ -102,7 +102,7 @@
       </tr>
       <tr>
         <td><input type="submit" value="수정"></td>
-        <td><button class="btn">POST</button></td>
+        <td><a class="btn" th:attr="href='/collection/delete?no=' + ${collection.no}">삭제</a></td>
       </tr>
     </table>
   </form>

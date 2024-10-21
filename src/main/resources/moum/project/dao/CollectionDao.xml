@@ -99,8 +99,9 @@
       collection_id = #{no}
   </update>
 
-  <delete id="delete">
-
+  <delete id="delete" parameterType="int">
+    delete from collection
+    where collection_id = #{no}
   </delete>
 
   <insert id="insertFiles" parameterType="moum.project.vo.Collection">
@@ -111,5 +112,9 @@
     </foreach>
   </insert>
 
+  <delete id="deleteFiles" parameterType="int">
+    delete from collection_photo
+    where collection_id = #{no}
+  </delete>
 
 </mapper>

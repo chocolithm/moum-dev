@@ -18,4 +18,6 @@ public interface CollectionDao {
   boolean delete(int no) throws Exception;
 
   boolean insertFiles(Collection collection) throws Exception;
+
+  boolean deleteFiles(int no) throws Exception;
 }

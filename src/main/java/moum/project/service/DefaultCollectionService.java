@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import moum.project.dao.CollectionDao;
 import moum.project.vo.Collection;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class DefaultCollectionService implements CollectionService {
   @NonNull CollectionDao collectionDao;
 
   @Override
+  @Transactional
   public void add(Collection collection) throws Exception {
     collectionDao.insert(collection);
     if (collection.getAttachedFiles().size() > 0) {
@@ -34,6 +36,7 @@ public class DefaultCollectionService implements CollectionService {
   }
 
   @Override
+  @Transactional
   public boolean update(Collection collection) throws Exception {
     if (collectionDao.update(collection)) {
       if (collection.getAttachedFiles().size() > 0) {
@@ -45,7 +48,9 @@ public class DefaultCollectionService implements CollectionService {
   }
 
   @Override
+  @Transactional
   public void delete(int no) throws Exception {
-
+    collectionDao.deleteFiles(no);
+    collectionDao.delete(no);
   }
 }
