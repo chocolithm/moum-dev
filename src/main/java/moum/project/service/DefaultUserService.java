@@ -34,8 +34,10 @@ public class DefaultUserService implements UserService {
      * @param user 추가할 사용자 정보
      * @throws Exception 사용자 추가 중 발생할 수 있는 예외
      */
+    @Override
     @Transactional
     public void add(User user) throws Exception {
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
       userDao.insert(user);
     }
 
@@ -45,6 +47,7 @@ public class DefaultUserService implements UserService {
      * @return 전체 사용자 목록
      * @throws Exception 사용자 목록 조회 중 발생할 수 있는 예외
      */
+    @Override
     public List<User> list() throws Exception {
       return userDao.list();
     }
@@ -56,6 +59,7 @@ public class DefaultUserService implements UserService {
      * @return 조회된 사용자 정보
      * @throws Exception 사용자 정보 조회 중 발생할 수 있는 예외
      */
+    @Override
     public User get(int userNo) throws Exception {
       return userDao.findBy(userNo);
     }
@@ -67,6 +71,7 @@ public class DefaultUserService implements UserService {
      * @return 업데이트 성공 여부
      * @throws Exception 사용자 정보 업데이트 중 발생할 수 있는 예외
      */
+    @Override
     @Transactional
     public boolean update(User user) throws Exception {
       return userDao.update(user);
@@ -79,6 +84,7 @@ public class DefaultUserService implements UserService {
      * @return 삭제 성공 여부
      * @throws Exception 사용자 삭제 중 발생할 수 있는 예외
      */
+    @Override
     public boolean delete(int userNo) throws Exception {
       return userDao.delete(userNo);
     }
@@ -91,6 +97,7 @@ public class DefaultUserService implements UserService {
      * @return 인증된 사용자 정보, 인증 실패 시 null
      * @throws Exception 사용자 인증 중 발생할 수 있는 예외
      */
+    @Override
     public User exists(String email, String password) throws Exception {
       User user = userDao.findByEmail(email);
       if (user != null && passwordEncoder.matches(password, user.getPassword())) {

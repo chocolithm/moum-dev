@@ -24,7 +24,7 @@
 
   <div class="login-state pos-right">
     <th:block th:if="${requestUri != null and requestUri == '/'}">
-      <button class="btn btn-join">회원가입</button>
+      <button class="btn btn-join" onclick="openSignupModal();">회원가입</button>
       <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
     </th:block>
     <th:block th:unless="${requestUri != null and requestUri == '/'}">
@@ -55,6 +55,35 @@
       </div>
       <div>
         <button type="submit">로그인</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeSignupModal()">&times;</span>
+    <h2>회원가입</h2>
+    <form th:action="@{/user/signup}" method="post">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <div>
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="nickname">닉네임:</label>
+        <input type="text" id="nickname" name="nickname" required>
+      </div>
+      <div>
+        <label for="signupEmail">이메일:</label>
+        <input type="email" id="signupEmail" name="email" required>
+      </div>
+      <div>
+        <label for="signupPassword">비밀번호:</label>
+        <input type="password" id="signupPassword" name="password" required>
+      </div>
+      <div>
+        <button type="submit">가입하기</button>
       </div>
     </form>
   </div>

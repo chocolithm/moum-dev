@@ -9,7 +9,7 @@
         <result column="name" property="name"/>
         <result column="nickname" property="nickname"/>
         <result column="email" property="email"/>
-        <result column="pwd" property="password"/>
+        <result column="password" property="password"/>
         <result column="admin" property="admin"/>
     </resultMap>
 
@@ -27,8 +27,8 @@
     </select>
 
     <insert id="insert" parameterType="moum.project.vo.User">
-        insert into users(name, nickname, email, pwd, admin)
-        values (#{name}, #{nickname}, #{email}, sha1(#{password}), #{admin})
+        insert into users(name, nickname, email, password, admin)
+        values (#{name}, #{nickname}, #{email}, #{password}, #{admin})
     </insert>
 
     <select id="findBy" resultMap="UserMap" parameterType="int">
@@ -50,7 +50,7 @@
         name,
         nickname,
         email,
-        pwd,
+        password,
         admin
         from
         users
@@ -68,7 +68,7 @@
         from
         users
         where
-        email=#{email} and pwd=sha1(#{password})
+        email=#{email} and password=#{password}
     </select>
 
     <update id="update" parameterType="moum.project.vo.User">
@@ -76,7 +76,7 @@
         name=#{name},
         nickname=#{nickname},
         email=#{email},
-        pwd=sha1(#{password}),
+        password=#{password},
         admin=#{admin}
         where
         user_id=#{no}

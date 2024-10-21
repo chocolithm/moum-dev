@@ -56,6 +56,27 @@ function openLoginPopup() {
   fadeIn(document.getElementsByClassName("login-layer")[0]);
 }
 
+function openSignupModal() {
+    var modal = document.getElementById("signupModal");
+    modal.style.display = "block";
+}
+
+function closeSignupModal() {
+    var modal = document.getElementById("signupModal");
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    var loginModal = document.getElementById("loginModal");
+    var signupModal = document.getElementById("signupModal");
+    if (event.target === loginModal) {
+        closeLoginModal();
+    }
+    if (event.target === signupModal) {
+        closeSignupModal();
+    }
+}
+
 // 마이홈
 
   // 수집품 등록 화면 열기
