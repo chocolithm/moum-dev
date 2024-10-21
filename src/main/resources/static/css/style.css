@@ -236,21 +236,26 @@ main .main-bottom .main-bottom-box .main-bottom-image {
 .collection-form-layer .left-side .slider,
 .collection-view-layer .left-side .slider {
     position: relative;
-    max-width: 600px; /* 슬라이드의 최대 너비 */
+    max-width: 600px;
     margin: auto;
     overflow: hidden;
 }
 
 .collection-form-layer .left-side .slides,
 .collection-view-layer .left-side .slides {
-    display: flex; /* 이미지들을 가로로 나열 */
-    transition: transform 0.5s ease; /* 부드러운 슬라이드 애니메이션 */
+    display: flex;
+    transition: transform 0.5s ease;
 }
 
 .collection-form-layer .left-side .slide,
 .collection-view-layer .left-side .slide {
-    min-width: 100%; /* 각 슬라이드가 100% 너비를 차지하도록 설정 */
-    box-sizing: border-box; /* 패딩과 보더가 너비에 포함되도록 설정 */
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.collection-form-layer .left-side #filenames,
+.collection-view-layer .left-side #filenames {
+    color: blue;
 }
 
 .collection-form-layer .left-side .prev,

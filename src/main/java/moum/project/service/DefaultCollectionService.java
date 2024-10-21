@@ -35,7 +35,13 @@ public class DefaultCollectionService implements CollectionService {
 
   @Override
   public boolean update(Collection collection) throws Exception {
-    return collectionDao.update(collection);
+    if (collectionDao.update(collection)) {
+      if (collection.getAttachedFiles().size() > 0) {
+        collectionDao.insertFiles(collection);
+      }
+      return true;
+    }
+    return false;
   }
 
   @Override

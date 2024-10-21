@@ -100,7 +100,35 @@ public class CollectionController {
   }
 
   @PostMapping("update")
-  public String update(Collection collection) throws Exception {
+  public String update(
+      Collection collection,
+      MultipartFile[] files) throws Exception {
+
+    collection = collectionService.get(collection.getNo());
+    List<AttachedFile> attachedFiles = new ArrayList<>();
+
+    for (MultipartFile file : files) {
+      if (file.getSize() == 0) {
+        continue;
+      }
+
+      AttachedFile attachedFile = new AttachedFile();
+      attachedFile.setFileCategory(AttachedFile.COLLECTION);
+      attachedFile.setFilename(UUID.randomUUID().toString());
+      attachedFile.setOriginFilename(file.getOriginalFilename());
+
+      Map<String, Object> options = new HashMap<>();
+      options.put(StorageService.CONTENT_TYPE, file.getContentType());
+
+      storageService.upload(
+          folderName + attachedFile.getFilename(),
+          file.getInputStream(),
+          options);
+
+      attachedFiles.add(attachedFile);
+    }
+    collection.setAttachedFiles(attachedFiles);
+
     collectionService.update(collection);
     return "redirect:/myHome";
   }

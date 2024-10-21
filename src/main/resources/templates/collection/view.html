@@ -22,17 +22,22 @@
                th:src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}">
         </th:block>
       </div>
-      <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
-      <a class="next" onClick="changeSlide(1)">&#10095;</a>
+      <a class="prev" onClick="changeSlide(-1)" th:if="${#lists.size(collection.attachedFiles) > 1}">&#10094;</a>
+      <a class="next" onClick="changeSlide(1)" th:if="${#lists.size(collection.attachedFiles) > 1}">&#10095;</a>
+      <a class="prev" onClick="changeSlide(-1)" style="display: none;"
+         th:unless="${#lists.size(collection.attachedFiles) > 1}">&#10094;</a>
+      <a class="next" onClick="changeSlide(1)" style="display: none;"
+         th:unless="${#lists.size(collection.attachedFiles) > 1}">&#10095;</a>
     </div>
     <img id="preview" src="#" alt="미리보기" style="display: none;" onclick="triggerFileInput()">
-    <div id="filenames">
+    <div id="currentFilenames">
       <th:block th:unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">
         <th:block th:each="attachedFile : ${collection.attachedFiles}">
           <p th:text="${attachedFile.originFilename}"></p>
         </th:block>
       </th:block>
     </div>
+    <div id="filenames"></div>
   </div>
   <form class="right-side" action="/collection/update" method="post" enctype="multipart/form-data">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

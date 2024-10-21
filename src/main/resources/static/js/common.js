@@ -218,17 +218,28 @@ function previewImage(event) {
             reader.readAsDataURL(files[i]);
         }
 
-        empty.style.display = "none";
-        slider.style.display = "block";
+        if (empty) {
+            empty.style.display = "none";
+        }
 
-        filenames.innerHTML = "";
+        slider.style.display = "block";
+        if (files.length > 1) {
+            document.querySelector(".prev").style.display = "block";
+            document.querySelector(".next").style.display = "block";
+        } else {
+            document.querySelector(".prev").style.display = "none";
+            document.querySelector(".next").style.display = "none";
+        }
+
         Array.from(files).forEach(file => {
             const element = document.createElement("p");
             element.textContent = file.name;
             filenames.appendChild(element);
         });
     } else {
-        empty.style.display = "block";
+        if (empty) {
+            empty.style.display = "block";
+        }
         slider.style.display = "none";
         filenames.innerHTML = "";
     }
