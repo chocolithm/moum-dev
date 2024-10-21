@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.UserService;
 import moum.project.vo.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,12 +28,14 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
   private final UserService userService;
+  private final PasswordEncoder passwordEncoder;
 
   /**
    * 로그인 폼을 표시합니다.
    */
   @GetMapping("form")
-  public void form() {
+  public String form() {
+    return "auth/form";
   }
 
   /**
@@ -48,16 +51,15 @@ public class AuthController {
    */
   @PostMapping("login")
   public String login(
-      String email,
-      String password,
-      boolean saveEmail,
+      @RequestParam String email,
+      @RequestParam String password,
+      @RequestParam(defaultValue = "false") boolean saveEmail,
       HttpServletResponse res,
       HttpSession session) throws Exception {
 
     User user = userService.exists(email, password);
     if (user == null) {
-      res.setHeader("Refresh", "2; url=form");
-      return "auth/fail";
+      return "redirect:/auth/form?error";
     }
 
     if (saveEmail) {
@@ -65,7 +67,7 @@ public class AuthController {
       cookie.setMaxAge(60 * 60 * 24 * 7);
       res.addCookie(cookie);
     } else {
-      Cookie cookie = new Cookie("email", "test@test.com");
+      Cookie cookie = new Cookie("email", "null");
       cookie.setMaxAge(0);
       res.addCookie(cookie);
     }

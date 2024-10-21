@@ -3,6 +3,7 @@ package moum.project.service;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.UserDao;
 import moum.project.vo.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ import java.util.List;
 public class DefaultUserService implements UserService {
 
     private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 새로운 사용자를 시스템에 추가합니다.
@@ -90,6 +92,10 @@ public class DefaultUserService implements UserService {
      * @throws Exception 사용자 인증 중 발생할 수 있는 예외
      */
     public User exists(String email, String password) throws Exception {
-      return userDao.findByEmailAndPassword(email, password);
+      User user = userDao.findByEmail(email);
+      if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+        return user;
+      }
+      return null;
     }
   }

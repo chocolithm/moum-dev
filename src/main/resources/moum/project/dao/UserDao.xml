@@ -44,6 +44,20 @@
         user_id=#{no}
     </select>
 
+    <select id="findByEmail" resultMap="UserMap">
+        select
+        user_id,
+        name,
+        nickname,
+        email,
+        pwd,
+        admin
+        from
+        users
+        where
+        email=#{email}
+    </select>
+
     <select id="findByEmailAndPassword" resultMap="UserMap">
         select
         user_id,

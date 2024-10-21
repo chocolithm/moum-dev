@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
@@ -39,29 +41,34 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**",
-                "myHome", "/collection/**", "/subcategory/**", "/auth/login").permitAll()
+                "myHome", "/collection/**", "/subcategory/**", "/auth/form").permitAll()
             .anyRequest().authenticated()
         )
         .formLogin((form) -> form
-            .loginPage("/login")
+            .loginPage("/auth/form")
             .loginProcessingUrl("/auth/login")
+            .defaultSuccessUrl("/")
+            .failureUrl("/auth/form?error")
             .permitAll()
         )
         .csrf(csrf -> csrf
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         )
-        .logout(LogoutConfigurer::permitAll);
+        .logout(logout -> logout
+            .logoutUrl("/auth/logout")
+            .logoutSuccessUrl("/")
+            .permitAll());
 
     return http.build();
   }
 
-//  /**
-//   * 비밀번호를 BCrypt형식으로 암호화하는 메서드입니다.
-//   *
-//   * @return 암호화된 패스워드를 반환합니다.
-//   */
-//  @Bean
-//  public PasswordEncoder passwordEncoder() {
-//    return new BCryptPasswordEncoder();
-//  }
+  /**
+   * 비밀번호를 BCrypt형식으로 암호화하는 메서드입니다.
+   *
+   * @return 암호화된 패스워드를 반환합니다.
+   */
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

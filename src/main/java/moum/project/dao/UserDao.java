@@ -22,4 +22,5 @@ public interface UserDao {
 
     boolean delete(int no) throws Exception;
 
+    User findByEmail(String email) throws Exception;
 }
