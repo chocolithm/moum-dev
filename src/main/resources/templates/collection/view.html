@@ -15,12 +15,16 @@
     <img class="collection-image" th:if="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}"
          th:src="@{/images/collections/empty-collection.png}" alt="수집품 이미지 등록"
          onClick="triggerFileInput()">
-    <th:block th:unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">
-      <th:block th:each="attachedFile : ${collection.attachedFiles}">
-        <img class="collection-image" onClick="triggerFileInput()" alt="수집품 이미지"
-             th:src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}">
-      </th:block>
-    </th:block>
+    <div class="slider">
+      <div class="slides" th:unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">
+        <th:block th:each="attachedFile : ${collection.attachedFiles}">
+          <img class="collection-image slide" alt="수집품 이미지" onClick="triggerFileInput()"
+               th:src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}">
+        </th:block>
+      </div>
+      <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
+      <a class="next" onClick="changeSlide(1)">&#10095;</a>
+    </div>
     <img id="preview" src="#" alt="미리보기" style="display: none;" onclick="triggerFileInput()">
     <div id="filenames">
       <th:block th:unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">

@@ -1,5 +1,6 @@
 // 공통
 
+
 function openOverlay() {
   fadeIn(document.getElementsByClassName("overlay")[0]);
 }
@@ -7,6 +8,7 @@ function openOverlay() {
 function closePopup() {
   fadeOut(document.getElementsByClassName("overlay")[0]);
   for (i = 0; i < document.getElementsByClassName("layer").length; i++) {
+    document.getElementsByClassName("layer")[i].innerHTML = "";
     fadeOut(document.getElementsByClassName("layer")[i]);
   }
 }
@@ -85,6 +87,8 @@ function fetchCollectionForm() {
 
             document.querySelector('.collection-form-layer').innerHTML =
                 doc.querySelector('.collection-form-layer').innerHTML;
+
+            initCollectionSlideIndex();
         })
         .catch(error => {
             console.error("Error fetching collection form:", error);
@@ -106,10 +110,33 @@ function fetchCollectionView(no) {
 
             document.querySelector('.collection-view-layer').innerHTML =
                 doc.querySelector('.collection-view-layer').innerHTML;
+
+            document.addEventListener("DOMContentLoaded", function() {
+                initCollectionSlideIndex();
+                showSlides(collectionSlideIndex);
+            });
         })
         .catch(error => {
             console.error("Error fetching collection view:", error);
         });
+}
+
+function initCollectionSlideIndex() {
+    collectionSlideIndex = 0;
+}
+
+function showSlides(index) {
+    const slides = document.querySelectorAll('.slide');
+    if (index >= slides.length) { collectionSlideIndex = 0; }
+    if (index < 0) { collectionSlideIndex = slides.length - 1; }
+
+    slides.forEach((slide, i) => {
+        slide.style.display = (i === collectionSlideIndex) ? 'block' : 'none';
+    });
+}
+
+function changeSlide(n) {
+    showSlides(collectionSlideIndex += n);
 }
 
   // 소분류 데이터 가져오기
@@ -146,17 +173,32 @@ function triggerFileInput() {
 function previewImage(event) {
     const files = event.target.files;
     const empty = document.getElementById("empty-image");
-    const preview = document.getElementById("preview");
+    const slider = document.querySelector(".slider");
+    const slides = document.querySelector(".slides");
     const filenames = document.getElementById('filenames');
 
     if (files && files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            empty.style.display = "none";
-            preview.style.display = "block";
+        slides.innerHTML = "";
+
+        for (let i = 0; i < files.length; i++) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = "Uploaded Image";
+                img.className = "collection-image slide";
+                img.onclick = function() {
+                    triggerFileInput();
+                };
+                slides.appendChild(img);
+            }
+
+            reader.readAsDataURL(files[i]);
         }
-        reader.readAsDataURL(files[0]);
+
+        empty.style.display = "none";
+        slider.style.display = "block";
 
         filenames.innerHTML = "";
         Array.from(files).forEach(file => {
@@ -166,7 +208,7 @@ function previewImage(event) {
         });
     } else {
         empty.style.display = "block";
-        preview.style.display = "none";
+        slider.style.display = "none";
         filenames.innerHTML = "";
     }
 }
