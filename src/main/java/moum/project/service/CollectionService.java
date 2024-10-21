@@ -1,6 +1,7 @@
 package moum.project.service;
 
 import java.util.List;
+import java.util.Map;
 import moum.project.vo.Collection;
 
 public interface CollectionService {

@@ -2,6 +2,7 @@ package moum.project.service;
 
 import java.util.List;
 
+import java.util.Map;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.CollectionDao;
@@ -17,6 +18,9 @@ public class DefaultCollectionService implements CollectionService {
   @Override
   public void add(Collection collection) throws Exception {
     collectionDao.insert(collection);
+    if (collection.getAttachedFiles().size() > 0) {
+      collectionDao.insertFiles(collection);
+    }
   }
 
   @Override

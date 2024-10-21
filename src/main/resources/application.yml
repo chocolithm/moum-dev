@@ -2,9 +2,6 @@ spring:
   application:
     name: moum
 
-#  config:
-#    additional-location: classpath:/config/ncp.properties
-
   datasource:
     url: jdbc:mysql://db-pfr3l-kr.vpc-pub-cdb.ntruss.com/moum
     username: moum

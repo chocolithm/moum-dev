@@ -1,6 +1,7 @@
 package moum.project.dao;
 
 import java.util.List;
+import java.util.Map;
 import moum.project.vo.Collection;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +16,6 @@ public interface CollectionDao {
   boolean update(Collection collection) throws Exception;
 
   boolean delete(int no) throws Exception;
+
+  boolean insertFiles(Collection collection) throws Exception;
 }

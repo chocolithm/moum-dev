@@ -96,4 +96,14 @@
   <delete id="delete">
 
   </delete>
+
+  <insert id="insertFiles" parameterType="moum.project.vo.Collection">
+    insert into collection_photo(collection_id, filename, origin_filename)
+    values
+    <foreach collection="attachedFiles" item="attachedFile" separator=",">
+      (#{no}, #{attachedFile.filename}, #{attachedFile.originFilename})
+    </foreach>
+  </insert>
+
+
 </mapper>

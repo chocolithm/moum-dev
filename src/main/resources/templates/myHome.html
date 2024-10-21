@@ -31,7 +31,7 @@
                 <button th:each="collection : ${collectionList}" class="collection-box btn clearfix"
                         th:attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'">
                     <img th:if="${not #lists.isEmpty(collection.attachedFiles)}"
-                         th:src="${collection.attachedFiles[0].filepath}"
+                         th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${collection.attachedFiles[0].filename}"
                          class="collection-image" />
                     <img th:if="${#lists.isEmpty(collection.attachedFiles)}"
                          src="/images/collections/empty-collection.png"

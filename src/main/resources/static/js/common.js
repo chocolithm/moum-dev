@@ -136,3 +136,37 @@ function fetchSubcategories(maincategoryNo) {
                 });
     }
 }
+
+
+function triggerFileInput() {
+    document.getElementById('files').click();
+}
+
+// 선택한 이미지 미리보기
+function previewImage(event) {
+    const files = event.target.files;
+    const empty = document.getElementById("empty-image");
+    const preview = document.getElementById("preview");
+    const filenames = document.getElementById('filenames');
+
+    if (files && files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            empty.style.display = "none";
+            preview.style.display = "block";
+        }
+        reader.readAsDataURL(files[0]);
+
+        filenames.innerHTML = "";
+        Array.from(files).forEach(file => {
+            const element = document.createElement("p");
+            element.textContent = file.name;
+            filenames.appendChild(element);
+        });
+    } else {
+        empty.style.display = "block";
+        preview.style.display = "none";
+        filenames.innerHTML = "";
+    }
+}
