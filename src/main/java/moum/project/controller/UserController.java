@@ -6,8 +6,10 @@ import moum.project.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * packageName    : moum.project.controller
@@ -34,12 +36,16 @@ public class UserController {
   }
 
   @PostMapping("/signup")
-  public String signupSubmit(User user) {
+  public String signupSubmit(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+
     try {
       userService.add(user);
-      return "redirect:/auth/form?signupSuccess";
+      redirectAttributes.addFlashAttribute("signupSuccess", true);
+      return "redirect:/auth/form";
+
     } catch (Exception e) {
-      return "redirect:/user/signup?error";
+      redirectAttributes.addFlashAttribute("signupError", "회원가입 중 오류가 발생했습니다.");
+      return "redirect:/user/signup";
     }
   }
 }
