@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface UserDao {
 
-    boolean insert(User user) throws Exception;
+    void insert(User user) throws Exception;
 
     List<User> list() throws Exception;
 
@@ -22,4 +22,5 @@ public interface UserDao {
 
     boolean delete(int no) throws Exception;
 
+    User findByEmail(String email) throws Exception;
 }

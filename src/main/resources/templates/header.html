@@ -24,7 +24,7 @@
 
   <div class="login-state pos-right">
     <th:block th:if="${requestUri != null and requestUri == '/'}">
-      <button class="btn btn-join">회원가입</button>
+      <button class="btn btn-join" onclick="openSignupModal();">회원가입</button>
       <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
     </th:block>
     <th:block th:unless="${requestUri != null and requestUri == '/'}">
@@ -33,45 +33,59 @@
       <a th:href="@{/}" class="btn btn-logout">로그아웃</a>
     </th:block>
 
-    <!--      향후 authentication 설정 후에 다시 테스트-->
-
-    <!--      <div th:if="${#authentication.name == 'anonymous'}">-->
-    <!--        <button class="btn btn-join">회원가입</button>-->
-    <!--        <button class="btn btn-login" onClick="openLoginPopup();">로그인</button>-->
-    <!--      </div>-->
-    <!--      <div th:if="${#authentication.name != 'anonymous'}">-->
-    <!--        <a th:href="@{/app/user/view(no=${#authentication.principal.no})}" class="btn btn-light"-->
-    <!--           th:text="${#authentication.principal.name}">사용자 이름</a>-->
-    <!--        <a th:href="@{/app/auth/logout}" class="btn btn-secondary">로그아웃</a>-->
-    <!--      </div>-->
   </div>
 </header>
 
 <div id="loginModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeLoginModal()">&times;</span>
-    <h2>Login</h2>
 
-    <!-- This section will only be visible if there's an error -->
-    <div th:if="${param.error != null}">
-      <p style="color: red;">Invalid username or password.</p>
-    </div>
-
-    <!-- Form submission via POST to /myHome with CSRF protection -->
-    <form th:action="@{/myHome}" method="post">
+    <h2>로그인</h2>
+    <form th:action="@{/auth/login}" method="post">
       <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="default" required>
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" required>
       </div>
       <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" value="qrqrqr" required>
+        <label for="password">암호:</label>
+        <input type="password" id="password" name="password" required>
       </div>
+      <div>
+        <input type="checkbox" id="saveEmail" name="saveEmail">
+        <label for="saveEmail">이메일 저장</label>
+      </div>
+      <div>
+        <button type="submit">로그인</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-      <!-- CSRF Token for security -->
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeSignupModal()">&times;</span>
+    <h2>회원가입</h2>
+    <form th:action="@{/user/signup}" method="post">
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
-      <button type="submit">Login</button>
+      <div>
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="nickname">닉네임:</label>
+        <input type="text" id="nickname" name="nickname" required>
+      </div>
+      <div>
+        <label for="signupEmail">이메일:</label>
+        <input type="email" id="signupEmail" name="email" required>
+      </div>
+      <div>
+        <label for="signupPassword">비밀번호:</label>
+        <input type="password" id="signupPassword" name="password" required>
+      </div>
+      <div>
+        <button type="submit">가입하기</button>
+      </div>
     </form>
   </div>
 </div>

@@ -26,6 +26,12 @@
     </collection>
   </resultMap>
 
+  <resultMap id="AttachedFileMap" type="moum.project.vo.AttachedFile">
+    <id column="photo_id" property="no"/>
+    <result column="filename" property="filename"/>
+    <result column="origin_filename" property="originFilename"/>
+  </resultMap>
+
   <insert id="insert" parameterType="moum.project.vo.Collection"
           useGeneratedKeys="true" keyColumn="collection_id" keyProperty="no">
     insert into collection(user_id, subcategory_id, name, en_name, status_id,
@@ -71,8 +77,8 @@
     from
       collection c
       left join collection_status cs on c.status_id = cs.status_id
-      left join collection_photo cp on c.collection_id = cp.collection_id
       left join subcategory sc on c.subcategory_id = sc.subcategory_id
+      left outer join collection_photo cp on c.collection_id = cp.collection_id
     where
       c.collection_id = #{no}
   </select>
