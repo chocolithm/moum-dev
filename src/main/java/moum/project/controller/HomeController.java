@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * -----------------------------------------------------------
  * 24. 10. 15.        narilee       최초 생성
  * 24. 10. 17.        narilee       테스트용 순수 HTML인 home2로 뷰 추가
+ * 24. 10. 19.        narilee       테스트용 순수 HTML인 home2로 뷰 제거
  */
 @Controller
 public class HomeController {
