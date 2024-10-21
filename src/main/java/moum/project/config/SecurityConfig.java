@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /**
  * packageName    : moum.project.config
@@ -38,12 +39,16 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**",
-                "myHome", "/collection/**", "/subcategory/**").permitAll()
+                "myHome", "/collection/**", "/subcategory/**", "/auth/login").permitAll()
             .anyRequest().authenticated()
         )
         .formLogin((form) -> form
             .loginPage("/login")
+            .loginProcessingUrl("/auth/login")
             .permitAll()
+        )
+        .csrf(csrf -> csrf
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         )
         .logout(LogoutConfigurer::permitAll);
 
