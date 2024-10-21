@@ -1,14 +1,8 @@
 package moum.project.vo;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 public class CollectionStatus {
   @EqualsAndHashCode.Include private int no;
   private String name;

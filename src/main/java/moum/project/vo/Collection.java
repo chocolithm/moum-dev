@@ -1,18 +1,12 @@
 package moum.project.vo;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 public class Collection implements Serializable {
   private static final long serialVersionUID = 1L;
 

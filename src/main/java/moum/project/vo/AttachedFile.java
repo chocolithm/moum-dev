@@ -1,16 +1,10 @@
 package moum.project.vo;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 public class AttachedFile {
   public static final int COLLECTION = 1;
   public static final int BOARD = 2;
