@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -42,7 +42,7 @@
         <td>장소</td>
     </tr>
 
-    <th:block th:each="achievement : cd ..">
+    <block th:each="achievement : ${list}">
     <tr><!-- 세로로 가는거(열) !-->
         <td th:text="${achievement.id}">업적ID</td>
         <td th:text="${achievement.name}">업적명</td>
@@ -50,7 +50,7 @@
         <td th:text="${achievement.condition}">조건</td>
         <td th:text="${achievement.location}">장소</td>
     </tr>
-    </th:block>
+    </block>
 </table>
 
 </body>
