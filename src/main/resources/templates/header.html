@@ -11,7 +11,9 @@
 
 <header data-th-fragment="header">
   <div class="overlay" onClick="closePopup();"></div>
-  <a data-th-href="@{/}"><img data-th-src="@{/images/home.gif}" alt="홈"></a>
+  <a data-th-href="${#authorization.expression('isAuthenticated()') ? '/myHome' : '/'}">
+    <img data-th-src="@{/images/home.gif}" alt="홈">
+  </a>
   <nav>
     <ul>
       <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">마이홈</a></li>
