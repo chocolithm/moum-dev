@@ -25,6 +25,7 @@ public class BoardController {
     private final StorageService storageService;
 
     private final String folderName = "board/";
+
     @GetMapping({"/", "/boardHome"})
     public String boardHome(Model model) throws Exception {
         // 모든 게시글 리스트를 가져옴
@@ -57,6 +58,22 @@ public class BoardController {
         return "board/boardHome"; // boardHome.html 템플릿을 반환
     }
 
+    @GetMapping({"/", "/boardList"})
+    public String boardList(Model model) throws Exception {
+        // 모든 게시글 리스트를 가져옴
+        List<Board> allBoards = boardService.list();
+
+        // 게시글 목록이 비어 있는 경우 기본 값을 설정
+        if (allBoards.isEmpty()) {
+            model.addAttribute("recentBoards", Collections.emptyList());
+            return "board/boardList";
+        }
+        List<Board> recentBoards = allBoards.subList(0, Math.min(10, allBoards.size()));
+        model.addAttribute("recentBoards", recentBoards);
+
+
+        return "board/boardList";
+    }
 
     // 게시글 생성
     @PostMapping("add")

@@ -501,7 +501,7 @@ td {
 }
 
 /* board-middle-box 설정 */
-.board .board-middle-box {
+.board .boardHome-middle-box {
     width: 30%;
     min-width: 250px;
     margin-bottom: 20px; /* 아래쪽 마진 추가 */
@@ -517,14 +517,45 @@ td {
 }
 
 /* 이미지와 텍스트 정렬 */
-.board .board-middle-box .board-middle-image {
+.board .boardHome-middle-box .board-middle-image {
     display: flex;
     gap: 15px;
     align-items: center; /* 이미지와 텍스트를 세로로 중앙 정렬 */
 }
 
 /* 이미지 스타일 */
-.board .board-middle-box .board-middle-image img {
+.board .boardHome-middle-box .board-middle-image img {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+/* board-middle-box 설정 */
+.board .boardList-middle-box {
+    width: 80%;
+    min-width: 250px;
+    margin-bottom: 20px; /* 아래쪽 마진 추가 */
+    border: 1px solid lightgrey;
+    border-radius: 15px;
+    text-align: left;
+    padding: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 이미지와 텍스트 정렬 */
+.board .boardList-middle-box .board-middle-image {
+    display: flex;
+    gap: 15px;
+    align-items: center; /* 이미지와 텍스트를 세로로 중앙 정렬 */
+}
+
+/* 이미지 스타일 */
+.board .boardList-middle-box .board-middle-image img {
     width: 150px;
     height: auto;
     border-radius: 10px;

@@ -14,9 +14,9 @@
 <main>
     <div class="board">
         <!-- 첫 번째 박스 (인기글) -->
-        <div class="board-middle-box">
+        <div class="boardHome-middle-box">
             <h2>인기글</h2>
-            <div class="board-middle-image" th:each="board : ${popularBoards}">
+            <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/view(no=${board.no})}">
                     <img th:src="@{${board.imagePath != null ? board.imagePath : '/images/default-image.jpg'}}"
                          alt="인기글 이미지">
@@ -31,7 +31,7 @@
         </div>
 
         <!-- 두 번째 박스 (게시글) -->
-        <div class="board-middle-box">
+        <div class="boardHome-middle-box">
             <h2>게시글</h2>
             <div class="board-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/view(no=${board.no})}">
@@ -48,7 +48,7 @@
         </div>
 
         <!-- 세 번째 박스 (업적 랭킹) -->
-        <div class="board-middle-box">
+        <div class="boardHome-middle-box">
             <h2>업적 랭킹</h2>
             <div class="board-middle-image" th:each="ranking : ${achievements}">
                 <p th:text="${ranking.rank + '. ' + ranking.name}">랭킹 내용</p>
