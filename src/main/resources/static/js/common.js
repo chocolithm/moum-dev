@@ -13,6 +13,10 @@ function closePopup() {
   }
 }
 
+// fadeIn, fadeOut 사용 시 style에 아래 속성 주셔야 부드럽게 적용됩니다.
+// opacity: 1 또는 0;
+// transition: opacity 0.5s ease;
+
 function fadeIn(element) {
   element.style.display = "block";
   setTimeout(function () {
@@ -156,6 +160,19 @@ function fetchCollectionView(no) {
         });
 }
 
+function deleteFile(fileNo, collectionNo) {
+    fetch(`/collection/deleteFile?no=${fileNo}`)
+        .then(response => response.text())
+        .then(response => {
+            if (response == "true") {
+                alert("삭제되었습니다.");
+                fetchCollectionView(collectionNo)
+            } else {
+                alert("삭제에 실패했습니다.");
+            }
+        })
+}
+
 function initCollectionSlideIndex() {
     collectionSlideIndex = 0;
 }
@@ -198,7 +215,6 @@ function fetchSubcategories(maincategoryNo) {
                 });
     }
 }
-
 
 function triggerFileInput() {
     document.getElementById('files').click();

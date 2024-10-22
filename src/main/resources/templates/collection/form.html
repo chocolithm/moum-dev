@@ -4,51 +4,49 @@
 <head>
   <meta charset="UTF-8">
   <title></title>
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
-<div data-th-fragment="collection-form" class="layer collection-form-layer">
-  <img class="x" data-th-src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
+<div class="layer collection-form-layer" data-th-fragment="collection-form">
+  <img alt="닫기" class="x" data-th-src="@{/images/common/x.png}" onClick="closePopup();">
   <div class="left-side">
-    <img class="collection-image" id="empty-image" data-th-src="@{/images/collections/empty-collection.png}" alt="수집품 이미지 등록"
-         onClick="triggerFileInput();">
-
+    <img alt="수집품 이미지 등록" class="collection-image"
+         data-th-src="@{/images/collections/empty-collection.png}"
+         id="empty-image" onClick="triggerFileInput();">
     <div class="slider" style="display: none;">
-      <div class="slides">
-
-      </div>
+      <div class="slides"></div>
       <a class="prev" onClick="changeSlide(-1)" style="display: none;">&#10094;</a>
       <a class="next" onClick="changeSlide(1)" style="display: none;">&#10095;</a>
     </div>
     <div id="filenames"></div>
-
-
   </div>
-  <form class="right-side" action="/collection/add" method="post" enctype="multipart/form-data">
-    <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
-    <input type="file" name="files" id="files" multiple onChange="previewImage(event);" style="display: none;">
+  <form action="/collection/add" class="right-side" enctype="multipart/form-data" method="post">
+    <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
+    <input id="files" multiple name="files" onChange="previewImage(event);" style="display: none;" type="file">
     <table>
       <tr>
         <td><label for="name">상품 한글명</label></td>
-        <td><input type="text" name="name" id="name"></td>
+        <td><input id="name" name="name" type="text"></td>
       </tr>
       <tr>
         <td><label for="enName">상품 영문명</label></td>
-        <td><input type="text" name="enName" id="enName"></td>
+        <td><input id="enName" name="enName" type="text"></td>
       </tr>
       <tr>
         <td><label for="price">가격</label></td>
-        <td><input type="text" name="price" id="price"></td>
+        <td><input id="price" name="price" type="text"></td>
       </tr>
       <tr>
         <td><label for="maincategoryNo">대분류</label></td>
         <td>
-          <select name="maincategoryNo" id="maincategoryNo" onChange="fetchSubcategories(this.value)">
+          <select id="maincategoryNo" name="maincategoryNo" onChange="fetchSubcategories(this.value)">
             <option value="0">선택</option>
             <data-th-block data-th-each="maincategory : ${maincategoryList}">
-              <option data-th-text="${maincategory.name}" data-th-value="${maincategory.no}"></option>
+              <option data-th-text="${maincategory.name}"
+                      data-th-value="${maincategory.no}"
+                      value="maincategoryNo">maincategory</option>
             </data-th-block>
           </select>
         </td>
@@ -56,25 +54,28 @@
       <tr>
         <td><label for="subcategoryNo">소분류</label></td>
         <td>
-          <select name="subcategoryNo" id="subcategoryNo" disabled>
+          <select disabled id="subcategoryNo" name="subcategoryNo">
 
           </select>
         </td>
       </tr>
       <tr>
         <td><label for="purchasePlace">구매처</label></td>
-        <td><input type="text" name="purchasePlace" id="purchasePlace"></td>
+        <td><input id="purchasePlace" name="purchasePlace" type="text"></td>
       </tr>
       <tr>
         <td><label for="storageLocation">보관장소</label></td>
-        <td><input type="text" name="storageLocation" id="storageLocation"></td>
+        <td><input id="storageLocation" name="storageLocation" type="text"></td>
       </tr>
       <tr>
         <td><label for="statusNo">상태</label></td>
         <td>
-          <select name="statusNo" id="statusNo">
+          <select id="statusNo" name="statusNo">
             <option value="0">선택</option>
-            <option data-th-each="status : ${collectionStatusList}" data-th-text="${status.name}" data-th-value="${status.no}"></option>
+            <option data-th-each="status : ${collectionStatusList}"
+                    data-th-text="${status.name}"
+                    data-th-value="${status.no}"
+                    value="statusNo">status</option>
           </select>
         </td>
       </tr>

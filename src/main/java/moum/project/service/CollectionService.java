@@ -1,7 +1,7 @@
 package moum.project.service;
 
 import java.util.List;
-import java.util.Map;
+import moum.project.vo.AttachedFile;
 import moum.project.vo.Collection;
 
 public interface CollectionService {
@@ -14,4 +14,8 @@ public interface CollectionService {
   boolean update(Collection collection) throws Exception;
 
   void delete(int no) throws Exception;
+
+  AttachedFile getAttachedFile(int no) throws Exception;
+
+  boolean deleteFile(int no) throws Exception;
 }

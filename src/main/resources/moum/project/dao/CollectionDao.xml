@@ -114,6 +114,21 @@
     </foreach>
   </insert>
 
+  <select id="getFile" parameterType="int">
+    select
+      filename,
+      origin_filename
+    from
+      collection_photo
+    where
+      photo_id = #{no}
+  </select>
+
+  <delete id="deleteFile" parameterType="int">
+    delete from collection_photo
+    where photo_id = #{no}
+  </delete>
+
   <delete id="deleteFiles" parameterType="int">
     delete from collection_photo
     where collection_id = #{no}

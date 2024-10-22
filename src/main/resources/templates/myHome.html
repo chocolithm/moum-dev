@@ -4,56 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <title>마이홈</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
-    <header data-th-replace="~{header :: header}"></header>
+<header data-th-replace="~{header :: header}"></header>
 
-    <main>
-        <aside class="sidemenu clearfix">
-            <ul>
-                <li data-th-each="maincategory : ${maincategoryList}">
-                    <input type="checkbox" onClick="filterCategories(this)" checked
-                           data-th-class="myhome-maincategory"
-                           data-th-id="'maincategory-' + ${maincategory.no}"
-                           data-th-value="'maincategory-' + ${maincategory.no}">
-                    <label data-th-for="'maincategory-' + ${maincategory.no}" data-th-text="${maincategory.name}"></label>
-                </li>
-            </ul>
-        </aside>
-        <div class="myhome-upper-buttons">
-            <button class="btn" onClick="openCollectionFormPopup();">수집품 등록</button>
-            <button class="btn">POST</button>
+<main>
+    <aside class="sidemenu clearfix">
+        <ul>
+            <li data-th-each="maincategory : ${maincategoryList}">
+                <input checked data-th-class="myhome-maincategory"
+                       data-th-id="'maincategory-' + ${maincategory.no}"
+                       data-th-value="'maincategory-' + ${maincategory.no}"
+                       onClick="filterCategories(this)"
+                       type="checkbox" value="maincategory">
+                <label data-th-for="'maincategory-' + ${maincategory.no}" data-th-text="${maincategory.name}"></label>
+            </li>
+        </ul>
+    </aside>
+    <div class="myhome-upper-buttons">
+        <button class="btn" onClick="openCollectionFormPopup();">수집품 등록</button>
+        <button class="btn">POST</button>
+    </div>
+    <div class="myhome-collections clearfix">
+        <div data-th-if="${#lists.isEmpty(collectionList)}">
+            <p>소집품이 없습니다.</p>
         </div>
-        <div class="myhome-collections clearfix">
-            <div data-th-if="${#lists.isEmpty(collectionList)}">
-                <p>소집품이 없습니다.</p>
-            </div>
-            <div data-th-if="${not #lists.isEmpty(collectionList)}">
-                <button data-th-each="collection : ${collectionList}"
-                        data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategoryNo}"
-                        data-th-attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'">
-                    <img data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
-                         data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"
-                         class="collection-image" />
-                    <img data-th-if="${#lists.isEmpty(collection.attachedFiles)}"
-                         src="/images/collections/empty-collection.png"
-                         class="collection-image" />
-                    <div class="collection-title" data-th-text="${collection.name}"></div>
-                </button>
-            </div>
+        <div data-th-if="${not #lists.isEmpty(collectionList)}">
+            <button data-th-attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'"
+                    data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategoryNo}"
+                    data-th-each="collection : ${collectionList}">
+                <img class="collection-image"
+                     data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
+                     data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}" />
+                <img class="collection-image"
+                     data-th-if="${#lists.isEmpty(collection.attachedFiles)}"
+                     src="/images/collections/empty-collection.png" />
+                <div class="collection-title" data-th-text="${collection.name}"></div>
+            </button>
         </div>
-    </main>
+    </div>
+</main>
 
-    <footer data-th-replace="~{footer :: footer}"></footer>
+<footer data-th-replace="~{footer :: footer}"></footer>
 
-    <!--  수집품 등록 화면  -->
-    <div class="layer collection-form-layer"></div>
+<!--  수집품 등록 화면  -->
+<div class="layer collection-form-layer"></div>
 
-    <!--  수집품 상세 화면  -->
-    <div class="layer collection-view-layer"></div>
+<!--  수집품 상세 화면  -->
+<div class="layer collection-view-layer"></div>
 
 </body>
 </html>

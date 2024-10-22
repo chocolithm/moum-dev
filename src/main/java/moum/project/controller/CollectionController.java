@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.CollectionService;
 import moum.project.service.CollectionStatusService;
@@ -22,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -135,7 +135,25 @@ public class CollectionController {
 
   @GetMapping("delete")
   public String delete(int no) throws Exception {
+    Collection collection = collectionService.get(no);
+    for (AttachedFile attachedFile : collection.getAttachedFiles()) {
+      storageService.delete(folderName + attachedFile.getFilename());
+    }
     collectionService.delete(no);
     return "redirect:/myHome";
+  }
+
+
+
+  @GetMapping("deleteFile")
+  @ResponseBody
+  public String deleteFile(int no) throws Exception {
+
+    AttachedFile attachedFile = collectionService.getAttachedFile(no);
+    storageService.delete(folderName + attachedFile.getFilename());
+    if (collectionService.deleteFile(no)) {
+      return "true";
+    }
+    return "false";
   }
 }
