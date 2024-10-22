@@ -44,7 +44,6 @@
     <select id="findByEmail" resultMap="UserMap">
         select
         user_id,
-        name,
         nickname,
         email,
         password,

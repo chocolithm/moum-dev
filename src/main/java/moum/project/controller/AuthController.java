@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
- * 24. 10. 21.        narilee       회원가입 추가
  */
 @Controller
 @RequestMapping("/auth")
@@ -77,35 +76,5 @@ public class AuthController {
 
     session.setAttribute("loginUser", user);
     return "redirect:/";
-  }
-
-  /**
-   * 사용자 로그아웃을 처리합니다.
-   *
-   * @param session HTTP 세션 객체
-   * @return 로그아웃 후 홈페이지로 리다이렉트
-   */
-  @GetMapping("logout")
-  public String logout(HttpSession session) {
-    session.invalidate();
-    return "redirect:/";
-  }
-
-  @PostMapping("signup")
-  public String signup(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
-    try {
-      userService.add(user);
-      redirectAttributes.addFlashAttribute("signupSuccess", true);
-      return "redirect:/auth/form";
-    } catch (Exception e) {
-      redirectAttributes.addFlashAttribute("signupError", "회원가입 중 오류가 발생했습니다.");
-      return "redirect:/auth/signup";
-    }
-  }
-
-  @GetMapping("signup")
-  public String signupForm(Model model) {
-    model.addAttribute("user", new User());
-    return "auth/signup";
   }
 }

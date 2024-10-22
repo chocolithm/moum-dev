@@ -9,7 +9,7 @@ import java.util.List;
  * fileName       : UserService
  * author         : narilee
  * date           : 24. 10. 21.
- * description    : serService 인터페이스는 사용자 관리에 관련된 핵심 비즈니스 로직을 정의합니다.
+ * description    : UserService 인터페이스는 사용자 관리에 관련된 핵심 비즈니스 로직을 정의합니다.
  *                  이 인터페이스는 사용자 추가, 조회, 수정, 삭제 및 인증 기능을 제공합니다.
  * ===========================================================
  * DATE              AUTHOR             NOTE

@@ -9,6 +9,14 @@
 
     <div th:replace="~{header}"></div>
 
+    <div th:if="${openLoginModal}">
+        <script>
+            window.onload = function() {
+                openLoginModal();
+            }
+        </script>
+    </div>
+
     <main>
         <div class="main-image">
             <div class="main-image-text">

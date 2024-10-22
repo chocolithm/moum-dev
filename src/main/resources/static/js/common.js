@@ -32,6 +32,20 @@ function fadeOut(element) {
 var modal = document.getElementById("loginModal");
 var btn = document.getElementById("openModalBtn");
 
+function submitSignupForm() {
+    document.getElementById('signupForm').submit();
+}
+
+// 페이지 로드 시 실행되는 함수
+document.addEventListener('DOMContentLoaded', function() {
+    // 회원가입 성공 후 로그인 모달 열기
+    const urlParams = new URLSearchParams(window.location.search);
+    const openLoginModal = urlParams.get('openLoginModal');
+    if (openLoginModal === 'true') {
+        openLoginModal();
+    }
+});
+
 function openLoginModal() {
     var modal = document.getElementById("loginModal");
     modal.style.display = "block";
