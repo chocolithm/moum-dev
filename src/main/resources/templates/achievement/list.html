@@ -41,14 +41,14 @@
         <td>조건</td>
         <td>장소</td>
     </tr>
-
-    <block th:each="achievement : ${list}">
+<
+    <block data-th-each="achievement : ${list}">
     <tr><!-- 세로로 가는거(열) !-->
-        <td th:text="${achievement.id}">업적ID</td>
-        <td th:text="${achievement.name}">업적명</td>
-        <td th:text="${achievement.content}">설명</td>
-        <td th:text="${achievement.condition}">조건</td>
-        <td th:text="${achievement.location}">장소</td>
+        <td data-th-text="${achievement.id}">업적ID</td>
+        <td data-th-text="${achievement.name}">업적명</td>
+        <td data-th-text="${achievement.content}">설명</td>
+        <td data-th-text="${achievement.condition}">조건</td>
+        <td data-th-text="${achievement.location}">장소</td>
     </tr>
     </block>
 </table>
