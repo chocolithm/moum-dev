@@ -39,7 +39,7 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**", "/error").permitAll()
+            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**", "/error", "/auth/**", "/user/**").permitAll()
             .requestMatchers("/login").permitAll() // 로그인 페이지는 접근 가능해야 함
             .anyRequest().authenticated()
         )
