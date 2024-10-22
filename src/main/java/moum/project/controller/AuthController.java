@@ -8,9 +8,7 @@ import moum.project.service.UserService;
 import moum.project.vo.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * packageName    : moum.project.controller
@@ -23,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
+ * 24. 10. 22.        narilee       로그인 구현 완료
  */
 @Controller
 @RequestMapping("/auth")

@@ -22,6 +22,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
  * -----------------------------------------------------------
  * 24. 10. 15.        narilee       최초 생성
  * 24. 10. 21.        narilee       /myHome, /auth, /user, /achievement 예외처리
+ * 24. 10. 22.        narilee       로그인 구현후 예외처리 변경
  */
 @Configuration
 @EnableWebSecurity
