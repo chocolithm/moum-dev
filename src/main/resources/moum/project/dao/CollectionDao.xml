@@ -40,7 +40,7 @@
       #{purchaseDate}, #{purchasePlace}, #{price}, #{storageLocation})
   </insert>
 
-  <select id="list" resultMap="CollectionMap">
+  <select id="list" resultMap="CollectionMap" parameterType="int">
     select
       c.collection_id,
       c.name,
@@ -57,7 +57,7 @@
       left join collection_photo cp on c.collection_id = cp.collection_id
       left join subcategory sc on c.subcategory_id = sc.subcategory_id
     where
-      c.user_id = 2
+      c.user_id = #{no}
   </select>
 
   <select id="findBy" resultMap="CollectionMap" parameterType="int">

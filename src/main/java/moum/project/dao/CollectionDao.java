@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CollectionDao {
   boolean insert(Collection collection) throws Exception;
 
-  List<Collection> list() throws Exception;
+  List<Collection> list(int no) throws Exception;
 
   Collection findBy(int no) throws Exception;
 

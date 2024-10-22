@@ -1,11 +1,12 @@
 package moum.project.service;
 
 import java.util.List;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.CollectionDao;
+import moum.project.dao.UserDao;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Collection;
+import moum.project.vo.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DefaultCollectionService implements CollectionService {
 
-  @NonNull CollectionDao collectionDao;
+  private final CollectionDao collectionDao;
+  private final UserDao userDao;
 
   @Override
   @Transactional
@@ -25,8 +27,9 @@ public class DefaultCollectionService implements CollectionService {
   }
 
   @Override
-  public List<Collection> list() throws Exception {
-    return collectionDao.list();
+  public List<Collection> list(String email) throws Exception {
+    User user = userDao.findByEmail(email);
+    return collectionDao.list(user.getNo());
   }
 
   @Override
