@@ -166,24 +166,37 @@ main .main-bottom .main-bottom-box .main-bottom-image {
 /* myhome */
 
 .sidemenu {
-    width: 15%;
-    max-width: 250px;
-    height: 400px;
-    margin: 2.5% 40px;
-    float: left;
+    min-width: auto;
+    width: 200px;
+    height: auto;
+    margin: 20px;
+    margin-top: 100px;
     border: 1px solid lightgrey;
     border-radius: 25px;
+    float: left;
+}
+
+.sidemenu ul {
+    padding: 10px;
+    margin-left: 30px;
+}
+
+.sidemenu li {
+    list-style-type: none;
 }
 
 .myhome-upper-buttons {
     float: left;
     text-align: right;
+    margin-top: 20px;
+    width: calc(100vw - 350px);
 }
 
 .myhome-collections {
     border-radius: 15px;
     background: lightgrey;
-    width: 75%;
+    width: calc(100vw - 350px);
+    min-height: 320px;
     padding: 10px;
     margin-top: 40px;
     float: left;
@@ -193,11 +206,13 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     width: 250px;
     height: 280px;
     margin: 20px;
-    padding: 15px 0;
+    padding: 10px 0;
     border-radius: 4px;
     background: white;
     text-align: center;
     float: left;
+    opacity: 1;
+    transition: opacity 0.5s ease;
 }
 
 .myhome-collections .collection-box .collection-image {
@@ -273,7 +288,8 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     transition: 0.6s ease;
     border-radius: 0 3px 3px 0;
     user-select: none;
-    background-color: rgba(0, 0, 0, 0.5); /* 배경 투명도 설정 */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* 배경 투명도 설정 */
 }
 
 .collection-form-layer .left-side .prev,
@@ -311,8 +327,7 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     border: none;
 }
 
-.collection-form-layer .right-side label
-.collection-view-layer .right-side label {
+.collection-form-layer .right-side label .collection-view-layer .right-side label {
     font-size: 14px;
     color: #555;
     margin-bottom: 5px;

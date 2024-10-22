@@ -44,6 +44,7 @@
     select
       c.collection_id,
       c.name,
+      sc.maincategory_id,
       c.subcategory_id,
       c.status_id,
       cs.status_name,
@@ -54,6 +55,7 @@
       collection c
       left join collection_status cs on c.status_id = cs.status_id
       left join collection_photo cp on c.collection_id = cp.collection_id
+      left join subcategory sc on c.subcategory_id = sc.subcategory_id
     where
       c.user_id = 2
   </select>

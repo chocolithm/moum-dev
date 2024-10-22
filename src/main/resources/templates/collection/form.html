@@ -48,7 +48,7 @@
           <select name="maincategoryNo" id="maincategoryNo" onChange="fetchSubcategories(this.value)">
             <option value="0">선택</option>
             <th:block th:each="maincategory : ${maincategoryList}">
-              <option th:text="${maincategory.name}" th:attr="value=${maincategory.no}"></option>
+              <option th:text="${maincategory.name}" th:value="${maincategory.no}"></option>
             </th:block>
           </select>
         </td>
@@ -75,7 +75,7 @@
           <select name="statusNo" id="statusNo">
             <option value="0">선택</option>
             <th:block th:each="status : ${collectionStatusList}">
-              <option th:text="${status.name}" th:attr="value=${status.no}"></option>
+              <option th:text="${status.name}" th:value="${status.no}"></option>
             </th:block>
           </select>
         </td>

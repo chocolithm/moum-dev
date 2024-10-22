@@ -14,9 +14,13 @@
     <main>
         <aside class="sidemenu clearfix">
             <ul>
-                <li>레고</li>
-                <li>프라모델</li>
-                <li>신발</li>
+                <li th:each="maincategory : ${maincategoryList}">
+                    <input type="checkbox" onClick="filterCategories(this)" checked
+                           th:class="myhome-maincategory"
+                           th:id="'maincategory-' + ${maincategory.no}"
+                           th:value="'maincategory-' + ${maincategory.no}">
+                    <label th:for="'maincategory-' + ${maincategory.no}" th:text="${maincategory.name}"></label>
+                </li>
             </ul>
         </aside>
         <div class="myhome-upper-buttons">
@@ -28,7 +32,8 @@
                 <p>소집품이 없습니다.</p>
             </div>
             <div th:if="${not #lists.isEmpty(collectionList)}">
-                <button th:each="collection : ${collectionList}" class="collection-box btn clearfix"
+                <button th:each="collection : ${collectionList}"
+                        th:class="'collection-box btn clearfix maincategory-' + ${collection.maincategoryNo}"
                         th:attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'">
                     <img th:if="${not #lists.isEmpty(collection.attachedFiles)}"
                          th:src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"

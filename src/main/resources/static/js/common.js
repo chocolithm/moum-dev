@@ -258,6 +258,21 @@ function previewImage(event) {
         filenames.innerHTML = "";
     }
 }
+
+function filterCategories(element) {
+    const items = document.getElementsByClassName(element.value);
+
+    if (element.checked) {
+        for(i = 0; i < items.length; i++) {
+            fadeIn(items[i]);
+        }
+    } else {
+        for(i = 0; i < items.length; i++) {
+            fadeOut(items[i]);
+        }
+    }
+}
+
 function submitLoginForm() {
     document.getElementById('loginForm').submit();
 }
