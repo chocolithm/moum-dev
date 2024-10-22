@@ -26,33 +26,35 @@ public class DefaultBoardService implements BoardService {
         return boardDao.list();
     }
 
+
     @Override
     public Board get(int no) throws Exception {
-        return null;
+        return boardDao.selectById(no); // 게시글 조회 로직
     }
 
     @Override
     public boolean update(Board board) throws Exception {
-        return false;
+        return boardDao.update(board) > 0;
     }
 
     @Override
     public void delete(int no) throws Exception {
-
+        boardDao.delete(no);
     }
 
     @Override
     public void increaseViewCount(int id) {
-
+        boardDao.increaseViewCount(id);
     }
 
     @Override
     public List<Board> selectByUserId(int userId) {
-        return List.of();
+        return boardDao.selectByUserId(userId);
     }
 
     @Override
     public List<Board> selectRecent(int limit) {
-        return List.of();
+        return boardDao.selectRecent(limit);
     }
+
 }

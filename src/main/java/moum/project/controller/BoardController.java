@@ -1,8 +1,6 @@
 package moum.project.controller;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import moum.project.service.BoardService;
 import moum.project.service.StorageService;
@@ -28,132 +26,142 @@ public class BoardController {
 
     @GetMapping({"/", "/boardHome"})
     public String boardHome(Model model) throws Exception {
-        // 모든 게시글 리스트를 가져옴
+        // 게시글 목록을 가져옴
         List<Board> allBoards = boardService.list();
 
-        // 게시글 목록이 비어 있는 경우 기본 값을 설정
         if (allBoards.isEmpty()) {
+            // 게시글이 없을 경우 빈 리스트를 추가
             model.addAttribute("popularBoards", Collections.emptyList());
             model.addAttribute("recentBoards", Collections.emptyList());
             model.addAttribute("achievements", Collections.emptyList());
             return "board/boardHome";
         }
 
-        // 예시로 인기글과 최근 게시글 리스트를 3개씩 추출 (임의의 로직)
+        // 인기 게시글과 최신 게시글은 최대 3개까지만 보여줌
         List<Board> popularBoards = allBoards.subList(0, Math.min(3, allBoards.size()));
         List<Board> recentBoards = allBoards.subList(0, Math.min(3, allBoards.size()));
 
-        // 업적 랭킹 더미 데이터 설정
+        // 고정된 업적 데이터 추가
         List<Map<String, Object>> achievements = List.of(
                 Map.of("rank", 1, "name", "레고 윈터랜드"),
                 Map.of("rank", 2, "name", "대디하디"),
                 Map.of("rank", 3, "name", "피규어 레이더")
         );
 
-        // 모델에 데이터를 추가하여 뷰에 전달
+        // 모델에 데이터 추가
         model.addAttribute("popularBoards", popularBoards);
         model.addAttribute("recentBoards", recentBoards);
         model.addAttribute("achievements", achievements);
 
-        return "board/boardHome"; // boardHome.html 템플릿을 반환
+        return "board/boardHome";
     }
 
-    @GetMapping({"/", "/boardList"})
+    @GetMapping("/boardList")
     public String boardList(Model model) throws Exception {
-        // 모든 게시글 리스트를 가져옴
+        // 모든 게시글 목록을 가져옴
         List<Board> allBoards = boardService.list();
 
-        // 게시글 목록이 비어 있는 경우 기본 값을 설정
         if (allBoards.isEmpty()) {
+            // 게시글이 없을 경우 빈 리스트를 모델에 추가
             model.addAttribute("recentBoards", Collections.emptyList());
             return "board/boardList";
         }
+
+        // 최근 게시글 10개까지만 가져옴
         List<Board> recentBoards = allBoards.subList(0, Math.min(10, allBoards.size()));
         model.addAttribute("recentBoards", recentBoards);
-
 
         return "board/boardList";
     }
 
-    // 게시글 생성
     @PostMapping("add")
     public String add(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
-        // 임시로 사용자 번호 설정 (실제 구현 시에는 로그인 사용자 번호를 사용)
+        // 새 게시글에 사용자 번호 설정 (임시로 1번 사용자 설정)
         board.setUserNo(1);
 
-        // 파일 업로드 처리
+        // 파일 업로드 및 첨부 파일 정보 설정
         List<AttachedFile> attachedFiles = uploadFiles(files);
-
-        // 업로드된 파일을 게시글에 추가
         board.setAttachedFiles(attachedFiles);
 
-        // 게시글 저장
+        // 게시글 추가
         boardService.add(board);
-        return "redirect:/board/list";
+        return "redirect:/board/boardList";
     }
 
-    // 게시글 목록 조회
     @GetMapping("list")
     public String list(Model model) throws Exception {
+        // 모든 게시글을 모델에 추가
         List<Board> boardList = boardService.list();
         model.addAttribute("boardList", boardList);
-        return "board/list";
+        return "board/boardList";
     }
 
-    // 게시글 상세 조회
-    @GetMapping("view")
+    @GetMapping("/boardView")
     public String view(@RequestParam("no") int no, Model model) throws Exception {
         Board board = boardService.get(no);
+        if (board == null) {
+            throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + no);
+        }
         model.addAttribute("board", board);
-        return "board/view";
+        return "board/boardView";
     }
 
-    // 게시글 수정
+
     @PostMapping("update")
     public String update(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
         // 기존 게시글을 가져옴
         Board existingBoard = boardService.get(board.getNo());
+        if (existingBoard == null) {
+            // 게시글이 없을 경우 예외 발생
+            throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + board.getNo());
+        }
 
-        // 파일 업로드 처리
-        List<AttachedFile> attachedFiles = uploadFiles(files);
+        // 기존 게시글의 첨부 파일 목록 가져오기
+        List<AttachedFile> existingFiles = existingBoard.getAttachedFiles();
+        List<AttachedFile> newFiles = uploadFiles(files);
 
-        // 업로드된 파일을 기존 게시글에 추가
-        existingBoard.setAttachedFiles(attachedFiles);
+        // 새로운 파일이 비어 있지 않으면 기존 파일에 추가
+        if (!newFiles.isEmpty()) {
+            existingFiles.addAll(newFiles);
+        }
+        existingBoard.setAttachedFiles(existingFiles);
+
+        // 제목 및 내용 업데이트
         existingBoard.setTitle(board.getTitle());
         existingBoard.setContent(board.getContent());
 
         // 게시글 업데이트
         boardService.update(existingBoard);
-        return "redirect:/board/view?no=" + existingBoard.getNo();
+        return "redirect:/board/boardView?no=" + existingBoard.getNo();
     }
 
-    // 게시글 삭제
     @GetMapping("delete")
     public String delete(@RequestParam("no") int no) throws Exception {
+        // 게시글 삭제
         boardService.delete(no);
-        return "redirect:/board/list";
+        return "redirect:/board/boardList";
     }
 
-    // 파일 업로드 처리 메서드
     private List<AttachedFile> uploadFiles(MultipartFile[] files) throws Exception {
         List<AttachedFile> attachedFiles = new ArrayList<>();
 
+        // 파일 배열을 순회하며 업로드
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
-                continue; // 파일이 비어있으면 무시
+                // 파일이 비어 있으면 건너뜀
+                continue;
             }
 
-            // 새로운 첨부 파일 객체 생성
             AttachedFile attachedFile = new AttachedFile();
-            attachedFile.setFileCategory(AttachedFile.BOARD);
-            attachedFile.setFilename(UUID.randomUUID().toString());
-            attachedFile.setOriginFilename(file.getOriginalFilename());
+            attachedFile.setFileCategory(AttachedFile.BOARD); // 파일 카테고리를 게시판 파일로 설정
+            attachedFile.setFilename(UUID.randomUUID().toString()); // 파일 이름을 UUID로 생성
+            attachedFile.setOriginFilename(file.getOriginalFilename()); // 원본 파일 이름 설정
 
-            // 파일 업로드 옵션 설정
+            // 파일 업로드 수행
             storageService.upload(folderName + attachedFile.getFilename(), file.getInputStream(),
                     Map.of(StorageService.CONTENT_TYPE, file.getContentType()));
 
-            // 업로드된 파일 목록에 추가
+            // 업로드된 파일을 첨부 파일 리스트에 추가
             attachedFiles.add(attachedFile);
         }
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세보기</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{header}"></div>
+<main>
+    <div class="board-view">
+        <h2 th:text="${board.title}">게시글 제목</h2>
+        <p>작성자: <span th:text="${board.userNo}">작성자 ID</span></p>
+        <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+        <p>조회수: <span th:text="${board.viewCount}">0</span></p>
+        <hr/>
+        <div th:text="${board.content}">게시글 내용</div>
+    </div>
+</main>
+</body>
+</html>

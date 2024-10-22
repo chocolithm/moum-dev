@@ -36,7 +36,6 @@
         post_date DESC
     </select>
 
-    <!-- 특정 게시글 조회 (selectById) -->
     <select id="selectById" resultMap="BoardMap" parameterType="int">
         SELECT
         board_id,
@@ -52,6 +51,7 @@
         WHERE
         board_id = #{boardId} AND is_deleted = 0
     </select>
+
 
     <!-- 새 게시글 생성 (insert) -->
     <insert id="insert" parameterType="moum.project.vo.Board" useGeneratedKeys="true" keyProperty="no" keyColumn="board_id">

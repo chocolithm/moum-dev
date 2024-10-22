@@ -18,11 +18,12 @@
             <h2>인기글</h2>
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/view(no=${board.no})}">
-                    <img th:src="@{${board.imagePath != null ? board.imagePath : '/images/default-image.jpg'}}"
-                         alt="인기글 이미지">
+                    <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="인기글 이미지">
                 </a>
                 <div>
-                    <p th:text="${board.title}">게시글 제목</p>
+                    <a th:href="@{/board/view(no=${board.no})}">
+                        <p th:text="${board.title}" style="font-weight: bold;">게시글 제목</p>
+                    </a>
                     <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
                     <p>조회수: <span th:text="${board.viewCount}">0</span></p>
                     <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
@@ -35,11 +36,12 @@
             <h2>게시글</h2>
             <div class="board-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/view(no=${board.no})}">
-                    <img th:src="@{${board.imagePath != null ? board.imagePath : '/images/default-image.jpg'}}"
-                         alt="게시글 이미지">
+                    <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
                 </a>
                 <div>
-                    <p th:text="${board.title}">게시글 제목</p>
+                    <a th:href="@{/board/view(no=${board.no})}">
+                        <p th:text="${board.title}" style="font-weight: bold;">게시글 제목</p>
+                    </a>
                     <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
                     <p>조회수: <span th:text="${board.viewCount}">0</span></p>
                     <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
