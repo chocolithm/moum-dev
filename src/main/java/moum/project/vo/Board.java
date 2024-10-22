@@ -23,6 +23,9 @@ public class Board implements Serializable {
     private boolean isPublic;
     private boolean isDeleted;
     private List<AttachedFile> attachedFiles;
+    private String imagePath; // 이미지 경로
+    private String description; // 게시글 설명
+
 
 
 
