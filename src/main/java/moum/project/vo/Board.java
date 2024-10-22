@@ -7,13 +7,14 @@ import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class Board implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private int boardNo;
+    private int no;
     private String title;
     private String content;
     private int userNo;
@@ -21,6 +22,8 @@ public class Board implements Serializable {
     private int viewCount;
     private boolean isPublic;
     private boolean isDeleted;
+    private List<AttachedFile> attachedFiles;
+
 
 
 }
