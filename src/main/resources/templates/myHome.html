@@ -9,7 +9,7 @@
 
 <body>
 
-    <div data-th-replace="~{header}"></div>
+    <header data-th-replace="~{header :: header}"></header>
 
     <main>
         <aside class="sidemenu clearfix">
@@ -47,7 +47,7 @@
         </div>
     </main>
 
-    <div data-th-replace="~{footer}"></div>
+    <footer data-th-replace="~{footer :: footer}"></footer>
 
     <!--  수집품 등록 화면  -->
     <div class="layer collection-form-layer"></div>

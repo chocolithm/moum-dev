@@ -9,9 +9,8 @@
 
 <body>
 
-<div class="overlay" onClick="closePopup();"></div>
-
 <header data-th-fragment="header">
+  <div class="overlay" onClick="closePopup();"></div>
   <a data-th-href="@{/}"><img data-th-src="@{/images/home.gif}" alt="홈"></a>
   <nav>
     <ul>
@@ -33,7 +32,6 @@
          data-th-unless="${requestUri != null and requestUri == '/'}">로그아웃</a>
 
   </div>
-</header>
 
 <div id="loginModal" class="modal">
   <div class="modal-content">
@@ -89,6 +87,7 @@
 </div>
 
 <script data-th-fragment="commonjs" src="/js/common.js"></script>
+</header>
 
 </body>
 </html>

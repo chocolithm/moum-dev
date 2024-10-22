@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <div data-th-replace="~{header}"></div>
+    <header data-th-replace="~{header :: header}"></header>
 
     <div data-th-if="${openLoginModal}">
         <script>
@@ -70,7 +70,7 @@
         </div>
     </main>
 
-    <div data-th-replace="~{footer}"></div>
+    <footer data-th-replace="~{footer :: footer}"></footer>
 
 </body>
 </html>
