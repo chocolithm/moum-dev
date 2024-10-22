@@ -28,8 +28,11 @@
               data-th-if="${requestUri != null and requestUri == '/'}">로그인</button>
       <a data-th-href="@{/myHome}" class="btn"
          data-th-unless="${requestUri != null and requestUri == '/'}">사용자</a>
-      <a data-th-href="@{/}" class="btn btn-logout"
-         data-th-unless="${requestUri != null and requestUri == '/'}">로그아웃</a>
+    <form data-th-action="@{/logout}" method="post" style="display: inline;"
+          data-th-unless="${requestUri != null and requestUri == '/'}">
+      <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
+      <button type="submit" class="btn btn-logout">로그아웃</button>
+    </form>
 
   </div>
 

@@ -39,9 +39,8 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**",
-                "/myHome", "/collection/**", "/subcategory/**", "/achievement/**",
-                    "/auth/**", "/user/**", "/board/**", "/error").permitAll()
+            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**", "/error").permitAll()
+            .requestMatchers("/login").permitAll() // 로그인 페이지는 접근 가능해야 함
             .anyRequest().authenticated()
         )
         .formLogin((form) -> form
