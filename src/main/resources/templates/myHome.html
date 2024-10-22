@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -9,17 +9,17 @@
 
 <body>
 
-    <div th:replace="~{header}"></div>
+    <div data-th-replace="~{header}"></div>
 
     <main>
         <aside class="sidemenu clearfix">
             <ul>
-                <li th:each="maincategory : ${maincategoryList}">
+                <li data-th-each="maincategory : ${maincategoryList}">
                     <input type="checkbox" onClick="filterCategories(this)" checked
-                           th:class="myhome-maincategory"
-                           th:id="'maincategory-' + ${maincategory.no}"
-                           th:value="'maincategory-' + ${maincategory.no}">
-                    <label th:for="'maincategory-' + ${maincategory.no}" th:text="${maincategory.name}"></label>
+                           data-th-class="myhome-maincategory"
+                           data-th-id="'maincategory-' + ${maincategory.no}"
+                           data-th-value="'maincategory-' + ${maincategory.no}">
+                    <label data-th-for="'maincategory-' + ${maincategory.no}" data-th-text="${maincategory.name}"></label>
                 </li>
             </ul>
         </aside>
@@ -28,26 +28,26 @@
             <button class="btn">POST</button>
         </div>
         <div class="myhome-collections clearfix">
-            <div th:if="${#lists.isEmpty(collectionList)}">
+            <div data-th-if="${#lists.isEmpty(collectionList)}">
                 <p>소집품이 없습니다.</p>
             </div>
-            <div th:if="${not #lists.isEmpty(collectionList)}">
-                <button th:each="collection : ${collectionList}"
-                        th:class="'collection-box btn clearfix maincategory-' + ${collection.maincategoryNo}"
-                        th:attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'">
-                    <img th:if="${not #lists.isEmpty(collection.attachedFiles)}"
-                         th:src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"
+            <div data-th-if="${not #lists.isEmpty(collectionList)}">
+                <button data-th-each="collection : ${collectionList}"
+                        data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategoryNo}"
+                        data-th-attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'">
+                    <img data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
+                         data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"
                          class="collection-image" />
-                    <img th:if="${#lists.isEmpty(collection.attachedFiles)}"
+                    <img data-th-if="${#lists.isEmpty(collection.attachedFiles)}"
                          src="/images/collections/empty-collection.png"
                          class="collection-image" />
-                    <div class="collection-title" th:text="${collection.name}"></div>
+                    <div class="collection-title" data-th-text="${collection.name}"></div>
                 </button>
             </div>
         </div>
     </main>
 
-    <div th:replace="~{footer}"></div>
+    <div data-th-replace="~{footer}"></div>
 
     <!--  수집품 등록 화면  -->
     <div class="layer collection-form-layer"></div>

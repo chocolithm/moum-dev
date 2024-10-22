@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
   <meta charset="UTF-8">
@@ -23,14 +23,14 @@
   </nav>
 
   <div class="login-state pos-right">
-    <data-th-block th:if="${requestUri != null and requestUri == '/'}">
-      <button class="btn btn-join" onclick="openSignupModal();">회원가입</button>
-      <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
-    </data-th-block>
-    <data-th-block th:unless="${requestUri != null and requestUri == '/'}">
-      <a data-th-href="@{/myHome}" class="btn">사용자</a>
-      <a data-th-href="@{/}" class="btn btn-logout">로그아웃</a>
-    </data-th-block>
+      <button class="btn btn-join" onclick="openSignupModal();"
+              data-th-if="${requestUri != null and requestUri == '/'}">회원가입</button>
+      <button class="btn btn-login" onClick="openLoginModal();"
+              data-th-if="${requestUri != null and requestUri == '/'}">로그인</button>
+      <a data-th-href="@{/myHome}" class="btn"
+         data-th-unless="${requestUri != null and requestUri == '/'}">사용자</a>
+      <a data-th-href="@{/}" class="btn btn-logout"
+         data-th-unless="${requestUri != null and requestUri == '/'}">로그아웃</a>
 
   </div>
 </header>

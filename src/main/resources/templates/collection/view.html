@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
   <meta charset="UTF-8">
@@ -10,61 +10,57 @@
 <body>
 
 <div class="layer collection-view-layer">
-  <img class="x" th:src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
+  <img class="x" data-th-src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
   <div class="left-side">
-    <img class="collection-image" th:if="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}"
-         th:src="@{/images/collections/empty-collection.png}" alt="수집품 이미지 등록"
+    <img class="collection-image" data-th-if="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}"
+         data-th-src="@{/images/collections/empty-collection.png}" alt="수집품 이미지 등록"
          onClick="triggerFileInput()">
     <div class="slider">
-      <div class="slides" th:unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">
-        <th:block th:each="attachedFile : ${collection.attachedFiles}">
-          <img class="collection-image slide" alt="수집품 이미지" onClick="triggerFileInput()"
-               th:src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}">
-        </th:block>
+      <div class="slides" data-th-unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">
+        <img class="collection-image slide" alt="수집품 이미지" onClick="triggerFileInput()"
+             data-th-each="attachedFile : ${collection.attachedFiles}"
+             data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}">
       </div>
-      <a class="prev" onClick="changeSlide(-1)" th:if="${#lists.size(collection.attachedFiles) > 1}">&#10094;</a>
-      <a class="next" onClick="changeSlide(1)" th:if="${#lists.size(collection.attachedFiles) > 1}">&#10095;</a>
+      <a class="prev" onClick="changeSlide(-1)" data-th-if="${#lists.size(collection.attachedFiles) > 1}">&#10094;</a>
+      <a class="next" onClick="changeSlide(1)" data-th-if="${#lists.size(collection.attachedFiles) > 1}">&#10095;</a>
       <a class="prev" onClick="changeSlide(-1)" style="display: none;"
-         th:unless="${#lists.size(collection.attachedFiles) > 1}">&#10094;</a>
+         data-th-unless="${#lists.size(collection.attachedFiles) > 1}">&#10094;</a>
       <a class="next" onClick="changeSlide(1)" style="display: none;"
-         th:unless="${#lists.size(collection.attachedFiles) > 1}">&#10095;</a>
+         data-th-unless="${#lists.size(collection.attachedFiles) > 1}">&#10095;</a>
     </div>
     <img id="preview" src="#" alt="미리보기" style="display: none;" onclick="triggerFileInput()">
     <div id="currentFilenames">
-      <th:block th:unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">
-        <th:block th:each="attachedFile : ${collection.attachedFiles}">
-          <p th:text="${attachedFile.originFilename}"></p>
-        </th:block>
-      </th:block>
+      <p data-th-unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}"
+         data-th-each="attachedFile : ${collection.attachedFiles}"
+         data-th-text="${attachedFile.originFilename}"></p>
     </div>
     <div id="filenames"></div>
   </div>
   <form class="right-side" action="/collection/update" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    <input type="hidden" name="no" th:value="${collection.no}" readonly>
+    <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
+    <input type="hidden" name="no" data-th-value="${collection.no}" readonly>
     <input type="file" name="files" id="files" multiple onChange="previewImage(event);" style="display: none;">
     <table>
       <tr>
         <td><label for="name">상품 한글명</label></td>
-        <td><input type="text" name="name" id="name" th:value="${collection.name}"></td>
+        <td><input type="text" name="name" id="name" data-th-value="${collection.name}"></td>
       </tr>
       <tr>
         <td><label for="enName">상품 영문명</label></td>
-        <td><input type="text" name="enName" id="enName" th:value="${collection.enName}"></td>
+        <td><input type="text" name="enName" id="enName" data-th-value="${collection.enName}"></td>
       </tr>
       <tr>
         <td><label for="price">가격</label></td>
-        <td><input type="text" name="price" id="price" th:value="${collection.price}"></td>
+        <td><input type="text" name="price" id="price" data-th-value="${collection.price}"></td>
       </tr>
       <tr>
         <td><label for="maincategoryNo">대분류</label></td>
         <td>
           <select name="maincategoryNo" id="maincategoryNo" onChange="fetchSubcategories(this.value)">
             <option value="0">선택</option>
-            <th:block th:each="maincategory : ${maincategoryList}">
-              <option th:text="${maincategory.name}" th:value="${maincategory.no}"
-                      th:selected="${maincategory.no} == ${collection.maincategoryNo}"></option>
-            </th:block>
+            <option data-th-each="maincategory : ${maincategoryList}"
+                    data-th-text="${maincategory.name}" data-th-value="${maincategory.no}"
+                    data-th-selected="${maincategory.no} == ${collection.maincategoryNo}"></option>
           </select>
         </td>
       </tr>
@@ -73,36 +69,34 @@
         <td>
           <select name="subcategoryNo" id="subcategoryNo">
             <option value="0">선택</option>
-            <th:block th:each="subcategory : ${subcategoryList}">
-              <option th:text="${subcategory.name}" th:value="${subcategory.no}"
-                      th:selected="${subcategory.no} == ${collection.subcategoryNo}"></option>
-            </th:block>
+            <option data-th-each="subcategory : ${subcategoryList}"
+                    data-th-text="${subcategory.name}" data-th-value="${subcategory.no}"
+                    data-th-selected="${subcategory.no} == ${collection.subcategoryNo}"></option>
           </select>
         </td>
       </tr>
       <tr>
         <td><label for="purchasePlace">구매처</label></td>
-        <td><input type="text" name="purchasePlace" id="purchasePlace" th:value="${collection.purchasePlace}"></td>
+        <td><input type="text" name="purchasePlace" id="purchasePlace" data-th-value="${collection.purchasePlace}"></td>
       </tr>
       <tr>
         <td><label for="storageLocation">보관장소</label></td>
-        <td><input type="text" name="storageLocation" id="storageLocation" th:value="${collection.storageLocation}"></td>
+        <td><input type="text" name="storageLocation" id="storageLocation" data-th-value="${collection.storageLocation}"></td>
       </tr>
       <tr>
         <td><label for="statusNo">상태</label></td>
         <td>
           <select name="statusNo" id="statusNo">
             <option value="0">선택</option>
-            <th:block th:each="status : ${collectionStatusList}">
-              <option th:text="${status.name}" th:value="${status.no}"
-                      th:selected="${status.no} == ${collection.statusNo}"></option>
-            </th:block>
+            <option data-th-each="status : ${collectionStatusList}"
+                    data-th-text="${status.name}" data-th-value="${status.no}"
+                    data-th-selected="${status.no} == ${collection.statusNo}"></option>
           </select>
         </td>
       </tr>
       <tr>
         <td><input type="submit" value="수정"></td>
-        <td><a class="btn" th:href="'/collection/delete?no=' + ${collection.no}">삭제</a></td>
+        <td><a class="btn" data-th-href="'/collection/delete?no=' + ${collection.no}">삭제</a></td>
       </tr>
     </table>
   </form>

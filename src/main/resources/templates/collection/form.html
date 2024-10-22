@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
   <meta charset="UTF-8">
@@ -9,10 +9,10 @@
 
 <body>
 
-<div th:fragment="collection-form" class="layer collection-form-layer">
-  <img class="x" th:src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
+<div data-th-fragment="collection-form" class="layer collection-form-layer">
+  <img class="x" data-th-src="@{/images/common/x.png}" onClick="closePopup();" alt="닫기">
   <div class="left-side">
-    <img class="collection-image" id="empty-image" th:src="@{/images/collections/empty-collection.png}" alt="수집품 이미지 등록"
+    <img class="collection-image" id="empty-image" data-th-src="@{/images/collections/empty-collection.png}" alt="수집품 이미지 등록"
          onClick="triggerFileInput();">
 
     <div class="slider" style="display: none;">
@@ -27,7 +27,7 @@
 
   </div>
   <form class="right-side" action="/collection/add" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
     <input type="file" name="files" id="files" multiple onChange="previewImage(event);" style="display: none;">
     <table>
       <tr>
@@ -47,9 +47,9 @@
         <td>
           <select name="maincategoryNo" id="maincategoryNo" onChange="fetchSubcategories(this.value)">
             <option value="0">선택</option>
-            <th:block th:each="maincategory : ${maincategoryList}">
-              <option th:text="${maincategory.name}" th:value="${maincategory.no}"></option>
-            </th:block>
+            <data-th-block data-th-each="maincategory : ${maincategoryList}">
+              <option data-th-text="${maincategory.name}" data-th-value="${maincategory.no}"></option>
+            </data-th-block>
           </select>
         </td>
       </tr>
@@ -74,9 +74,7 @@
         <td>
           <select name="statusNo" id="statusNo">
             <option value="0">선택</option>
-            <th:block th:each="status : ${collectionStatusList}">
-              <option th:text="${status.name}" th:value="${status.no}"></option>
-            </th:block>
+            <option data-th-each="status : ${collectionStatusList}" data-th-text="${status.name}" data-th-value="${status.no}"></option>
           </select>
         </td>
       </tr>

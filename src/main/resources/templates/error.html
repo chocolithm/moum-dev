@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>실행 오류</title>
@@ -11,8 +11,8 @@
     <h1>실행 오류!</h1>
     <img src="/images/error1.gif">
     <pre>
-    <span th:if="${exception != null}">
-        <span th:text="${#strings.escapeJavaScript(#strings.toString(exception))}"></span>
+    <span data-th-if="${exception != null}">
+        <span data-th-text="${#strings.escapeJavaScript(#strings.toString(exception))}"></span>
     </span>
 </pre>
 
