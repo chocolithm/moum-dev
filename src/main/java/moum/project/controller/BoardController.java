@@ -27,10 +27,9 @@ public class BoardController {
 
     private final String folderName = "board/";
 
-    // 게시글 작성 폼을 보여줌
-    @GetMapping("form")
-    public String form() {
-        return "board/form";
+    @GetMapping({"/", "/boardHome"})
+    public String boardHome() {
+        return "/board/boardHome";
     }
 
     // 게시글 생성
