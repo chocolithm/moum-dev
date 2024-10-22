@@ -1,19 +1,29 @@
 package moum.project.service;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import moum.project.dao.BoardDao;
 import moum.project.vo.Board;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
+@RequiredArgsConstructor
 public class DefaultBoardService implements BoardService {
+
+    @NonNull
+    BoardDao boardDao;
+
     @Override
     public void add(Board board) throws Exception {
-
+        boardDao.insert(board);
     }
+
 
     @Override
     public List<Board> list() throws Exception {
-        return List.of();
+        return boardDao.list();
     }
 
     @Override

@@ -489,3 +489,44 @@ th {
 td {
     padding: 5px;
 }
+
+
+/* board 클래스 설정 */
+.board {
+    display: flex;
+    justify-content: space-between; /* 각 요소 사이의 간격 조절 */
+    flex-wrap: wrap; /* 요소가 화면을 넘길 경우 다음 줄로 넘어가게 설정 */
+    gap: 20px; /* 박스 사이의 간격 조절 */
+    padding: 20px;
+}
+
+/* board-middle-box 설정 */
+.board .board-middle-box {
+    width: 30%;
+    min-width: 250px;
+    margin-bottom: 20px; /* 아래쪽 마진 추가 */
+    border: 1px solid lightgrey;
+    border-radius: 15px;
+    text-align: left;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 이미지와 텍스트 정렬 */
+.board .board-middle-box .board-middle-image {
+    display: flex;
+    gap: 15px;
+    align-items: center; /* 이미지와 텍스트를 세로로 중앙 정렬 */
+}
+
+/* 이미지 스타일 */
+.board .board-middle-box .board-middle-image img {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    flex-shrink: 0;
+}

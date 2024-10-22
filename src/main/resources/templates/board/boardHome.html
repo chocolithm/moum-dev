@@ -12,41 +12,45 @@
 <div th:replace="~{header}"></div>
 
 <main>
-    <div class="main-middle">
+    <div class="board">
         <!-- 첫 번째 박스 (인기글) -->
-        <div class="main-middle-box">
+        <div class="board-middle-box">
             <h2>인기글</h2>
-            <div class="main-middle-image" th:each="board : ${popularBoards}">
+            <div class="board-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/view(no=${board.no})}">
                     <img th:src="@{${board.imagePath != null ? board.imagePath : '/images/default-image.jpg'}}"
-                         alt="인기글 이미지" style="width: 100%; height: auto;">
-                    <p th:text="${board.title}">게시글 제목</p>
+                         alt="인기글 이미지">
                 </a>
-                <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
-                <p>조회수: <span th:text="${board.viewCount}">0</span></p>
-                <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                <div>
+                    <p th:text="${board.title}">게시글 제목</p>
+                    <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
+                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>
+                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                </div>
             </div>
         </div>
 
         <!-- 두 번째 박스 (게시글) -->
-        <div class="main-middle-box">
+        <div class="board-middle-box">
             <h2>게시글</h2>
-            <div class="main-middle-image" th:each="board : ${recentBoards}">
+            <div class="board-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/view(no=${board.no})}">
                     <img th:src="@{${board.imagePath != null ? board.imagePath : '/images/default-image.jpg'}}"
-                         alt="게시글 이미지" style="width: 100%; height: auto;">
-                    <p th:text="${board.title}">게시글 제목</p>
+                         alt="게시글 이미지">
                 </a>
-                <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
-                <p>조회수: <span th:text="${board.viewCount}">0</span></p>
-                <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                <div>
+                    <p th:text="${board.title}">게시글 제목</p>
+                    <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
+                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>
+                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                </div>
             </div>
         </div>
 
         <!-- 세 번째 박스 (업적 랭킹) -->
-        <div class="main-middle-box">
+        <div class="board-middle-box">
             <h2>업적 랭킹</h2>
-            <div class="main-middle-image" th:each="ranking : ${achievements}">
+            <div class="board-middle-image" th:each="ranking : ${achievements}">
                 <p th:text="${ranking.rank + '. ' + ranking.name}">랭킹 내용</p>
             </div>
         </div>

@@ -1,9 +1,8 @@
 package moum.project.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import moum.project.service.BoardService;
 import moum.project.service.StorageService;
@@ -26,11 +25,38 @@ public class BoardController {
     private final StorageService storageService;
 
     private final String folderName = "board/";
-
     @GetMapping({"/", "/boardHome"})
-    public String boardHome() {
-        return "/board/boardHome";
+    public String boardHome(Model model) throws Exception {
+        // 모든 게시글 리스트를 가져옴
+        List<Board> allBoards = boardService.list();
+
+        // 게시글 목록이 비어 있는 경우 기본 값을 설정
+        if (allBoards.isEmpty()) {
+            model.addAttribute("popularBoards", Collections.emptyList());
+            model.addAttribute("recentBoards", Collections.emptyList());
+            model.addAttribute("achievements", Collections.emptyList());
+            return "board/boardHome";
+        }
+
+        // 예시로 인기글과 최근 게시글 리스트를 3개씩 추출 (임의의 로직)
+        List<Board> popularBoards = allBoards.subList(0, Math.min(3, allBoards.size()));
+        List<Board> recentBoards = allBoards.subList(0, Math.min(3, allBoards.size()));
+
+        // 업적 랭킹 더미 데이터 설정
+        List<Map<String, Object>> achievements = List.of(
+                Map.of("rank", 1, "name", "레고 윈터랜드"),
+                Map.of("rank", 2, "name", "대디하디"),
+                Map.of("rank", 3, "name", "피규어 레이더")
+        );
+
+        // 모델에 데이터를 추가하여 뷰에 전달
+        model.addAttribute("popularBoards", popularBoards);
+        model.addAttribute("recentBoards", recentBoards);
+        model.addAttribute("achievements", achievements);
+
+        return "board/boardHome"; // boardHome.html 템플릿을 반환
     }
+
 
     // 게시글 생성
     @PostMapping("add")
