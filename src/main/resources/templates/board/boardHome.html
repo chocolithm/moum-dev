@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>마이홈</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 
 <body>
@@ -13,39 +13,45 @@
 
 <main>
     <div class="main-middle">
-        <!-- 첫 번째 박스 -->
+        <!-- 첫 번째 박스 (인기글) -->
         <div class="main-middle-box">
             <h2>인기글</h2>
-            <div class="main-middle-image">
-                <!-- 이미지와 내용은 공란으로 둠 -->
-                <img src="" alt="인기글 이미지" style="width: 100%; height: auto;">
-                <p>24년 레이싱카 모델 분석</p>
-                <p>카라운드 방문 후기... 이그니션 모델에 눈 뜨다</p>
+            <div class="main-middle-image" th:each="board : ${popularBoards}">
+                <a th:href="@{/board/view(no=${board.no})}">
+                    <img th:src="@{${board.imagePath != null ? board.imagePath : '/images/default-image.jpg'}}"
+                         alt="인기글 이미지" style="width: 100%; height: auto;">
+                    <p th:text="${board.title}">게시글 제목</p>
+                </a>
+                <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
+                <p>조회수: <span th:text="${board.viewCount}">0</span></p>
+                <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
             </div>
         </div>
 
-        <!-- 두 번째 박스 -->
+        <!-- 두 번째 박스 (게시글) -->
         <div class="main-middle-box">
             <h2>게시글</h2>
-            <div class="main-middle-image">
-                <!-- 이미지와 내용은 공란으로 둠 -->
-                <img src="" alt="게시글 이미지" style="width: 100%; height: auto;">
-                <p>나무위에 달린 집, 레고 트리하우스 조립 리뷰</p>
-                <p>레고 스타워즈 75399 타이 파이터 및 X-윙 매시험</p>
+            <div class="main-middle-image" th:each="board : ${recentBoards}">
+                <a th:href="@{/board/view(no=${board.no})}">
+                    <img th:src="@{${board.imagePath != null ? board.imagePath : '/images/default-image.jpg'}}"
+                         alt="게시글 이미지" style="width: 100%; height: auto;">
+                    <p th:text="${board.title}">게시글 제목</p>
+                </a>
+                <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
+                <p>조회수: <span th:text="${board.viewCount}">0</span></p>
+                <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
             </div>
         </div>
 
-        <!-- 세 번째 박스 -->
+        <!-- 세 번째 박스 (업적 랭킹) -->
         <div class="main-middle-box">
             <h2>업적 랭킹</h2>
-            <div class="main-middle-image">
-                <!-- 업적 랭킹 내용은 공란으로 둠 -->
-                <p>1. 레고 윈터랜드</p>
-                <p>2. 대디하디</p>
-                <p>3. 피규어 레이더</p>
-                <p>4. 소마</p>
-                <p>5. 부기맨</p>
+            <div class="main-middle-image" th:each="ranking : ${achievements}">
+                <p th:text="${ranking.rank + '. ' + ranking.name}">랭킹 내용</p>
             </div>
         </div>
     </div>
 </main>
+
+</body>
+</html>
