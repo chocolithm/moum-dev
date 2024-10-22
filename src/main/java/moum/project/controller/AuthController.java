@@ -51,7 +51,7 @@ public class AuthController {
    * @return 로그인 성공 시 홈페이지로 리다이렉트, 실패 시 실패 페이지 반환
    * @throws Exception 로그인 처리 중 발생할 수 있는 예외
    */
-  @PostMapping("login")
+  @PostMapping("/login")
   public String login(
       @RequestParam String email,
       @RequestParam String password,
@@ -61,7 +61,7 @@ public class AuthController {
 
     User user = userService.exists(email, password);
     if (user == null) {
-      return "redirect:/auth/form?error";
+      return "header";
     }
 
     if (saveEmail) {
@@ -75,6 +75,18 @@ public class AuthController {
     }
 
     session.setAttribute("loginUser", user);
+    return "redirect:/";
+  }
+
+  /**
+   * 사용자의 로그아웃을 처리합니다.
+   *
+   * @param session HTTP 세션 객체
+   * @return 로그아웃 후 홈으로 리다이렉트
+   */
+  @GetMapping("logout")
+  public String logout(HttpSession session) {
+    session.invalidate();
     return "redirect:/";
   }
 }

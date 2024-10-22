@@ -45,19 +45,22 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         )
         .formLogin((form) -> form
-            .loginPage("/auth/form")
+            .loginPage("/login")
             .loginProcessingUrl("/auth/login")
-            .defaultSuccessUrl("/")
-            .failureUrl("/auth/form?error")
+            .usernameParameter("email")
+            .passwordParameter("password")
+            .defaultSuccessUrl("/myHome", true)
+            .failureUrl("/login?error=true")
             .permitAll()
         )
         .csrf(csrf -> csrf
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         )
         .logout(logout -> logout
-            .logoutUrl("/auth/logout")
+            .logoutUrl("/logout")
             .logoutSuccessUrl("/")
-            .permitAll());
+            .permitAll()
+        );
 
     return http.build();
   }

@@ -53,6 +53,9 @@
       <div>
         <button type="submit">로그인</button>
       </div>
+      <div data-th-if="${param.error}">
+        <p style="color-red;">잘못된 아이디나 비밀번호입니다.</p>
+      </div>
     </form>
   </div>
 </div>
