@@ -137,14 +137,14 @@ INSERT INTO collection_photo (photo_id, collection_id, filename, origin_filename
 (1, 1, "collection-image-1.png", "collection-image-1.png"),
 (2, 2, "collection-image-2.png", "collection-image-2.png"),
 (3, 3, "collection-image-3.png", "collection-image-3.png"),
-(4, 4, "collection-image-3.png", "collection-image-3.png"),
-(5, 2, "collection-image-4.png", "collection-image-4.png"),
-(6, 2, "collection-image-5.png", "collection-image-5.png"),
-(7, 7, "collection-image-6.png", "collection-image-6.png"),
-(8, 7, "collection-image-2.png", "collection-image-2.png"),
-(9, 8, "collection-image-3.png", "collection-image-3.png"),
-(10, 1, "collection-image-2.png", "collection-image-2.png"),
-(11, 5, "collection-image-4.png", "collection-image-4.png");
+(4, 4, "collection-image-4.png", "collection-image-4.png"),
+(5, 2, "collection-image-5.png", "collection-image-5.png"),
+(6, 2, "collection-image-6.png", "collection-image-6.png"),
+(7, 7, "collection-image-7.png", "collection-image-7.png"),
+(8, 7, "collection-image-8.png", "collection-image-8.png"),
+(9, 8, "collection-image-9.png", "collection-image-9.png"),
+(10, 1, "collection-image-10.png", "collection-image-10.png"),
+(11, 5, "collection-image-11.png", "collection-image-11.png");
 
 -- 댓글 데이터
 INSERT INTO comment (comment_id, user_id, board_id, content) VALUES
