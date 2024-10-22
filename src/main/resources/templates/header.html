@@ -67,10 +67,6 @@
     <form data-th-action="@{/user/signup}" method="post">
       <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
       <div>
-        <label for="name">이름:</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-      <div>
         <label for="nickname">닉네임:</label>
         <input type="text" id="nickname" name="nickname" required>
       </div>
