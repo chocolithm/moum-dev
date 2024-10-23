@@ -45,12 +45,12 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         )
         .formLogin((form) -> form
-            .loginPage("/login")
+            .loginPage("/auth/form")
             .loginProcessingUrl("/auth/login")
             .usernameParameter("email")
             .passwordParameter("password")
             .defaultSuccessUrl("/home", true)
-            .failureUrl("/login?error=true")
+            .failureUrl("/auth/fail")
             .permitAll()
         )
         .csrf(csrf -> csrf

@@ -8,6 +8,7 @@ import moum.project.service.UserService;
 import moum.project.vo.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -40,6 +41,12 @@ public class AuthController {
   @GetMapping("form")
   public String form() {
     return "auth/form";
+  }
+
+  @GetMapping("/fail")
+  public String fail(Model model) {
+    model.addAttribute("errorMessage", "잘못된 아이디나 비밀번호입니다.");
+    return "auth/fail";  // fail.html 페이지
   }
 
   /**
