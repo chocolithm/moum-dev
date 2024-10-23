@@ -16,7 +16,18 @@
   </a>
   <nav>
     <ul>
-      <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">마이홈</a></li>
+      <li class="btn">
+        <a href="#"
+           th:if="${#authorization.expression('isAuthenticated()')}"
+           th:href="@{/myHome}">
+          마이홈
+        </a>
+        <a href="#"
+           th:unless="${#authorization.expression('isAuthenticated()')}"
+           onclick="openLoginModal(); return false;">
+          마이홈
+        </a>
+      </li>
       <!-- 로그인 한 상태에서 게시판 버튼 클릭 시 게시판 이동, 비로그인 시 실행 오류되는데 이건 어떻게 해야 될 지 모르겠음 !-->
       <li class="btn">
         <a href="#"
