@@ -5,11 +5,13 @@
   <meta charset="UTF-8">
   <title></title>
   <link href="/css/style.css" rel="stylesheet" type="text/css">
+  <script src="/js/common.js"></script>
 </head>
 
-<body>
+<body onload="populateEmailField()">
 
 <header data-th-fragment="header">
+
   <div class="overlay" onClick="closePopup();"></div>
   <a href="/home">
     <img alt="홈" data-th-src="@{/images/home.gif}">
@@ -48,28 +50,28 @@
     </form>
   </div>
 
-<div class="modal" id="loginModal">
-  <div class="modal-content">
-    <span class="close" onclick="closeLoginModal()">&times;</span>
-    <h2>로그인</h2>
-    <form data-th-action="@{/auth/login}" method="post">
-      <div>
-        <label for="email">이메일:</label>
-        <input id="email" name="email" required type="email">
-      </div>
-      <div>
-        <label for="password">암호:</label>
-        <input id="password" name="password" required type="password">
-      </div>
-      <div>
-        <input type="checkbox" id="saveEmail" name="saveEmail" checked data-th-checked="${email}"> 이메일 저장<br>
-      </div>
-      <div>
-        <button type="submit">로그인</button>
-      </div>
-    </form>
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2>로그인</h2>
+      <form data-th-action="@{/auth/login}" method="post" onsubmit="handleLoginSubmit()">
+        <div>
+          <label for="email">이메일:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+          <label for="password">암호:</label>
+          <input id="password" name="password" required type="password">
+        </div>
+        <div>
+          <input type="checkbox" id="saveEmail" name="saveEmail"> 이메일 저장<br>
+        </div>
+        <div>
+          <button type="submit">로그인</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
 <div class="modal" id="signupModal">
   <div class="modal-content">

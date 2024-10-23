@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>로그인</title>
+    <script src="/js/common.js"></script> <!-- common.js 로드 -->
 </head>
-<body>
+<body onload="populateEmailField()"> <!-- 이메일 필드 자동 채우기 -->
 <h2>로그인</h2>
-<form th:action="@{/auth/login}" method="post">
+<form th:action="@{/auth/login}" method="post" onsubmit="handleLoginSubmit()">
     <div>
         <label for="email">이메일:</label>
         <input type="email" id="email" name="email" required>
@@ -16,7 +17,7 @@
         <input type="password" id="password" name="password" required>
     </div>
     <div>
-        <input type="checkbox" id="saveEmail" name="saveEmail" checked data-th-checked="${email}"> 이메일 저장<br>
+        <input type="checkbox" id="saveEmail" name="saveEmail"> 이메일 저장<br>
     </div>
     <div>
         <button type="submit">로그인</button>
