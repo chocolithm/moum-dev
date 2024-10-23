@@ -59,11 +59,12 @@ public class CollectionController {
       MultipartFile[] files,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
+    if (userDetails == null) {
+      return "redirect:/home";
+    }
+
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
-    if (loginUser == null) {
-      return "redirect:/";
-    }
 
     collection.setUserNo(loginUser.getNo());
 
@@ -93,7 +94,7 @@ public class CollectionController {
     collection.setAttachedFiles(attachedFiles);
 
     collectionService.add(collection);
-    return "redirect:/myHome";
+    return "redirect:/home";
   }
 
   @GetMapping("view")
@@ -117,11 +118,12 @@ public class CollectionController {
       MultipartFile[] files,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
+    if (userDetails == null) {
+      return "redirect:/home";
+    }
+
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
-    if (loginUser == null) {
-      return "redirect:/";
-    }
 
     if (loginUser.getNo() != collectionService.get(collection.getNo()).getUserNo()) {
       throw new Exception("타인의 수집품을 수정할 수 없습니다.");
@@ -152,7 +154,7 @@ public class CollectionController {
     collection.setAttachedFiles(attachedFiles);
 
     collectionService.update(collection);
-    return "redirect:/myHome";
+    return "redirect:/home";
   }
 
   @GetMapping("delete")
@@ -160,11 +162,12 @@ public class CollectionController {
       int no,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
+    if (userDetails == null) {
+      return "redirect:/home";
+    }
+
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
-    if (loginUser == null) {
-      return "redirect:/";
-    }
 
     Collection collection = collectionService.get(no);
 
@@ -177,7 +180,7 @@ public class CollectionController {
     }
 
     collectionService.delete(no);
-    return "redirect:/myHome";
+    return "redirect:/home";
   }
 
 
@@ -188,11 +191,12 @@ public class CollectionController {
       int no,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
+    if (userDetails == null) {
+      return "redirect:/home";
+    }
+
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
-    if (loginUser == null) {
-      return "redirect:/";
-    }
 
     Collection collection = collectionService.getByFileNo(no);
 
