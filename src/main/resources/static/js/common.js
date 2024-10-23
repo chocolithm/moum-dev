@@ -311,6 +311,13 @@ function filterCategories(element) {
     }
 }
 
+// 채팅
+
+
+
+
+
+// 로그인
 function submitLoginForm() {
     document.getElementById('loginForm').submit();
 }

@@ -48,7 +48,6 @@ public class HomeController {
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
     if (userDetails == null) {
-      model.addAttribute("requestUri", request.getRequestURI());
       return "/home";
 
     } else {

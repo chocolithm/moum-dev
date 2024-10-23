@@ -22,19 +22,14 @@
         <a href="/home">마이홈</a>
       </li>
       <li class="btn">
-        <a href="#"
-           th:href="@{/board/boardHome}"
-           th:if="${#authorization.expression('isAuthenticated()')}">
-          게시판
-        </a>
-        <a href="#"
-           onclick="openLoginModal(); return false;"
-           th:unless="${#authorization.expression('isAuthenticated()')}">
-          게시판
-        </a>
+        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : 'openLoginModal()'">게시판</a>
       </li>
-      <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">수집품거래</a></li>
-      <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">하비위키</a></li>
+      <li class="btn">
+        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : 'openLoginModal()'">수집품거래</a>
+      </li>
+      <li class="btn">
+        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : 'openLoginModal()'">하비위키</a>
+      </li>
     </ul>
   </nav>
 
@@ -43,7 +38,8 @@
       <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
   </div>
   <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
-      <a class="btn" data-th-href="@{/home}">사용자</a>
+      <button class="btn chat-btn" style="display: none;">채팅</button>
+      <a class="btn" data-th-onClick="'alert(\'미구현\')'">사용자</a>
       <form data-th-action="@{/logout}" method="post" style="display: inline;">
       <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
       <button class="btn btn-logout" type="submit">로그아웃</button>
@@ -57,14 +53,14 @@
       <form data-th-action="@{/auth/login}" method="post" onsubmit="handleLoginSubmit()">
         <div>
           <label for="email">이메일:</label>
-          <input type="email" id="email" name="email" required>
+          <input id="email" name="email" required type="email">
         </div>
         <div>
           <label for="password">암호:</label>
           <input id="password" name="password" required type="password">
         </div>
         <div>
-          <input type="checkbox" id="saveEmail" name="saveEmail"> 이메일 저장<br>
+          <input id="saveEmail" name="saveEmail" type="checkbox"> 이메일 저장<br>
         </div>
         <div>
           <button type="submit">로그인</button>
@@ -103,3 +99,13 @@
 
 </body>
 </html>
+
+<script>
+  // /board/ 하위에서만 채팅 버튼 보이는 임시 함수 - 향후 삭제
+  window.onload = () => {
+      const btn = document.querySelector(".chat-btn");
+      if (location.pathname.startsWith("/board/")) {
+          btn.style.display = "block";
+      }
+  }
+</script>

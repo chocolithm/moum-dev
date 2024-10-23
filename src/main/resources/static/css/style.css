@@ -427,7 +427,7 @@ footer {
 }
 
 .login-state {
-    display: inline;
+    display: inline-flex;
 }
 
 /* layer */

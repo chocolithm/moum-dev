@@ -7,19 +7,31 @@
 
   <resultMap id="ChatMap" type="moum.project.vo.Chat">
     <id column="chat_id" property="no"/>
-    <result column="board_id" property="boardNo"/>
+    <result column="chatroom_id" property="chatroomNo"/>
     <result column="user_id" property="userNo"/>
     <result column="message" property="message"/>
     <result column="chat_date" property="chatDate"/>
   </resultMap>
 
-  <insert id="insert" parameterType="moum.project.vo.Chat"
+  <resultMap id="ChatroomMap" type="moum.project.vo.Chatroom">
+    <id column="chatroom_id" property="no"/>
+    <result column="board_id" property="boardNo"/>
+    <result column="user_id" property="userNo"/>
+  </resultMap>
+
+  <insert id="insertChat" parameterType="moum.project.vo.Chat"
           useGeneratedKeys="true" keyColumn="chat_id" keyProperty="no">
-    insert into chat(board_id, user_id, message, chat_date)
-    values(#{boardNo}, #{userNo}, #{message}, #{chatDate})
+    insert into chat(chatroom_id, user_id, message, chat_date)
+    values(#{chatroomNo}, #{userNo}, #{message}, #{chatDate})
   </insert>
 
-  <select id="list" resultMap="ChatMap" parameterType="int">
+  <insert id="insertRoom" parameterType="moum.project.vo.Chatroom"
+          useGeneratedKeys="true" keyColumn="chatroom_id" keyProperty="no">
+    insert into chatroom(board_id, user_id)
+    values(#{boardNo}. #{userNo})
+  </insert>
+
+  <select id="listChat" resultMap="ChatMap" parameterType="map">
     select
       chat_id,
       message,
@@ -27,7 +39,22 @@
     from
       chat
     where
-      board_
+      chatroom_id = 1
+    order by
+      chat_date desc
+    limit #{pageNo}, #{pageCount}
+  </select>
+
+  <select id="listRoom" resultMap="ChatroomMap" parameterType="int">
+    select
+      distinct cr.chatroom_id
+    from
+      chatroom cr
+      left join chat c on c.chatroom_id = cr.chatroom_id
+    where
+      cr.board_id = 7
+    order by
+      c.chat_date desc;
   </select>
 
   <select id="findBy" resultMap="ChatMap" parameterType="int">
