@@ -108,7 +108,7 @@
       c.collection_id = (select collection_id from collection_photo where photo_id = #{no})
   </select>
 
-  <update id="update">
+  <update id="update" parameterType="moum.project.vo.Collection">
     update
       collection
     set

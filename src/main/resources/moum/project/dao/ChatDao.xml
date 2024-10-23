@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moum.project.dao.ChatDao">
+
+  <resultMap id="ChatMap" type="moum.project.vo.Chat">
+    <id column="chat_id" property="no"/>
+    <result column="board_id" property="boardNo"/>
+    <result column="user_id" property="userNo"/>
+    <result column="message" property="message"/>
+    <result column="chat_date" property="chatDate"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="moum.project.vo.Chat"
+          useGeneratedKeys="true" keyColumn="chat_id" keyProperty="no">
+    insert into chat(board_id, user_id, message, chat_date)
+    values(#{boardNo}, #{userNo}, #{message}, #{chatDate})
+  </insert>
+
+  <select id="list" resultMap="ChatMap" parameterType="int">
+    select
+      chat_id,
+      message,
+      chat_date
+    from
+      chat
+    where
+      board_
+  </select>
+
+  <select id="findBy" resultMap="ChatMap" parameterType="int">
+
+  </select>
+
+  <update id="update" parameterType="moum.project.vo.Chat">
+
+  </update>
+
+  <delete id="delete" parameterType="int">
+
+  </delete>
+
+</mapper>
