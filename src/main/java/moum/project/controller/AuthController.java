@@ -78,7 +78,7 @@ public class AuthController {
       cookie.setMaxAge(60 * 60 * 24 * 7);
       res.addCookie(cookie);
     } else {
-      Cookie cookie = new Cookie("email", "null");
+      Cookie cookie = new Cookie("email", "test@test.com");
       cookie.setMaxAge(0);
       res.addCookie(cookie);
     }

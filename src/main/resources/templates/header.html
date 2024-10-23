@@ -62,14 +62,10 @@
         <input id="password" name="password" required type="password">
       </div>
       <div>
-        <input id="saveEmail" name="saveEmail" type="checkbox">
-        <label for="saveEmail">이메일 저장</label>
+        <input type="checkbox" id="saveEmail" name="saveEmail" checked data-th-checked="${email}"> 이메일 저장<br>
       </div>
       <div>
         <button type="submit">로그인</button>
-      </div>
-      <div data-th-if="${param.error}">
-        <p style="color-red;">잘못된 아이디나 비밀번호입니다.</p>
       </div>
     </form>
   </div>
