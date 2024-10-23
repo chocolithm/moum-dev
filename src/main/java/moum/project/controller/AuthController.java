@@ -67,21 +67,23 @@ public class AuthController {
   public String login(
       @RequestParam String email,
       @RequestParam String password,
-      @RequestParam(defaultValue = "false") boolean saveEmail,
+      boolean saveEmail,
       HttpServletResponse res,
       HttpSession session) throws Exception {
 
     User user = userService.exists(email, password);
     if (user == null) {
-      return "header";
+      return "redirect:/auth/fail";
     }
 
     if (saveEmail) {
       Cookie cookie = new Cookie("email", email);
+      cookie.setPath("/");
       cookie.setMaxAge(60 * 60 * 24 * 7);
       res.addCookie(cookie);
     } else {
-      Cookie cookie = new Cookie("email", "null");
+      Cookie cookie = new Cookie("email", "test@test.com");
+      cookie.setPath("/");
       cookie.setMaxAge(0);
       res.addCookie(cookie);
     }

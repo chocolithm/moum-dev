@@ -339,3 +339,56 @@ function isUserLoggedIn() {
             return false;
         });
 }
+
+// 이메일을 쿠키에 저장하는 함수
+function setEmailCookie(email, days) {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = 'savedEmail=' + encodeURIComponent(email) + '; expires=' + expires + '; path=/';
+}
+
+// 저장된 쿠키에서 이메일을 가져오는 함수
+function getEmailCookie() {
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('savedEmail='));
+    return cookie ? decodeURIComponent(cookie.split('=')[1]) : '';
+}
+
+// 로그인 폼 제출 시 이메일 저장 처리
+function handleLoginSubmit() {
+    const email = document.getElementById('email').value;
+    const saveEmail = document.getElementById('saveEmail').checked;
+
+    // '이메일 저장'이 체크된 경우 이메일 쿠키 저장
+    if (saveEmail) {
+        setEmailCookie(email, 30);  // 30일 동안 쿠키 유지
+    } else {
+        setEmailCookie('', -1);  // 체크 해제 시 쿠키 삭제
+    }
+}
+
+// 모달이 열릴 때 이메일을 채우는 함수
+function populateModalEmailField() {
+    const savedEmail = getEmailCookie();
+    if (savedEmail) {
+        const modalEmailField = document.querySelector("#loginModal #email");
+        const modalSaveEmailCheckbox = document.querySelector("#loginModal #saveEmail");
+
+        if (modalEmailField && modalSaveEmailCheckbox) {
+            modalEmailField.value = savedEmail;
+            modalSaveEmailCheckbox.checked = true;
+        }
+    }
+}
+
+// 페이지 로드 시 쿠키에 저장된 이메일을 폼에 채움
+function populateEmailField() {
+    const savedEmail = getEmailCookie();
+    if (savedEmail) {
+        const emailField = document.getElementById('email');
+        const saveEmailCheckbox = document.getElementById('saveEmail');
+
+        if (emailField && saveEmailCheckbox) {
+            emailField.value = savedEmail;
+            saveEmailCheckbox.checked = true;
+        }
+    }
+}
