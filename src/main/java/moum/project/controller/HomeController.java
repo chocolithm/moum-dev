@@ -27,8 +27,11 @@ public class HomeController {
    * @return "home" 뷰 이름을 반환합니다.
    */
   @GetMapping( {"/","/home"})
-  public String home(HttpServletRequest request, Model model) {
+  public String home(HttpServletRequest request, Model model, String openLoginModal) {
     model.addAttribute("requestUri", request.getRequestURI());
-    return "home";
+    if (openLoginModal != null && openLoginModal.equals("true")) {
+      model.addAttribute("openLoginModal", "true");
+    }
+    return "/home";
   }
 }
