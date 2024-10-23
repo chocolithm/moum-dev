@@ -318,3 +318,24 @@ function submitLoginForm() {
 function submitSignupForm() {
     document.getElementById('signupForm').submit();
 }
+
+// 게시판 버튼 클릭하면 로그인/로그아웃 확인하는 기능
+
+function onLoginSuccess() {
+    localStorage.setItem('loggedIn', 'true');
+    closeLoginModal(); // 로그인 모달을 닫습니다.
+}
+
+function onLogout() {
+    localStorage.removeItem('loggedIn');
+    // 로그아웃 후 추가 작업을 수행합니다.
+}
+function isUserLoggedIn() {
+    return fetch('/auth/checkLoginStatus')
+        .then(response => response.json())
+        .then(data => data.isLoggedIn)
+        .catch(error => {
+            console.error('Error checking login status:', error);
+            return false;
+        });
+}

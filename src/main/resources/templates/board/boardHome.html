@@ -34,7 +34,7 @@
         <!-- 두 번째 박스 (게시글) -->
         <div class="boardHome-middle-box">
             <h2>게시글</h2>
-            <div class="board-middle-image" th:each="board : ${recentBoards}">
+            <div class="boardHome-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
                     <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
                 </a>

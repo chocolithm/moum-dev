@@ -524,14 +524,14 @@ td {
 }
 
 /* 이미지와 텍스트 정렬 */
-.board .boardHome-middle-box .board-middle-image {
+.board .boardHome-middle-box .boardHome-middle-image {
     display: flex;
     gap: 15px;
     align-items: center; /* 이미지와 텍스트를 세로로 중앙 정렬 */
 }
 
 /* 이미지 스타일 */
-.board .boardHome-middle-box .board-middle-image img {
+.board .boardHome-middle-box .boardHome-middle-image img {
     width: 150px;
     height: auto;
     border-radius: 10px;

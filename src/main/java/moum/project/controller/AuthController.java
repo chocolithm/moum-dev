@@ -10,6 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * packageName    : moum.project.controller
  * fileName       : AuthController
@@ -88,4 +91,13 @@ public class AuthController {
     session.invalidate();
     return "redirect:/";
   }
+
+  // 로그인 상태 확인
+  @GetMapping("/auth/checkLoginStatus")
+  @ResponseBody
+  public Map<String, Boolean> checkLoginStatus(HttpSession session) {
+    boolean isLoggedIn = session.getAttribute("user") != null;
+    return Collections.singletonMap("isLoggedIn", isLoggedIn);
+  }
+
 }
