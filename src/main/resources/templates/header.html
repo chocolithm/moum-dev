@@ -1,103 +1,103 @@
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html>
+  <html>
 
-<head>
-  <meta charset="UTF-8">
-  <title></title>
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+  </head>
 
-<body>
+  <body>
 
-<header data-th-fragment="header">
-  <div class="overlay" onClick="closePopup();"></div>
-  <a data-th-href="${#authorization.expression('isAuthenticated()') ? '/myHome' : '/'}">
-    <img data-th-src="@{/images/home.gif}" alt="홈">
-  </a>
-  <nav>
-    <ul>
-      <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">마이홈</a></li>
-      <!-- 로그인 한 상태에서 게시판 버튼 클릭 시 게시판 이동, 비로그인 시 실행 오류되는데 이건 어떻게 해야 될 지 모르겠음 !-->
-      <li class="btn">
-        <a href="#"
-           onclick="if (!isUserLoggedIn()) { openLoginModal(); return false; } else { window.location.href='/board/boardHome'; }">
-          게시판
-        </a>
-      </li>
-      <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">수집품거래</a></li>
-      <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">하비위키</a></li>
-    </ul>
-  </nav>
+  <header data-th-fragment="header">
+    <div class="overlay" onClick="closePopup();"></div>
+    <a data-th-href="${#authorization.expression('isAuthenticated()') ? '/myHome' : '/'}">
+      <img data-th-src="@{/images/home.gif}" alt="홈">
+    </a>
+    <nav>
+      <ul>
+        <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">마이홈</a></li>
+        <!-- 로그인 한 상태에서 게시판 버튼 클릭 시 게시판 이동, 비로그인 시 실행 오류되는데 이건 어떻게 해야 될 지 모르겠음 !-->
+        <li class="btn">
+          <a data-th-href="${#authorization.expression('isAuthenticated()') ? '/boardHome' : '/'}"
+             onclick="if (!isUserLoggedIn()) { openLoginModal(); return false; } else { window.location.href='/board/boardHome'; }">
+            게시판
+          </a>
+        </li>
+        <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">수집품거래</a></li>
+        <li class="btn"><a data-th-href="@{/}" onClick="openLoginModal(); return false;">하비위키</a></li>
+      </ul>
+    </nav>
 
-  <div class="login-state pos-right">
-      <button class="btn btn-join" onclick="openSignupModal();"
-              data-th-if="${requestUri != null and requestUri == '/'}">회원가입</button>
-      <button class="btn btn-login" onClick="openLoginModal();"
-              data-th-if="${requestUri != null and requestUri == '/'}">로그인</button>
-      <a data-th-href="@{/myHome}" class="btn"
-         data-th-unless="${requestUri != null and requestUri == '/'}">사용자</a>
-    <form data-th-action="@{/logout}" method="post" style="display: inline;"
-          data-th-unless="${requestUri != null and requestUri == '/'}">
-      <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
-      <button type="submit" class="btn btn-logout">로그아웃</button>
-    </form>
+    <div class="login-state pos-right">
+        <button class="btn btn-join" onclick="openSignupModal();"
+                data-th-if="${requestUri != null and requestUri == '/'}">회원가입</button>
+        <button class="btn btn-login" onClick="openLoginModal();"
+                data-th-if="${requestUri != null and requestUri == '/'}">로그인</button>
+        <a data-th-href="@{/myHome}" class="btn"
+           data-th-unless="${requestUri != null and requestUri == '/'}">사용자</a>
+      <form data-th-action="@{/logout}" method="post" style="display: inline;"
+            data-th-unless="${requestUri != null and requestUri == '/'}">
+        <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
+        <button type="submit" class="btn btn-logout">로그아웃</button>
+      </form>
 
+    </div>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2>로그인</h2>
+      <form data-th-action="@{/auth/login}" method="post">
+        <div>
+          <label for="email">이메일:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+          <label for="password">암호:</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+          <input type="checkbox" id="saveEmail" name="saveEmail">
+          <label for="saveEmail">이메일 저장</label>
+        </div>
+        <div>
+          <button type="submit">로그인</button>
+        </div>
+        <div data-th-if="${param.error}">
+          <p style="color-red;">잘못된 아이디나 비밀번호입니다.</p>
+        </div>
+      </form>
+    </div>
   </div>
 
-<div id="loginModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeLoginModal()">&times;</span>
-    <h2>로그인</h2>
-    <form data-th-action="@{/auth/login}" method="post">
-      <div>
-        <label for="email">이메일:</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div>
-        <label for="password">암호:</label>
-        <input type="password" id="password" name="password" required>
-      </div>
-      <div>
-        <input type="checkbox" id="saveEmail" name="saveEmail">
-        <label for="saveEmail">이메일 저장</label>
-      </div>
-      <div>
-        <button type="submit">로그인</button>
-      </div>
-      <div data-th-if="${param.error}">
-        <p style="color-red;">잘못된 아이디나 비밀번호입니다.</p>
-      </div>
-    </form>
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeSignupModal()">&times;</span>
+      <h2>회원가입</h2>
+      <form data-th-action="@{/user/signup}" method="post">
+        <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
+        <div>
+          <label for="nickname">닉네임:</label>
+          <input type="text" id="nickname" name="nickname" required>
+        </div>
+        <div>
+          <label for="signupEmail">이메일:</label>
+          <input type="email" id="signupEmail" name="email" required>
+        </div>
+        <div>
+          <label for="signupPassword">비밀번호:</label>
+          <input type="password" id="signupPassword" name="password" required>
+        </div>
+        <div>
+          <button type="submit">가입하기</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
-<div id="signupModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeSignupModal()">&times;</span>
-    <h2>회원가입</h2>
-    <form data-th-action="@{/user/signup}" method="post">
-      <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
-      <div>
-        <label for="nickname">닉네임:</label>
-        <input type="text" id="nickname" name="nickname" required>
-      </div>
-      <div>
-        <label for="signupEmail">이메일:</label>
-        <input type="email" id="signupEmail" name="email" required>
-      </div>
-      <div>
-        <label for="signupPassword">비밀번호:</label>
-        <input type="password" id="signupPassword" name="password" required>
-      </div>
-      <div>
-        <button type="submit">가입하기</button>
-      </div>
-    </form>
-  </div>
-</div>
+  <script data-th-fragment="commonjs" src="/js/common.js"></script>
+  </header>
 
-<script data-th-fragment="commonjs" src="/js/common.js"></script>
-</header>
-
-</body>
-</html>
+  </body>
+  </html>
