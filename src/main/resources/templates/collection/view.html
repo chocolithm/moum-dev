@@ -16,9 +16,10 @@
          data-th-src="@{/images/collections/empty-collection.png}"
          data-th-style="${not (collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''"
          onClick="triggerFileInput()">
-    <div class="slider">
-      <div class="slides" data-th-unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">
-        <img alt="수집품 이미지" class="collection-image slide" data-th-each="attachedFile : ${collection.attachedFiles}"
+    <div class="slider"
+         data-th-style="${(collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''">
+      <div class="slides">
+        <img alt="수집품 이미지" class="collection-image slide current-image" data-th-each="attachedFile : ${collection.attachedFiles}"
              data-th-id="'collection-image-' + ${attachedFile.no}"
              data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}" onClick="triggerFileInput()">
       </div>

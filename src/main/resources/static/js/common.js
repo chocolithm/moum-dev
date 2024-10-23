@@ -223,22 +223,28 @@ function triggerFileInput() {
 // 선택한 이미지 미리보기
 function previewImage(event) {
     const files = event.target.files;
-    const empty = document.getElementById("empty-image");
+    const empty = document.querySelector(".empty-image");
     const slider = document.querySelector(".slider");
     const slides = document.querySelector(".slides");
-    const filenames = document.getElementById('filenames');
+    const newImages = document.getElementsByClassName("new-image");
+    const currentImages = document.getElementsByClassName("current-image");
+    const filenames = document.getElementById("filenames");
+
+    filenames.innerHTML = "";
+    for (i = newImages.length - 1; i >= 0 ; i--) {
+        newImages[i].remove();
+    }
 
     if (files && files.length > 0) {
-        slides.innerHTML = "";
 
         for (let i = 0; i < files.length; i++) {
             const reader = new FileReader();
 
             reader.onload = function(e) {
-                const img = document.createElement('img');
+                const img = document.createElement("img");
                 img.src = e.target.result;
                 img.alt = "Uploaded Image";
-                img.className = "collection-image slide";
+                img.className = "collection-image slide new-image";
                 img.onclick = function() {
                     triggerFileInput();
                 };
@@ -253,7 +259,7 @@ function previewImage(event) {
         }
 
         slider.style.display = "block";
-        if (files.length > 1) {
+        if (slides.children.length + files.length > 1) {
             document.querySelector(".prev").style.display = "block";
             document.querySelector(".next").style.display = "block";
         } else {
@@ -266,12 +272,14 @@ function previewImage(event) {
             element.textContent = file.name;
             filenames.appendChild(element);
         });
+    } else if (currentImages && currentImages.length > 0) {
+        initCollectionSlideIndex();
+        showSlides(collectionSlideIndex);
     } else {
         if (empty) {
             empty.style.display = "block";
         }
         slider.style.display = "none";
-        filenames.innerHTML = "";
     }
 }
 

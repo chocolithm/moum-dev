@@ -12,13 +12,13 @@
 <div class="layer collection-form-layer" data-th-fragment="collection-form">
   <img alt="닫기" class="x" data-th-src="@{/images/common/x.png}" onClick="closePopup();">
   <div class="left-side">
-    <img alt="수집품 이미지 등록" class="collection-image"
+    <img alt="수집품 이미지 등록" class="collection-image empty-image"
          data-th-src="@{/images/collections/empty-collection.png}"
-         id="empty-image" onClick="triggerFileInput();">
+         onClick="triggerFileInput();">
     <div class="slider" style="display: none;">
       <div class="slides"></div>
-      <a class="prev" onClick="changeSlide(-1)" style="display: none;">&#10094;</a>
-      <a class="next" onClick="changeSlide(1)" style="display: none;">&#10095;</a>
+      <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
+      <a class="next" onClick="changeSlide(1)">&#10095;</a>
     </div>
     <div id="filenames"></div>
   </div>
