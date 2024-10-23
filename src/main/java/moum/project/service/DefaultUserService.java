@@ -1,13 +1,12 @@
 package moum.project.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.UserDao;
 import moum.project.vo.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * packageName    : moum.project.service
@@ -105,4 +104,9 @@ public class DefaultUserService implements UserService {
       }
       return null;
     }
+
+  @Override
+  public User getByEmail(String email) throws Exception {
+    return userDao.findByEmail(email);
   }
+}

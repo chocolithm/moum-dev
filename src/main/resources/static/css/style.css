@@ -252,8 +252,12 @@ main .main-bottom .main-bottom-box .main-bottom-image {
 .collection-view-layer .left-side .slider {
     position: relative;
     max-width: 600px;
+    height: 300px;
     margin: auto;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .collection-form-layer .left-side .slides,
@@ -327,7 +331,8 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     border: none;
 }
 
-.collection-form-layer .right-side label .collection-view-layer .right-side label {
+.collection-form-layer .right-side label,
+.collection-view-layer .right-side label {
     font-size: 14px;
     color: #555;
     margin-bottom: 5px;
@@ -345,7 +350,9 @@ main .main-bottom .main-bottom-box .main-bottom-image {
 }
 
 .collection-form-layer .right-side input[type="text"],
-.collection-view-layer .right-side input[type="text"] {
+.collection-view-layer .right-side input[type="text"],
+.collection-form-layer .right-side input[type="number"],
+.collection-view-layer .right-side input[type="number"] {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;

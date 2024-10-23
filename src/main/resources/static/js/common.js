@@ -31,6 +31,14 @@ function fadeOut(element) {
   }, 500);
 }
 
+function formatNumber(element) {
+    // 현재 입력된 값에서 숫자 외의 문자를 제거
+    let value = element.value.replace(/[^0-9]/g, '');
+
+    // 숫자에 천 단위로 쉼표 추가
+    element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 // 로그인
 
 var modal = document.getElementById("loginModal");
@@ -133,6 +141,7 @@ function fetchCollectionForm() {
         .catch(error => {
             console.error("Error fetching collection form:", error);
         });
+        console.log("collectionSlideIndex: " + collectionSlideIndex);
 }
 
   // 수집품 조회 화면 내용 가져오기
@@ -160,6 +169,8 @@ function fetchCollectionView(no) {
         .catch(error => {
             console.error("Error fetching collection view:", error);
         });
+
+        console.log("collectionSlideIndex: " + collectionSlideIndex);
 }
 
 function deleteFile(fileNo, collectionNo) {
@@ -191,6 +202,7 @@ function showSlides(index) {
 
 function changeSlide(n) {
     showSlides(collectionSlideIndex += n);
+    console.log("collectionSlideIndex: " + collectionSlideIndex);
 }
 
   // 소분류 데이터 가져오기

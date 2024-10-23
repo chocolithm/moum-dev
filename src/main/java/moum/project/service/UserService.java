@@ -1,8 +1,7 @@
 package moum.project.service;
 
-import moum.project.vo.User;
-
 import java.util.List;
+import moum.project.vo.User;
 
 /**
  * packageName    : moum.project.service
@@ -70,4 +69,6 @@ import java.util.List;
    * @throws Exception 사용자 인증 중 발생할 수 있는 예외
    */
   User exists(String email, String password) throws Exception;
+
+  User getByEmail(String email) throws Exception;
 }

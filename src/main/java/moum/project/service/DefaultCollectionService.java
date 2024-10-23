@@ -27,14 +27,19 @@ public class DefaultCollectionService implements CollectionService {
   }
 
   @Override
-  public List<Collection> list(String email) throws Exception {
-    User user = userDao.findByEmail(email);
+  public List<Collection> list(int no) throws Exception {
+    User user = userDao.findBy(no);
     return collectionDao.list(user.getNo());
   }
 
   @Override
   public Collection get(int no) throws Exception {
     return collectionDao.findBy(no);
+  }
+
+  @Override
+  public Collection getByFileNo(int fileNo) throws Exception {
+    return collectionDao.findByFileNo(fileNo);
   }
 
   @Override

@@ -13,6 +13,8 @@ public interface CollectionDao {
 
   Collection findBy(int no) throws Exception;
 
+  Collection findByFileNo(int fileNo) throws Exception;
+
   boolean update(Collection collection) throws Exception;
 
   boolean delete(int no) throws Exception;

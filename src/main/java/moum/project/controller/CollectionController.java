@@ -11,11 +11,15 @@ import moum.project.service.CollectionStatusService;
 import moum.project.service.MaincategoryService;
 import moum.project.service.StorageService;
 import moum.project.service.SubcategoryService;
+import moum.project.service.UserService;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Collection;
 import moum.project.vo.CollectionStatus;
 import moum.project.vo.Maincategory;
 import moum.project.vo.Subcategory;
+import moum.project.vo.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +38,7 @@ public class CollectionController {
   private final SubcategoryService subcategoryService;
   private final CollectionStatusService collectionStatusService;
   private final StorageService storageService;
+  private final UserService userService;
 
   private final String folderName = "collection/";
 
@@ -51,9 +56,16 @@ public class CollectionController {
   @PostMapping("add")
   public String add(
       Collection collection,
-      MultipartFile[] files) throws Exception {
+      MultipartFile[] files,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-    collection.setUserNo(2);
+    String email = userDetails.getUsername();
+    User loginUser = userService.getByEmail(email);
+    if (loginUser == null) {
+      return "redirect:/";
+    }
+
+    collection.setUserNo(loginUser.getNo());
 
     List<AttachedFile> attachedFiles = new ArrayList<>();
 
@@ -102,9 +114,19 @@ public class CollectionController {
   @PostMapping("update")
   public String update(
       Collection collection,
-      MultipartFile[] files) throws Exception {
+      MultipartFile[] files,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-    collection = collectionService.get(collection.getNo());
+    String email = userDetails.getUsername();
+    User loginUser = userService.getByEmail(email);
+    if (loginUser == null) {
+      return "redirect:/";
+    }
+
+    if (loginUser.getNo() != collectionService.get(collection.getNo()).getUserNo()) {
+      throw new Exception("타인의 수집품을 수정할 수 없습니다.");
+    }
+
     List<AttachedFile> attachedFiles = new ArrayList<>();
 
     for (MultipartFile file : files) {
@@ -134,11 +156,26 @@ public class CollectionController {
   }
 
   @GetMapping("delete")
-  public String delete(int no) throws Exception {
+  public String delete(
+      int no,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    String email = userDetails.getUsername();
+    User loginUser = userService.getByEmail(email);
+    if (loginUser == null) {
+      return "redirect:/";
+    }
+
     Collection collection = collectionService.get(no);
+
+    if (loginUser.getNo() != collection.getUserNo()) {
+      throw new Exception("타인의 수집품을 삭제할 수 없습니다.");
+    }
+
     for (AttachedFile attachedFile : collection.getAttachedFiles()) {
       storageService.delete(folderName + attachedFile.getFilename());
     }
+
     collectionService.delete(no);
     return "redirect:/myHome";
   }
@@ -147,7 +184,21 @@ public class CollectionController {
 
   @GetMapping("deleteFile")
   @ResponseBody
-  public String deleteFile(int no) throws Exception {
+  public String deleteFile(
+      int no,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    String email = userDetails.getUsername();
+    User loginUser = userService.getByEmail(email);
+    if (loginUser == null) {
+      return "redirect:/";
+    }
+
+    Collection collection = collectionService.getByFileNo(no);
+
+    if (loginUser.getNo() != collection.getUserNo()) {
+      throw new Exception("타인의 수집품을 삭제할 수 없습니다.");
+    }
 
     AttachedFile attachedFile = collectionService.getAttachedFile(no);
     storageService.delete(folderName + attachedFile.getFilename());

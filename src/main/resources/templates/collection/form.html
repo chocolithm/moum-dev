@@ -10,11 +10,11 @@
 <body>
 
 <div class="layer collection-form-layer" data-th-fragment="collection-form">
-  <img alt="닫기" class="x" data-th-src="@{/images/common/x.png}" onClick="closePopup();">
+  <img alt="닫기" class="x" onClick="closePopup();" src="/images/common/x.png">
   <div class="left-side">
     <img alt="수집품 이미지 등록" class="collection-image empty-image"
-         data-th-src="@{/images/collections/empty-collection.png}"
-         onClick="triggerFileInput();">
+         onClick="triggerFileInput();"
+         src="/images/collections/empty-collection.png">
     <div class="slider" style="display: none;">
       <div class="slides"></div>
       <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
@@ -46,7 +46,7 @@
             <data-th-block data-th-each="maincategory : ${maincategoryList}">
               <option data-th-text="${maincategory.name}"
                       data-th-value="${maincategory.no}"
-                      value="maincategoryNo">maincategory</option>
+                      value="1">maincategory</option>
             </data-th-block>
           </select>
         </td>
@@ -75,7 +75,7 @@
             <option data-th-each="status : ${collectionStatusList}"
                     data-th-text="${status.name}"
                     data-th-value="${status.no}"
-                    value="statusNo">status</option>
+                    value="1">status</option>
           </select>
         </td>
       </tr>
