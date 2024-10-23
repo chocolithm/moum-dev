@@ -10,12 +10,11 @@
 <body>
 
 <div class="layer collection-view-layer">
-  <img alt="닫기" class="x" data-th-src="@{/images/common/x.png}" onClick="closePopup();">
+  <img alt="닫기" class="x" onClick="closePopup();" src="/images/common/x.png">
   <div class="left-side">
     <img alt="수집품 이미지 등록" class="collection-image empty-image"
-         data-th-src="@{/images/collections/empty-collection.png}"
          data-th-style="${not (collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''"
-         onClick="triggerFileInput()">
+         onClick="triggerFileInput()" src="/images/collections/empty-collection.png">
     <div class="slider"
          data-th-style="${(collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''">
       <div class="slides">
@@ -23,6 +22,8 @@
              data-th-id="'collection-image-' + ${attachedFile.no}"
              data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}" onClick="triggerFileInput()">
       </div>
+<!--      <a class="prev" data-th-style="${#lists.size(collection.attachedFiles) <= 1 ? 'display:none;' : ''}" onClick="changeSlide(-1)">&#10094;</a>-->
+<!--      <a class="next" data-th-style="${#lists.size(collection.attachedFiles) <= 1 ? 'display:none;' : ''}" onClick="changeSlide(1)">&#10095;</a>-->
       <a class="prev" data-th-if="${#lists.size(collection.attachedFiles) > 1}" onClick="changeSlide(-1)">&#10094;</a>
       <a class="next" data-th-if="${#lists.size(collection.attachedFiles) > 1}" onClick="changeSlide(1)">&#10095;</a>
       <a class="prev" data-th-unless="${#lists.size(collection.attachedFiles) > 1}" onClick="changeSlide(-1)"

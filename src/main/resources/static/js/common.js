@@ -113,6 +113,8 @@ function openCollectionViewPopup(no) {
 
   // 수집품 등록 화면 내용 가져오기
 function fetchCollectionForm() {
+    initCollectionSlideIndex();
+
     fetch(`/collection/form`)
         .then(response => {
             if (!response.ok) {
@@ -127,7 +129,6 @@ function fetchCollectionForm() {
             document.querySelector('.collection-form-layer').innerHTML =
                 doc.querySelector('.collection-form-layer').innerHTML;
 
-            initCollectionSlideIndex();
         })
         .catch(error => {
             console.error("Error fetching collection form:", error);
@@ -136,6 +137,8 @@ function fetchCollectionForm() {
 
   // 수집품 조회 화면 내용 가져오기
 function fetchCollectionView(no) {
+    initCollectionSlideIndex();
+
     fetch(`/collection/view?no=${no}`)
         .then(response => {
             if (!response.ok) {
@@ -151,7 +154,6 @@ function fetchCollectionView(no) {
                 doc.querySelector('.collection-view-layer').innerHTML;
 
             document.addEventListener("DOMContentLoaded", function() {
-                initCollectionSlideIndex();
                 showSlides(collectionSlideIndex);
             });
         })
