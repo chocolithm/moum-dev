@@ -62,6 +62,7 @@ function openLoginModal() {
         .then(data => {
             document.getElementById('loginFormContainer').innerHTML = data;
             modal.style.display = "block";
+            populateEmailField();
         });
 }
 
