@@ -89,25 +89,6 @@ public class DefaultUserService implements UserService {
       return userDao.delete(userNo);
     }
 
-    /**
-     * 주어진 이메일과 비밀번호로 사용자 인증을 수행합니다.
-     *
-     * @param email    사용자 이메일
-     * @param password 사용자 비밀번호
-     * @return 인증된 사용자 정보, 인증 실패 시 null
-     * @throws Exception 사용자 인증 중 발생할 수 있는 예외
-     */
-    @Override
-    public User exists(String email, String password) throws Exception {
-      User user = userDao.findByEmail(email);
-      if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-        user.setLastLogin(LocalDateTime.now());
-        userDao.update(user);
-        return user;
-      }
-      return null;
-    }
-
   @Override
   public User getByEmail(String email) throws Exception {
     return userDao.findByEmail(email);

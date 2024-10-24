@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * packageName    : moum.project.vo
@@ -68,7 +68,7 @@ public class User implements Serializable {
      * 사용자가 탈퇴한 날짜입니다.
      * 회원 탈퇴시 사용자가 작성한 게시글이나 댓글 처리를 위해 사용됩니다.
      */
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     /**
      * 사용자가 마지막으로 로그인한 날짜입니다.

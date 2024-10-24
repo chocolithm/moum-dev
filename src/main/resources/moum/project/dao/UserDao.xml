@@ -11,9 +11,9 @@
         <result column="password" property="password"/>
         <result column="admin" property="admin"/>
         <result column="photo" property="photo"/>
-        <result column="start_date" property="startDate" javaType="java.time.LocalDateTime"/>
-        <result column="end_date" property="endDate" javaType="java.time.LocalDateTime"/>
-        <result column="last_login" property="lastLogin" javaType="java.time.LocalDateTime"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="last_login" property="lastLogin"/>
         <result column="sns_id" property="snsId"/>
     </resultMap>
 
@@ -106,11 +106,10 @@
         user_id=#{no}
     </update>
 
-    <update id="updateLastLogin" parameterType="moum.project.vo.User">
-        update user set
-        last_login=#{lastLogin},
-        where
-        user_id=#{no}
+    <update id="updateLastLogin" parameterType="map">
+        UPDATE user set
+        last_login = #{lastLoginTime}
+        WHERE user_id = #{userId}
     </update>
 
     <delete id="delete" parameterType="int">
