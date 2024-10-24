@@ -5,6 +5,7 @@ import moum.project.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -82,4 +83,6 @@ public interface UserDao {
      * @return 조회된 사용자 정보, 없을 경우 null
      */
     User findByEmail(String email);
+
+    void updateLastLogin(int userId, LocalDateTime lastLogin);
 }

@@ -1,5 +1,6 @@
 package moum.project.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.UserDao;
@@ -100,6 +101,8 @@ public class DefaultUserService implements UserService {
     public User exists(String email, String password) throws Exception {
       User user = userDao.findByEmail(email);
       if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+        user.setLastLogin(LocalDateTime.now());
+        userDao.update(user);
         return user;
       }
       return null;
