@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS user RESTRICT;
 DROP TABLE IF EXISTS board RESTRICT;
 
 -- 댓글
-DROP TABLE IF EXISTS commentRequest RESTRICT;
+DROP TABLE IF EXISTS comment RESTRICT;
 
 -- 업적
 DROP TABLE IF EXISTS achievement RESTRICT;
@@ -82,6 +82,7 @@ CREATE TABLE user (
     password   VARCHAR(255) NOT NULL, -- 비밀번호
     start_date DATETIME     NOT NULL DEFAULT now(), -- 가입일자
     end_date   DATE         NULL,     -- 탈퇴일자
+    last_login DATETIME     NULL,     -- 마지막로그인
     admin      TINYINT      NOT NULL DEFAULT 0, -- 관리자 여부
     sns_id     INTEGER      NULL      -- SNS 번호
 );
@@ -131,7 +132,7 @@ ALTER TABLE board
     MODIFY COLUMN board_id INTEGER NOT NULL AUTO_INCREMENT;
 
 -- 댓글
-CREATE TABLE commentRequest (
+CREATE TABLE comment (
     comment_id          INTEGER  NOT NULL, -- 댓글 번호
     user_id             INTEGER  NOT NULL, -- 작성자 번호
     board_id            INTEGER  NOT NULL, -- 게시글 번호
@@ -142,13 +143,13 @@ CREATE TABLE commentRequest (
 );
 
 -- 댓글
-ALTER TABLE commentRequest
+ALTER TABLE comment
     ADD CONSTRAINT PK_comment -- 댓글 기본키
     PRIMARY KEY (
     comment_id -- 댓글 번호
     );
 
-ALTER TABLE commentRequest
+ALTER TABLE comment
     MODIFY COLUMN comment_id INTEGER NOT NULL AUTO_INCREMENT;
 
 -- 업적
@@ -197,7 +198,8 @@ ALTER TABLE chat
 CREATE TABLE user_achievement (
     user_id        INTEGER     NOT NULL, -- 회원 번호
     achievement_id VARCHAR(50) NOT NULL, -- 업적ID
-    get_date       DATETIME    NOT NULL DEFAULT now() -- 취득일자
+    progress       INTEGER     NOT NULL DEFAULT 0, -- 진행도
+    get_date       DATETIME    NULL     DEFAULT now() -- 취득일자
 );
 
 -- 회원 업적
@@ -577,7 +579,7 @@ ALTER TABLE board
     );
 
 -- 댓글
-ALTER TABLE commentRequest
+ALTER TABLE comment
     ADD CONSTRAINT FK_board_TO_comment -- 게시글 -> 댓글
     FOREIGN KEY (
     board_id -- 게시글 번호
@@ -587,7 +589,7 @@ ALTER TABLE commentRequest
     );
 
 -- 댓글
-ALTER TABLE commentRequest
+ALTER TABLE comment
     ADD CONSTRAINT FK_user_TO_comment -- 회원 -> 댓글
     FOREIGN KEY (
     user_id -- 작성자 번호
