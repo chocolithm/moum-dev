@@ -10,7 +10,7 @@
 <form th:action="@{/auth/login}" method="post" onsubmit="handleLoginSubmit()">
     <div>
         <label for="email">이메일:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" required data-th-value="${email}" value="hong@test.com"><br>
     </div>
     <div>
         <label for="password">암호:</label>

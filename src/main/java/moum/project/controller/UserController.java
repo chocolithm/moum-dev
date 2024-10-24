@@ -56,7 +56,7 @@ public class UserController {
     try {
       userService.add(user);
       redirectAttributes.addFlashAttribute("signupSuccess", true);
-      return "redirect:/auth/form";
+      return "redirect:/";
 
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("signupError", "회원가입 중 오류가 발생했습니다.");
