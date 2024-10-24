@@ -1,5 +1,6 @@
 package moum.project.vo;
 
+import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Chatroom {
   @EqualsAndHashCode.Include private int no;
-  private int boardNo;
-  private int userNo;
+  private Board board;
+  private User user;
+  private String lastMessage;
+  private Date chatDate;
 }

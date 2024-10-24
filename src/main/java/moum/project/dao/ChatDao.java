@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ChatDao {
   boolean insertChat(Chat chat) throws Exception;
 
@@ -12,5 +14,5 @@ public interface ChatDao {
 
   List<Chat> listChat(Map map) throws Exception;
 
-  List<Chatroom> listRoom(int boardNo) throws Exception;
+  List<Chatroom> listRoom(int userNo) throws Exception;
 }

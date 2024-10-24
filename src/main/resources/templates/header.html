@@ -38,7 +38,7 @@
       <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
   </div>
   <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
-      <button class="btn chat-btn" style="display: none;">채팅</button>
+      <button class="btn chat-btn" onClick="openChatroomPopup()" style="display: none;">채팅</button>
       <a class="btn" data-th-onClick="'alert(\'미구현\')'">사용자</a>
       <form data-th-action="@{/logout}" method="post" style="display: inline;">
       <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
@@ -65,6 +65,18 @@
       </div>
     </div>
   </div>
+
+  <div class="chatroom-layer"></div>
+
+  <script>
+    // /board/ 하위에서만 채팅 버튼 보이는 임시 함수 - 향후 삭제
+    window.onload = () => {
+        const btn = document.querySelector(".chat-btn");
+        if (location.pathname.startsWith("/board/")) {
+            btn.style.display = "block";
+        }
+    }
+  </script>
 
 </header>
 
