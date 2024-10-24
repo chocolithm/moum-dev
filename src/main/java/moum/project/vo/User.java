@@ -16,6 +16,7 @@ import java.io.Serializable;
  * -----------------------------------------------------------
  * 24. 10. 15.        narilee       최초 생성
  * 24. 10. 22.        narilee       name 삭제
+ * 24. 10. 24.        narilee       int no -> long no 변환
  */
 @Data
 @NoArgsConstructor
@@ -29,7 +30,7 @@ public class User implements Serializable {
     /**
      * 사용자의 고유 식별자입니다.
      */
-    private int no;
+    private long no;
 
     /**
      * 사용자의 닉네임입니다.
