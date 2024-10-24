@@ -11,6 +11,17 @@
         <!-- 푸터 내용 -->
     </footer>
 
+    <script data-th-fragment="commonjs" src="/js/common.js"></script>
+    <script>
+        // /board/ 하위에서만 채팅 버튼 보이는 임시 함수 - 향후 삭제
+        window.onload = () => {
+            const btn = document.querySelector(".chat-btn");
+            if (location.pathname.startsWith("/board/")) {
+                btn.style.display = "block";
+            }
+        }
+    </script>
+
 </body>
 
 </html>
