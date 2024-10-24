@@ -1,78 +1,78 @@
-<!--<?xml version="1.0" encoding="UTF-8" ?>-->
-<!--<!DOCTYPE mapper-->
-<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
-<!--        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--<mapper namespace="moum.project.dao.Comment">-->
+<mapper namespace="moum.project.dao.Comment">
 
-<!--    &lt;!&ndash; CommentMap: Comment 객체와 매핑 &ndash;&gt;-->
-<!--    <resultMap id="CommentMap" type="moum.project.vo.Comment">-->
-<!--        <id column="comment_id" property="no"/>-->
-<!--        <result column="comment_no" property="commentNo"/>-->
-<!--        <result column="user_id" property="userNo"/>-->
-<!--        <result column="board_id" property="boardNo"/>-->
-<!--        <result column="content" property="content"/>-->
-<!--        <result column="date" property="date"/>-->
-<!--        <result column="original_comment_no" property="originalCommentNo"/>-->
-<!--        <result column="is_public" property="isPublic"/>-->
-<!--    </resultMap>-->
+    <!-- CommentMap: Comment 객체와 매핑 -->
+    <resultMap id="CommentMap" type="moum.project.vo.CommentRequest">
+        <id column="comment_id" property="no"/>
+        <result column="comment_no" property="commentNo"/>
+        <result column="user_id" property="userNo"/>
+        <result column="board_id" property="boardNo"/>
+        <result column="content" property="content"/>
+        <result column="date" property="date"/>
+        <result column="original_comment_no" property="originalCommentNo"/>
+        <result column="is_public" property="isPublic"/>
+    </resultMap>
 
-<!--    &lt;!&ndash; 댓글 목록 조회 (list) &ndash;&gt;-->
-<!--    <select id="list" resultMap="CommentMap">-->
-<!--        SELECT-->
-<!--        comment_id,-->
-<!--        comment_no,-->
-<!--        user_id,-->
-<!--        board_id,-->
-<!--        content,-->
-<!--        date,-->
-<!--        original_comment_no,-->
-<!--        is_public-->
-<!--        FROM-->
-<!--        comment-->
-<!--        WHERE-->
-<!--        board_id = #{boardNo}-->
-<!--        ORDER BY-->
-<!--        date DESC-->
-<!--    </select>-->
+    <!-- 댓글 목록 조회 (list) -->
+    <select id="list" resultMap="CommentMap">
+        SELECT
+        comment_id,
+        comment_no,
+        user_id,
+        board_id,
+        content,
+        date,
+        original_comment_no,
+        is_public
+        FROM
+        commentRequest
+        WHERE
+        board_id = #{boardNo}
+        ORDER BY
+        date DESC
+    </select>
 
-<!--    &lt;!&ndash; 특정 댓글 조회 (selectById) &ndash;&gt;-->
-<!--    <select id="selectById" resultMap="CommentMap" parameterType="int">-->
-<!--        SELECT-->
-<!--        comment_id,-->
-<!--        comment_no,-->
-<!--        user_id,-->
-<!--        board_id,-->
-<!--        content,-->
-<!--        date,-->
-<!--        original_comment_no,-->
-<!--        is_public-->
-<!--        FROM-->
-<!--        comment-->
-<!--        WHERE-->
-<!--        comment_id = #{no}-->
-<!--    </select>-->
+    <!-- 특정 댓글 조회 (selectById) -->
+    <select id="selectById" resultMap="CommentMap" parameterType="int">
+        SELECT
+        comment_id,
+        comment_no,
+        user_id,
+        board_id,
+        content,
+        date,
+        original_comment_no,
+        is_public
+        FROM
+        commentRequest
+        WHERE
+        comment_id = #{no}
+    </select>
 
-<!--    &lt;!&ndash; 새 댓글 생성 (insert) &ndash;&gt;-->
-<!--    <insert id="insert" parameterType="moum.project.vo.Comment" useGeneratedKeys="true" keyProperty="no" keyColumn="comment_id">-->
-<!--        INSERT INTO comment (comment_no, user_id, board_id, content, date, original_comment_no, is_public)-->
-<!--        VALUES (#{commentNo}, #{userNo}, #{boardNo}, #{content}, NOW(), #{originalCommentNo}, #{isPublic})-->
-<!--    </insert>-->
+    <!-- 새 댓글 생성 (insert) -->
+    <insert id="insert" parameterType="moum.project.vo.CommentRequest" useGeneratedKeys="true" keyProperty="no" keyColumn="comment_id">
+        INSERT INTO commentRequest (comment_no, user_id, board_id, content, date, original_comment_no, is_public)
+        VALUES (#{commentNo}, #{userNo}, #{boardNo}, #{content}, NOW(), #{originalCommentNo}, #{isPublic})
+    </insert>
 
-<!--    &lt;!&ndash; 댓글 수정 (update) &ndash;&gt;-->
-<!--    <update id="update" parameterType="moum.project.vo.Comment">-->
-<!--        UPDATE comment-->
-<!--        SET-->
-<!--        content = #{content},-->
-<!--        is_public = #{isPublic}-->
-<!--        WHERE-->
-<!--        comment_id = #{no}-->
-<!--    </update>-->
+    <!-- 댓글 수정 (update) -->
+    <update id="update" parameterType="moum.project.vo.CommentRequest">
+        UPDATE commentRequest
+        SET
+        content = #{content},
+        is_public = #{isPublic}
+        WHERE
+        comment_id = #{no}
+    </update>
 
-<!--    &lt;!&ndash; 댓글 삭제 (delete) &ndash;&gt;-->
-<!--    <delete id="delete" parameterType="int">-->
-<!--        DELETE FROM comment-->
-<!--        WHERE comment_id = #{no}-->
-<!--    </delete>-->
+    <!-- 댓글 삭제 (delete) -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM commentRequest
+        WHERE comment_id = #{no}
+    </delete>
 
-<!--</mapper>-->
+</mapper>

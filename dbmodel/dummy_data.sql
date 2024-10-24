@@ -173,7 +173,7 @@ INSERT INTO collection_photo (photo_id, collection_id, filename, origin_filename
 (11, 5, "collection-image-11.png", "collection-image-11.png");
 
 -- 댓글 데이터
-INSERT INTO comment (comment_id, user_id, board_id, content) VALUES
+INSERT INTO commentRequest (comment_id, user_id, board_id, content) VALUES
 (1, 2, 1, '멋진 경찰서네요! 저도 갖고 싶어요.'),
 (2, 3, 2, '에어맥스 편안해 보이네요. 저도 구매 고민 중이에요.'),
 (3, 1, 3, '바바토스 조립 팁 감사합니다. 많은 도움이 될 것 같아요.'),

@@ -16,6 +16,17 @@
         <hr/>
         <div th:text="${board.content}">게시글 내용</div>
     </div>
+
+    <!--/* 댓글 작성 */-->
+    <div class="cm_write">
+        <fieldset>
+            <legend class="skipinfo">댓글 입력</legend>
+            <div class="cm_input">
+                <p><textarea id="content" name="content" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
+                <span><button type="button" class="btns" onclick="saveComment();">등 록</button> <i id="counter">0/300자</i></span>
+            </div>
+        </fieldset>
+    </div>
 </main>
 </body>
 </html>

@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS user RESTRICT;
 DROP TABLE IF EXISTS board RESTRICT;
 
 -- 댓글
-DROP TABLE IF EXISTS comment RESTRICT;
+DROP TABLE IF EXISTS commentRequest RESTRICT;
 
 -- 업적
 DROP TABLE IF EXISTS achievement RESTRICT;
@@ -131,7 +131,7 @@ ALTER TABLE board
     MODIFY COLUMN board_id INTEGER NOT NULL AUTO_INCREMENT;
 
 -- 댓글
-CREATE TABLE comment (
+CREATE TABLE commentRequest (
     comment_id          INTEGER  NOT NULL, -- 댓글 번호
     user_id             INTEGER  NOT NULL, -- 작성자 번호
     board_id            INTEGER  NOT NULL, -- 게시글 번호
@@ -142,13 +142,13 @@ CREATE TABLE comment (
 );
 
 -- 댓글
-ALTER TABLE comment
+ALTER TABLE commentRequest
     ADD CONSTRAINT PK_comment -- 댓글 기본키
     PRIMARY KEY (
     comment_id -- 댓글 번호
     );
 
-ALTER TABLE comment
+ALTER TABLE commentRequest
     MODIFY COLUMN comment_id INTEGER NOT NULL AUTO_INCREMENT;
 
 -- 업적
@@ -577,7 +577,7 @@ ALTER TABLE board
     );
 
 -- 댓글
-ALTER TABLE comment
+ALTER TABLE commentRequest
     ADD CONSTRAINT FK_board_TO_comment -- 게시글 -> 댓글
     FOREIGN KEY (
     board_id -- 게시글 번호
@@ -587,7 +587,7 @@ ALTER TABLE comment
     );
 
 -- 댓글
-ALTER TABLE comment
+ALTER TABLE commentRequest
     ADD CONSTRAINT FK_user_TO_comment -- 회원 -> 댓글
     FOREIGN KEY (
     user_id -- 작성자 번호

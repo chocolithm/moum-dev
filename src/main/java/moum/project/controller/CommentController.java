@@ -1,16 +1,26 @@
-//package moum.project.controller;
-//
-//import lombok.RequiredArgsConstructor;
-//import moum.project.service.BoardService;
-//import moum.project.service.CommentService;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//
-//@Controller
-//@RequestMapping("/Comment")
-//@RequiredArgsConstructor
-//public class CommentController {
-//
-//    private final CommentService commentService;
-//
-//}
+package moum.project.controller;
+
+import lombok.RequiredArgsConstructor;
+import moum.project.service.BoardService;
+import moum.project.service.CommentService;
+import moum.project.vo.CommentRequest;
+import moum.project.vo.CommentResponse;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping("/Comment")
+@RequiredArgsConstructor
+@RestController
+public class CommentController {
+
+    private final CommentService commentService;
+
+    // 신규 댓글 생성
+    @PostMapping("/board/{boardId}/comments")
+    public CommentResponse saveComment(@PathVariable final int boardId, @RequestBody final CommentRequest params) {
+        int id = commentService.saveComment(params);
+        return commentService.findCommentById(id);
+    }
+
+}
