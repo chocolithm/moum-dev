@@ -46,53 +46,25 @@
     </form>
   </div>
 
+  <!-- 로그인 모달 -->
   <div class="modal" id="loginModal">
     <div class="modal-content">
       <span class="close" onclick="closeLoginModal()">&times;</span>
-      <h2>로그인</h2>
-      <form data-th-action="@{/auth/login}" method="post" onsubmit="handleLoginSubmit()">
-        <div>
-          <label for="email">이메일:</label>
-          <input id="email" name="email" required type="email">
-        </div>
-        <div>
-          <label for="password">암호:</label>
-          <input id="password" name="password" required type="password">
-        </div>
-        <div>
-          <input id="saveEmail" name="saveEmail" type="checkbox"> 이메일 저장<br>
-        </div>
-        <div>
-          <button type="submit">로그인</button>
-        </div>
-      </form>
+      <div id="loginFormContainer">
+        <!-- form.html의 내용이 여기 로드됩니다. -->
+      </div>
     </div>
   </div>
 
-<div class="modal" id="signupModal">
-  <div class="modal-content">
-    <span class="close" onclick="closeSignupModal()">&times;</span>
-    <h2>회원가입</h2>
-    <form data-th-action="@{/user/signup}" method="post">
-      <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
-      <div>
-        <label for="nickname">닉네임:</label>
-        <input id="nickname" name="nickname" required type="text">
+  <!-- 회원가입 모달 -->
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeSignupModal()">&times;</span>
+      <div id="signupFormContainer">
+        <!-- signup.html의 내용이 여기 로드됩니다. -->
       </div>
-      <div>
-        <label for="signupEmail">이메일:</label>
-        <input id="signupEmail" name="email" required type="email">
-      </div>
-      <div>
-        <label for="signupPassword">비밀번호:</label>
-        <input id="signupPassword" name="password" required type="password">
-      </div>
-      <div>
-        <button type="submit">가입하기</button>
-      </div>
-    </form>
+    </div>
   </div>
-</div>
 
 </header>
 

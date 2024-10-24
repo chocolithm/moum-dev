@@ -58,40 +58,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// 로그인 모달 열기 및 form.html 로드
 function openLoginModal() {
     var modal = document.getElementById("loginModal");
-    modal.style.display = "block";
+    fetch('/auth/form')  // form.html 경로에 맞게 수정하세요.
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('loginFormContainer').innerHTML = data;
+            modal.style.display = "block";
+        });
 }
 
-window.onclick = function(event) {
-    var modal = document.getElementById("loginModal");
-    if (event.target === modal) {
-        closeLoginModal();
-    }
+// 회원가입 모달 열기 및 signup.html 로드
+function openSignupModal() {
+    var modal = document.getElementById("signupModal");
+    fetch('/user/signup')  // signup.html 경로에 맞게 수정하세요.
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('signupFormContainer').innerHTML = data;
+            modal.style.display = "block";
+        });
 }
 
-
+// 로그인 모달 닫기
 function closeLoginModal() {
     var modal = document.getElementById("loginModal");
     modal.style.display = "none";
 }
 
-
-function openLoginPopup() {
-  openOverlay();
-  fadeIn(document.getElementsByClassName("login-layer")[0]);
-}
-
-function openSignupModal() {
-    var modal = document.getElementById("signupModal");
-    modal.style.display = "block";
-}
-
+// 회원가입 모달 닫기
 function closeSignupModal() {
     var modal = document.getElementById("signupModal");
     modal.style.display = "none";
 }
 
+// 모달 외부 클릭 시 모달 닫기 처리
 window.onclick = function(event) {
     var loginModal = document.getElementById("loginModal");
     var signupModal = document.getElementById("signupModal");

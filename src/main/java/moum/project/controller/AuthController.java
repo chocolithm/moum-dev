@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
  * 24. 10. 22.        narilee       로그인 구현 완료
+ * 24. 10. 23.        narilee       쿠키 적용
  */
 @Controller
 @RequestMapping("/auth")
