@@ -7,7 +7,6 @@
 
   <resultMap id="SubcategoryMap" type="moum.project.vo.Subcategory">
     <id column="subcategory_id" property="no"/>
-    <result column="maincategory_id" property="maincategoryNo"/>
     <result column="category_name" property="name"/>
   </resultMap>
 

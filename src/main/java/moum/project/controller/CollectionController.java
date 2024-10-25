@@ -66,7 +66,7 @@ public class CollectionController {
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
 
-    collection.setUserNo(loginUser.getNo());
+    collection.setUser(loginUser);
 
     List<AttachedFile> attachedFiles = new ArrayList<>();
 
@@ -101,7 +101,7 @@ public class CollectionController {
   public String view(int no, Model model) throws Exception {
     Collection collection = collectionService.get(no);
     List<Maincategory> maincategoryList = maincategoryService.list();
-    List<Subcategory> subcategoryList = subcategoryService.list(collection.getMaincategoryNo());
+    List<Subcategory> subcategoryList = subcategoryService.list(collection.getMaincategory().getNo());
     List<CollectionStatus> collectionStatusList = collectionStatusService.list();
 
     model.addAttribute("collection", collection);
@@ -125,7 +125,7 @@ public class CollectionController {
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
 
-    if (loginUser.getNo() != collectionService.get(collection.getNo()).getUserNo()) {
+    if (loginUser.getNo() != collectionService.get(collection.getNo()).getUser().getNo()) {
       throw new Exception("타인의 수집품을 수정할 수 없습니다.");
     }
 
@@ -171,7 +171,7 @@ public class CollectionController {
 
     Collection collection = collectionService.get(no);
 
-    if (loginUser.getNo() != collection.getUserNo()) {
+    if (loginUser.getNo() != collection.getUser().getNo()) {
       throw new Exception("타인의 수집품을 삭제할 수 없습니다.");
     }
 
@@ -200,7 +200,7 @@ public class CollectionController {
 
     Collection collection = collectionService.getByFileNo(no);
 
-    if (loginUser.getNo() != collection.getUserNo()) {
+    if (loginUser.getNo() != collection.getUser().getNo()) {
       throw new Exception("타인의 수집품을 삭제할 수 없습니다.");
     }
 

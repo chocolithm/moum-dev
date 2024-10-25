@@ -1,7 +1,6 @@
 package moum.project.dao;
 
 import java.util.List;
-import moum.project.vo.Collection;
 import moum.project.vo.Maincategory;
 import org.apache.ibatis.annotations.Mapper;
 

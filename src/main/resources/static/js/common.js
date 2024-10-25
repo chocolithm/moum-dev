@@ -255,7 +255,7 @@ function changeSlide(n) {
 
 // 소분류 데이터 가져오기
 function fetchSubcategories(maincategoryNo) {
-    const subcategorySelect = document.getElementById("subcategoryNo");
+    const subcategorySelect = document.getElementById("subcategory.no");
     subcategorySelect.innerHTML = "";
 
     if (maincategoryNo == 0) {
@@ -441,6 +441,14 @@ function fetchChatroom() {
                 chatroom_layer.appendChild(div);
             });
         })
+}
+
+function fetchChatroom(chatroomNo) {
+    const chatroom_layer = document.querySelector(".chatroom-layer");
+}
+
+function fetchChat(chatroomNo) {
+
 }
 
 
