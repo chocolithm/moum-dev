@@ -687,76 +687,51 @@ td {
 
 
 /*-----------------------------------------------------------------------*/
-/* board-middle-box 설정 */
-.board .boardList-middle-box {
-    width: 80%;
+
+/* board 클래스 설정 */
+.boardList {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 40px;
+
+
+/* 중앙 위쪽 박스 (인기글) 설정 */
+.boardList .boardList-middle-box {
+    width: 10%;
+    height: 100px;
     min-width: 250px;
-    margin-bottom: 20px;
-    /* 아래쪽 마진 추가 */
-    border: 2px solid black;
-    /* 진한 검정색 라인으로 설정 */
+    border: 1px solid black;
     border-radius: 15px;
     text-align: left;
-    padding: 20px;
-    /* 패딩을 20px로 조정 */
+    padding: 80px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
+
     gap: 20px;
-    /* 간격을 넓게 설정 */
 }
 
-/* 이미지와 텍스트 정렬 */
-.board .boardList-middle-box .boardList-middle-image {
+
+.boardList .boardList-middle-image {
     display: flex;
-    gap: 20px;
-    /* 이미지와 텍스트 사이의 간격 */
-    align-items: center;
-    /* 이미지와 텍스트의 상단을 맞춤 */
+    gap: 50px;
+    align-items: flex-start;
+    padding: 10px;
+
 }
 
 /* 이미지 스타일 */
-.board .boardList-middle-box .boardList-middle-image img {
-    width: 200px;
-    /* 이미지 크기를 200px로 확대 */
+.board .boardList-middle-image img {
+    width: 150px;
     height: auto;
-    border-radius: 10px;
     flex-shrink: 0;
 }
 
-/* 제목과 내용 스타일 */
-.board .boardList-middle-box .boardList-middle-image div {
-    flex-grow: 1;
-}
-
-/* 제목 스타일 */
-.board .boardList-middle-box .boardList-middle-image div p:first-of-type {
-    font-weight: bold;
-    font-size: 18px;
-    /* 제목 폰트 크기 확대 */
-    margin: 0;
-}
-
-/* 내용 스타일: 두 줄까지만 표시 */
-.board .boardList-middle-box .boardList-middle-image div p:nth-of-type(2) {
-    margin: 10px 0;
-    max-height: 3em;
-    /* 두 줄로 제한 */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 16px;
-    /* 내용 폰트 크기 확대 */
-}
-
-/* 조회수 및 작성일 스타일 */
-.board .boardList-middle-box .boardList-middle-image div p:nth-of-type(3),
-.board .boardList-middle-box .boardList-middle-image div p:nth-of-type(4) {
-    font-size: 14px;
-    /* 조회수 및 작성일 폰트 크기 설정 */
-    color: grey;
-    /* 색상 변경 */
+/* 텍스트 스타일 */
+.board .boardList-middle-image div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 /*-----------------------------------------------------------------------*/
 div p1 {
@@ -779,4 +754,4 @@ div p2 {
     display: -webkit-box;
     -webkit-line-clamp: 3; /* 최대 3줄까지 표시 */
     -webkit-box-orient: vertical;
-}
+}}

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>마이홈</title>
+    <title>전체게시판</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 
@@ -12,8 +12,8 @@
 <div th:replace="~{header}"></div>
 
 <main>
-    <div class="board">
-        <!-- 게시글 박스 -->
+    <div class="boardList">
+        <!-- 첫 번째 박스 (인기글) -->
         <div class="boardList-middle-box">
             <h2>전체 게시글</h2>
             <div class="boardList-middle-image" th:each="board : ${recentBoards}">
@@ -21,37 +21,31 @@
                     <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
                 </a>
                 <div>
-                    <!-- 게시글 제목 (볼드체, 큰 폰트) -->
-                    <a th:href="@{/board/boardView(no=${board.no})}">
-                        <p th:text="${board.title}" style="font-weight: bold;">게시글 제목</p>
+                    <a th:href="@{/board/view(no=${board.no})}">
+                        <p th:text="${board.title}" style="font-size: 25px; font-weight: bolder;">게시글 제목</p>
                     </a>
-
-                    <!-- 게시글 설명 (두 줄로 제한) -->
-                    <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
-
-                    <!-- 조회수 및 작성일 (작은 폰트, 회색) -->
-                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>
-                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                    <p1 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p1>
+                    <!--                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
+                    <!--                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- 게시글 목록 -->
-    <div class="boardList-middle-image" th:each="board : ${recentBoards}">
-        <a th:href="@{/board/boardView(no=${board.no})}">
-            <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
-        </a>
-        <div>
-            <a th:href="@{/board/boardView(no=${board.no})}">
-                <p th:text="${board.title}" style="font-weight: bold;">게시글 제목</p>
-            </a>
-            <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
-            <p>조회수: <span th:text="${board.viewCount}">0</span></p>
-            <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
-        </div>
+<!--    &lt;!&ndash; 게시글 목록 &ndash;&gt;-->
+<!--    <div class="boardList-middle-image" th:each="board : ${recentBoards}">-->
+<!--        <a th:href="@{/board/boardView(no=${board.no})}">-->
+<!--            <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">-->
+<!--        </a>-->
+<!--        <div>-->
+<!--            <a th:href="@{/board/boardView(no=${board.no})}">-->
+<!--                <p th:text="${board.title}" style="font-weight: bold;">게시글 제목</p>-->
+<!--            </a>-->
+<!--            <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>-->
+<!--            <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
+<!--            <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
+<!--        </div>-->
+<!--    </div>-->
     </div>
-
 </main>
 
 </body>
