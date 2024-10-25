@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>마이홈</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <meta data-th-content="${_csrf.token}" name="csrf-token"/>
+    <meta data-th-content="${_csrf.headerName}" name="csrf-header"/>
 </head>
 
 <body>
@@ -18,11 +20,11 @@
             <h2>인기글</h2>
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/view(no=${board.no})}">
-                    <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="인기글 이미지">
+                    <img alt="인기글 이미지" th:src="@{/images/collections/collection-image-__${board.no}__.png}">
                 </a>
                 <div>
                     <a th:href="@{/board/view(no=${board.no})}">
-                        <p th:text="${board.title}" style="font-weight: bold;">게시글 제목</p>
+                        <p style="font-weight: bold;" th:text="${board.title}">게시글 제목</p>
                     </a>
                     <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
                     <p>조회수: <span th:text="${board.viewCount}">0</span></p>
@@ -36,11 +38,11 @@
             <h2>게시글</h2>
             <div class="boardHome-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
-                    <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
+                    <img alt="게시글 이미지" th:src="@{/images/collections/collection-image-__${board.no}__.png}">
                 </a>
                 <div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
-                        <p th:text="${board.title}" style="font-weight: bold;">게시글 제목</p>
+                        <p style="font-weight: bold;" th:text="${board.title}">게시글 제목</p>
                     </a>
                     <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
                     <p>조회수: <span th:text="${board.viewCount}">0</span></p>
@@ -58,6 +60,8 @@
         </div>
     </div>
 </main>
+
+<div th:replace="~{footer}"></div>
 
 </body>
 </html>

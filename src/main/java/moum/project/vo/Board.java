@@ -1,13 +1,9 @@
 package moum.project.vo;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class Board implements Serializable {
@@ -25,6 +21,10 @@ public class Board implements Serializable {
     private List<AttachedFile> attachedFiles;
     private String imagePath; // 이미지 경로
     private String description; // 게시글 설명
+
+    private Collection collection; // 거래대상 수집품
+    private int price; // 가격
+    private boolean status; // 거래상태
 
 
 

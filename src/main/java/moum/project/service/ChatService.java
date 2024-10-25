@@ -6,11 +6,9 @@ import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
 
 public interface ChatService {
-  void addChat(Chat chat) throws Exception;
-
-  void addRoom(Chatroom chatroom) throws Exception;
-
-  List<Chat> listChat(Map map) throws Exception;
+  List<Chat> loadChat(Map map) throws Exception;
 
   List<Chatroom> listRoom(int userNo) throws Exception;
+
+  Chatroom getRoom(int roomNo) throws Exception;
 }

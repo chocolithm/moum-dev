@@ -15,4 +15,8 @@ public interface ChatDao {
   List<Chat> listChat(Map map) throws Exception;
 
   List<Chatroom> listRoom(int userNo) throws Exception;
+
+  Chat findChat(int chatNo) throws Exception;
+
+  Chatroom findRoom(int roomNo) throws Exception;
 }

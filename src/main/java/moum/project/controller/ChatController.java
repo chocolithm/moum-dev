@@ -21,15 +21,19 @@ public class ChatController {
   private final ChatService chatService;
   private final UserService userService;
 
-  @GetMapping("listRoom")
+  @GetMapping("/listRoom")
   @ResponseBody
   public List<Chatroom> listRoom(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
-
 
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
 
-    List<Chatroom> chatroomList = chatService.listRoom(loginUser.getNo());
-    return chatroomList;
+    return chatService.listRoom(loginUser.getNo());
+  }
+
+  @GetMapping("/openRoom")
+  @ResponseBody
+  public Chatroom openRoom(int no) throws Exception {
+    return chatService.getRoom(no);
   }
 }

@@ -15,22 +15,17 @@ public class DefaultChatService implements ChatService {
   private final ChatDao chatDao;
 
   @Override
-  public void addChat(Chat chat) throws Exception {
-
-  }
-
-  @Override
-  public void addRoom(Chatroom chatroom) throws Exception {
-
-  }
-
-  @Override
-  public List<Chat> listChat(Map map) throws Exception {
+  public List<Chat> loadChat(Map map) throws Exception {
     return chatDao.listChat(map);
   }
 
   @Override
   public List<Chatroom> listRoom(int userNo) throws Exception {
     return chatDao.listRoom(userNo);
+  }
+
+  @Override
+  public Chatroom getRoom(int roomNo) throws Exception {
+    return chatDao.findRoom(roomNo);
   }
 }

@@ -151,16 +151,12 @@ function populateEmailField() {
     }
 }
 
-// 마이홈
-
-
 
 // 채팅
 function openChatroomPopup() {
     const chat_btn = document.querySelector(".chat-btn");
     const chatroom_layer = document.querySelector(".chatroom-layer");
-
-    fetchChatroom();
+    fetchChatroomList();
     chat_btn.setAttribute("onClick", "closeChatroomPopup()");
     fadeIn(chatroom_layer);
 }
@@ -190,7 +186,8 @@ function openChat(chatroomNo) {
 
 }
 
-function fetchChatroom() {
+function fetchChatroomList() {
+
     const chatroom_layer = document.querySelector(".chatroom-layer");
 
     fetch(`/chat/listRoom`)
@@ -237,16 +234,23 @@ function fetchChatroom() {
                 chatroom_layer.appendChild(div);
             });
         })
+        .catch(error => {
+            console.error("Error fetching subcategories:", error);
+        });
 }
 
-function fetchChatroom(chatroomNo) {
+function fetchChatroom() {
     const chatroom_layer = document.querySelector(".chatroom-layer");
+
+    fetch(`/chat/listRoom`)
+        .then(response => response.json())
+        .then(data => {
+
+        })
+        .catch(error => {
+            console.error("Error fetching subcategories:", error);
+        });
 }
-
-function fetchChat(chatroomNo) {
-
-}
-
 
 
 // 로그인
@@ -254,63 +258,63 @@ function fetchChat(chatroomNo) {
 
 
 // 댓글 저장
-    function saveComment(boardNo) {
+function saveComment(boardNo) {
 
-        const content = document.getElementById('content');
-        // isValid(content, '댓글');
+    const content = document.getElementById('content');
+    // isValid(content, '댓글');
 
-        // const boardNo = [[ `${board.no}` ]];
-        // const boardNo = [[ `${board.no}` ]];
-        const params = {
-            boardNo : boardNo,
-            content : content.value,
-            // writer : '홍길동',
-            userNo : 5
-        }
-
-        const header = $("meta[name='_csrf_header']").attr('content');
-        const token = $("meta[name='_csrf']").attr('content');
-        $.ajax({
-            url : `/Comment/board/${boardNo}/comments`,
-            type : 'post',
-            contentType : 'application/json; charset=utf-8',
-            dataType : 'json',
-            data : JSON.stringify(params),
-            async : false,
-            beforeSend: function(xhr){
-                xhr.setRequestHeader(header, token);
-            },
-            success : function (response) {
-                alert('댓글 등록 완료.');
-                content.value = '';
-                document.getElementById('counter').innerText = '0/300자';
-                findAllComment(boardNo);
-            },
-            error : function (request, status, error) {
-                console.log(error)
-            }
-        })
+    // const boardNo = [[ `${board.no}` ]];
+    // const boardNo = [[ `${board.no}` ]];
+    const params = {
+        boardNo: boardNo,
+        content: content.value,
+        // writer : '홍길동',
+        userNo: 5
     }
+
+    const header = $("meta[name='_csrf_header']").attr('content');
+    const token = $("meta[name='_csrf']").attr('content');
+    $.ajax({
+        url: `/Comment/board/${boardNo}/comments`,
+        type: 'post',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(params),
+        async: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (response) {
+            alert('댓글 등록 완료.');
+            content.value = '';
+            document.getElementById('counter').innerText = '0/300자';
+            findAllComment(boardNo);
+        },
+        error: function (request, status, error) {
+            console.log(error)
+        }
+    })
+}
 // 전체 댓글 조회
-    function findAllComment(boardNo) {
-        // const postId = [[ ${board.no} ]];
-        $.ajax({
-            url : `/Comment/board/${boardNo}/comments`,
-            type : 'get',
-            dataType : 'json',
-            async : false,
-            success : function (response) {
-                console.log(response);
-                // 1. 조회된 데이터가 없는 경우
-                if ( !response.length ) {
-                    document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
-                    return false;
-                }
-                // 2. 렌더링 할 HTML을 저장할 변수
-                let commentHtml = '';
-                // 3. 댓글 HTML 추가
-                response.forEach(row => {
-                    commentHtml += `
+function findAllComment(boardNo) {
+    // const postId = [[ ${board.no} ]];
+    $.ajax({
+        url: `/Comment/board/${boardNo}/comments`,
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function (response) {
+            console.log(response);
+            // 1. 조회된 데이터가 없는 경우
+            if (!response.length) {
+                document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
+                return false;
+            }
+            // 2. 렌더링 할 HTML을 저장할 변수
+            let commentHtml = '';
+            // 3. 댓글 HTML 추가
+            response.forEach(row => {
+                commentHtml += `
                         <div>
                             
                             <div class="cont"><div class="txt_con">${row.content}</div></div>
@@ -320,17 +324,17 @@ function fetchChat(chatroomNo) {
                             </p>
                         </div>
                     `;
-                })
-                // <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
-                // <p class="writer">
-                //     <em>${row.writer}</em>
-                //     <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
-                // </p>
-                // 4. class가 "cm_list"인 요소를 찾아 HTML을 렌더링
-                document.querySelector('.cm_list').innerHTML = commentHtml;
-            },
-            error : function (request, status, error) {
-                console.log(error)
-            }
-        })
-    }
+            })
+            // <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
+            // <p class="writer">
+            //     <em>${row.writer}</em>
+            //     <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
+            // </p>
+            // 4. class가 "cm_list"인 요소를 찾아 HTML을 렌더링
+            document.querySelector('.cm_list').innerHTML = commentHtml;
+        },
+        error: function (request, status, error) {
+            console.log(error)
+        }
+    })
+}
