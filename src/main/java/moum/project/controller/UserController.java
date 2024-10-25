@@ -5,11 +5,11 @@ import moum.project.service.UserService;
 import moum.project.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * packageName    : moum.project.controller
@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
  * 24. 10. 25.        narilee       회원 가입 성공시 알림 표시
+ * 24. 10. 25.        narilee       회원 가입시 닉네임, 이메일 중복체크
  */
 @Controller
 @RequestMapping("/user")
@@ -65,4 +66,25 @@ public class UserController {
     }
   }
 
+  /**
+   * 사용자의 닉네임과 이메일의 중복 여부를 확인하는 API 엔드포인트입니다.
+   *
+   * @param nickname 중복 검사할 닉네임 (선택적)
+   * @param email 중복 검사할 이메일 주소 (선택적)
+   * @return 닉네임과 이메일의 중복 여부를 담은 Map 객체
+   * @throws Exception 중복 검사 과정에서 발생할 수 있는 예외
+   */
+  @GetMapping("/check-duplicate")
+  @ResponseBody
+  public Map<String, Boolean> checkDuplicate(@RequestParam(required = false) String nickname,
+      @RequestParam(required = false) String email) throws Exception {
+    Map<String, Boolean> response = new HashMap<>();
+    if (nickname != null && !nickname.isEmpty()) {
+      response.put("isNicknameTaken", userService.isNicknameTaken(nickname));
+    }
+    if (email != null && !email.isEmpty()) {
+      response.put("isEmailTaken", userService.isEmailTaken(email));
+    }
+    return response;
+  }
 }

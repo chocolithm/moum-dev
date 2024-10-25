@@ -1,6 +1,5 @@
 package moum.project.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import moum.project.vo.User;
 
@@ -16,6 +15,7 @@ import moum.project.vo.User;
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
  * 24. 10. 24.        narilee       exist 삭제
+ * 24. 10. 25.        narilee       회원 가입시 닉네임, 이메일 중복체크
  */
   public interface UserService {
 
@@ -62,5 +62,30 @@ import moum.project.vo.User;
    */
   boolean delete(int userNo) throws Exception;
 
+  /**
+   * 주어진 이메일의 사용 여부를 확인합니다.
+   *
+   * @param email 중복 검사할 이메일 주소
+   * @return true: 이메일이 이미 등록되어 있는 경우, false: 이메일이 사용 가능한 경우
+   * @throws Exception DB 조회 중 발생할 수 있는 예외
+   */
+  boolean isEmailTaken(String email) throws Exception;
+
+  /**
+   * 주어진 닉네임의 사용 여부를 확인합니다.
+   *
+   * @param nickname 중복 검사할 닉네임
+   * @return true: 닉네임이 이미 사용 중인 경우, false: 닉네임이 사용 가능한 경우
+   * @throws Exception DB 조회 중 발생할 수 있는 예외
+   */
+  boolean isNicknameTaken(String nickname) throws Exception;
+
+  /**
+   * 이메일로 사용자 정보를 조회합니다.
+   *
+   * @param email 조회할 사용자의 이메일 주소
+   * @return 조회된 사용자 정보 (User 객체). 해당 이메일을 가진 사용자가 없는 경우 null 반환
+   * @throws Exception DB 조회 중 발생할 수 있는 예외
+   */
   User getByEmail(String email) throws Exception;
 }
