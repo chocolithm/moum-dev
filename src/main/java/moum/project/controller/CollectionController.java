@@ -22,8 +22,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,7 +44,7 @@ public class CollectionController {
 
   private final String folderName = "collection/";
 
-  @GetMapping("form")
+  @GetMapping("/form")
   public String form(Model model) throws Exception {
     List<Maincategory> maincategoryList = maincategoryService.list();
     List<CollectionStatus> collectionStatusList = collectionStatusService.list();
@@ -53,14 +55,15 @@ public class CollectionController {
     return "collection/form";
   }
 
-  @PostMapping("add")
+  @PostMapping("/add")
+  @ResponseBody
   public String add(
       Collection collection,
       MultipartFile[] files,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
     if (userDetails == null) {
-      return "redirect:/home";
+      return "login";
     }
 
     String email = userDetails.getUsername();
@@ -70,34 +73,38 @@ public class CollectionController {
 
     List<AttachedFile> attachedFiles = new ArrayList<>();
 
-    for (MultipartFile file : files) {
-      if (file.getSize() == 0) {
-        continue;
+    if (files != null) {
+      for (MultipartFile file : files) {
+        if (file.getSize() == 0) {
+          continue;
+        }
+
+        AttachedFile attachedFile = new AttachedFile();
+        attachedFile.setFileCategory(AttachedFile.COLLECTION);
+        attachedFile.setFilename(UUID.randomUUID().toString());
+        attachedFile.setOriginFilename(file.getOriginalFilename());
+
+        Map<String, Object> options = new HashMap<>();
+        options.put(StorageService.CONTENT_TYPE, file.getContentType());
+
+        storageService.upload(
+            folderName + attachedFile.getFilename(),
+            file.getInputStream(),
+            options);
+
+        attachedFiles.add(attachedFile);
       }
-
-      AttachedFile attachedFile = new AttachedFile();
-      attachedFile.setFileCategory(AttachedFile.COLLECTION);
-      attachedFile.setFilename(UUID.randomUUID().toString());
-      attachedFile.setOriginFilename(file.getOriginalFilename());
-
-      Map<String, Object> options = new HashMap<>();
-      options.put(StorageService.CONTENT_TYPE, file.getContentType());
-
-      storageService.upload(
-          folderName + attachedFile.getFilename(),
-          file.getInputStream(),
-          options);
-
-      attachedFiles.add(attachedFile);
     }
 
     collection.setAttachedFiles(attachedFiles);
 
-    collectionService.add(collection);
-    return "redirect:/home";
+    if (collectionService.add(collection)) {
+      return "success";
+    }
+    return "failure";
   }
 
-  @GetMapping("view")
+  @GetMapping("/view")
   public String view(int no, Model model) throws Exception {
     Collection collection = collectionService.get(no);
     List<Maincategory> maincategoryList = maincategoryService.list();
@@ -112,14 +119,15 @@ public class CollectionController {
     return "collection/view";
   }
 
-  @PostMapping("update")
+  @PutMapping("/update")
+  @ResponseBody
   public String update(
       Collection collection,
       MultipartFile[] files,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
     if (userDetails == null) {
-      return "redirect:/home";
+      return "login";
     }
 
     String email = userDetails.getUsername();
@@ -131,39 +139,46 @@ public class CollectionController {
 
     List<AttachedFile> attachedFiles = new ArrayList<>();
 
-    for (MultipartFile file : files) {
-      if (file.getSize() == 0) {
-        continue;
+    if (files != null) {
+      for (MultipartFile file : files) {
+        if (file.getSize() == 0) {
+          continue;
+        }
+
+        AttachedFile attachedFile = new AttachedFile();
+        attachedFile.setFileCategory(AttachedFile.COLLECTION);
+        attachedFile.setFilename(UUID.randomUUID().toString());
+        attachedFile.setOriginFilename(file.getOriginalFilename());
+
+        Map<String, Object> options = new HashMap<>();
+        options.put(StorageService.CONTENT_TYPE, file.getContentType());
+
+        storageService.upload(
+            folderName + attachedFile.getFilename(),
+            file.getInputStream(),
+            options);
+
+        attachedFiles.add(attachedFile);
       }
-
-      AttachedFile attachedFile = new AttachedFile();
-      attachedFile.setFileCategory(AttachedFile.COLLECTION);
-      attachedFile.setFilename(UUID.randomUUID().toString());
-      attachedFile.setOriginFilename(file.getOriginalFilename());
-
-      Map<String, Object> options = new HashMap<>();
-      options.put(StorageService.CONTENT_TYPE, file.getContentType());
-
-      storageService.upload(
-          folderName + attachedFile.getFilename(),
-          file.getInputStream(),
-          options);
-
-      attachedFiles.add(attachedFile);
     }
+
     collection.setAttachedFiles(attachedFiles);
 
-    collectionService.update(collection);
-    return "redirect:/home";
+    if (collectionService.update(collection)) {
+      return "success";
+    }
+    return "failure";
   }
 
-  @GetMapping("delete")
+
+  @DeleteMapping("/delete")
+  @ResponseBody
   public String delete(
       int no,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
     if (userDetails == null) {
-      return "redirect:/home";
+      return "login";
     }
 
     String email = userDetails.getUsername();
@@ -179,20 +194,22 @@ public class CollectionController {
       storageService.delete(folderName + attachedFile.getFilename());
     }
 
-    collectionService.delete(no);
-    return "redirect:/home";
+    if (collectionService.delete(no)) {
+      return "success";
+    }
+    return "failure";
   }
 
 
 
-  @GetMapping("deleteFile")
+  @DeleteMapping("/deleteFile")
   @ResponseBody
   public String deleteFile(
       int no,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
     if (userDetails == null) {
-      return "redirect:/home";
+      return "login";
     }
 
     String email = userDetails.getUsername();
@@ -207,8 +224,8 @@ public class CollectionController {
     AttachedFile attachedFile = collectionService.getAttachedFile(no);
     storageService.delete(folderName + attachedFile.getFilename());
     if (collectionService.deleteFile(no)) {
-      return "true";
+      return "success";
     }
-    return "false";
+    return "failre";
   }
 }

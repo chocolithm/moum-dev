@@ -5,7 +5,7 @@ import moum.project.vo.AttachedFile;
 import moum.project.vo.Collection;
 
 public interface CollectionService {
-  void add(Collection collection) throws Exception;
+  boolean add(Collection collection) throws Exception;
 
   List<Collection> list(int no) throws Exception;
 
@@ -15,7 +15,7 @@ public interface CollectionService {
 
   boolean update(Collection collection) throws Exception;
 
-  void delete(int no) throws Exception;
+  boolean delete(int no) throws Exception;
 
   AttachedFile getAttachedFile(int no) throws Exception;
 
