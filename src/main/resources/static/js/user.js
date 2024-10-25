@@ -1,6 +1,7 @@
-let nicknameChecked = false;
-let emailChecked = false;
-let passwordMatch = false;
+// signup에서 user.js 호출할 때마다 let 변수를 생성하면서 오류 발생하므로 header로 옮깁니다.
+//let nicknameChecked = false;
+//let emailChecked = false;
+//let passwordMatch = false;
 
 // 닉네임 입력 필드 변경 감지
 document.getElementById('nickname').addEventListener('input', function() {

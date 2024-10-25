@@ -104,12 +104,14 @@ function openSignupModal() {
 function closeLoginModal() {
     var modal = document.getElementById("loginModal");
     modal.style.display = "none";
+    document.getElementById("loginFormContainer").innerHTML = "";
 }
 
 // 회원가입 모달 닫기
 function closeSignupModal() {
     var modal = document.getElementById("signupModal");
     modal.style.display = "none";
+    document.getElementById("signupFormContainer").innerHTML = "";
 }
 
 // 모달 외부 클릭 시 모달 닫기 처리
