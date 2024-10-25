@@ -245,7 +245,10 @@ function openChat(chatroomNo) {
 
     setTimeout(function () {
         chatroom_layer.innerHTML = "";
-    }, 500);
+        fetchChatroom(chatroomNo);
+    }, 500)
+
+
 
 
 }
@@ -256,12 +259,25 @@ function fetchChatroom(chatroomNo) {
     fetch(`/chat/openRoom?no=${chatroomNo}`)
         .then(response => response.json())
         .then(data => {
+
             const chatroom = document.createElement("div");
             chatroom.className = "chatroom";
 
+            const boardInfo = document.createElement("div");
+            const boardTitle = document.createElement("h4");
+            const boardStatus = document.createElement("span");
+            boardTitle.innerHTML = data.board.title;
+            boardStatus.innerHTML = data.board.status == true ? "거래완료" : "거래중";
+            boardInfo.appendChild(boardTitle);
+            boardInfo.appendChild(boardStatus);
+
+
+            chatroom.appendChild(boardInfo);
+
+            chatroom_layer.appendChild(boardInfo);
         })
         .catch(error => {
-            console.error("Error fetching subcategories:", error);
+            console.error("Error fetching chatroom:", error);
         });
 }
 

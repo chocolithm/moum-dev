@@ -83,7 +83,8 @@ INSERT INTO user (user_id, email, nickname, password, admin) VALUES
 (1, 'user1@example.com', '레고매니아', '1111', 0),
 (2, 'user2@example.com', '신발', '1111', 0),
 (3, 'user3@example.com', '건담수집가', '1111', 0),
-(4, 'admin@example.com', '관리자', '1111', 1);
+(4, 'admin@example.com', '관리자', '1111', 1),
+(5, 'admin4@test.com', 'admin4', '$2a$10$Qvpr0UR.ijfNolCTkEZiI.JdRCKQ23OmkdJ0Us6INV1noHCUj2Cjy', 1);
 
 
 -- 상태 데이터

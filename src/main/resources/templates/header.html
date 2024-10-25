@@ -28,7 +28,7 @@
         <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : 'openLoginModal()'">수집품거래</a>
       </li>
       <li class="btn">
-        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : 'openLoginModal()'">하비위키</a>
+        <a href="http://192.168.0.16:3000" target="_blank">하비위키</a>
       </li>
     </ul>
   </nav>
@@ -106,7 +106,7 @@
         alert("회원가입 중 오류가 발생했습니다.");
       }
     });
-  </script>>
+  </script>
 </header>
 
 </body>
