@@ -113,14 +113,36 @@ function checkDuplicate(type, value) {
         });
 }
 
-// 폼 제출 전 유효성 검사
+// 폼 제출 전 유효성 검사 강화
 document.getElementById('signupForm').addEventListener('submit', function(e) {
-    if (!nicknameChecked || !emailChecked || !passwordMatch) {
-        e.preventDefault();
-        let message = '';
-        if (!nicknameChecked) message += '닉네임 중복 확인이 필요합니다.\n';
-        if (!emailChecked) message += '이메일 중복 확인이 필요합니다.\n';
-        if (!passwordMatch) message += '비밀번호가 일치하지 않습니다.\n';
-        alert(message);
+    e.preventDefault(); // 우선 제출을 막습니다
+
+    let isValid = true;
+    let message = '';
+
+    // 닉네임 체크
+    if (!nicknameChecked) {
+        message += '닉네임 중복 확인이 필요합니다.\n';
+        isValid = false;
     }
+
+    // 이메일 체크
+    if (!emailChecked) {
+        message += '이메일 중복 확인이 필요합니다.\n';
+        isValid = false;
+    }
+
+    // 비밀번호 체크
+    if (!passwordMatch) {
+        message += '비밀번호가 일치하지 않습니다.\n';
+        isValid = false;
+    }
+
+    if (!isValid) {
+        alert(message);
+        return false;
+    }
+
+    // 모든 검증을 통과하면 폼을 제출합니다
+    this.submit();
 });
