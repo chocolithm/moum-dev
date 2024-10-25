@@ -117,7 +117,8 @@ INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
 
 -- 회원 데이터
 INSERT INTO user (user_id, email, nickname, password, admin) VALUES
-(1, 'admin@test.com', '관리자', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1);
+(1, 'admin@test.com', '관리자', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
+
 
 
 -- 상태 데이터
