@@ -262,25 +262,26 @@ function fetchChatroom(chatroomNo) {
         .then(response => response.json())
         .then(data => {
 
-            const chatroom = document.createElement("div");
-            chatroom.className = "chatroom";
-
             const boardInfo = document.createElement("div");
             const boardTitle = document.createElement("h4");
             const boardStatus = document.createElement("span");
+            boardInfo.className = "board-info";
+            boardTitle.className = "board-title";
+            boardStatus.className = "board-status";
             boardTitle.innerHTML = data.board.title;
             boardStatus.innerHTML = data.board.status == true ? "거래완료" : "거래중";
             boardInfo.appendChild(boardTitle);
             boardInfo.appendChild(boardStatus);
-
-
-            chatroom.appendChild(boardInfo);
 
             chatroom_layer.appendChild(boardInfo);
         })
         .catch(error => {
             console.error("Error fetching chatroom:", error);
         });
+}
+
+function fetchChatContent() {
+
 }
 
 

@@ -88,7 +88,7 @@
           )
         ) c1 on cr.chatroom_id = c1.chatroom_id
     where
-      b.user_id = 5
+      b.user_id = 1
     order by
       c1.chatroom_id desc;
   </select>

@@ -429,6 +429,16 @@ main .main-bottom .main-bottom-box .main-bottom-image {
     color: lightgrey;
 }
 
+.chatroom-layer .board-info {
+    border: 1px solid black;
+}
+
+
+
+
+
+
+
 
 /* footer */
 footer {
