@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
@@ -90,6 +91,18 @@ public class SecurityConfig {
   }
 
   /**
+   * 사용자가 로그인 인증이 실패 후 호출되는 메소드입니다.
+   *
+   * @return /home?error=true를 통한 로그인 실패 알림
+   */
+  @Bean
+  public AuthenticationFailureHandler authenticationFailureHandler() {
+    return (request, response, exception) -> {
+      response.sendRedirect("/home?error=true");
+    };
+  }
+
+  /**
    * Spring Security 필터 체인을 구성합니다.
    *
    * @param http Http Security 객체
@@ -110,7 +123,7 @@ public class SecurityConfig {
             .usernameParameter("email")
             .passwordParameter("password")
             .defaultSuccessUrl("/home", true)
-            .failureUrl("/auth/fail")
+            .failureHandler(authenticationFailureHandler())
             .successHandler(authenticationSuccessHandler())
             .permitAll()
         )

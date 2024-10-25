@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
+ * 24. 10. 25.        narilee       회원 가입 성공시 알림 표시
  */
 @Controller
 @RequestMapping("/user")
@@ -51,22 +52,17 @@ public class UserController {
    * 사용자 가입을 처리합니다.
    *
    * @param user 가입할 사용자 정보
-   * @param redirectAttributes 리다이렉트 후 전달할 메시지를 추가하기 위한 객체
-   * @return 성공 시 인증 폼 페이지로 리다이렉트, 실패시 가입 폼 페이지로 리다이렉트
+   * @return 성공 시 성공 알러트 표시후 /home으로 실패시 실패 알러트 표시
    */
   @PostMapping("/signup")
   public String signupSubmit(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
 
     try {
       userService.add(user);
-      redirectAttributes.addFlashAttribute("signupSuccess", true);
-      return "redirect:/";
-
+      return "redirect:/home?signupSuccess=true";  // 성공 시 쿼리 파라미터 전달
     } catch (Exception e) {
-      redirectAttributes.addFlashAttribute("signupError", "회원가입 중 오류가 발생했습니다.");
-      return "redirect:/user/signup";
+      return "redirect:/user/signup?signupError=true";  // 실패 시 쿼리 파라미터 전달
     }
   }
-
 
 }
