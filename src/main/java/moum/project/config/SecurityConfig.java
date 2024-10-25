@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
  * 24. 10. 21.        narilee       /myHome, /auth, /user, /achievement 예외처리
  * 24. 10. 22.        narilee       로그인 구현후 예외처리 변경
  * 24. 10. 24.        narilee       로그인, 로그아웃 이관, 로그인시 시간 저장 추가
+ * 24. 10. 25.        narilee       로그인시 세션에 닉네임 저장
  */
 @Configuration
 @EnableWebSecurity
@@ -77,9 +78,10 @@ public class SecurityConfig {
           User user = userDao.findByEmail(username);
           if (user != null) {
             userDao.updateLastLogin(user.getNo(), now);
+            request.getSession().setAttribute("nickname", user.getNickname());
           }
         } catch (Exception e) {
-          // 로그 처리
+          e.printStackTrace();
         }
 
         response.sendRedirect("/home");

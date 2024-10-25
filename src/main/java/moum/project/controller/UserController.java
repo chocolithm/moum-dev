@@ -1,6 +1,5 @@
 package moum.project.controller;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.UserService;
 import moum.project.vo.User;
@@ -64,24 +63,5 @@ public class UserController {
     }
   }
 
-  /**
-   * "myInfo" 엔드포인트에 대한 HTTP GET 요청을 처리합니다.
-   *
-   * @param session 사용자를 포합하는 현재 HTTP 세션
-   * @param model 뷰에 속성을 추가하기 위한 모델 객체
-   * @return 사용자 정보가 표시될 뷰 이름 "home"
-   * @throws Exception 사용자가 로그인 되어 있지 않은 경우
-   */
-  @GetMapping("myInfo")
-  public String myInfo(
-      HttpSession session,
-      Model model) throws Exception {
-    User loginUser = (User) session.getAttribute("loginUser");
-    if (loginUser == null) {
-      throw new Exception("로그인이 필요합니다.");
-    }
-    User user = userService.get(loginUser.getNo());
-    model.addAttribute("user", user);
-    return "/home";
-  }
+
 }

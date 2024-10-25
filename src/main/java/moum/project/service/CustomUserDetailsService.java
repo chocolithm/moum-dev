@@ -19,12 +19,14 @@ import org.springframework.stereotype.Service;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 22.        narilee       최초 생성
+ * 24. 10. 25.        narilee       닉네임 추가
  */
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
   private final UserDao userDao;
+  private String nickname;
 
   /**
    * 주어진 이메일로 사용자를 조회하여 UserDetails 객체를 생성합니다.
@@ -38,8 +40,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     // MyBatis를 이용해 이메일로 사용자 조회
     User user = userDao.findByEmail(email);
     if (user == null) {
-      throw new UsernameNotFoundException("User not found with email: " + email);
+      throw new UsernameNotFoundException("이메일로 사용자를 찾을 수 없습니다. : " + email);
     }
+
+    nickname = user.getNickname();
 
     // UserDetails 객체 생성
     return org.springframework.security.core.userdetails.User.builder()
@@ -48,4 +52,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         .roles("USER")  // 권한 설정 (필요에 따라)
         .build();
   }
+
 }
