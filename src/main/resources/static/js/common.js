@@ -183,20 +183,6 @@ function closeChatroomPopup() {
     }, 500);
 }
 
-function openChat(chatroomNo) {
-    const chatroom_layer = document.querySelector(".chatroom-layer");
-    const chatroom = document.getElementsByClassName("chatroom");
-    for (i = 0; i < chatroom.length; i++) {
-        fadeOut(chatroom[i]);
-    }
-
-    setTimeout(function () {
-        chatroom_layer.innerHTML = "";
-    }, 500);
-
-
-}
-
 function fetchChatroomList() {
 
     const chatroom_layer = document.querySelector(".chatroom-layer");
@@ -250,12 +236,28 @@ function fetchChatroomList() {
         });
 }
 
-function fetchChatroom() {
+function openChat(chatroomNo) {
+    const chatroom_layer = document.querySelector(".chatroom-layer");
+    const chatroom = document.getElementsByClassName("chatroom");
+    for (i = 0; i < chatroom.length; i++) {
+        fadeOut(chatroom[i]);
+    }
+
+    setTimeout(function () {
+        chatroom_layer.innerHTML = "";
+    }, 500);
+
+
+}
+
+function fetchChatroom(chatroomNo) {
     const chatroom_layer = document.querySelector(".chatroom-layer");
 
-    fetch(`/chat/listRoom`)
+    fetch(`/chat/openRoom?no=${chatroomNo}`)
         .then(response => response.json())
         .then(data => {
+            const chatroom = document.createElement("div");
+            chatroom.className = "chatroom";
 
         })
         .catch(error => {

@@ -16,49 +16,67 @@
 <main>
     <div class="board">
         <!-- 첫 번째 박스 (인기글) -->
-        <div class="boardHome-middle-box">
+        <div class="boardHomePopular-middle-box">
             <h2>인기글</h2>
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/view(no=${board.no})}">
-                    <img alt="인기글 이미지" th:src="@{/images/collections/collection-image-__${board.no}__.png}">
+                    <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="인기글 이미지">
                 </a>
                 <div>
                     <a th:href="@{/board/view(no=${board.no})}">
-                        <p style="font-weight: bold;" th:text="${board.title}">게시글 제목</p>
+                        <p th:text="${board.title}" style="font-size: 25px; font-weight: bolder;">게시글 제목</p>
                     </a>
-                    <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
-                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>
-                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                    <p1 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p1>
+                    <!--                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
+                    <!--                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
                 </div>
             </div>
         </div>
 
         <!-- 두 번째 박스 (게시글) -->
-        <div class="boardHome-middle-box">
+        <div class="boardHomeRecent-middle-box">
             <h2>게시글</h2>
-            <div class="boardHome-middle-image" th:each="board : ${recentBoards}">
+            <div class="boardHomeRecent-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
-                    <img alt="게시글 이미지" th:src="@{/images/collections/collection-image-__${board.no}__.png}">
+                    <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
                 </a>
                 <div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
-                        <p style="font-weight: bold;" th:text="${board.title}">게시글 제목</p>
+                        <p th:text="${board.title}" style="font-size: 25px; font-weight: bold;">게시글 제목</p>
                     </a>
-                    <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>
-                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>
-                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                    <p2 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p2>
+                    <!--                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
+                    <!--                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
                 </div>
             </div>
         </div>
 
         <!-- 세 번째 박스 (업적 랭킹) -->
-        <div class="boardHome-middle-box">
+        <div class="boardHomeAchievement-middle-box">
             <h2>업적 랭킹</h2>
-            <div class="board-middle-image" th:each="ranking : ${achievements}">
-                <p th:text="${ranking.rank + '. ' + ranking.name}">랭킹 내용</p>
+            <div class="achievement-content">
+                <!-- 왼쪽 열: 총점 -->
+                <div class="achievement-column">
+                    <h3>총점</h3>
+                    <ul class="achievement-list" th:each="ranking : ${rankings}">
+                        <li th:text="${ranking.rank + '. ' + ranking.name} + ' ' + ${ranking.points} + '점'">
+                            1. 레고 원더랜드 470점
+                        </li>
+                    </ul>
+                </div>
+                <!-- 오른쪽 열: 보유개수 -->
+                <div class="achievement-column">
+                    <h3>보유개수</h3>
+                    <ul class="achievement-list" th:each="item : ${itemCounts}">
+                        <li th:text="${item.rank + '. ' + item.name} + ' ' + ${item.count} + '개'">
+                            1. 레고 원더랜드 48개
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+
 </main>
 
 <div th:replace="~{footer}"></div>
