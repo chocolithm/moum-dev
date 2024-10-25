@@ -11,19 +11,19 @@
 <div class="form-container">
     <h2>회원가입</h2>
 
-    <form th:action="@{/user/signup}" method="post" id="signupForm">
+    <form id="signupForm" method="post" th:action="@{/user/signup}">
         <div class="input-field">
             <label for="nickname">닉네임</label>
             <div class="input-with-button">
-                <input type="text"
-                       id="nickname"
-                       name="nickname"
-                       required
-                       minlength="2"
+                <input id="nickname"
                        maxlength="10"
+                       minlength="2"
+                       name="nickname"
                        pattern="^[가-힣a-zA-Z0-9]{2,10}$"
-                       title="2~10자의 한글, 영문, 숫자만 사용 가능합니다">
-                <button type="button" onclick="checkDuplicate('nickname', document.getElementById('nickname').value)">
+                       required
+                       title="2~10자의 한글, 영문, 숫자만 사용 가능합니다"
+                       type="text">
+                <button onclick="checkDuplicate('nickname', document.getElementById('nickname').value)" type="button">
                     닉네임 확인
                 </button>
             </div>
@@ -33,13 +33,13 @@
         <div class="input-field">
             <label for="email">이메일</label>
             <div class="input-with-button">
-                <input type="email"
-                       id="email"
+                <input id="email"
                        name="email"
-                       required
                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                       title="유효한 이메일 주소를 입력해주세요">
-                <button type="button" onclick="checkDuplicate('email', document.getElementById('email').value)">
+                       required
+                       title="유효한 이메일 주소를 입력해주세요"
+                       type="email">
+                <button onclick="checkDuplicate('email', document.getElementById('email').value)" type="button">
                     이메일 확인
                 </button>
             </div>
@@ -48,11 +48,11 @@
 
         <div class="input-field">
             <label for="password">비밀번호</label>
-            <input type="password"
-                   id="password"
+            <input id="password"
+                   minlength="8"
                    name="password"
                    required
-                   minlength="8">
+                   type="password">
 <!--                   pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"-->
 <!--                   title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다"-->
 
@@ -61,20 +61,19 @@
 
         <div class="input-field">
             <label for="confirmPassword">비밀번호 확인</label>
-            <input type="password"
-                   id="confirmPassword"
-                   required>
+            <input id="confirmPassword"
+                   required
+                   type="password">
             <span id="confirmPasswordMessage"></span>
         </div>
 
-        <button type="submit" class="submit-button">가입하기</button>
+        <button class="submit-button" type="submit">가입하기</button>
     </form>
 
-    <div th:if="${param.signupError}" class="error-message" style="display: block;">
+    <div class="error-message" style="display: block;" th:if="${param.signupError}">
         회원가입에 실패했습니다. 다시 시도해주세요.
     </div>
 </div>
-
 <script th:src="@{/js/user.js}"></script>
 </body>
 </html>
