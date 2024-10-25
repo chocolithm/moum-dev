@@ -42,6 +42,11 @@ public class UserController {
     return "user/signup";
   }
 
+  @GetMapping("/myInfo")
+  public void myInfo(Model model) {
+
+  }
+
   /**
    * 사용자 가입을 처리합니다.
    *
