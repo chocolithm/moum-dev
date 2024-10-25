@@ -21,13 +21,13 @@ document.getElementById('password').addEventListener('input', function() {
     const password = this.value;
     const passwordMessage = document.getElementById('passwordMessage');
 
-    if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
-        passwordMessage.textContent = '최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다.';
-        passwordMessage.style.color = 'red';
-    } else {
-        passwordMessage.textContent = '사용 가능한 비밀번호입니다.';
-        passwordMessage.style.color = 'green';
-    }
+    // if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
+    //     passwordMessage.textContent = '최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다.';
+    //     passwordMessage.style.color = 'red';
+    // } else {
+    //     passwordMessage.textContent = '사용 가능한 비밀번호입니다.';
+    //     passwordMessage.style.color = 'green';
+    // }
     checkPasswordMatch();
 });
 
