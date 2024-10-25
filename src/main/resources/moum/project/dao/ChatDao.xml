@@ -15,8 +15,21 @@
 
   <resultMap id="ChatroomMap" type="moum.project.vo.Chatroom">
     <id column="chatroom_id" property="no"/>
-    <result column="board_id" property="boardNo"/>
-    <result column="user_id" property="userNo"/>
+    <result column="message" property="lastMessage"/>
+    <result column="chat_date" property="chatDate"/>
+
+    <association property="board" javaType="moum.project.vo.Board">
+      <id column="board_id" property="no"/>
+      <result column="board_user_id" property="userNo"/>
+      <result column="post_date" property="postDate"/>
+    </association>
+
+    <association property="user" javaType="moum.project.vo.User">
+      <id column="user_id" property="no"/>
+      <result column="nickname" property="nickname"/>
+      <result column="photo" property="photo"/>
+    </association>
+
   </resultMap>
 
   <insert id="insertChat" parameterType="moum.project.vo.Chat"
@@ -47,18 +60,49 @@
 
   <select id="listRoom" resultMap="ChatroomMap" parameterType="int">
     select
-      distinct cr.chatroom_id
+      cr.chatroom_id,
+      cr.user_id,
+      u.nickname,
+      u.photo,
+      c1.message,
+      c1.chat_date
     from
       chatroom cr
-      left join chat c on c.chatroom_id = cr.chatroom_id
+      left join user u on cr.user_id = u.user_id
+      left join board b on cr.board_id = b.board_id
+      inner join (
+        select chatroom_id, message, chat_date
+        from chat c
+        where chat_date = (
+            select max(chat_date)
+            from chat
+            where chatroom_id = c.chatroom_id
+          )
+        ) c1 on cr.chatroom_id = c1.chatroom_id
     where
-      cr.board_id = 7
+      b.user_id = #{no}
     order by
-      c.chat_date desc;
+      c1.chatroom_id desc;
   </select>
 
-  <select id="findBy" resultMap="ChatMap" parameterType="int">
+  <select id="findChat" resultMap="ChatMap" parameterType="int">
 
+  </select>
+
+  <select id="findRoom" resultMap="ChatroomMap" parameterType="int">
+    select
+      b.board_id,
+      b.user_id as board_user_id,
+      b.post_date,
+      tb.collection_id,
+      tb.price,
+      tb.status
+    from
+      chatroom cr
+      left join board b on cr.board_id = b.board_id
+      left join trade_board tb on cr.board_id = tb.board_id
+    where
+      cr.chatroom_id = #{no}
   </select>
 
   <update id="update" parameterType="moum.project.vo.Chat">

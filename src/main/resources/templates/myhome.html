@@ -34,7 +34,7 @@
         </div>
         <div data-th-if="${not #lists.isEmpty(collectionList)}">
             <button data-th-attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'"
-                    data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategoryNo}"
+                    data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategory.no}"
                     data-th-each="collection : ${collectionList}">
                 <img class="collection-image"
                      data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"

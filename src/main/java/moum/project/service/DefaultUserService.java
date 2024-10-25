@@ -1,5 +1,6 @@
 package moum.project.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.UserDao;
@@ -86,23 +87,6 @@ public class DefaultUserService implements UserService {
     @Override
     public boolean delete(int userNo) throws Exception {
       return userDao.delete(userNo);
-    }
-
-    /**
-     * 주어진 이메일과 비밀번호로 사용자 인증을 수행합니다.
-     *
-     * @param email    사용자 이메일
-     * @param password 사용자 비밀번호
-     * @return 인증된 사용자 정보, 인증 실패 시 null
-     * @throws Exception 사용자 인증 중 발생할 수 있는 예외
-     */
-    @Override
-    public User exists(String email, String password) throws Exception {
-      User user = userDao.findByEmail(email);
-      if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-        return user;
-      }
-      return null;
     }
 
   @Override

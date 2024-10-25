@@ -2,15 +2,15 @@
 
 
 function openOverlay() {
-  fadeIn(document.getElementsByClassName("overlay")[0]);
+    fadeIn(document.getElementsByClassName("overlay")[0]);
 }
 
 function closePopup() {
-  fadeOut(document.getElementsByClassName("overlay")[0]);
-  for (i = 0; i < document.getElementsByClassName("layer").length; i++) {
-    document.getElementsByClassName("layer")[i].innerHTML = "";
-    fadeOut(document.getElementsByClassName("layer")[i]);
-  }
+    fadeOut(document.getElementsByClassName("overlay")[0]);
+    for (i = 0; i < document.getElementsByClassName("layer").length; i++) {
+        document.getElementsByClassName("layer")[i].innerHTML = "";
+        fadeOut(document.getElementsByClassName("layer")[i]);
+    }
 }
 
 // fadeIn, fadeOut 사용 시 style에 아래 속성 주셔야 부드럽게 적용됩니다.
@@ -18,17 +18,29 @@ function closePopup() {
 // transition: opacity 0.5s ease;
 
 function fadeIn(element) {
-  element.style.display = "block";
-  setTimeout(function () {
-    element.style.opacity = 1;
-  }, 10);
+    element.style.display = "block";
+    setTimeout(function () {
+        element.style.opacity = 1;
+    }, 10);
 }
 
 function fadeOut(element) {
-  element.style.opacity = 0;
-  setTimeout(function () {
-    element.style.display = "none";
-  }, 500);
+    element.style.opacity = 0;
+    setTimeout(function () {
+        element.style.display = "none";
+    }, 500);
+}
+
+function formatDate(value) {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 function formatNumber(element) {
@@ -45,7 +57,7 @@ var modal = document.getElementById("loginModal");
 var btn = document.getElementById("openModalBtn");
 
 // 페이지 로드 시 실행되는 함수
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 회원가입 성공 후 로그인 모달 열기
     const urlParams = new URLSearchParams(window.location.search);
     const openLoginModal = urlParams.get('openLoginModal');
@@ -62,6 +74,7 @@ function openLoginModal() {
         .then(data => {
             document.getElementById('loginFormContainer').innerHTML = data;
             modal.style.display = "block";
+            populateEmailField();
         });
 }
 
@@ -89,7 +102,7 @@ function closeSignupModal() {
 }
 
 // 모달 외부 클릭 시 모달 닫기 처리
-window.onclick = function(event) {
+window.onclick = function (event) {
     var loginModal = document.getElementById("loginModal");
     var signupModal = document.getElementById("signupModal");
     if (event.target === loginModal) {
@@ -140,21 +153,21 @@ function populateEmailField() {
 
 // 마이홈
 
-  // 수집품 등록 화면 열기
+// 수집품 등록 화면 열기
 function openCollectionFormPopup() {
     fetchCollectionForm();
     openOverlay();
     fadeIn(document.querySelector(".collection-form-layer"));
 }
 
-  // 수집품 조회 화면 열기
+// 수집품 조회 화면 열기
 function openCollectionViewPopup(no) {
     fetchCollectionView(no);
     openOverlay();
     fadeIn(document.getElementsByClassName("collection-view-layer")[0]);
 }
 
-  // 수집품 등록 화면 내용 가져오기
+// 수집품 등록 화면 내용 가져오기
 function fetchCollectionForm() {
     initCollectionSlideIndex();
 
@@ -176,10 +189,10 @@ function fetchCollectionForm() {
         .catch(error => {
             console.error("Error fetching collection form:", error);
         });
-        console.log("collectionSlideIndex: " + collectionSlideIndex);
+    console.log("collectionSlideIndex: " + collectionSlideIndex);
 }
 
-  // 수집품 조회 화면 내용 가져오기
+// 수집품 조회 화면 내용 가져오기
 function fetchCollectionView(no) {
     initCollectionSlideIndex();
 
@@ -197,7 +210,7 @@ function fetchCollectionView(no) {
             document.querySelector('.collection-view-layer').innerHTML =
                 doc.querySelector('.collection-view-layer').innerHTML;
 
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 showSlides(collectionSlideIndex);
             });
         })
@@ -205,7 +218,7 @@ function fetchCollectionView(no) {
             console.error("Error fetching collection view:", error);
         });
 
-        console.log("collectionSlideIndex: " + collectionSlideIndex);
+    console.log("collectionSlideIndex: " + collectionSlideIndex);
 }
 
 function deleteFile(fileNo, collectionNo) {
@@ -240,9 +253,9 @@ function changeSlide(n) {
     console.log("collectionSlideIndex: " + collectionSlideIndex);
 }
 
-  // 소분류 데이터 가져오기
+// 소분류 데이터 가져오기
 function fetchSubcategories(maincategoryNo) {
-    const subcategorySelect = document.getElementById("subcategoryNo");
+    const subcategorySelect = document.getElementById("subcategory.no");
     subcategorySelect.innerHTML = "";
 
     if (maincategoryNo == 0) {
@@ -250,18 +263,18 @@ function fetchSubcategories(maincategoryNo) {
     } else if (maincategoryNo > 0) {
         subcategorySelect.disabled = false;
         fetch(`/subcategory/list?maincategoryNo=${maincategoryNo}`)
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(subcategory => {
-                        const option = document.createElement("option");
-                        option.value = subcategory.no;
-                        option.text = subcategory.name;
-                        subcategorySelect.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error("Error fetching subcategories:", error);
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(subcategory => {
+                    const option = document.createElement("option");
+                    option.value = subcategory.no;
+                    option.text = subcategory.name;
+                    subcategorySelect.appendChild(option);
                 });
+            })
+            .catch(error => {
+                console.error("Error fetching subcategories:", error);
+            });
     }
 }
 
@@ -280,7 +293,7 @@ function previewImage(event) {
     const filenames = document.getElementById("filenames");
 
     filenames.innerHTML = "";
-    for (i = newImages.length - 1; i >= 0 ; i--) {
+    for (i = newImages.length - 1; i >= 0; i--) {
         newImages[i].remove();
     }
 
@@ -289,12 +302,12 @@ function previewImage(event) {
         for (let i = 0; i < files.length; i++) {
             const reader = new FileReader();
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const img = document.createElement("img");
                 img.src = e.target.result;
                 img.alt = "Uploaded Image";
                 img.className = "collection-image slide new-image";
-                img.onclick = function() {
+                img.onclick = function () {
                     triggerFileInput();
                 };
                 slides.appendChild(img);
@@ -336,19 +349,107 @@ function filterCategories(element) {
     const items = document.getElementsByClassName(element.value);
 
     if (element.checked) {
-        for(i = 0; i < items.length; i++) {
+        for (i = 0; i < items.length; i++) {
             fadeIn(items[i]);
         }
     } else {
-        for(i = 0; i < items.length; i++) {
+        for (i = 0; i < items.length; i++) {
             fadeOut(items[i]);
         }
     }
 }
 
 // 채팅
+function openChatroomPopup() {
+    const chat_btn = document.querySelector(".chat-btn");
+    const chatroom_layer = document.querySelector(".chatroom-layer");
+
+    fetchChatroom();
+    chat_btn.setAttribute("onClick", "closeChatroomPopup()");
+    fadeIn(chatroom_layer);
+}
+
+function closeChatroomPopup() {
+    const chat_btn = document.querySelector(".chat-btn");
+    const chatroom_layer = document.querySelector(".chatroom-layer");
+
+    chat_btn.setAttribute("onClick", "openChatroomPopup()");
+    fadeOut(chatroom_layer)
+    setTimeout(function () {
+        chatroom_layer.innerHTML = "";
+    }, 500);
+}
+
+function openChat(chatroomNo) {
+    const chatroom_layer = document.querySelector(".chatroom-layer");
+    const chatroom = document.getElementsByClassName("chatroom");
+    for (i = 0; i < chatroom.length; i++) {
+        fadeOut(chatroom[i]);
+    }
+
+    setTimeout(function () {
+        chatroom_layer.innerHTML = "";
+    }, 500);
 
 
+}
+
+function fetchChatroom() {
+    const chatroom_layer = document.querySelector(".chatroom-layer");
+
+    fetch(`/chat/listRoom`)
+        .then(response => response.json())
+        .then(data => {
+
+            data.forEach(chatroom => {
+                console.log(chatroom);
+
+                const div = document.createElement("div");
+                div.className = "chatroom";
+                div.setAttribute("onclick", `openChat(${chatroom.no})`);
+
+                const userspan = document.createElement("span");
+                const chatspan = document.createElement("span");
+                userspan.className = "chatroom-user";
+                chatspan.className = "chatroom-content";
+
+                const img = document.createElement("img");
+                img.src = chatroom.user.photo == null ? "/images/user/default1.png" : "/images/user/default2.png";
+                img.alt = "프로필";
+                img.className = "profile"
+
+                const nickname = document.createElement("div")
+                nickname.innerHTML = chatroom.user.nickname;
+                nickname.className = "nickname";
+
+                userspan.appendChild(img);
+                userspan.appendChild(nickname);
+
+                const message = document.createElement("div");
+                message.className = "message";
+                message.innerHTML = chatroom.lastMessage;
+                const date = document.createElement("div");
+                date.className = "date";
+                date.innerHTML = formatDate(chatroom.chatDate);
+
+                chatspan.appendChild(message);
+                chatspan.appendChild(date);
+
+                div.appendChild(userspan);
+                div.appendChild(chatspan);
+
+                chatroom_layer.appendChild(div);
+            });
+        })
+}
+
+function fetchChatroom(chatroomNo) {
+    const chatroom_layer = document.querySelector(".chatroom-layer");
+}
+
+function fetchChat(chatroomNo) {
+
+}
 
 
 
@@ -368,87 +469,29 @@ function countingLength(content) {
 
 
 // 댓글 저장
-function saveComment(boardNo) {
+function saveComment() {
 
     const content = document.getElementById('content');
-    // isValid(content, '댓글');
+    isValid(content, '댓글');
 
-    // const boardNo = [[ `${board.no}` ]];
+    const boardNo = [[`${board.no}`]];
     const params = {
-        boardNo : boardNo,
-        content : content.value,
-        userNo : 5
+        boardNo: boardId,
+        content: content.value,
+        writer: '홍길동'
     }
 
-    const header = $("meta[name='_csrf_header']").attr('content');
-    const token = $("meta[name='_csrf']").attr('content');
-
     $.ajax({
-        url : `/Comment/board/${boardNo}/comments`,
-        type : 'post',
-        contentType : 'application/json; charset=utf-8',
-        dataType : 'json',
-        data : JSON.stringify(params),
-        async : false,
-        beforeSend: function(xhr){
-            xhr.setRequestHeader(header, token);
+        url: `/board/${boardNo}/comments`,
+        type: 'post',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(params),
+        async: false,
+        success: function (response) {
+            console.log(response);
         },
-        success : function (response) {
-            alert('저장되었습니다.');
-            content.value = '';
-            document.getElementById('counter').innerText = '0/300자';
-            findAllComment(boardNo);
-        },
-        error : function (request, status, error) {
-            console.log(error)
-        }
-    })
-}
-
-// 전체 댓글 조회
-function findAllComment(boardNo) {
-
-    // const postId = [[ ${board.no} ]];
-
-    $.ajax({
-        url : `/Comment/board/${boardNo}/comments`,
-        type : 'get',
-        dataType : 'json',
-        async : false,
-        success : function (response) {
-
-            // 1. 조회된 데이터가 없는 경우
-            if ( !response.length ) {
-                document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
-                return false;
-            }
-
-            // 2. 렌더링 할 HTML을 저장할 변수
-            let commentHtml = '';
-
-            // 3. 댓글 HTML 추가
-            response.forEach(row => {
-                commentHtml += `
-                        <div>
-                            
-                            <div class="cont"><div class="txt_con">${row.content}</div></div>
-                            <p class="func_btns">
-                                <button type="button" class="btns"><span class="icons icon_modify">수정</span></button>
-                                <button type="button" class="btns"><span class="icons icon_del">삭제</span></button>
-                            </p>
-                        </div>
-                    `;
-            })
-            // <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
-            // <p class="writer">
-            //     <em>${row.writer}</em>
-            //     <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
-            // </p>
-
-            // 4. class가 "cm_list"인 요소를 찾아 HTML을 렌더링
-            document.querySelector('.cm_list').innerHTML = commentHtml;
-        },
-        error : function (request, status, error) {
+        error: function (request, status, error) {
             console.log(error)
         }
     })

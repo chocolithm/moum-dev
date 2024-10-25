@@ -1,5 +1,6 @@
 package moum.project.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import moum.project.vo.User;
 
@@ -14,6 +15,7 @@ import moum.project.vo.User;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
+ * 24. 10. 24.        narilee       exist 삭제
  */
   public interface UserService {
 
@@ -59,16 +61,6 @@ import moum.project.vo.User;
    * @throws Exception 사용자 삭제 중 발생할 수 있는 예외
    */
   boolean delete(int userNo) throws Exception;
-
-  /**
-   * 주어진 이메일과 비밀번호로 사용자 인증을 수행합니다.
-   *
-   * @param email 사용자 이메일
-   * @param password 사용자 비밀번호
-   * @return 인증된 사용자 정보, 인증 실패 시 null
-   * @throws Exception 사용자 인증 중 발생할 수 있는 예외
-   */
-  User exists(String email, String password) throws Exception;
 
   User getByEmail(String email) throws Exception;
 }

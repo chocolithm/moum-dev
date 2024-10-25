@@ -10,6 +10,11 @@
         <result column="email" property="email"/>
         <result column="password" property="password"/>
         <result column="admin" property="admin"/>
+        <result column="photo" property="photo"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="last_login" property="lastLogin"/>
+        <result column="sns_id" property="snsId"/>
     </resultMap>
 
     <select id="list" resultMap="UserMap">
@@ -17,7 +22,12 @@
         user_id,
         nickname,
         email,
-        admin
+        admin,
+        photo,
+        start_date,
+        end_date,
+        last_login,
+        sns_id
         from
         user
         order by
@@ -25,8 +35,8 @@
     </select>
 
     <insert id="insert" parameterType="moum.project.vo.User">
-        insert into user(nickname, email, password, admin)
-        values (#{nickname}, #{email}, #{password}, #{admin})
+        insert into user(nickname, email, password, admin, photo, end_date, last_login, sns_id)
+        values (#{nickname}, #{email}, #{password}, #{admin}, #{photo}, #{endDate}, #{lastLogin}, #{snsId})
     </insert>
 
     <select id="findBy" resultMap="UserMap" parameterType="int">
@@ -34,7 +44,12 @@
         user_id,
         nickname,
         email,
-        admin
+        admin,
+        photo,
+        start_date,
+        end_date,
+        last_login,
+        sns_id
         from
         user
         where
@@ -47,7 +62,12 @@
         nickname,
         email,
         password,
-        admin
+        admin,
+        photo,
+        start_date,
+        end_date,
+        last_login,
+        sns_id
         from
         user
         where
@@ -59,7 +79,12 @@
         user_id,
         nickname,
         email,
-        admin
+        admin,
+        photo,
+        start_date,
+        end_date,
+        last_login,
+        sns_id
         from
         user
         where
@@ -71,9 +96,20 @@
         nickname=#{nickname},
         email=#{email},
         password=#{password},
-        admin=#{admin}
+        admin=#{admin},
+        photo=#{photo},
+        start_date=#{startDate},
+        end_date=#{endDate},
+        last_login=#{lastLogin},
+        sns_id=#{snsId}
         where
         user_id=#{no}
+    </update>
+
+    <update id="updateLastLogin" parameterType="map">
+        UPDATE user set
+        last_login = #{lastLoginTime}
+        WHERE user_id = #{userId}
     </update>
 
     <delete id="delete" parameterType="int">

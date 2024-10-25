@@ -54,23 +54,23 @@
         <td><input data-th-value="${collection.price}" id="price" name="price" type="text" value="100000"></td>
       </tr>
       <tr>
-        <td><label for="maincategoryNo">대분류</label></td>
+        <td><label for="maincategory.no">대분류</label></td>
         <td>
-          <select id="maincategoryNo" name="maincategoryNo" onChange="fetchSubcategories(this.value)">
+          <select id="maincategory.no" name="maincategory.no" onChange="fetchSubcategories(this.value)">
             <option value="0">선택</option>
             <option data-th-each="maincategory : ${maincategoryList}"
-                    data-th-selected="${maincategory.no} == ${collection.maincategoryNo}" data-th-text="${maincategory.name}"
+                    data-th-selected="${maincategory.no} == ${collection.maincategory.no}" data-th-text="${maincategory.name}"
                     data-th-value="${maincategory.no}" value="1">대분류명</option>
           </select>
         </td>
       </tr>
       <tr>
-        <td><label for="subcategoryNo">소분류</label></td>
+        <td><label for="subcategory.no">소분류</label></td>
         <td>
-          <select id="subcategoryNo" name="subcategoryNo">
+          <select id="subcategory.no" name="subcategory.no">
             <option value="0">선택</option>
             <option data-th-each="subcategory : ${subcategoryList}"
-                    data-th-selected="${subcategory.no} == ${collection.subcategoryNo}" data-th-text="${subcategory.name}"
+                    data-th-selected="${subcategory.no} == ${collection.subcategory.no}" data-th-text="${subcategory.name}"
                     data-th-value="${subcategory.no}" value="1">소분류명</option>
           </select>
         </td>
@@ -84,12 +84,12 @@
         <td><input data-th-value="${collection.storageLocation}" id="storageLocation" name="storageLocation" type="text" value="보관장소"></td>
       </tr>
       <tr>
-        <td><label for="statusNo">상태</label></td>
+        <td><label for="status.no">상태</label></td>
         <td>
-          <select id="statusNo" name="statusNo">
+          <select id="status.no" name="status.no">
             <option value="0">선택</option>
             <option data-th-each="status : ${collectionStatusList}"
-                    data-th-selected="${status.no} == ${collection.statusNo}" data-th-text="${status.name}"
+                    data-th-selected="${status.no} == ${collection.status.no}" data-th-text="${status.name}"
                     data-th-value="${status.no}" value="1">상태명</option>
           </select>
         </td>

@@ -12,5 +12,5 @@ public interface ChatService {
 
   List<Chat> listChat(Map map) throws Exception;
 
-  List<Chatroom> listRoom(int boardNo) throws Exception;
+  List<Chatroom> listRoom(int userNo) throws Exception;
 }
