@@ -56,7 +56,7 @@ public class BoardController {
         return "board/boardHome";
     }
 
-    @GetMapping("/boardList")
+    @GetMapping({"/", "/boardList"})
     public String boardList(Model model) throws Exception {
         // 모든 게시글 목록을 가져옴
         List<Board> allBoards = boardService.list();
@@ -68,7 +68,7 @@ public class BoardController {
         }
 
         // 최근 게시글 10개까지만 가져옴
-        List<Board> recentBoards = allBoards.subList(0, Math.min(10, allBoards.size()));
+        List<Board> recentBoards = allBoards.subList(0, Math.min(3, allBoards.size()));
         model.addAttribute("recentBoards", recentBoards);
 
         return "board/boardList";
