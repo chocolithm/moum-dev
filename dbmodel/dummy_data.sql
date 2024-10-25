@@ -118,6 +118,10 @@ INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
 -- 회원 데이터
 INSERT INTO user (user_id, email, nickname, password, admin) VALUES
 (1, 'admin@test.com', '관리자', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
+(2, 'admin2@test.com', '관리자2', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
+(3, 'admin3@test.com', '관리자3', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
+(4, 'admin4@test.com', '관리자4', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
+(5, 'admin5@test.com', '관리자5', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1);
 
 
 
