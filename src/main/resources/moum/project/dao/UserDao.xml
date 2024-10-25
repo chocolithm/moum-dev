@@ -91,6 +91,24 @@
         email=#{email} and password=#{password}
     </select>
 
+    <select id="findByNickname" resultMap="UserMap">
+        select
+        user_id,
+        nickname,
+        email,
+        admin,
+        photo,
+        start_date,
+        end_date,
+        last_login,
+        sns_id
+        from
+        user
+        where
+        nickname = #{nickname}
+    </select>
+
+
     <update id="update" parameterType="moum.project.vo.User">
         update user set
         nickname=#{nickname},

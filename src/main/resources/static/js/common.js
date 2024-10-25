@@ -86,6 +86,17 @@ function openSignupModal() {
         .then(data => {
             document.getElementById('signupFormContainer').innerHTML = data;
             modal.style.display = "block";
+            // 모달 내부의 스크립트 실행을 위한 코드 추가
+            const scripts = document.querySelector('#signupFormContainer').querySelectorAll('script');
+            scripts.forEach(script => {
+                const newScript = document.createElement('script');
+                if (script.src) {
+                    newScript.src = script.src;
+                } else {
+                    newScript.textContent = script.textContent;
+                }
+                document.body.appendChild(newScript);
+            });
         });
 }
 
