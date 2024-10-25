@@ -8,6 +8,8 @@ import moum.project.vo.CommentResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/Comment")
 @RequiredArgsConstructor
@@ -22,5 +24,13 @@ public class CommentController {
         int id = commentService.saveComment(params);
         return commentService.findCommentById(id);
     }
+
+    // 신규 댓글 생성
+    @GetMapping("/board/{boardId}/comments")
+    public List<CommentResponse> listComment(@PathVariable final int boardId) {
+        return commentService.findAllComment(boardId);
+    }
+
+
 
 }

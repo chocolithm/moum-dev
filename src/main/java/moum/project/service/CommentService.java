@@ -1,7 +1,7 @@
 package moum.project.service;
 
 import lombok.RequiredArgsConstructor;
-import moum.project.dao.CommentMapper;
+import moum.project.dao.CommentDao;
 import moum.project.vo.CommentRequest;
 import moum.project.vo.CommentResponse;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final CommentMapper commentMapper;
+    private final CommentDao commentDao;
 
     /**
      * 댓글 저장
@@ -22,7 +22,7 @@ public class CommentService {
      */
     @Transactional
     public int saveComment(final CommentRequest params) {
-        commentMapper.save(params);
+        commentDao.save(params);
         return params.getNo();
     }
 
@@ -32,7 +32,7 @@ public class CommentService {
      * @return 댓글 상세정보
      */
     public CommentResponse findCommentById(final int id) {
-        return commentMapper.findById(id);
+        return commentDao.findById(id);
     }
 
     /**
@@ -42,7 +42,7 @@ public class CommentService {
      */
     @Transactional
     public int updateComment(final CommentRequest params) {
-        commentMapper.update(params);
+        commentDao.update(params);
         return params.getNo();
     }
 
@@ -53,7 +53,7 @@ public class CommentService {
      */
     @Transactional
     public int deleteComment(final int id) {
-        commentMapper.deleteById(id);
+        commentDao.deleteById(id);
         return id;
     }
 
@@ -63,7 +63,7 @@ public class CommentService {
      * @return 특정 게시글에 등록된 댓글 리스트
      */
     public List<CommentResponse> findAllComment(final int boardId) {
-        return commentMapper.findAll(boardId);
+        return commentDao.findAll(boardId);
     }
 
 }

@@ -5,13 +5,13 @@ import lombok.*;
 import java.io.Serializable;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentRequest implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class CommentRequest {
 
-    @EqualsAndHashCode.Include private int no;
-    private int commentNo; // 댓글 번호 pk
-    private int userNo; // 작성자 번호
-    private int boardNo; // 게시글 번호 fk
-    private String content; // 내용
-
+        private int no; // 댓글 번호 pk
+        private int userNo; // 작성자 번호
+        private int boardNo; // 게시글 번호 fk
+        private String content; // 내용
+        private java.util.Date date; // 생성일시
+        private int originalCommentNo;
+        private boolean isPublic; // 공개여부
 }
