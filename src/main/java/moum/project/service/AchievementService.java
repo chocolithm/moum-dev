@@ -1,9 +1,7 @@
 package moum.project.service;
 
-import moum.project.vo.Achievement;
-import moum.project.vo.Maincategory;
-
 import java.util.List;
+import moum.project.vo.Achievement;
 
 public interface AchievementService {
   void add(Achievement achievement) throws Exception;

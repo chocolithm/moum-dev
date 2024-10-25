@@ -38,8 +38,11 @@
       <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
   </div>
   <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
-      <button class="btn chat-btn" style="display: none;">채팅</button>
-      <a class="btn" data-th-onClick="'alert(\'미구현\')'">사용자</a>
+      <button class="btn chat-btn" onClick="openChatroomPopup()" style="display: none;">채팅</button>
+    <a class='btn btn-light'
+       data-th-href="@{/user/myInfo}"
+       data-th-text="${session.nickname}"
+       href="/home.html"></a>
       <form data-th-action="@{/logout}" method="post" style="display: inline;">
       <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
       <button class="btn btn-logout" type="submit">로그아웃</button>
@@ -66,6 +69,44 @@
     </div>
   </div>
 
+  <div class="chatroom-layer"></div>
+
+  <script>
+    // /board/ 하위에서만 채팅 버튼 보이는 임시 함수 - 향후 삭제
+    window.onload = () => {
+        const btn = document.querySelector(".chat-btn");
+        if (location.pathname.startsWith("/board/")) {
+            btn.style.display = "block";
+        }
+    }
+  </script>
+
+<!--  로그인 실패시 알림-->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('error') === 'true') {
+        alert("이메일 또는 암호가 맞지 않습니다.");
+      }
+    });
+  </script>
+
+<!--  회원가입 성공 또는 실패시 알림-->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // 회원가입 성공
+      if (urlParams.get('signupSuccess') === 'true') {
+        alert("회원가입이 완료되었습니다.");
+      }
+
+      // 회원가입 실패
+      if (urlParams.get('signupError') === 'true') {
+        alert("회원가입 중 오류가 발생했습니다.");
+      }
+    });
+  </script>>
 </header>
 
 </body>

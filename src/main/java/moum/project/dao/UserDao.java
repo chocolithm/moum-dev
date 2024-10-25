@@ -5,6 +5,7 @@ import moum.project.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,6 +19,8 @@ import java.util.List;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 15.        narilee       최초 생성
+ * 24. 10. 24.        narilee       로그인 시간 업데이트를 위한 updateLastLogin 추가
+ * 24. 10. 25.        narilee       회원 가입시 닉네임, 이메일 중복체크
  */
 @Mapper
 public interface UserDao {
@@ -82,4 +85,23 @@ public interface UserDao {
      * @return 조회된 사용자 정보, 없을 경우 null
      */
     User findByEmail(String email);
+
+    /**
+     * 닉네임으로 사용자를 조회합니다.
+     *
+     * @param nickname 조회할 사용자의 닉네임
+     * @return 조회된 사용자 정보, 없을 경우 null
+     */
+    User findByNickname(String nickname);
+
+    /**
+     * 사용자의 마지막 로그인 시간을 업데이트합니다.
+     *
+     * @param userId 사용자 ID
+     * @param lastLoginTime 마지막 로그인 시간
+     */
+    void updateLastLogin(@Param("userId") int userId, @Param("lastLoginTime")
+    LocalDateTime lastLoginTime);
+
+
 }

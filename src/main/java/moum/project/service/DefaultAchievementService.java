@@ -1,14 +1,11 @@
 package moum.project.service;
 
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.AchievementDao;
-import moum.project.dao.MaincategoryDao;
 import moum.project.vo.Achievement;
-import moum.project.vo.Maincategory;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

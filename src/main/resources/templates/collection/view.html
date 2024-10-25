@@ -36,9 +36,9 @@
     </div>
     <div id="filenames"></div>
   </div>
-  <form action="/collection/update" class="right-side" enctype="multipart/form-data" method="post">
+  <div class="right-side" id="updateForm">
     <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
-    <input data-th-value="${collection.no}" name="no" readonly type="hidden" value="101">
+    <input data-th-value="${collection.no}" id="no" name="no" readonly type="hidden" value="101">
     <input id="files" multiple name="files" onChange="previewImage(event);" style="display:none;" type="file">
     <table>
       <tr>
@@ -56,10 +56,10 @@
       <tr>
         <td><label for="maincategoryNo">대분류</label></td>
         <td>
-          <select id="maincategoryNo" name="maincategoryNo" onChange="fetchSubcategories(this.value)">
+          <select id="maincategoryNo" name="maincategory.no" onChange="fetchSubcategories(this.value)">
             <option value="0">선택</option>
             <option data-th-each="maincategory : ${maincategoryList}"
-                    data-th-selected="${maincategory.no} == ${collection.maincategoryNo}" data-th-text="${maincategory.name}"
+                    data-th-selected="${maincategory.no} == ${collection.maincategory.no}" data-th-text="${maincategory.name}"
                     data-th-value="${maincategory.no}" value="1">대분류명</option>
           </select>
         </td>
@@ -67,10 +67,10 @@
       <tr>
         <td><label for="subcategoryNo">소분류</label></td>
         <td>
-          <select id="subcategoryNo" name="subcategoryNo">
+          <select id="subcategoryNo" name="subcategory.no">
             <option value="0">선택</option>
             <option data-th-each="subcategory : ${subcategoryList}"
-                    data-th-selected="${subcategory.no} == ${collection.subcategoryNo}" data-th-text="${subcategory.name}"
+                    data-th-selected="${subcategory.no} == ${collection.subcategory.no}" data-th-text="${subcategory.name}"
                     data-th-value="${subcategory.no}" value="1">소분류명</option>
           </select>
         </td>
@@ -86,20 +86,20 @@
       <tr>
         <td><label for="statusNo">상태</label></td>
         <td>
-          <select id="statusNo" name="statusNo">
+          <select id="statusNo" name="status.no">
             <option value="0">선택</option>
             <option data-th-each="status : ${collectionStatusList}"
-                    data-th-selected="${status.no} == ${collection.statusNo}" data-th-text="${status.name}"
+                    data-th-selected="${status.no} == ${collection.status.no}" data-th-text="${status.name}"
                     data-th-value="${status.no}" value="1">상태명</option>
           </select>
         </td>
       </tr>
       <tr>
-        <td><input type="submit" value="수정"></td>
-        <td><a class="btn" data-th-href="@{/collection/delete(no=${collection.no})}" href="../myhome.html">삭제</a></td>
+        <td><input onClick="updateCollection()" type="submit" value="수정"></td>
+        <td><a class="btn" data-th-onclick="'deleteCollection(' + ${collection.no} + ')'">삭제</a></td>
       </tr>
     </table>
-  </form>
+  </div>
 </div>
 
 </body>

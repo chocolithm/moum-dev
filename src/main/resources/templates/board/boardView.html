@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>게시글 상세보기</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <div th:replace="~{header}"></div>
@@ -23,7 +26,10 @@
             <legend class="skipinfo">댓글 입력</legend>
             <div class="cm_input">
                 <p><textarea id="content" name="content" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
-                <span><button type="button" class="btns" onclick="saveComment();">등 록</button> <i id="counter">0/300자</i></span>
+                <span><button type="button" class="btns" data-th-onclick="'saveComment(' + ${board.no} + ');'">등 록</button> <i id="counter">0/300자</i></span>
+            </div>
+            <div class="cm_list">
+
             </div>
         </fieldset>
     </div>

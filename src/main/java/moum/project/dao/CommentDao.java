@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface CommentMapper {
+public interface CommentDao {
 
     /**
      * 댓글 저장

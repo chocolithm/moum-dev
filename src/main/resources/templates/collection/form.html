@@ -22,7 +22,7 @@
     </div>
     <div id="filenames"></div>
   </div>
-  <form action="/collection/add" class="right-side" enctype="multipart/form-data" method="post">
+  <div class="right-side" id="addForm">
     <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
     <input id="files" multiple name="files" onChange="previewImage(event);" style="display: none;" type="file">
     <table>
@@ -41,7 +41,7 @@
       <tr>
         <td><label for="maincategoryNo">대분류</label></td>
         <td>
-          <select id="maincategoryNo" name="maincategoryNo" onChange="fetchSubcategories(this.value)">
+          <select id="maincategoryNo" name="maincategory.no" onChange="fetchSubcategories(this.value)">
             <option value="0">선택</option>
             <data-th-block data-th-each="maincategory : ${maincategoryList}">
               <option data-th-text="${maincategory.name}"
@@ -54,7 +54,7 @@
       <tr>
         <td><label for="subcategoryNo">소분류</label></td>
         <td>
-          <select disabled id="subcategoryNo" name="subcategoryNo">
+          <select disabled id="subcategoryNo" name="subcategory.no">
 
           </select>
         </td>
@@ -70,7 +70,7 @@
       <tr>
         <td><label for="statusNo">상태</label></td>
         <td>
-          <select id="statusNo" name="statusNo">
+          <select id="statusNo" name="status.no">
             <option value="0">선택</option>
             <option data-th-each="status : ${collectionStatusList}"
                     data-th-text="${status.name}"
@@ -80,10 +80,10 @@
         </td>
       </tr>
       <tr>
-        <td colspan="2"><input type="submit" value="upload"></td>
+        <td colspan="2"><input onClick="addCollection()" type="submit" value="upload"></td>
       </tr>
     </table>
-  </form>
+  </div>
 </div>
 
 </body>

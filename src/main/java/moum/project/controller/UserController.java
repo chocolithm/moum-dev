@@ -1,16 +1,15 @@
 package moum.project.controller;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.UserService;
 import moum.project.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * packageName    : moum.project.controller
@@ -23,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 10. 21.        narilee       최초 생성
+ * 24. 10. 25.        narilee       회원 가입 성공시 알림 표시
+ * 24. 10. 25.        narilee       회원 가입시 닉네임, 이메일 중복체크
  */
 @Controller
 @RequestMapping("/user")
@@ -43,45 +44,47 @@ public class UserController {
     return "user/signup";
   }
 
+  @GetMapping("/myInfo")
+  public void myInfo(Model model) {
+
+  }
+
   /**
    * 사용자 가입을 처리합니다.
    *
    * @param user 가입할 사용자 정보
-   * @param redirectAttributes 리다이렉트 후 전달할 메시지를 추가하기 위한 객체
-   * @return 성공 시 인증 폼 페이지로 리다이렉트, 실패시 가입 폼 페이지로 리다이렉트
+   * @return 성공 시 성공 알러트 표시후 /home으로 실패시 실패 알러트 표시
    */
   @PostMapping("/signup")
   public String signupSubmit(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
 
     try {
       userService.add(user);
-      redirectAttributes.addFlashAttribute("signupSuccess", true);
-      return "redirect:/auth/form";
-
+      return "redirect:/home?signupSuccess=true";  // 성공 시 쿼리 파라미터 전달
     } catch (Exception e) {
-      redirectAttributes.addFlashAttribute("signupError", "회원가입 중 오류가 발생했습니다.");
-      return "redirect:/user/signup";
+      return "redirect:/user/signup?signupError=true";  // 실패 시 쿼리 파라미터 전달
     }
   }
 
   /**
-   * "myInfo" 엔드포인트에 대한 HTTP GET 요청을 처리합니다.
+   * 사용자의 닉네임과 이메일의 중복 여부를 확인하는 API 엔드포인트입니다.
    *
-   * @param session 사용자를 포합하는 현재 HTTP 세션
-   * @param model 뷰에 속성을 추가하기 위한 모델 객체
-   * @return 사용자 정보가 표시될 뷰 이름 "home"
-   * @throws Exception 사용자가 로그인 되어 있지 않은 경우
+   * @param nickname 중복 검사할 닉네임 (선택적)
+   * @param email 중복 검사할 이메일 주소 (선택적)
+   * @return 닉네임과 이메일의 중복 여부를 담은 Map 객체
+   * @throws Exception 중복 검사 과정에서 발생할 수 있는 예외
    */
-  @GetMapping("myInfo")
-  public String myInfo(
-      HttpSession session,
-      Model model) throws Exception {
-    User loginUser = (User) session.getAttribute("loginUser");
-    if (loginUser == null) {
-      throw new Exception("로그인이 필요합니다.");
+  @GetMapping("/check-duplicate")
+  @ResponseBody
+  public Map<String, Boolean> checkDuplicate(@RequestParam(required = false) String nickname,
+      @RequestParam(required = false) String email) throws Exception {
+    Map<String, Boolean> response = new HashMap<>();
+    if (nickname != null && !nickname.isEmpty()) {
+      response.put("isNicknameTaken", userService.isNicknameTaken(nickname));
     }
-    User user = userService.get(loginUser.getNo());
-    model.addAttribute("user", user);
-    return "/home";
+    if (email != null && !email.isEmpty()) {
+      response.put("isEmailTaken", userService.isEmailTaken(email));
+    }
+    return response;
   }
 }

@@ -19,11 +19,14 @@ public class DefaultCollectionService implements CollectionService {
 
   @Override
   @Transactional
-  public void add(Collection collection) throws Exception {
-    collectionDao.insert(collection);
-    if (collection.getAttachedFiles().size() > 0) {
-      collectionDao.insertFiles(collection);
+  public boolean add(Collection collection) throws Exception {
+    if (collectionDao.insert(collection)) {
+      if (collection.getAttachedFiles().size() > 0) {
+        collectionDao.insertFiles(collection);
+      }
+      return true;
     }
+    return false;
   }
 
   @Override
@@ -56,9 +59,12 @@ public class DefaultCollectionService implements CollectionService {
 
   @Override
   @Transactional
-  public void delete(int no) throws Exception {
+  public boolean delete(int no) throws Exception {
     collectionDao.deleteFiles(no);
-    collectionDao.delete(no);
+    if (collectionDao.delete(no)) {
+      return true;
+    }
+    return false;
   }
 
   @Override

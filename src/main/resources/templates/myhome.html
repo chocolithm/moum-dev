@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>마이홈</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <meta data-th-content="${_csrf.token}" name="csrf-token"/>
+    <meta data-th-content="${_csrf.headerName}" name="csrf-header"/>
 </head>
 
 <body>
@@ -34,7 +36,7 @@
         </div>
         <div data-th-if="${not #lists.isEmpty(collectionList)}">
             <button data-th-attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'"
-                    data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategoryNo}"
+                    data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategory.no}"
                     data-th-each="collection : ${collectionList}">
                 <img class="collection-image"
                      data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
@@ -56,10 +58,13 @@
 <!--  수집품 상세 화면  -->
 <div class="layer collection-view-layer"></div>
 
+
+    <script src="/js/collection.js"></script>
+    <script>
+        <!--  수집품 조회화면 사진 인덱스  -->
+        let collectionSlideIndex = 0;
+    </script>
+
 </body>
 </html>
 
-<script>
-    <!--  수집품 조회화면 사진 인덱스  -->
-    let collectionSlideIndex = 0;
-</script>
