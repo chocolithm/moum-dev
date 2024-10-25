@@ -74,6 +74,20 @@
   <div class="chatroom-layer"></div>
 
   <script>
+document.addEventListener("keydown", function(event){
+  if (event.key === "Escape") {
+    closeSignupModal();
+  }
+});
+
+    document.addEventListener("keydown", function(event){
+  if (event.key === "Escape") {
+    closeLoginModal();
+  }
+});
+  </script>
+
+  <script>
     // /board/ 하위에서만 채팅 버튼 보이는 임시 함수 - 향후 삭제
     window.onload = () => {
         const btn = document.querySelector(".chat-btn");
