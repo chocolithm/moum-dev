@@ -23,11 +23,11 @@
 
       </li>
       <li class="btn">
-        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : 'alert(\'로그인 기능이 필요합니다!\'); openLoginModal()'">게시판</a>
+        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : 'alert(\'로그인이 필요합니다!\'); openLoginModal()'">게시판</a>
 
       </li>
       <li class="btn">
-        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : 'alert(\'로그인 기능이 필요합니다!\'); openLoginModal()'">수집품거래</a>
+        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : 'alert(\'로그인이 필요합니다!\'); openLoginModal()'">수집품거래</a>
       </li>
       <li class="btn">
         <a href="http://192.168.0.16:3000" target="_blank">하비위키</a>
