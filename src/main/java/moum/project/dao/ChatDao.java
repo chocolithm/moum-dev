@@ -1,10 +1,10 @@
 package moum.project.dao;
 
 import java.util.List;
-import java.util.Map;
 import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ChatDao {
@@ -12,7 +12,10 @@ public interface ChatDao {
 
   boolean insertRoom(Chatroom chatroom) throws Exception;
 
-  List<Chat> listChat(Map map) throws Exception;
+  List<Chat> listChat(
+      @Param("roomNo") int roomNo,
+      @Param("pageNo") int pageNo,
+      @Param("pageCount") int pageCount) throws Exception;
 
   List<Chatroom> listRoom(int userNo) throws Exception;
 

@@ -1,7 +1,6 @@
 package moum.project.service;
 
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.ChatDao;
 import moum.project.vo.Chat;
@@ -15,8 +14,8 @@ public class DefaultChatService implements ChatService {
   private final ChatDao chatDao;
 
   @Override
-  public List<Chat> loadChat(Map map) throws Exception {
-    return chatDao.listChat(map);
+  public List<Chat> loadChat(int roomNo, int pageNo, int pageCount) throws Exception {
+    return chatDao.listChat(roomNo, pageNo, pageCount);
   }
 
   @Override

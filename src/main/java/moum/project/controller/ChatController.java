@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.ChatService;
 import moum.project.service.UserService;
+import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
 import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,5 +36,11 @@ public class ChatController {
   @ResponseBody
   public Chatroom openRoom(int no) throws Exception {
     return chatService.getRoom(no);
+  }
+
+  @GetMapping("/loadChat")
+  @ResponseBody
+  public List<Chat> loadChat(int no, int pageNo) throws Exception {
+    return chatService.loadChat(no, (pageNo - 1) * 20, 20);
   }
 }

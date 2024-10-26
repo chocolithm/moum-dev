@@ -1,0 +1,127 @@
+/* chat */
+.chatroom-layer {
+  background: white;
+  border: 1px solid lightgrey;
+  box-shadow: 3px 3px 2px;
+  width: 400px;
+  height: calc(100vh - 110px);
+  position: fixed;
+  top: 110px;
+  right: 0;
+  z-index: 50;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.chatroom-layer .chatroom {
+  display: flex;
+  align-items: center;
+  border: 1px solid lightgrey;
+  transition: 0.3s ease;
+}
+
+.chatroom-layer .chatroom:hover {
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(2px);
+  cursor: pointer;
+}
+
+.chatroom-layer .chatroom > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.chatroom-layer .chatroom > .chatroom-user {
+  width: 130px;
+  margin: 10px;
+  align-items: center;
+}
+
+.chatroom-layer .chatroom > .chatroom-content {
+  width: 230px;
+  margin: 10px;
+  font-size: 0.9rem;
+}
+
+.chatroom-layer .chatroom > .chatroom-content > .message {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chatroom-layer .chatroom > .chatroom-content > .date {
+  color: lightgrey;
+}
+
+.chatroom-layer .board-info {
+  border: 1px solid black;
+  background: black;
+  padding: 15px;
+}
+
+.chatroom-layer .board-info span {
+  display: inline-block;
+  color: white;
+  padding: 5px;
+  min-width: 60px;
+}
+
+.chatroom-layer .board-info .board-status {
+  font-weight: bold;
+}
+
+.chatroom-layer .board-info .transaction-type,
+.chatroom-layer .board-info .transaction-price {
+  opacity: 0.7;
+}
+
+.chatroom-layer .chat-info .owner-message-box {
+  text-align: right;
+}
+
+.chatroom-layer .chat-info .nickname {
+  opacity: 0.7;
+  margin-left: 5px;
+  font-size: 0.9rem;
+}
+
+.chatroom-layer .chat-info .message {
+  background: lightgrey;
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 15px;
+}
+
+.chatroom-layer .chat-inputbox {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+}
+
+.chatroom-layer .chat-inputbox .new-message {
+  width: 75%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+  height: 60px;
+}
+
+.chatroom-layer .chat-inputbox .chat-btn {
+  width: 23%;
+  height: 60px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

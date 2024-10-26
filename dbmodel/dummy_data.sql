@@ -118,10 +118,10 @@ INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
 -- 회원 데이터
 INSERT INTO user (user_id, email, nickname, password, admin) VALUES
 (1, 'admin@test.com', '관리자', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
-(2, 'admin2@test.com', '관리자2', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
-(3, 'admin3@test.com', '관리자3', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
-(4, 'admin4@test.com', '관리자4', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
-(5, 'admin5@test.com', '관리자5', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1);
+(2, 'user1@test.com', 'user1', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', 0),
+(3, 'user2@test.com', 'user2', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', 0),
+(4, 'user3@test.com', 'user3', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', 0),
+(5, 'user4@test.com', 'user4', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', 0);
 
 
 
