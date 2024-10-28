@@ -27,16 +27,33 @@ public class ChatController {
 
   @MessageMapping("/send/{roomNo}")
   @SendTo("/chat/receive/{roomNo}")
-  public Chat sendMessage(@DestinationVariable String roomNo, Chat chat) {
-    return chat;
+  public Chat sendMessage(
+      @DestinationVariable int roomNo,
+      Chat chat,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    System.out.println("sendMessage 실행!");
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    Chatroom chatroom = chatService.getRoom(roomNo);
+
+    if (loginUser.getNo() == chatroom.getParticipant().getNo()
+        || loginUser.getNo() == chatroom.getBoard().getUserNo()) {
+
+      chat.setChatroom(chatroom);
+      chat.setSender(loginUser);
+      return chat;
+
+    } else {
+      throw new Exception("잘못된 접근입니다.");
+    }
   }
 
   @GetMapping("/listRoom")
   @ResponseBody
   public List<Chatroom> listRoom(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-    String email = userDetails.getUsername();
-    User loginUser = userService.getByEmail(email);
+    User loginUser = userService.getByEmail(userDetails.getUsername());
 
     return chatService.listRoom(loginUser.getNo());
   }

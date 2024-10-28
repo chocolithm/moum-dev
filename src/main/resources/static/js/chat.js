@@ -2,27 +2,55 @@
 
 let stompClient = null;
 
-function connect(roomNo) {
+window.onload = function () {
+  console.log("connect() 실행!");
+  connect();
+}
+
+function connect(chatroomNo) {
   const socket = new SockJS('/ws');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
-    stompClient.subscribe(`/chat/receive/${roomNo}`, function (message) {
+    stompClient.subscribe(`/chat/receive/${chatroomNo}`, function (message) {
+      console.log(message);
       showMessage(JSON.parse(message.body));
     });
   });
 }
 
-function sendMessage(roomNo) {
+function sendMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message").value;
-  stompClient.send(`/chat/send/${roomNo}`, {}, JSON.stringify({
-    sender: "user",
+  stompClient.send(`/chat/send/${chatroomNo}`, {}, JSON.stringify({
     content: messageContent
   }));
 }
 
-function showMessage(message) {
-  const messageArea = document.getElementById("messageArea");
-  messageArea.innerHTML += "";
+function showMessage(chat) {
+  const chat_info = document.querySelector(".chat-info");
+  const message_box = document.createElement("div");
+
+  if (chat.sender.no == chat.chatroom.participant.no) {
+    const nickname = document.createElement("div");
+    nickname.className = "nickname";
+    nickname.innerHTML = chat.sender.nickname;
+    const message = document.createElement("span");
+    message.className = "message";
+    message.innerHTML = chat.message;
+
+    message_box.appendChild(nickname);
+    message_box.appendChild(message);
+    message_box.className = "message-box guest-message-box";
+
+  } else {
+    const message = document.createElement("span");
+    message.className = "message";
+    message.innerHTML = chat.message;
+
+    message_box.appendChild(message);
+    message_box.className = "message-box owner-message-box";
+  }
+
+  chat_info.appendChild(message_box);
 }
 
 
@@ -113,7 +141,7 @@ function openChat(chatroomNo) {
     try {
       await fetchChatroom(chatroomNo);
       await fetchChatContent(chatroomNo, 1);
-      createChatInputbox();
+      createChatInputbox(chatroomNo);
     } catch (error) {
       console.error("error fetching chatroom info", error);
     }
@@ -221,7 +249,7 @@ function fetchChatContent(chatroomNo, pageNo) {
 
 }
 
-function createChatInputbox() {
+function createChatInputbox(chatroomNo) {
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
   const chat_inputbox = document.createElement("div");
@@ -235,6 +263,7 @@ function createChatInputbox() {
   const btn = document.createElement("button");
   btn.innerHTML = "보내기";
   btn.className = "chat-btn";
+  btn.setAttribute("onclick", `sendMessage(${chatroomNo});`)
 
 
   chat_inputbox.appendChild(input);
