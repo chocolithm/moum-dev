@@ -47,7 +47,12 @@ public class AuthController {
     return "auth/fail";  // fail.html 페이지
   }
 
-  // 로그인 상태 확인
+  /**
+   * 로그인 상태를 확인하는 메서드 입니다.
+   *
+   * @param session
+   * @return
+   */
   @GetMapping("/auth/checkLoginStatus")
   @ResponseBody
   public Map<String, Boolean> checkLoginStatus(HttpSession session) {
