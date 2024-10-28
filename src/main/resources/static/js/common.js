@@ -5,7 +5,7 @@ function openOverlay() {
     fadeIn(document.getElementsByClassName("overlay")[0]);
 }
 
-function closePopup() {
+function closeModal() {
     fadeOut(document.getElementsByClassName("overlay")[0]);
     for (i = 0; i < document.getElementsByClassName("layer").length; i++) {
         document.getElementsByClassName("layer")[i].innerHTML = "";

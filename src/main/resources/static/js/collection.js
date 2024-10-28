@@ -1,5 +1,5 @@
 // 수집품 등록 화면 열기
-function openCollectionFormPopup() {
+function openCollectionFormModal() {
     fetchCollectionForm();
     openOverlay();
     fadeIn(document.querySelector(".collection-form-layer"));
@@ -88,7 +88,7 @@ function addCollection() {
 
 
 // 수집품 조회 화면 열기
-function openCollectionViewPopup(no) {
+function openCollectionViewModal(no) {
     fetchCollectionView(no);
     openOverlay();
     fadeIn(document.getElementsByClassName("collection-view-layer")[0]);
