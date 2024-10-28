@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>전체게시판</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/board.css}">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
                     <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
                 </a>
                 <div>
-                    <a th:href="@{/board/view(no=${board.no})}">
+                    <a th:href="@{/board/boardView(no=${board.no})}">
                         <p th:text="${board.title}" style="font-size: 25px; font-weight: bolder;">게시글 제목</p>
                     </a>
                     <p1 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p1>
