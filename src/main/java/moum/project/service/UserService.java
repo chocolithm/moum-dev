@@ -17,7 +17,7 @@ import moum.project.vo.User;
  * 24. 10. 24.        narilee       exist 삭제
  * 24. 10. 25.        narilee       회원 가입시 닉네임, 이메일 중복체크
  */
-  public interface UserService {
+public interface UserService {
 
   /**
    * 새로운 사용자를 추가합니다.

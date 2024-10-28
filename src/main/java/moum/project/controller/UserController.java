@@ -1,15 +1,21 @@
 package moum.project.controller;
 
 import lombok.RequiredArgsConstructor;
+import moum.project.service.StorageService;
 import moum.project.service.UserService;
 import moum.project.vo.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * packageName    : moum.project.controller
@@ -31,6 +37,9 @@ import java.util.Map;
 public class UserController {
 
   private final UserService userService;
+  private final StorageService storageService;
+  private final String folderName = "users/profile/";
+  private PasswordEncoder passwordEncoder;
 
   /**
    * 이 메서드는 "/admin/myInfo" URL로 들어오는 GET 요청을 처리합니다.
@@ -91,5 +100,72 @@ public class UserController {
       response.put("isEmailTaken", userService.isEmailTaken(email));
     }
     return response;
+  }
+
+  @PostMapping("/updateProfile")
+  public String updateProfile(
+      @RequestParam("nickname") String nickname,
+      @RequestParam("password") String password,
+      @RequestParam("file") MultipartFile file,
+      @AuthenticationPrincipal UserDetails userDetails,
+      Model model) throws Exception {
+
+    if (userDetails == null) {
+      return "redirect:/auth/login";
+    }
+
+    String email = userDetails.getUsername();
+    User user = userService.getByEmail(email);
+
+    // 닉네임 수정
+    if (nickname != null && !nickname.isEmpty()) {
+      user.setNickname(nickname);
+    }
+
+    // 비밀번호 수정 (암호화하여 저장)
+    if (password != null && !password.isEmpty()) {
+      user.setPassword(passwordEncoder.encode(password));
+    }
+
+    // 프로필 사진 수정
+    if (file != null && !file.isEmpty()) {
+      String filename = UUID.randomUUID().toString();
+      Map<String, Object> options = new HashMap<>();
+      options.put(StorageService.CONTENT_TYPE, file.getContentType());
+
+      // 스토리지에 파일 업로드
+      storageService.upload(folderName + filename, file.getInputStream(), options);
+
+      // 기존 프로필 이미지가 있으면 삭제
+      if (user.getPhoto() != null) {
+        storageService.delete(folderName + user.getPhoto());
+      }
+
+      // 새로운 파일명으로 업데이트
+      user.setPhoto(filename);
+    }
+
+    userService.update(user);
+    model.addAttribute("user", user);
+    return "redirect:/user/myInfo";
+  }
+
+  @PutMapping("/update")
+  public String updateUser(
+      @RequestBody User updatedUser,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    if (userDetails == null) {
+      return "redirect:/auth/login";
+    }
+
+    String email = userDetails.getUsername();
+    User user = userService.getByEmail(email);
+
+    // 변경할 정보 설정
+    user.setNickname(updatedUser.getNickname());
+
+    userService.update(user); // 업데이트 실행
+    return "redirect:/user/myInfo";
   }
 }

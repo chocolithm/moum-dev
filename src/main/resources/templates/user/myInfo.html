@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>내 정보</title>
@@ -9,9 +9,40 @@
 <body>
 <header th:replace="~{header :: header}"></header>
 
-<h1> 공사중! </h1>
-<h1> 내 정보가 표시 될 페이지 입니다. </h1>
-<h1> 만드실 입주자 대환영!</h1>
+<div class="profile-section">
+  <h1>내 정보</h1>
+
+  <!-- 프로필 사진 표시 -->
+  <div class="profile-image">
+    <img th:src="${user.photo != null ? '/user/profile/' + user.photo : '/images/default-profile.png'}"
+         alt="Profile Image" style="width:150px; height:150px; border-radius:50%;" />
+  </div>
+
+  <!-- 사용자 정보 수정 폼 -->
+  <form th:action="@{/user/updateProfile}" method="post" enctype="multipart/form-data">
+    <div>
+      <label>닉네임:</label>
+      <input type="text" name="nickname" th:value="${user.nickname}" />
+    </div>
+
+    <div>
+      <label>새 비밀번호:</label>
+      <input type="password" name="password" placeholder="비밀번호를 입력하세요" />
+    </div>
+
+    <div>
+      <label>프로필 사진:</label>
+      <input type="file" name="file" accept="image/*" />
+    </div>
+
+    <button type="submit">정보 수정</button>
+  </form>
+
+  <!-- 회원 탈퇴 버튼 -->
+  <form th:action="@{/user/delete}" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
+    <button type="submit">탈퇴하기</button>
+  </form>
+</div>
 
 </body>
 </html>
