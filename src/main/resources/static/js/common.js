@@ -266,7 +266,7 @@ function findAllComment(boardNo) {
 },
     success: function(response) {
     $("#likeCount").text(response.likeCount);
-    Swal.fire("좋아요를 눌렀습니다");
+    Swal.fire("추천을 눌렀습니다");
 },
     error: function(error) {
     console.error("추천 오류:", error);
