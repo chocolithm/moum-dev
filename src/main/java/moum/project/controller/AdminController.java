@@ -29,7 +29,12 @@ public class AdminController {
    * @return "management" 뷰 이름을 반환합니다.
    */
   @GetMapping("management")
-  public void management(Model model) {
+public void management(Model model) {
 
+}
+
+  @GetMapping("management/board/list")
+  public String boardlist(Model model) {
+return "admin/board/list";
   }
 }
