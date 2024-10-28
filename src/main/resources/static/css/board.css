@@ -139,51 +139,45 @@
 /* board 클래스 설정 */
 .boardList {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    padding: 200px;
     gap: 20px;
-    padding: 40px;
+}
 
+.boardList-middle-box {
+    width: 110%;
+    height: 1000px;
+    min-width: 250px;
+    border: 1px solid black;
+    border-radius: 15px;
+    text-align: left;
+    padding: 100px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* 세로 정렬을 위해 추가 */
+    gap: 20px;
+    align-items: flex-start;
+}
 
-    /* 중앙 위쪽 박스 (인기글) 설정 */
+.boardList-middle-image {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+}
 
-    .boardList .boardList-middle-box {
-        width: 10%;
-        height: 100px;
-        min-width: 250px;
-        border: 1px solid black;
-        border-radius: 15px;
-        text-align: left;
-        padding: 80px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.boardList-middle-image img {
+    width: 300px;
+    height: auto;
+    flex-shrink: 0;
+}
 
-        gap: 20px;
-    }
+.boardList-middle-image div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
 
-
-    .boardList .boardList-middle-image {
-        display: flex;
-        gap: 50px;
-        align-items: flex-start;
-        padding: 10px;
-
-    }
-
-    /* 이미지 스타일 */
-
-    .board .boardList-middle-image img {
-        width: 150px;
-        height: auto;
-        flex-shrink: 0;
-    }
-
-    /* 텍스트 스타일 */
-
-    .board .boardList-middle-image div {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
 
     /*-----------------------------------------------------------------------*/
 
@@ -210,4 +204,3 @@
         /* 최대 3줄까지 표시 */
         -webkit-box-orient: vertical;
     }
-}
