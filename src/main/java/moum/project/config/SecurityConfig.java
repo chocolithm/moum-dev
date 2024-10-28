@@ -113,8 +113,9 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**", "/error", "/user/**", "/auth/**").permitAll()
-            .requestMatchers("/login").permitAll() // 로그인 페이지는 접근 가능해야 함
+            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**", "/error", "/user/**", "/auth/**").permitAll() // 모든 사용자 접근 가능
+            .requestMatchers("/login").permitAll() // 로그인 페이지 접근 허용
+            .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 권한만 접근 가능
             .anyRequest().authenticated()
         )
         .formLogin((form) -> form
