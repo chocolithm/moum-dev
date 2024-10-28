@@ -41,10 +41,9 @@
   </div>
   <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
       <button class="btn chat-btn" onClick="openChatroomPopup()" style="display: none;">채팅</button>
-    <a class='btn btn-light'
-       data-th-href="@{/user/myInfo}"
-       data-th-text="${session.nickname}"
-       href="/home.html"></a>
+    <a class="btn btn-light"
+       th:href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
+       th:text="${session.nickname}"></a>
       <form data-th-action="@{/logout}" method="post" style="display: inline;">
       <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
       <button class="btn btn-logout" type="submit">로그아웃</button>
