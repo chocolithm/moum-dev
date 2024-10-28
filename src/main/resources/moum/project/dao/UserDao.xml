@@ -125,7 +125,7 @@
     </update>
 
     <update id="updateLastLogin" parameterType="map">
-        UPDATE user set
+        update user set
         last_login = #{lastLoginTime}
         WHERE user_id = #{userId}
     </update>

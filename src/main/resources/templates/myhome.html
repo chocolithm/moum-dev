@@ -28,7 +28,7 @@
         </ul>
     </aside>
     <div class="myhome-upper-buttons">
-        <button class="btn" onClick="openCollectionFormPopup();">수집품 등록</button>
+        <button class="btn" onClick="openCollectionFormModal();">수집품 등록</button>
         <button class="btn" onClick="alert('게시글 연결 필요')">POST</button>
     </div>
     <div class="myhome-collections clearfix">
@@ -36,7 +36,7 @@
             <p>소집품이 없습니다.</p>
         </div>
         <div data-th-if="${not #lists.isEmpty(collectionList)}">
-            <button data-th-attr="onclick='openCollectionViewPopup(' + ${collection.no} + ');'"
+            <button data-th-attr="onclick='openCollectionViewModal(' + ${collection.no} + ');'"
                     data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategory.no}"
                     data-th-each="collection : ${collectionList}">
                 <img class="collection-image"
