@@ -27,6 +27,10 @@
             achievement_id asc
     </select>
 
+    <select id="listByUser" resultMap="AchievementMap"> <!--목록!-->
+       gi
+    </select>
+
     <insert id="insert" parameterType="moum.project.vo.Achievement"> <!--추가!-->
     insert into achievement(achievement_id, name, content, photo, acquisition_condition, location)
         values (#{id}, #{name}, #{content}, #{photo}, #{condition}, #{location})
