@@ -492,10 +492,29 @@ INSERT INTO achievement (achievement_id, name, content, photo, acquisition_condi
 INSERT INTO user_achievement (user_id, achievement_id) VALUES
 (1, 'FIRST_POST'),
 (1, 'COLLECTOR_NOVICE'),
+(1, 'LEGO_MASTER'),
+(1, 'SHOE_ENTHUSIAST'),
+(1, 'GUNDAM_PRO'),
 (2, 'FIRST_POST'),
 (2, 'COLLECTOR_NOVICE'),
+(2, 'LEGO_MASTER'),
+(2, 'SHOE_ENTHUSIAST'),
+(2, 'GUNDAM_PRO'),
 (3, 'FIRST_POST'),
-(3, 'COLLECTOR_NOVICE');
+(3, 'COLLECTOR_NOVICE'),
+(3, 'LEGO_MASTER'),
+(3, 'SHOE_ENTHUSIAST'),
+(3, 'GUNDAM_PRO'),
+(4, 'FIRST_POST'),
+(4, 'COLLECTOR_NOVICE'),
+(4, 'LEGO_MASTER'),
+(4, 'SHOE_ENTHUSIAST'),
+(4, 'GUNDAM_PRO'),
+(5, 'FIRST_POST'),
+(5, 'COLLECTOR_NOVICE'),
+(5, 'LEGO_MASTER'),
+(5, 'SHOE_ENTHUSIAST'),
+(5, 'GUNDAM_PRO');
 
 -- 게시글 태그 데이터
 INSERT INTO board_tag (board_id, tag_name) VALUES
