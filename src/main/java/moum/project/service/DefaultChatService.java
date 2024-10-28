@@ -14,6 +14,11 @@ public class DefaultChatService implements ChatService {
   private final ChatDao chatDao;
 
   @Override
+  public boolean addChat(Chat chat) throws Exception {
+    return chatDao.insertChat(chat);
+  }
+
+  @Override
   public List<Chat> loadChat(int roomNo, int pageNo, int pageCount) throws Exception {
     return chatDao.listChat(roomNo, pageNo, pageCount);
   }

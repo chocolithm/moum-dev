@@ -76,6 +76,13 @@
   opacity: 0.7;
 }
 
+.chatroom-layer .chat-info {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: calc(100vh - 280px);
+}
+
 .chatroom-layer .chat-info .owner-message-box {
   text-align: right;
 }

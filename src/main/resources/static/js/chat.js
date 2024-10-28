@@ -2,14 +2,9 @@
 
 let stompClient = null;
 
-window.onload = function () {
-  console.log("connect() 실행!");
-  connect();
-}
-
 function connect(chatroomNo) {
-  const socket = new SockJS('/ws');
-  stompClient = Stomp.over(socket);
+  const socket = new SockJS("/ws");
+  stompClient = StompJs.Stomp.over(socket);
   stompClient.connect({}, function (frame) {
     stompClient.subscribe(`/chat/receive/${chatroomNo}`, function (message) {
       console.log(message);
@@ -18,18 +13,32 @@ function connect(chatroomNo) {
   });
 }
 
-function sendMessage(chatroomNo) {
+async function sendMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message").value;
   stompClient.send(`/chat/send/${chatroomNo}`, {}, JSON.stringify({
-    content: messageContent
+    sender: await getSender(),
+    chatroom: {
+      no: chatroomNo
+    },
+    message: messageContent
   }));
+  messageContent = "";
 }
 
-function showMessage(chat) {
+async function showMessage(chat) {
   const chat_info = document.querySelector(".chat-info");
   const message_box = document.createElement("div");
+  const loginUser = await getSender();
 
-  if (chat.sender.no == chat.chatroom.participant.no) {
+  if (chat.sender.no == loginUser.no) {
+    const message = document.createElement("span");
+    message.className = "message";
+    message.innerHTML = chat.message;
+
+    message_box.appendChild(message);
+    message_box.className = "message-box owner-message-box";
+
+  } else {
     const nickname = document.createElement("div");
     nickname.className = "nickname";
     nickname.innerHTML = chat.sender.nickname;
@@ -40,17 +49,10 @@ function showMessage(chat) {
     message_box.appendChild(nickname);
     message_box.appendChild(message);
     message_box.className = "message-box guest-message-box";
-
-  } else {
-    const message = document.createElement("span");
-    message.className = "message";
-    message.innerHTML = chat.message;
-
-    message_box.appendChild(message);
-    message_box.className = "message-box owner-message-box";
   }
 
   chat_info.appendChild(message_box);
+  chat_info.scrollTop = chat_info.scrollHeight;
 }
 
 
@@ -58,19 +60,19 @@ function showMessage(chat) {
 
 
 
-function openChatroomPopup() {
+function openChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
   fetchChatroomList();
-  chat_btn.setAttribute("onClick", "closeChatroomPopup()");
+  chat_btn.setAttribute("onClick", "closeChatroomModal()");
   fadeIn(chatroom_layer);
 }
 
-function closeChatroomPopup() {
+function closeChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
-  chat_btn.setAttribute("onClick", "openChatroomPopup()");
+  chat_btn.setAttribute("onClick", "openChatroomModal()");
   fadeOut(chatroom_layer)
   setTimeout(function () {
     chatroom_layer.innerHTML = "";
@@ -142,6 +144,7 @@ function openChat(chatroomNo) {
       await fetchChatroom(chatroomNo);
       await fetchChatContent(chatroomNo, 1);
       createChatInputbox(chatroomNo);
+      connect(chatroomNo);
     } catch (error) {
       console.error("error fetching chatroom info", error);
     }
@@ -203,17 +206,26 @@ function fetchChatContent(chatroomNo, pageNo) {
   return new Promise((resolve, reject) => {
     fetch(`/chat/loadChat?no=${chatroomNo}&pageNo=${pageNo}`)
       .then(response => response.json())
-      .then(data => {
+      .then(async data => {
 
         const chat_info = document.createElement("div");
         chat_info.className = "chat-info";
 
         const br = document.createElement("br");
+        const loginUser = await getSender();
 
         data.reverse().forEach(chat => {
           const message_box = document.createElement("div");
 
-          if (chat.sender.no == chat.chatroom.participant.no) {
+          if (chat.sender.no == loginUser.no) {
+            const message = document.createElement("span");
+            message.className = "message";
+            message.innerHTML = chat.message;
+
+            message_box.appendChild(message);
+            message_box.className = "message-box owner-message-box";
+
+          } else {
             const nickname = document.createElement("div");
             nickname.className = "nickname";
             nickname.innerHTML = chat.sender.nickname;
@@ -224,19 +236,12 @@ function fetchChatContent(chatroomNo, pageNo) {
             message_box.appendChild(nickname);
             message_box.appendChild(message);
             message_box.className = "message-box guest-message-box";
-
-          } else {
-            const message = document.createElement("span");
-            message.className = "message";
-            message.innerHTML = chat.message;
-
-            message_box.appendChild(message);
-            message_box.className = "message-box owner-message-box";
           }
 
           chat_info.appendChild(message_box);
         })
 
+        chat_info.scrollTop = chat_info.scrollHeight;
         chatroom_layer.appendChild(chat_info);
 
         resolve();
@@ -270,4 +275,15 @@ function createChatInputbox(chatroomNo) {
   chat_inputbox.appendChild(btn);
 
   chatroom_layer.appendChild(chat_inputbox);
+}
+
+function getSender() {
+  return fetch(`/chat/sender`)
+    .then(response => response.json())
+    .then(user => {
+      return user;
+    })
+    .catch(error => {
+      console.error("Error fetching sender:", error);
+    });
 }

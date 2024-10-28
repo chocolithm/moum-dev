@@ -10,125 +10,128 @@
 
 <body onload="populateEmailField()">
 
-<header data-th-fragment="header">
+  <header data-th-fragment="header">
 
-  <div class="overlay" onClick="closeModal();"></div>
-  <a href="/home">
-    <img alt="홈" data-th-src="@{/images/home.gif}">
-  </a>
-  <nav>
-    <ul>
-      <li class="btn">
-        <a href="/home">마이홈</a>
+    <div class="overlay" onClick="closeModal();"></div>
+    <a href="/home">
+      <img alt="홈" data-th-src="@{/images/home.gif}">
+    </a>
+    <nav>
+      <ul>
+        <li class="btn">
+          <a href="/home">마이홈</a>
 
-      </li>
-      <li class="btn">
-        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : 'alert(\'로그인이 필요합니다!\'); openLoginModal()'">게시판</a>
+        </li>
+        <li class="btn">
+          <a
+            data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : 'alert(\'로그인이 필요합니다!\'); openLoginModal()'">게시판</a>
 
-      </li>
-      <li class="btn">
-        <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : 'alert(\'로그인이 필요합니다!\'); openLoginModal()'">수집품거래</a>
-      </li>
-      <li class="btn">
-        <a href="http://192.168.0.16:3000" target="_blank">하비위키</a>
-      </li>
-    </ul>
-  </nav>
+        </li>
+        <li class="btn">
+          <a
+            data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : 'alert(\'로그인이 필요합니다!\'); openLoginModal()'">수집품거래</a>
+        </li>
+        <li class="btn">
+          <a href="http://192.168.0.16:3000" target="_blank">하비위키</a>
+        </li>
+      </ul>
+    </nav>
 
-  <div class="login-state pos-right" data-th-unless="${#authorization.expression('isAuthenticated()')}">
+    <div class="login-state pos-right" data-th-unless="${#authorization.expression('isAuthenticated()')}">
       <button class="btn btn-join" onclick="openSignupModal();">회원가입</button>
       <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
-  </div>
-  <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
-      <button class="btn chat-btn" onClick="openChatroomPopup()" style="display: none;">채팅</button>
-    <a class="btn btn-light"
-       th:href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
-       th:text="${session.nickname}"></a>
+    </div>
+    <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
+      <button class="btn chat-btn" onClick="openChatroomModal()" style="display: none;">채팅</button>
+      <a class="btn btn-light"
+        th:href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
+        th:text="${session.nickname}"></a>
       <form data-th-action="@{/logout}" method="post" style="display: inline;">
-      <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
-      <button class="btn btn-logout" type="submit">로그아웃</button>
-    </form>
-  </div>
+        <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
+        <button class="btn btn-logout" type="submit">로그아웃</button>
+      </form>
+    </div>
 
-  <!-- 로그인 모달 -->
-  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <span class="close" onclick="closeLoginModal()">&times;</span>
-      <div id="loginFormContainer">
-        <!-- form.html의 내용이 여기 로드됩니다. -->
+    <!-- 로그인 모달 -->
+    <div class="modal" id="loginModal">
+      <div class="modal-content">
+        <span class="close" onclick="closeLoginModal()">&times;</span>
+        <div id="loginFormContainer">
+          <!-- form.html의 내용이 여기 로드됩니다. -->
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 회원가입 모달 -->
-  <div class="modal" id="signupModal">
-    <div class="modal-content">
-      <span class="close" onclick="closeSignupModal()">&times;</span>
-      <div id="signupFormContainer">
-        <!-- signup.html의 내용이 여기 로드됩니다. -->
+    <!-- 회원가입 모달 -->
+    <div class="modal" id="signupModal">
+      <div class="modal-content">
+        <span class="close" onclick="closeSignupModal()">&times;</span>
+        <div id="signupFormContainer">
+          <!-- signup.html의 내용이 여기 로드됩니다. -->
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="chatroom-layer"></div>
+    <div class="chatroom-layer"></div>
 
-  <script>
-document.addEventListener("keydown", function(event){
-  if (event.key === "Escape") {
-    closeSignupModal();
-  }
-});
+    <script>
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeSignupModal();
+        }
+      });
 
-    document.addEventListener("keydown", function(event){
-  if (event.key === "Escape") {
-    closeLoginModal();
-  }
-});
-  </script>
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeLoginModal();
+        }
+      });
+    </script>
 
-  <script>
-    // /board/ 하위에서만 채팅 버튼 보이는 임시 함수 - 향후 삭제
-    window.onload = () => {
+    <script>
+      // /board/ 하위에서만 채팅 버튼 보이는 임시 함수 - 향후 삭제
+      window.onload = () => {
         const btn = document.querySelector(".chat-btn");
         if (location.pathname.startsWith("/board/")) {
-            btn.style.display = "block";
+          btn.style.display = "block";
         }
-    }
-  </script>
-
-<!--  로그인 실패시 알림-->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('error') === 'true') {
-        alert("이메일 또는 암호가 맞지 않습니다.");
       }
-    });
-  </script>
+    </script>
 
-<!--  회원가입 성공 또는 실패시 알림-->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const urlParams = new URLSearchParams(window.location.search);
+    <!--  로그인 실패시 알림-->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('error') === 'true') {
+          alert("이메일 또는 암호가 맞지 않습니다.");
+        }
+      });
+    </script>
 
-      // 회원가입 성공
-      if (urlParams.get('signupSuccess') === 'true') {
-        alert("회원가입이 완료되었습니다.");
-      }
+    <!--  회원가입 성공 또는 실패시 알림-->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
 
-      // 회원가입 실패
-      if (urlParams.get('signupError') === 'true') {
-        alert("회원가입 중 오류가 발생했습니다.");
-      }
-    });
-  </script>
+        // 회원가입 성공
+        if (urlParams.get('signupSuccess') === 'true') {
+          alert("회원가입이 완료되었습니다.");
+        }
 
-  <script>
-    let nicknameChecked = false;
-    let emailChecked = false;
-    let passwordMatch = false;
-  </script>
-</header>
+        // 회원가입 실패
+        if (urlParams.get('signupError') === 'true') {
+          alert("회원가입 중 오류가 발생했습니다.");
+        }
+      });
+    </script>
+
+    <script>
+      let nicknameChecked = false;
+      let emailChecked = false;
+      let passwordMatch = false;
+    </script>
+  </header>
 
 </body>
+
 </html>

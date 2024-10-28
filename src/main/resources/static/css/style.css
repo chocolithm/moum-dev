@@ -66,8 +66,13 @@ body {
 /* header */
 header {
     padding: 30px;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     border-bottom: 1px solid black;
+    background: white;
+    z-index: 100;
 }
 
 header > h1 {
@@ -95,6 +100,7 @@ header > nav > ul {
 main {
     padding: 20px 30px;
     overflow: hidden;
+    margin-top: 110px;
 }
 
 main .main-image {
@@ -291,6 +297,3 @@ th {
 td {
     padding: 5px;
 }
-
-
-

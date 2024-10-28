@@ -52,7 +52,8 @@
 
   <insert id="insertChat" parameterType="moum.project.vo.Chat"
           useGeneratedKeys="true" keyColumn="chat_id" keyProperty="no">
-
+    insert into chat(chatroom_id, user_id, message)
+    values(#{chatroom.no}, #{sender.no}, #{message})
   </insert>
 
   <insert id="insertRoom" parameterType="moum.project.vo.Chatroom"
@@ -102,6 +103,7 @@
         ) c1 on cr.chatroom_id = c1.chatroom_id
     where
       b.user_id = #{no}
+      or cr.user_id = #{no}
     order by
       c1.chatroom_id desc;
   </select>
