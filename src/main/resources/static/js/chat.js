@@ -1,4 +1,35 @@
 // 채팅
+
+let stompClient = null;
+
+function connect(roomNo) {
+  const socket = new SockJS('/ws');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, function (frame) {
+    stompClient.subscribe(`/chat/receive/${roomNo}`, function (message) {
+      showMessage(JSON.parse(message.body));
+    });
+  });
+}
+
+function sendMessage(roomNo) {
+  const messageContent = document.getElementById("new-message").value;
+  stompClient.send(`/chat/send/${roomNo}`, {}, JSON.stringify({
+    sender: "user",
+    content: messageContent
+  }));
+}
+
+function showMessage(message) {
+  const messageArea = document.getElementById("messageArea");
+  messageArea.innerHTML += "";
+}
+
+
+
+
+
+
 function openChatroomPopup() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
@@ -37,12 +68,12 @@ function fetchChatroomList() {
         chatspan.className = "chatroom-content";
 
         const img = document.createElement("img");
-        img.src = chatroom.user.photo == null ? "/images/user/default1.png" : "/images/user/default2.png";
+        img.src = chatroom.participant.photo == null ? "/images/user/default1.png" : "/images/user/default2.png";
         img.alt = "프로필";
         img.className = "profile"
 
         const nickname = document.createElement("div")
-        nickname.innerHTML = chatroom.user.nickname;
+        nickname.innerHTML = chatroom.participant.nickname;
         nickname.className = "nickname";
 
         userspan.appendChild(img);
@@ -97,7 +128,7 @@ function fetchChatroom(chatroomNo) {
   return new Promise((resolve, reject) => {
     fetch(`/chat/openRoom?no=${chatroomNo}`)
       .then(response => response.json())
-      .then(data => {
+      .then(chatroom => {
 
         const board_info = document.createElement("div");
         board_info.className = "board-info";
@@ -106,19 +137,19 @@ function fetchChatroom(chatroomNo) {
 
         const board_status = document.createElement("span");
         board_status.className = "board-status";
-        board_status.innerHTML = data.board.status == true ? "거래완료" : "거래중";
+        board_status.innerHTML = chatroom.board.status == true ? "거래완료" : "거래중";
 
         const board_title = document.createElement("span");
         board_title.className = "board-title";
-        board_title.innerHTML = data.board.title;
+        board_title.innerHTML = chatroom.board.title;
 
         const transaction_type = document.createElement("span");
         transaction_type.className = "transaction-type";
-        transaction_type.innerHTML = data.board.collection == null ? "구매" : "판매";
+        transaction_type.innerHTML = chatroom.board.collection == null ? "구매" : "판매";
 
         const transaction_price = document.createElement("span");
         transaction_price.className = "transaction-price";
-        transaction_price.innerHTML = data.board.price != 0 ? data.board.price + "원" : "가격 미정";
+        transaction_price.innerHTML = chatroom.board.price != 0 ? chatroom.board.price + "원" : "가격 미정";
 
         board_info.appendChild(board_status);
         board_info.appendChild(board_title);
@@ -154,10 +185,10 @@ function fetchChatContent(chatroomNo, pageNo) {
         data.reverse().forEach(chat => {
           const message_box = document.createElement("div");
 
-          if (chat.user.no == chat.chatroom.user.no) {
+          if (chat.sender.no == chat.chatroom.participant.no) {
             const nickname = document.createElement("div");
             nickname.className = "nickname";
-            nickname.innerHTML = chat.user.nickname;
+            nickname.innerHTML = chat.sender.nickname;
             const message = document.createElement("span");
             message.className = "message";
             message.innerHTML = chat.message;
@@ -198,6 +229,7 @@ function createChatInputbox() {
 
   const input = document.createElement("textarea");
   input.rows = "2";
+  input.id = "new-message";
   input.className = "new-message";
 
   const btn = document.createElement("button");

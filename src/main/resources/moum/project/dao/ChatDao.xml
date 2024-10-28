@@ -12,13 +12,13 @@
     
     <association property="chatroom" javaType="moum.project.vo.Chatroom">
       <id column="chatroom_id" property="no"/>
-      <association property="user" javaType="moum.project.vo.User">
-        <id column="sender_id" property="no"/>
+      <association property="participant" javaType="moum.project.vo.User">
+        <id column="participant_id" property="no"/>
       </association>
     </association>
 
-    <association property="user" javaType="moum.project.vo.User">
-      <id column="user_id" property="no"/>
+    <association property="sender" javaType="moum.project.vo.User">
+      <id column="sender_id" property="no"/>
       <result column="nickname" property="nickname"/>
     </association>
   </resultMap>
@@ -42,8 +42,8 @@
       </association>
     </association>
 
-    <association property="user" javaType="moum.project.vo.User">
-      <id column="user_id" property="no"/>
+    <association property="participant" javaType="moum.project.vo.User">
+      <id column="participant_id" property="no"/>
       <result column="nickname" property="nickname"/>
       <result column="photo" property="photo"/>
     </association>
@@ -63,8 +63,8 @@
   <select id="listChat" resultMap="ChatMap" parameterType="map">
     select
       c.chat_id,
-      c.user_id,
-      cr.user_id as sender_id,
+      c.user_id as sender_id,
+      cr.user_id as participant_id,
       u.nickname,
       c.message,
       c.chat_date
@@ -82,7 +82,7 @@
   <select id="listRoom" resultMap="ChatroomMap" parameterType="int">
     select
       cr.chatroom_id,
-      cr.user_id,
+      cr.user_id as participant_id,
       u.nickname,
       u.photo,
       c1.message,

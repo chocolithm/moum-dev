@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 public class Chat {
   @EqualsAndHashCode.Include private int no;
   private Chatroom chatroom;
-  private User user;
+  private User sender;
   private String message;
   private Date chatDate;
 }
