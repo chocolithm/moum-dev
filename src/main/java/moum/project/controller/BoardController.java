@@ -3,15 +3,13 @@ package moum.project.controller;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.BoardService;
+import moum.project.service.LikesService;
 import moum.project.service.StorageService;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Board;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -21,6 +19,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final StorageService storageService;
+    private final LikesService likesService;
 
     private final String folderName = "board/";
 
@@ -98,12 +97,31 @@ public class BoardController {
 
     @GetMapping("/boardView")
     public String view(@RequestParam("no") int no, Model model) throws Exception {
+        // 게시글 상세 정보 가져오기
         Board board = boardService.get(no);
         if (board == null) {
             throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + no);
         }
+
+        // 추천수 가져오기
+        int likeCount = likesService.countLikesByBoard(no);
+        board.setLikeCount(likeCount); // Board 객체에 추천수를 설정 (필드가 있다면)
+
+        // 모델에 게시글 정보 추가
         model.addAttribute("board", board);
         return "board/boardView";
+    }
+
+    @PostMapping("/increaseLike")
+    @ResponseBody
+    public Map<String, Object> increaseLike(@RequestParam("boardNo") int boardNo) throws Exception {
+        likesService.addLike(boardNo); // 추천수 증가
+        int likeCount = likesService.countLikesByBoard(boardNo); // 최신 추천수 조회
+
+        // 추천수 응답 데이터
+        Map<String, Object> response = new HashMap<>();
+        response.put("likeCount", likeCount);
+        return response;
     }
 
 

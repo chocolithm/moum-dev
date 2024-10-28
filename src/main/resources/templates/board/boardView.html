@@ -6,16 +6,34 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/board.css}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <div th:replace="~{header}"></div>
 <main>
-    <div class="board-view">
+
+    <div class="search-container">
+        <div class="navigation-pill">
+            <div class="title-wrapper">
+                <div class="title" th:text="'주제별'" style="font-weight: bold">주제별</div>
+            </div>
+        </div>
+        <input type="text" class="search-input" placeholder="Search">
+        <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+
+
+    <div class="boardView">
+        <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
         <h2 th:text="${board.title}">게시글 제목</h2>
-        <p>작성자: <span th:text="${board.userNo}">작성자 ID</span></p>
+<!--        <p>작성자: <span th:text="${board.userNo}">작성자 ID</span></p>-->
         <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
         <p>조회수: <span th:text="${board.viewCount}">0</span></p>
+        <p>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></p>
+        <button type="button" th:onclick="'increaseLike(' + ${board.no} + ');'" class="like-button">추천하기</button>
         <hr/>
         <div th:text="${board.content}">게시글 내용</div>
     </div>
