@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
   private String nickname;
 
   /**
-   * 주어진 이메일로 사용자를 조회하여 UserDetails 객체를 생성합니다.
+   * 주어진 이메일로 사용자를 조회하여 이메일, 비밀번호, 권한 종류 UserDetails 객체를 생성합니다.
    *
    * @param email 조회할 사용자의 이메일
    * @return 조회된 사용자 정보를 담은 UserDetails 객체

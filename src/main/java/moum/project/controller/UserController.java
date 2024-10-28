@@ -33,6 +33,16 @@ public class UserController {
   private final UserService userService;
 
   /**
+   * 이 메서드는 "/admin/myInfo" URL로 들어오는 GET 요청을 처리합니다.
+   *
+   * @return "myInfo" 뷰 이름을 반환합니다.
+   */
+  @GetMapping("/myInfo")
+  public void myInfo(Model model) {
+
+  }
+
+  /**
    * 사용자 가입 폼을 반환 합니다.
    *
    * @param model 사용자 폼에 데이터를 추가하기 위한 모델 객체
@@ -42,11 +52,6 @@ public class UserController {
   public String signupForm(Model model) {
     model.addAttribute("user", new User());
     return "user/signup";
-  }
-
-  @GetMapping("/myInfo")
-  public void myInfo(Model model) {
-
   }
 
   /**

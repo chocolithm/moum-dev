@@ -23,6 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class AdminController {
 
+  /**
+   * 이 메서드는 "/admin/management" URL로 들어오는 GET 요청을 처리합니다.
+   *
+   * @return "management" 뷰 이름을 반환합니다.
+   */
   @GetMapping("management")
   public void management(Model model) {
 
