@@ -25,6 +25,11 @@ public class AchievementController {
     return "achievement/list";
   }
 
+  @GetMapping("listByUser")
+  public String listByUser() throws Exception {
+    return "리턴할 html 파일 위치";
+  }
+
 
   @GetMapping("view")
   @ResponseBody

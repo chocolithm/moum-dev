@@ -8,6 +8,8 @@ public interface AchievementService {
 
   List<Achievement> list() throws Exception;
 
+  List<Achievement> listByUser() throws Exception;
+
   Achievement get(String id) throws Exception;
 
   boolean update(Achievement achievement) throws Exception;
