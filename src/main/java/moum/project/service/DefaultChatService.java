@@ -19,6 +19,11 @@ public class DefaultChatService implements ChatService {
   }
 
   @Override
+  public boolean addRoom(Chatroom chatroom) throws Exception {
+    return chatDao.insertRoom(chatroom);
+  }
+
+  @Override
   public List<Chat> loadChat(int roomNo, int pageNo, int pageCount) throws Exception {
     return chatDao.listChat(roomNo, pageNo, pageCount);
   }
@@ -31,5 +36,10 @@ public class DefaultChatService implements ChatService {
   @Override
   public Chatroom getRoom(int roomNo) throws Exception {
     return chatDao.findRoom(roomNo);
+  }
+
+  @Override
+  public Chatroom getRoomByBoard(int boardNo, int userNo) throws Exception {
+    return chatDao.findRoomByBoard(boardNo, userNo);
   }
 }

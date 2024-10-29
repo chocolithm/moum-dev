@@ -22,4 +22,6 @@ public interface ChatDao {
   Chat findChat(int chatNo) throws Exception;
 
   Chatroom findRoom(int roomNo) throws Exception;
+
+  Chatroom findRoomByBoard(int boardNo, int userNo) throws Exception;
 }

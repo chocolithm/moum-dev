@@ -1,9 +1,12 @@
 package moum.project.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.BoardService;
 import moum.project.service.ChatService;
 import moum.project.service.UserService;
+import moum.project.vo.Board;
 import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
 import moum.project.vo.User;
@@ -24,6 +27,7 @@ public class ChatController {
 
   private final ChatService chatService;
   private final UserService userService;
+  private final BoardService boardService;
 
   @GetMapping("/sender")
   @ResponseBody
@@ -39,12 +43,56 @@ public class ChatController {
       @DestinationVariable String roomNo,
       Chat chat) throws Exception {
 
-    System.out.println(chat);
+    chat.setChatDate(LocalDateTime.now());
     if (chatService.addChat(chat)) {
       return chat;
     } else {
       return null;
     }
+  }
+
+  @GetMapping("/checkRoom")
+  @ResponseBody
+  public Chatroom checkRoom(
+      int boardNo,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+
+    Chatroom chatroom = chatService.getRoomByBoard(boardNo, loginUser.getNo());
+
+    if (chatroom == null) {
+      chatroom = new Chatroom();
+      Board board = boardService.get(boardNo);
+      board.setContent("");
+      chatroom.setBoard(board);
+    }
+
+    return chatroom;
+  }
+
+  @GetMapping("/addRoom")
+  @ResponseBody
+  public Chatroom addRoom(
+      int boardNo,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    Board board = boardService.get(boardNo);
+
+    if (board.getUserNo() == loginUser.getNo()) {
+      return null;
+    }
+
+    Chatroom chatroom = new Chatroom();
+    chatroom.setBoard(board);
+    chatroom.setParticipant(loginUser);
+
+    if (chatService.addRoom(chatroom)) {
+      return chatroom;
+    }
+    return null;
+
   }
 
   @GetMapping("/listRoom")
