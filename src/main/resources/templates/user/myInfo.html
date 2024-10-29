@@ -2,47 +2,80 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>내 정보</title>
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/user.css}">
 </head>
 
-<body>
-<header th:replace="~{header :: header}"></header>
+<div th:replace="~{header :: header}"></div>
 
-<div class="profile-section">
+<main>
   <h1>내 정보</h1>
 
-  <!-- 프로필 사진 표시 -->
-  <div class="profile-image">
-    <img th:src="${user.photo != null ? '/user/profile/' + user.photo : '/images/default-profile.png'}"
-         alt="Profile Image" style="width:150px; height:150px; border-radius:50%;" />
+  <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+  <div th:unless="${user}">
+    <p>사용자 정보를 찾을 수 없습니다.</p>
   </div>
 
-  <!-- 사용자 정보 수정 폼 -->
-  <form th:action="@{/user/updateProfile}" method="post" enctype="multipart/form-data">
-    <div>
-      <label>닉네임:</label>
-      <input type="text" name="nickname" th:value="${user.nickname}" />
-    </div>
+  <div th:if="${user}" th:object="${user}">
+    <form enctype="multipart/form-data"
+          method="post"
+          th:action="@{/user/myInfo}"
+          class="profile-form">
 
-    <div>
-      <label>새 비밀번호:</label>
-      <input type="password" name="password" placeholder="비밀번호를 입력하세요" />
-    </div>
+      <!-- 프로필 이미지 -->
+      <div class="input-field profile-image-container">
+        <a th:if="*{photo != null}"
+           th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">
+          <img th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}"
+               class="profile-img"
+               alt="프로필 이미지">
+        </a>
+        <a th:if="*{photo == null}"
+           href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
+          <img src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png"
+               class="profile-img"
+               alt="기본 프로필 이미지">
+        </a>
+        <input type="file" id="file" name="file" accept="image/*">
+      </div>
 
-    <div>
-      <label>프로필 사진:</label>
-      <input type="file" name="file" accept="image/*" />
-    </div>
+      <!-- 사용자 정보 -->
+      <div class="user-info">
+        <input type="hidden" name="no" th:value="*{no}">
 
-    <button type="submit">정보 수정</button>
-  </form>
+        <div class="input-field">
+          <label for="nickname">닉네임</label>
+          <div class="input-with-button">
+            <input type="text" id="nickname" name="nickname"
+                   th:value="*{nickname}" required>
+            <button type="button" onclick="checkDuplicate('nickname', document.getElementById('nickname').value)">
+              중복확인
+            </button>
+          </div>
+          <span id="nicknameMessage"></span>
+        </div>
 
-  <!-- 회원 탈퇴 버튼 -->
-  <form th:action="@{/user/delete}" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
-    <button type="submit">탈퇴하기</button>
-  </form>
-</div>
+        <div class="input-field">
+          <label for="password">새 비밀번호</label>
+          <input type="password" id="password" name="password">
+          <span id="passwordMessage"></span>
+        </div>
 
-</body>
+        <!-- 버튼 그룹 -->
+        <div class="button-group">
+          <button type="submit" class="btn">정보 수정</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- CSRF 토큰 -->
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+  <!-- JavaScript -->
+  <script th:src="@{/js/user.js}"></script>
+</main>
 </html>

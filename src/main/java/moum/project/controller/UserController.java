@@ -1,21 +1,26 @@
 package moum.project.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.StorageService;
 import moum.project.service.UserService;
+import moum.project.vo.AttachedFile;
 import moum.project.vo.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * packageName    : moum.project.controller
@@ -30,6 +35,7 @@ import java.util.UUID;
  * 24. 10. 21.        narilee       최초 생성
  * 24. 10. 25.        narilee       회원 가입 성공시 알림 표시
  * 24. 10. 25.        narilee       회원 가입시 닉네임, 이메일 중복체크
+ * 24. 10. 29.        narilee       닉네임, 비밀번호 수정 기능 추가(프로필 사진 첨부 미구현)
  */
 @Controller
 @RequestMapping("/user")
@@ -38,8 +44,9 @@ public class UserController {
 
   private final UserService userService;
   private final StorageService storageService;
-  private final String folderName = "users/profile/";
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
+
+  private String folderName = "user/profile/";
 
   /**
    * 이 메서드는 "/admin/myInfo" URL로 들어오는 GET 요청을 처리합니다.
@@ -47,71 +54,29 @@ public class UserController {
    * @return "myInfo" 뷰 이름을 반환합니다.
    */
   @GetMapping("/myInfo")
-  public void myInfo(Model model) {
-
-  }
-
-  /**
-   * 사용자 가입 폼을 반환 합니다.
-   *
-   * @param model 사용자 폼에 데이터를 추가하기 위한 모델 객체
-   * @return 회원가입 폼 뷰의 이름
-   */
-  @GetMapping("/signup")
-  public String signupForm(Model model) {
-    model.addAttribute("user", new User());
-    return "user/signup";
-  }
-
-  /**
-   * 사용자 가입을 처리합니다.
-   *
-   * @param user 가입할 사용자 정보
-   * @return 성공 시 성공 알러트 표시후 /home으로 실패시 실패 알러트 표시
-   */
-  @PostMapping("/signup")
-  public String signupSubmit(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
-
-    try {
-      userService.add(user);
-      return "redirect:/home?signupSuccess=true";  // 성공 시 쿼리 파라미터 전달
-    } catch (Exception e) {
-      return "redirect:/user/signup?signupError=true";  // 실패 시 쿼리 파라미터 전달
+  public String myInfo(@AuthenticationPrincipal UserDetails userDetails, Model model) throws Exception {
+    if (userDetails == null) {
+      throw new Exception("로그인이 필요합니다.");
     }
+
+    String email = userDetails.getUsername();
+    User user = userService.getByEmail(email);
+
+    model.addAttribute("user", user);
+    return "user/myInfo";
   }
 
-  /**
-   * 사용자의 닉네임과 이메일의 중복 여부를 확인하는 API 엔드포인트입니다.
-   *
-   * @param nickname 중복 검사할 닉네임 (선택적)
-   * @param email 중복 검사할 이메일 주소 (선택적)
-   * @return 닉네임과 이메일의 중복 여부를 담은 Map 객체
-   * @throws Exception 중복 검사 과정에서 발생할 수 있는 예외
-   */
-  @GetMapping("/check-duplicate")
-  @ResponseBody
-  public Map<String, Boolean> checkDuplicate(@RequestParam(required = false) String nickname,
-      @RequestParam(required = false) String email) throws Exception {
-    Map<String, Boolean> response = new HashMap<>();
-    if (nickname != null && !nickname.isEmpty()) {
-      response.put("isNicknameTaken", userService.isNicknameTaken(nickname));
-    }
-    if (email != null && !email.isEmpty()) {
-      response.put("isEmailTaken", userService.isEmailTaken(email));
-    }
-    return response;
-  }
-
-  @PostMapping("/updateProfile")
-  public String updateProfile(
+  @PostMapping("/myInfo")
+  public String updateMyInfo(
       @RequestParam("nickname") String nickname,
-      @RequestParam("password") String password,
-      @RequestParam("file") MultipartFile file,
+      @RequestParam(value = "password", required = false) String password,
       @AuthenticationPrincipal UserDetails userDetails,
-      Model model) throws Exception {
+      MultipartFile[] files,
+      Model model,
+      RedirectAttributes redirectAttributes) throws Exception {
 
     if (userDetails == null) {
-      return "redirect:/auth/login";
+      throw new Exception("로그인이 필요합니다.");
     }
 
     String email = userDetails.getUsername();
@@ -127,45 +92,66 @@ public class UserController {
       user.setPassword(passwordEncoder.encode(password));
     }
 
-    // 프로필 사진 수정
-    if (file != null && !file.isEmpty()) {
-      String filename = UUID.randomUUID().toString();
-      Map<String, Object> options = new HashMap<>();
-      options.put(StorageService.CONTENT_TYPE, file.getContentType());
+    List<AttachedFile> attachedFiles = new ArrayList<>();
 
-      // 스토리지에 파일 업로드
-      storageService.upload(folderName + filename, file.getInputStream(), options);
+    if (files != null) {
+      for (MultipartFile file : files) {
+        if (file.getSize() == 0) {
+          continue;
+        }
 
-      // 기존 프로필 이미지가 있으면 삭제
-      if (user.getPhoto() != null) {
-        storageService.delete(folderName + user.getPhoto());
+        AttachedFile attachedFile = new AttachedFile();
+        attachedFile.setFileCategory(AttachedFile.PROFILE);
+        attachedFile.setFilename(UUID.randomUUID().toString());
+        attachedFile.setOriginFilename(file.getOriginalFilename());
+
+        Map<String, Object> options = new HashMap<>();
+        options.put(StorageService.CONTENT_TYPE, file.getContentType());
+
+        storageService.upload(folderName + attachedFile.getFilename(), file.getInputStream(),
+            options);
+
+        attachedFiles.add(attachedFile);
       }
-
-      // 새로운 파일명으로 업데이트
-      user.setPhoto(filename);
     }
 
-    userService.update(user);
-    model.addAttribute("user", user);
+    if (userService.update(user)) {
+      redirectAttributes.addFlashAttribute("message", "정보가 성공적으로 업데이트되었습니다.");
+      return "redirect:/user/myInfo";
+    }
+
+    redirectAttributes.addFlashAttribute("error", "정보 업데이트에 실패했습니다.");
     return "redirect:/user/myInfo";
   }
 
-  @PutMapping("/update")
-  public String updateUser(
-      @RequestBody User updatedUser,
-      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+  @GetMapping("/signup")
+  public String signupForm(Model model) {
+    model.addAttribute("user", new User());
+    return "user/signup";
+  }
 
-    if (userDetails == null) {
-      return "redirect:/auth/login";
+  @PostMapping("/signup")
+  public String signupSubmit(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+    try {
+      userService.add(user);
+      return "redirect:/home?signupSuccess=true";
+    } catch (Exception e) {
+      return "redirect:/user/signup?signupError=true";
     }
+  }
 
-    String email = userDetails.getUsername();
-    User user = userService.getByEmail(email);
-
-    // 변경할 정보 설정
-    user.setNickname(updatedUser.getNickname());
-
-    userService.update(user); // 업데이트 실행
-    return "redirect:/user/myInfo";
+  @GetMapping("/check-duplicate")
+  @ResponseBody
+  public Map<String, Boolean> checkDuplicate(
+      @RequestParam(required = false) String nickname,
+      @RequestParam(required = false) String email) throws Exception {
+    Map<String, Boolean> response = new HashMap<>();
+    if (nickname != null && !nickname.isEmpty()) {
+      response.put("isNicknameTaken", userService.isNicknameTaken(nickname));
+    }
+    if (email != null && !email.isEmpty()) {
+      response.put("isEmailTaken", userService.isEmailTaken(email));
+    }
+    return response;
   }
 }
