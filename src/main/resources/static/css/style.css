@@ -247,7 +247,7 @@ footer {
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-    z-index: 2;
+    z-index: 100;
 }
 
 .overlay {

@@ -1,6 +1,8 @@
 package moum.project.vo;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,11 +18,11 @@ public class Collection implements Serializable {
   private String name;
   private String enName;
   private CollectionStatus status;
-  private java.sql.Date purchaseDate;
+  private LocalDate purchaseDate;
   private String purchasePlace;
   private int price;
   private String storageLocation;
-  private java.util.Date postDate;
+  private LocalDateTime postDate;
   private List<AttachedFile> attachedFiles;
 
   public Collection() {
