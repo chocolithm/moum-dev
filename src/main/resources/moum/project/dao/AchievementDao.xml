@@ -13,6 +13,7 @@
         <result column="location" property="location"/>
         <result column="progress" property="progress"/>
         <result column="get_date" property="getDate"/>
+
     </resultMap>
 
     <select id="list" resultMap="AchievementMap"> <!--목록!-->
@@ -38,7 +39,7 @@
             ac.acquisition_condition,
             ac.location,
             ua.progress,
-            ua.get_date
+            ua.get_date,
         from
             user_achievement ua
         left join achievement ac

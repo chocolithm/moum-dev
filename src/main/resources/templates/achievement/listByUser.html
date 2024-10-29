@@ -33,22 +33,28 @@
             </th:block>
     -->
 
-
     <tr>
         <td>업적ID</td>
+        <td>업적명</td>
+        <td>설명</td>
+        <td>사진</td>
         <td>진행도</td>
         <td>취득일자</td>
     </tr>
-    <
+
+
+
     <block data-th-each="achievement : ${list}">
         <tr><!-- 세로로 가는거(열) !-->
             <td data-th-text="${achievement.id}">업적ID</td>
+            <td data-th-text="${achievement.name}">업적명</td>
+            <td data-th-text="${achievement.content}">설명</td>
+            <td data-th-text="${achievement.photo}">사진</td>
             <td data-th-text="${achievement.progress}">진행도</td>
             <td data-th-text="${achievement.get_date}">취득일자</td>
-
         </tr>
     </block>
-</table>
 
+</table>
 </body>
 </html>
