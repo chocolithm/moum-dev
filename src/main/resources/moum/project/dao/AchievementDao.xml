@@ -11,6 +11,8 @@
         <result column="photo" property="photo"/>
         <result column="acquisition_condition" property="condition"/>
         <result column="location" property="location"/>
+        <result column="progress" property="progress"/>
+        <result column="get_date" property="getDate"/>
     </resultMap>
 
     <select id="list" resultMap="AchievementMap"> <!--목록!-->

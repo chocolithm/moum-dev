@@ -1,5 +1,6 @@
 package moum.project.vo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -16,7 +17,7 @@ public class Achievement implements Serializable {
     private String condition;
     private String location;
     private int progress; // 진행도
-    private Date getDate; // 취득일자
+    private LocalDateTime getDate; // 취득일자
 
     public Achievement(String id) {
         this.id = id;
