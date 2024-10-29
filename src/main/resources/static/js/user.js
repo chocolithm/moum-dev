@@ -243,3 +243,99 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// 프로필 관련 기능 추가
+document.addEventListener('DOMContentLoaded', function() {
+    // 프로필 수정 폼이 있는 경우에만 실행
+    const profileForm = document.querySelector('.profile-form');
+    if (profileForm) {
+        // 파일 입력 미리보기
+        const fileInput = document.getElementById('file');
+        const profileImg = document.querySelector('.profile-img');
+
+        fileInput?.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileImg.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // 탈퇴 폼이 있는 경우에만 실행
+    const withdrawForm = document.querySelector('form[action="/user/withdraw"]');
+    if (withdrawForm) {
+        withdrawForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                // CSRF 토큰 가져오기
+                const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
+                const csrfToken = document.querySelector("meta[name='_csrf']").content;
+
+                const headers = new Headers({
+                    'Content-Type': 'application/json',
+                });
+                headers.append(csrfHeader, csrfToken);
+
+                fetch('/user/withdraw', {
+                    method: 'DELETE',
+                    headers: headers
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/home?withdrawSuccess=true';
+                        } else {
+                            throw new Error('탈퇴 처리 중 오류가 발생했습니다.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(error.message);
+                    });
+            }
+        });
+    }
+
+    // 닉네임 중복 체크 (프로필 수정 시)
+    const nicknameInput = document.getElementById('nickname');
+    if (nicknameInput) {
+        const originalNickname = nicknameInput.value;
+        nicknameInput.addEventListener('input', function() {
+            if (this.value !== originalNickname) {
+                const messageElement = document.getElementById('nicknameMessage') ||
+                    document.createElement('span');
+                messageElement.id = 'nicknameMessage';
+                messageElement.textContent = '닉네임 중복 확인이 필요합니다.';
+                messageElement.style.color = 'red';
+
+                if (!document.getElementById('nicknameMessage')) {
+                    this.parentNode.appendChild(messageElement);
+                }
+            }
+        });
+    }
+
+    // 프로필 수정 폼 제출 전 유효성 검사
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            const nickname = document.getElementById('nickname').value;
+            const password = document.getElementById('password').value;
+
+            if (!nickname.trim()) {
+                e.preventDefault();
+                alert('닉네임을 입력해주세요.');
+                return;
+            }
+
+            if (!nickname.match(/^[가-힣a-zA-Z0-9]{2,10}$/)) {
+                e.preventDefault();
+                alert('닉네임은 2~10자의 한글, 영문, 숫자만 사용 가능합니다.');
+                return;
+            }
+        });
+    }
+});

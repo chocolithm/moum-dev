@@ -25,8 +25,8 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
-  public List<Achievement> listByUser() throws Exception {
-    return List.of();
+  public List<Achievement> listByUser(int userNo) throws Exception {
+    return achievementDao.listByUser(userNo);
   }
 
   @Override

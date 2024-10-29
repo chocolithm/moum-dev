@@ -2,12 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <title>회원수정</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
 <!--  <link rel="stylesheet" th:href="@{/css/user.css}">-->
 </head>
 
 <div th:replace="~{header :: header}"></div>
 
+<body>
 <main>
   <h1>내 정보</h1>
 
@@ -48,34 +52,94 @@
         <div class="input-field">
           <label for="nickname">닉네임</label>
           <div class="input-with-button">
-            <input type="text" id="nickname" name="nickname"
-                   th:value="*{nickname}" required>
-            <button type="button" onclick="checkDuplicate('nickname', document.getElementById('nickname').value)">
-              중복확인
+            <input id="nickname"
+                   maxlength="10"
+                   minlength="2"
+                   name="nickname"
+                   pattern="^[가-힣a-zA-Z0-9]{2,10}$"
+                   required
+                   title="2~10자의 한글, 영문, 숫자만 사용 가능합니다"
+                   type="text">
+            <button onclick="checkDuplicate('nickname', document.getElementById('nickname').value)" type="button">
+              닉네임 확인
             </button>
           </div>
           <span id="nicknameMessage"></span>
         </div>
 
         <div class="input-field">
-          <label for="password">새 비밀번호</label>
-          <input type="password" id="password" name="password">
-          <span id="passwordMessage"></span>
+          <label for="password">비밀번호</label>
+          <input id="password"
+                 minlength="8"
+                 name="password"
+                 required
+                 type="password">
+            <!--                   pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"-->
+            <!--                   title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다"-->
+
+            <span id="passwordMessage"></span>
+        </div>
+
+        <div class="input-field">
+          <label for="confirmPassword">비밀번호 확인</label>
+          <input id="confirmPassword"
+                 required
+                 type="password">
+          <span id="confirmPasswordMessage"></span>
         </div>
 
         <!-- 버튼 그룹 -->
-        <div class="button-group">
-          <button type="submit" class="btn">정보 수정</button>
-        </div>
+        <button class="submit-button" type="submit">수정하기</button>
       </div>
     </form>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let passwordMatch = true; // 초기값은 true (비밀번호를 변경하지 않는 경우도 허용)
 
-  <!-- CSRF 토큰 -->
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+      // 비밀번호 일치 확인
+      function checkPasswordMatch() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const confirmPasswordMessage = document.getElementById('confirmPasswordMessage');
 
-  <!-- JavaScript -->
+        if (password || confirmPassword) {
+          if (password === confirmPassword) {
+            confirmPasswordMessage.textContent = '비밀번호가 일치합니다.';
+            confirmPasswordMessage.style.color = 'green';
+            passwordMatch = true;
+          } else {
+            confirmPasswordMessage.textContent = '비밀번호가 일치하지 않습니다.';
+            confirmPasswordMessage.style.color = 'red';
+            passwordMatch = false;
+          }
+        } else {
+          confirmPasswordMessage.textContent = '';
+          passwordMatch = true; // 비밀번호를 변경하지 않는 경우
+        }
+      }
+
+      // 비밀번호 입력 필드 이벤트 리스너
+      document.getElementById('password').addEventListener('input', checkPasswordMatch);
+      document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+
+      // 폼 제출 전 유효성 검사 추가
+      const submitButton = document.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+          const password = document.getElementById('password').value;
+          const confirmPassword = document.getElementById('confirmPassword').value;
+
+          if ((password || confirmPassword) && !passwordMatch) {
+            e.preventDefault();
+            alert('비밀번호가 일치하지 않습니다.');
+            return false;
+          }
+        });
+      }
+    });
+  </script>
   <script th:src="@{/js/user.js}"></script>
 </main>
+</body>
 </html>

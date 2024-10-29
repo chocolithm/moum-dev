@@ -8,7 +8,7 @@ public interface AchievementService {
 
   List<Achievement> list() throws Exception;
 
-  List<Achievement> listByUser() throws Exception;
+  List<Achievement> listByUser(int userNo) throws Exception;
 
   Achievement get(String id) throws Exception;
 

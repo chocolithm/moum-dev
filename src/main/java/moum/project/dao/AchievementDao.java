@@ -15,7 +15,7 @@ public interface AchievementDao {
 
     List<Achievement> list() throws Exception;
 
-    List<Achievement> listByUser() throws Exception;
+    List<Achievement> listByUser(int userNo) throws Exception;
 
     User findBy(int to) throws Exception;
 
