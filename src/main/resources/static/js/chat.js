@@ -84,7 +84,7 @@ function fetchChatroomList() {
         const img = document.createElement("img");
         img.src = chatroom.participant.photo == null ? "/images/user/default1.png" : "/images/user/default2.png";
         img.alt = "프로필";
-        img.className = "profile"
+        img.className = "profile";
 
         const nickname = document.createElement("div")
         nickname.innerHTML = chatroom.participant.nickname;
@@ -134,7 +134,18 @@ function openChat(chatroomNo) {
     }
 
   }, 500);
+}
 
+function closeChat() {
+  const chatroom_layer = document.querySelector(".chatroom-layer");
+  for (i = 0; i < chatroom_layer.childNodes.length; i++) {
+    fadeOut(chatroom_layer.childNodes[i]);
+  }
+
+  setTimeout(function() {
+    chatroom_layer.innerHTML = "";
+    fetchChatroomList();
+  }, 500);
 }
 
 // 채팅방 정보 로딩
@@ -159,6 +170,12 @@ function fetchChatroom(chatroomNo) {
         board_title.className = "board-title";
         board_title.innerHTML = chatroom.board.title;
 
+        const exit_btn = document.createElement("img");
+        exit_btn.className = "x";
+        exit_btn.alt = "닫기";
+        exit_btn.src="/images/common/x_bg_black.png";
+        exit_btn.setAttribute("onclick", "closeChat()");
+
         const transaction_type = document.createElement("span");
         transaction_type.className = "transaction-type";
         transaction_type.innerHTML = chatroom.board.collection == null ? "구매" : "판매";
@@ -169,6 +186,7 @@ function fetchChatroom(chatroomNo) {
 
         board_info.appendChild(board_status);
         board_info.appendChild(board_title);
+        board_info.appendChild(exit_btn);
         board_info.appendChild(br);
         board_info.appendChild(transaction_type);
         board_info.appendChild(transaction_price);
