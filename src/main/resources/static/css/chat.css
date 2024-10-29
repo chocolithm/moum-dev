@@ -83,6 +83,10 @@
   max-height: calc(100vh - 280px);
 }
 
+.chatroom-layer .chat-info::-webkit-scrollbar {
+  display: none;
+}
+
 .chatroom-layer .chat-info .owner-message-box {
   text-align: right;
 }

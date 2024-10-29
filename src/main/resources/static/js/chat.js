@@ -14,15 +14,15 @@ function connect(chatroomNo) {
 }
 
 async function sendMessage(chatroomNo) {
-  const messageContent = document.getElementById("new-message").value;
+  const messageContent = document.getElementById("new-message")
   stompClient.send(`/chat/send/${chatroomNo}`, {}, JSON.stringify({
     sender: await getSender(),
     chatroom: {
       no: chatroomNo
     },
-    message: messageContent
+    message: messageContent.value
   }));
-  messageContent = "";
+  messageContent.value = "";
 }
 
 async function showMessage(chat) {
@@ -38,6 +38,7 @@ async function showMessage(chat) {
     message_box.appendChild(message);
     message_box.className = "message-box owner-message-box";
 
+
   } else {
     const nickname = document.createElement("div");
     nickname.className = "nickname";
@@ -52,7 +53,10 @@ async function showMessage(chat) {
   }
 
   chat_info.appendChild(message_box);
-  chat_info.scrollTop = chat_info.scrollHeight;
+
+  if (chat.sender.no == loginUser.no) {
+    chat_info.scrollTop = chat_info.scrollHeight;
+  }
 }
 
 
@@ -240,9 +244,8 @@ function fetchChatContent(chatroomNo, pageNo) {
 
           chat_info.appendChild(message_box);
         })
-
-        chat_info.scrollTop = chat_info.scrollHeight;
         chatroom_layer.appendChild(chat_info);
+        chat_info.scrollTop = chat_info.scrollHeight;
 
         resolve();
       })

@@ -1,5 +1,6 @@
 package moum.project.vo;
 
+import java.util.Date;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +15,9 @@ public class Achievement implements Serializable {
     private String photo;
     private String condition;
     private String location;
+    private int progress; // 진행도
+    private Date getDate; // 취득일자
+
     public Achievement(String id) {
         this.id = id;
     }
