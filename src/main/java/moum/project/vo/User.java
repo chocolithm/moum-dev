@@ -20,7 +20,6 @@ import java.util.List;
  * 24. 10. 15.        narilee       최초 생성
  * 24. 10. 22.        narilee       name 삭제
  * 24. 10. 24.        narilee       프로필 사진, 가입일, 탈퇴일, sns 아이디 추가
- * 24. 10. 29.        narilee       파일 추가
  */
 @Data
 @NoArgsConstructor
@@ -80,11 +79,6 @@ public class User implements Serializable {
      * 간편 로그인시 사용되는 id입니다.
      */
     private String snsId;
-
-    /**
-     * 파일 메타데이터, 파일 경로 및 기타 속성을 포함하고 있습니다.
-     */
-    private List<AttachedFile> attachedFiles;
 
     /**
      * 지정된 식별자로 사용자를 초기화하는 생성자입니다,

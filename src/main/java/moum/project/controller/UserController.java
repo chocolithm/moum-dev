@@ -62,12 +62,15 @@ public class UserController {
 
   @PostMapping("/myInfo")
   public String updateMyInfo(
+      @RequestParam("no") int no,
       @RequestParam("nickname") String nickname,
       @RequestParam(value = "password", required = false) String password,
       @AuthenticationPrincipal UserDetails userDetails,
-      MultipartFile[] files,
-      Model model,
-      RedirectAttributes redirectAttributes) throws Exception {
+      MultipartFile file,
+      RedirectAttributes redirectAttributes
+      ) throws Exception {
+
+    User old = userService.get(no);
 
     if (userDetails == null) {
       throw new Exception("로그인이 필요합니다.");
@@ -86,36 +89,35 @@ public class UserController {
       user.setPassword(passwordEncoder.encode(password));
     }
 
-    List<AttachedFile> attachedFiles = new ArrayList<>();
+    // 프로필 사진 처리 로직
+    if (file != null && file.getSize() > 0) {
+      // 기존 프로필 사진 삭제
+      storageService.delete(folderName + old.getPhoto());
 
-    if (files != null) {
-      for (MultipartFile file : files) {
-        if (file.getSize() == 0) {
-          continue;
-        }
+      // 새 파일 이름 생성
+      String filename = UUID.randomUUID().toString();
 
-        AttachedFile attachedFile = new AttachedFile();
-        attachedFile.setFileCategory(AttachedFile.PROFILE);
-        attachedFile.setFilename(UUID.randomUUID().toString());
-        attachedFile.setOriginFilename(file.getOriginalFilename());
+      // 파일 업로드 옵션 설정
+      HashMap<String, Object> options = new HashMap<>();
+      options.put(StorageService.CONTENT_TYPE, file.getContentType());
 
-        Map<String, Object> options = new HashMap<>();
-        options.put(StorageService.CONTENT_TYPE, file.getContentType());
+      // 새 파일 업로드
+      storageService.upload(folderName + filename, file.getInputStream(), options);
 
-        storageService.upload(folderName + attachedFile.getFilename(), file.getInputStream(),
-            options);
+      // 사용자 프로필에 새로운 파일명 설정
+      user.setPhoto(filename);
 
-        attachedFiles.add(attachedFile);
-      }
+    } else {
+      // 파일이 없을 경우 기존 파일명 유지
+      user.setPhoto(old.getPhoto());
     }
 
     if (userService.update(user)) {
-      redirectAttributes.addFlashAttribute("message", "정보가 성공적으로 업데이트되었습니다.");
+      redirectAttributes.addFlashAttribute("message", "정보가 성공적으로 수정되었습니다.");
       return "redirect:/user/myInfo";
+    } else {
+      throw new Exception("없는 회원입니다!");
     }
-
-    redirectAttributes.addFlashAttribute("error", "정보 업데이트에 실패했습니다.");
-    return "redirect:/user/myInfo";
   }
 
   @GetMapping("/signup")
