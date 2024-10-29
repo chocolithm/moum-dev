@@ -28,7 +28,22 @@
     </select>
 
     <select id="listByUser" resultMap="AchievementMap"> <!--목록!-->
-       gi
+        select
+       ua.achievement_id,
+        ac.name,
+        ac.content,
+        ac.photo,
+        ac.acquisition_condition,
+        ac.location,
+        ua.user_id,
+        ua.progress,
+        ua.get_date
+        from
+        user_achievement ua
+        left join achievement ac
+        on ua.achievement_id = ac.achievement_id
+
+        where user_id = #{no};
     </select>
 
     <insert id="insert" parameterType="moum.project.vo.Achievement"> <!--추가!-->
