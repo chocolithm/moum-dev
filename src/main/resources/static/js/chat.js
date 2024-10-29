@@ -215,46 +215,138 @@ function fetchChatContent(chatroomNo, pageNo) {
         const chat_info = document.createElement("div");
         chat_info.className = "chat-info";
 
-        const br = document.createElement("br");
-        const loginUser = await getSender();
+        if (data != "" ) {
+          const loginUser = await getSender();
 
-        data.reverse().forEach(chat => {
-          const message_box = document.createElement("div");
+          data.reverse().forEach(chat => {
+            const message_box = document.createElement("div");
 
-          if (chat.sender.no == loginUser.no) {
+            const time = document.createElement("span");
+            time.className = "message-time";
+            time.innerHTML = calcTime(chat.chatDate);
+
             const message = document.createElement("span");
             message.className = "message";
             message.innerHTML = chat.message;
 
-            message_box.appendChild(message);
-            message_box.className = "message-box owner-message-box";
+            if (chat.sender.no == loginUser.no) {
 
-          } else {
-            const nickname = document.createElement("div");
-            nickname.className = "nickname";
-            nickname.innerHTML = chat.sender.nickname;
-            const message = document.createElement("span");
-            message.className = "message";
-            message.innerHTML = chat.message;
+              message_box.appendChild(time);
+              message_box.appendChild(message);
+              message_box.className = "message-box owner-message-box";
 
-            message_box.appendChild(nickname);
-            message_box.appendChild(message);
-            message_box.className = "message-box guest-message-box";
+            } else {
+              const nickname = document.createElement("div");
+              nickname.className = "nickname";
+              nickname.innerHTML = chat.sender.nickname;
+
+              message_box.appendChild(nickname);
+              message_box.appendChild(message);
+              message_box.appendChild(time);
+              message_box.className = "message-box guest-message-box";
+            }
+
+            chat_info.appendChild(message_box);
+          })
+
+          if (data.length == 20) {
+            chat_info.setAttribute("onscroll", `fetchMoreChatContent(${chatroomNo}, ${pageNo + 1})`);
           }
-
-          chat_info.appendChild(message_box);
-        })
+        }
+        
         chatroom_layer.appendChild(chat_info);
         chat_info.scrollTop = chat_info.scrollHeight;
 
         resolve();
       })
       .catch(error => {
-        console.error("Error fetching chatroom:", error);
+        console.error("Error fetching chat data:", error);
         reject(error);
       });
   });
+}
 
+function fetchMoreChatContent(chatroomNo, pageNo) {
+  const chat_info = document.querySelector(".chat-info");
+
+  if (chat_info.scrollTop === 0) {
+    console.log('채팅데이터를 추가로 가져옵니다.');
+
+    return new Promise((resolve, reject) => {
+      fetch(`/chat/loadChat?no=${chatroomNo}&pageNo=${pageNo}`)
+        .then(response => response.json())
+        .then(async data => {
+
+          if (data != "") {
+            const loginUser = await getSender();
+            const previousScrollHeight = chat_info.scrollHeight;
+
+            data.forEach(chat => {
+              const message_box = document.createElement("div");
+
+              const time = document.createElement("span");
+              time.className = "message-time";
+              time.innerHTML = calcTime(chat.chatDate);
+              
+              const message = document.createElement("span");
+              message.className = "message";
+              message.innerHTML = chat.message;
+              
+              if (chat.sender.no == loginUser.no) {
+  
+                message_box.appendChild(time);
+                message_box.appendChild(message);
+                message_box.className = "message-box owner-message-box";
+  
+              } else {
+                const nickname = document.createElement("div");
+                nickname.className = "nickname";
+                nickname.innerHTML = chat.sender.nickname;
+  
+                message_box.appendChild(nickname);
+                message_box.appendChild(message);
+                message_box.appendChild(time);
+                message_box.className = "message-box guest-message-box";
+              }
+  
+              chat_info.insertBefore(message_box, chat_info.firstChild);
+            })
+
+            
+
+            const newScrollHeight = chat_info.scrollHeight;
+            chat_info.scrollTop = newScrollHeight - previousScrollHeight;
+
+            if (data.length == 20) {
+              chat_info.setAttribute('onscroll', `fetchMoreChatContent(${chatroomNo}, ${pageNo + 1})`);
+            } else {
+              chat_info.removeAttribute('onscroll');
+            }
+            
+          }
+
+          resolve();
+        })
+        .catch(error => {
+          console.error("Error fetching chat data:", error);
+          reject(error);
+        });
+    });
+  }
+}
+
+function calcTime(chatDate) {
+  const now = new Date();
+  const date = new Date(chatDate);
+  if (now.getFullYear() === date.getFullYear()) {
+    if (now.getDate() === date.getDate()) {
+      return date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
+    }
+
+    return (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
+  } else {
+    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+  }
 }
 
 function createChatInputbox(chatroomNo) {
@@ -289,4 +381,16 @@ function getSender() {
     .catch(error => {
       console.error("Error fetching sender:", error);
     });
+}
+
+function createLoadingImg() {
+  const div = document.createElement("div");
+  div.id = "loading-image";
+
+  const img = document.createElement("img");
+  img.src = "/images/loading.gif";
+  img.alt = "로딩 중";
+
+  div.appendChild(img);
+  return div;
 }

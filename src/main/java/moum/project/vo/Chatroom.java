@@ -1,5 +1,6 @@
 package moum.project.vo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +11,7 @@ public class Chatroom {
   private Board board;
   private User participant;
   private String lastMessage;
-  private Date chatDate;
+  private LocalDateTime chatDate;
 
   public Chatroom() {
 
