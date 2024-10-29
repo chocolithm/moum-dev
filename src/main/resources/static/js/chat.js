@@ -1,6 +1,8 @@
-// 채팅
+// 채팅 
 
 let stompClient = null;
+
+// 채팅
 
 function connect(chatroomNo) {
   const socket = new SockJS("/ws");
@@ -15,14 +17,16 @@ function connect(chatroomNo) {
 
 async function sendMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message")
-  stompClient.send(`/chat/send/${chatroomNo}`, {}, JSON.stringify({
-    sender: await getSender(),
-    chatroom: {
-      no: chatroomNo
-    },
-    message: messageContent.value
-  }));
-  messageContent.value = "";
+  if (messageContent.value != "") {
+    stompClient.send(`/chat/send/${chatroomNo}`, {}, JSON.stringify({
+      sender: await getSender(),
+      chatroom: {
+        no: chatroomNo
+      },
+      message: messageContent.value
+    }));
+    messageContent.value = "";
+  }
 }
 
 async function showMessage(chat) {
@@ -30,27 +34,7 @@ async function showMessage(chat) {
   const message_box = document.createElement("div");
   const loginUser = await getSender();
 
-  if (chat.sender.no == loginUser.no) {
-    const message = document.createElement("span");
-    message.className = "message";
-    message.innerHTML = chat.message;
-
-    message_box.appendChild(message);
-    message_box.className = "message-box owner-message-box";
-
-
-  } else {
-    const nickname = document.createElement("div");
-    nickname.className = "nickname";
-    nickname.innerHTML = chat.sender.nickname;
-    const message = document.createElement("span");
-    message.className = "message";
-    message.innerHTML = chat.message;
-
-    message_box.appendChild(nickname);
-    message_box.appendChild(message);
-    message_box.className = "message-box guest-message-box";
-  }
+  createChatContent(message_box, loginUser, chat);
 
   chat_info.appendChild(message_box);
 
@@ -58,11 +42,6 @@ async function showMessage(chat) {
     chat_info.scrollTop = chat_info.scrollHeight;
   }
 }
-
-
-
-
-
 
 function openChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
@@ -83,6 +62,7 @@ function closeChatroomModal() {
   }, 500);
 }
 
+// 채팅방 목록 로딩
 function fetchChatroomList() {
 
   const chatroom_layer = document.querySelector(".chatroom-layer");
@@ -157,6 +137,7 @@ function openChat(chatroomNo) {
 
 }
 
+// 채팅방 정보 로딩
 function fetchChatroom(chatroomNo) {
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
@@ -204,6 +185,7 @@ function fetchChatroom(chatroomNo) {
 
 }
 
+// 채팅 데이터 로딩
 function fetchChatContent(chatroomNo, pageNo) {
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
@@ -221,30 +203,7 @@ function fetchChatContent(chatroomNo, pageNo) {
           data.reverse().forEach(chat => {
             const message_box = document.createElement("div");
 
-            const time = document.createElement("span");
-            time.className = "message-time";
-            time.innerHTML = calcTime(chat.chatDate);
-
-            const message = document.createElement("span");
-            message.className = "message";
-            message.innerHTML = chat.message;
-
-            if (chat.sender.no == loginUser.no) {
-
-              message_box.appendChild(time);
-              message_box.appendChild(message);
-              message_box.className = "message-box owner-message-box";
-
-            } else {
-              const nickname = document.createElement("div");
-              nickname.className = "nickname";
-              nickname.innerHTML = chat.sender.nickname;
-
-              message_box.appendChild(nickname);
-              message_box.appendChild(message);
-              message_box.appendChild(time);
-              message_box.className = "message-box guest-message-box";
-            }
+            createChatContent(message_box, loginUser, chat);
 
             chat_info.appendChild(message_box);
           })
@@ -266,6 +225,7 @@ function fetchChatContent(chatroomNo, pageNo) {
   });
 }
 
+// 채팅 데이터 추가로딩
 function fetchMoreChatContent(chatroomNo, pageNo) {
   const chat_info = document.querySelector(".chat-info");
 
@@ -284,35 +244,10 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
             data.forEach(chat => {
               const message_box = document.createElement("div");
 
-              const time = document.createElement("span");
-              time.className = "message-time";
-              time.innerHTML = calcTime(chat.chatDate);
-              
-              const message = document.createElement("span");
-              message.className = "message";
-              message.innerHTML = chat.message;
-              
-              if (chat.sender.no == loginUser.no) {
-  
-                message_box.appendChild(time);
-                message_box.appendChild(message);
-                message_box.className = "message-box owner-message-box";
-  
-              } else {
-                const nickname = document.createElement("div");
-                nickname.className = "nickname";
-                nickname.innerHTML = chat.sender.nickname;
-  
-                message_box.appendChild(nickname);
-                message_box.appendChild(message);
-                message_box.appendChild(time);
-                message_box.className = "message-box guest-message-box";
-              }
+              createChatContent(message_box, loginUser, chat);
   
               chat_info.insertBefore(message_box, chat_info.firstChild);
             })
-
-            
 
             const newScrollHeight = chat_info.scrollHeight;
             chat_info.scrollTop = newScrollHeight - previousScrollHeight;
@@ -335,20 +270,36 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
   }
 }
 
-function calcTime(chatDate) {
-  const now = new Date();
-  const date = new Date(chatDate);
-  if (now.getFullYear() === date.getFullYear()) {
-    if (now.getDate() === date.getDate()) {
-      return date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
-    }
+// 채팅창 생성
+function createChatContent(message_box, loginUser, chat) {
+  const time = document.createElement("span");
+  time.className = "message-time";
+  time.innerHTML = calcTime(chat.chatDate);
+  
+  const message = document.createElement("span");
+  message.className = "message";
+  message.innerHTML = chat.message;
 
-    return (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
+  const nickname = document.createElement("div");
+  nickname.className = "nickname";
+  nickname.innerHTML = chat.sender.nickname;
+  
+  if (chat.sender.no == loginUser.no) {
+
+    message_box.appendChild(time);
+    message_box.appendChild(message);
+    message_box.className = "message-box owner-message-box";
+
   } else {
-    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+
+    message_box.appendChild(nickname);
+    message_box.appendChild(message);
+    message_box.appendChild(time);
+    message_box.className = "message-box guest-message-box";
   }
 }
 
+// 채팅 입력창 생성
 function createChatInputbox(chatroomNo) {
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
@@ -370,8 +321,33 @@ function createChatInputbox(chatroomNo) {
   chat_inputbox.appendChild(btn);
 
   chatroom_layer.appendChild(chat_inputbox);
+
+  input.addEventListener("keydown", function(event) {
+    
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      btn.click();
+    }
+
+  });
 }
 
+// 채팅 시간 계산
+function calcTime(chatDate) {
+  const now = new Date();
+  const date = new Date(chatDate);
+  if (now.getFullYear() === date.getFullYear()) {
+    if (now.getDate() === date.getDate()) {
+      return date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
+    }
+
+    return (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
+  } else {
+    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+  }
+}
+
+// sender 로그인 정보 확인
 function getSender() {
   return fetch(`/chat/sender`)
     .then(response => response.json())
@@ -381,16 +357,4 @@ function getSender() {
     .catch(error => {
       console.error("Error fetching sender:", error);
     });
-}
-
-function createLoadingImg() {
-  const div = document.createElement("div");
-  div.id = "loading-image";
-
-  const img = document.createElement("img");
-  img.src = "/images/loading.gif";
-  img.alt = "로딩 중";
-
-  div.appendChild(img);
-  return div;
 }
