@@ -26,8 +26,10 @@ public class AchievementController {
   }
 
   @GetMapping("listByUser")
-  public String listByUser() throws Exception {
-    return "리턴할 html 파일 위치";
+  public String listByUser(Model model) throws Exception {
+    List<Achievement> list = achievementService.list();
+    model.addAttribute("ListByUser", list);
+    return "achievement/listByUser";
   }
 
 

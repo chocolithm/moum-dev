@@ -1,0 +1,54 @@
+<!doctype html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        table, td, tr {
+            border: 1px solid black;
+            font-size: 24px;
+            margin: 3px;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <!--
+
+            th:block : 가상의 블록
+            th:each : 반복문
+            th:text : html 요소 안 텍스트
+
+            <th:block th:each="achievement : ${list}">
+                <tr>
+                    <td>업적ID</td>
+                    <td>업적명</td>
+                    <td>설명</td>
+                    <td>조건</td>
+                    <td>장소</td>
+                </tr>
+            </th:block>
+    -->
+
+
+    <tr>
+        <td>업적ID</td>
+        <td>진행도</td>
+        <td>취득일자</td>
+    </tr>
+    <
+    <block data-th-each="achievement : ${list}">
+        <tr><!-- 세로로 가는거(열) !-->
+            <td data-th-text="${achievement.id}">업적ID</td>
+            <td data-th-text="${achievement.progress}">진행도</td>
+            <td data-th-text="${achievement.get_date}">취득일자</td>
+
+        </tr>
+    </block>
+</table>
+
+</body>
+</html>

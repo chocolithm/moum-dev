@@ -17,6 +17,8 @@ public interface AchievementDao {
 
     List<Achievement> listByUser() throws Exception;
 
+    User findBy(int to) throws Exception;
+
     Achievement findBy(String id) throws Exception;
 
     boolean update(Achievement achievement) throws Exception;
