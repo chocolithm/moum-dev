@@ -3,7 +3,6 @@ package moum.project.controller;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.StorageService;
 import moum.project.service.UserService;
-import moum.project.vo.AttachedFile;
 import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +28,7 @@ import java.util.*;
  * 24. 10. 21.        narilee       최초 생성
  * 24. 10. 25.        narilee       회원 가입 성공시 알림 표시
  * 24. 10. 25.        narilee       회원 가입시 닉네임, 이메일 중복체크
- * 24. 10. 29.        narilee       닉네임, 비밀번호 수정 기능 추가(프로필 사진 첨부 미구현)
+ * 24. 10. 29.        narilee       닉네임, 비밀번호, 프로필 수정 기능 추가)
  */
 @Controller
 @RequestMapping("/user")
@@ -60,6 +59,19 @@ public class UserController {
     return "user/myInfo";
   }
 
+  /**
+   * 사용자 정보를 업데이트하는 메서드입니다.
+   * 닉네임, 비밀번호, 프로필 사진을 수정할 수 있습니다.
+   *
+   * @param no 사용자 번호
+   * @param nickname 새로운 닉네임 (선택)
+   * @param password 새로운 비밀번호 (선택)
+   * @param userDetails 현재 로그인된 사용자 정보
+   * @param file 새로운 프로필 사진 파일 (선택)
+   * @param redirectAttributes 리다이렉트 시 전달할 속성
+   * @return 리다이렉트할 페이지 경로
+   * @throws Exception 로그인되지 않은 경우 또는 회원 정보가 존재하지 않는 경우
+   */
   @PostMapping("/myInfo")
   public String updateMyInfo(
       @RequestParam("no") int no,
@@ -120,12 +132,25 @@ public class UserController {
     }
   }
 
+  /**
+   * 회원가입 폼을 표시하는 메서드입니다.
+   *
+   * @param model 뷰에 전달할 모델 객체
+   * @return 회원가입 페이지의 뷰 이름
+   */
   @GetMapping("/signup")
   public String signupForm(Model model) {
     model.addAttribute("user", new User());
     return "user/signup";
   }
 
+  /**
+   * 회원가입 요청을 처리하는 메서드입니다.
+   *
+   * @param user 회원가입 폼에서 제출된 사용자 정보
+   * @param redirectAttributes 리다이렉트 시 전달할 속성
+   * @return 성공 시 홈페이지로, 실패 시 회원가입 페이지로 리다이렉트
+   */
   @PostMapping("/signup")
   public String signupSubmit(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
     try {
@@ -136,6 +161,14 @@ public class UserController {
     }
   }
 
+  /**
+   * 닉네임과 이메일의 중복 여부를 확인하는 메서드입니다.
+   *
+   * @param nickname 중복 확인할 닉네임 (선택)
+   * @param email 중복 확인할 이메일 (선택)
+   * @return 중복 여부를 담은 Map (키: isNicknameTaken/isEmailTaken, 값: boolean)
+   * @throws Exception 서버 오류 발생 시
+   */
   @GetMapping("/check-duplicate")
   @ResponseBody
   public Map<String, Boolean> checkDuplicate(
