@@ -53,7 +53,7 @@ async function showMessage(chat) {
   }
 }
 
-function openChatroomModal() {
+async function openChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
@@ -142,19 +142,21 @@ function fetchChatroomList() {
 }
 
 function openChat(chatroomNo) {
-  const chatroom_layer = document.querySelector(".chatroom-layer");
-  const chatroom = chatroom_layer.childNodes;
-  for (i = 0; i < chatroom.length; i++) {
-    fadeOut(chatroom[i]);
-  }
 
-  setTimeout(async function () {
-    chatroom_layer.innerHTML = "";
+  if (chatroomNo == 0) {
+    checkChatroom();
 
-    if (chatroomNo == 0) {
-      checkChatroom();
+  } else {
 
-    } else {
+    const chatroom_layer = document.querySelector(".chatroom-layer");
+    const chatroom = chatroom_layer.childNodes;
+    for (i = 0; i < chatroom.length; i++) {
+      fadeOut(chatroom[i]);
+    }
+
+    setTimeout(async function () {
+      chatroom_layer.innerHTML = "";
+
       try {
         await fetchChatroom(chatroomNo);
         await fetchChatContent(chatroomNo, 1);
@@ -163,8 +165,8 @@ function openChat(chatroomNo) {
       } catch (error) {
         console.error("error fetching chatroom info", error);
       }
-    }
-  }, 500);
+    }, 500);
+  }
 }
 
 function closeChat() {
@@ -202,20 +204,37 @@ function checkChatroom() {
     .then(response => response.json())
     .then(async chatroom => {
       if (chatroom.no == 0) {
+
+        const loginUser = await getSender();
+        if (loginUser.no == chatroom.board.userNo) {
+          alert("내 게시글입니다.");
+          return;
+        }
+
         const chatroom_layer = document.querySelector(".chatroom-layer");
+        for (i = 0; i < chatroom_layer.childNodes.length; i++) {
+          fadeOut(chatroom_layer.childNodes[i]);
+        }
 
-        const board_info = document.createElement("div");
-        board_info.className = "board-info";
+        setTimeout(async function () {
+          const chatroom_layer = document.querySelector(".chatroom-layer");
 
-        createBoardInfo(board_info, chatroom);
+          chatroom_layer.innerHTML = "";
 
-        const chat_info = document.createElement("div");
-        chat_info.className = "chat-info";
 
-        chatroom_layer.appendChild(board_info);
-        chatroom_layer.appendChild(chat_info);
+          const board_info = document.createElement("div");
+          board_info.className = "board-info";
 
-        createChatInputbox(chatroom.no);
+          createBoardInfo(board_info, chatroom);
+
+          const chat_info = document.createElement("div");
+          chat_info.className = "chat-info";
+
+          chatroom_layer.appendChild(board_info);
+          chatroom_layer.appendChild(chat_info);
+
+          createChatInputbox(chatroom.no);
+        }, 500);
 
       } else {
 
@@ -484,13 +503,12 @@ function calcTime(chatDate) {
 }
 
 // sender 로그인 정보 확인
-function getSender() {
-  return fetch(`/chat/sender`)
-    .then(response => response.json())
-    .then(user => {
-      return user;
-    })
-    .catch(error => {
-      console.error("Error fetching sender:", error);
-    });
+async function getSender() {
+  try {
+    const response = await fetch(`/chat/sender`);
+    const user = await response.json();
+    return user;
+  } catch (error) {
+    console.error("Error fetching sender:", error);
+  };
 }
