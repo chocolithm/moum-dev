@@ -16,76 +16,73 @@ function fetchCollectionForm() {
     fetch(`/collection/form`, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          [csrfHeader]: csrfToken
+            "Content-Type": "application/json",
+            [csrfHeader]: csrfToken
         }
     })
-    .then(response => response.text())
-    .then(html => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
 
-        document.querySelector('.collection-form-layer').innerHTML =
-            doc.querySelector('.collection-form-layer').innerHTML;
+            document.querySelector('.collection-form-layer').innerHTML =
+                doc.querySelector('.collection-form-layer').innerHTML;
 
-    })
-    .catch(error => {
-        console.error("Error fetching collection form:", error);
-    });
+        })
+        .catch(error => {
+            console.error("Error fetching collection form:", error);
+        });
 }
 
 // 수집품 등록 처리
 function addCollection() {
+    if (confirm("등록하시겠습니까?")) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+        const formData = new FormData();
+        formData.append("name", document.querySelector("#addForm #name").value);
+        formData.append("enName", document.querySelector("#addForm #enName").value);
+        formData.append("price", document.querySelector("#addForm #price").value);
+        formData.append("maincategory.no", document.querySelector("#addForm #maincategoryNo").value);
+        formData.append("subcategory.no", document.querySelector("#addForm #subcategoryNo").value);
+        formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value);
+        formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value);
+        formData.append("status.no", document.querySelector("#addForm #statusNo").value);
 
-    const formData = new FormData();
-    formData.append("name", document.querySelector("#addForm #name").value);
-    formData.append("enName", document.querySelector("#addForm #enName").value);
-    formData.append("price", document.querySelector("#addForm #price").value);
-    formData.append("maincategory.no", document.querySelector("#addForm #maincategoryNo").value);
-    formData.append("subcategory.no", document.querySelector("#addForm #subcategoryNo").value);
-    formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value);
-    formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value);
-    formData.append("status.no", document.querySelector("#addForm #statusNo").value);
+        const filesInput = document.querySelector("#addForm #files");
+        for (let i = 0; i < filesInput.files.length; i++) {
+            formData.append("files", filesInput.files[i]);
+        }
 
-    const filesInput = document.querySelector("#addForm #files");
-    for (let i = 0; i < filesInput.files.length; i++) {
-        formData.append("files", filesInput.files[i]);
+        fetch(`/collection/add`, {
+            method: "POST",
+            body: formData,
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        })
+            .then(response => response.text())
+            .then(response => {
+                switch (response) {
+                    case "login":
+                        alert("로그인이 필요합니다.");
+                        location.href = "/home";
+                        break;
+                    case "success":
+                        alert("등록했습니다.");
+                        location.href = "/home";
+                        break;
+                    case "failure":
+                        alert("등록에 실패했습니다.");
+                        break;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching collection add:", error);
+            });
     }
-
-    fetch(`/collection/add`, {
-        method: "POST",
-        body: formData,
-        headers: {
-            [csrfHeader]: csrfToken
-        }
-    })
-    .then(response => response.text())
-    .then(response => {
-        switch (response) {
-            case "login":
-                alert("로그인이 필요합니다.");
-                location.href = "/home";
-                break;
-            case "success":
-                alert("등록했습니다.");
-                location.href = "/home";
-                break;
-            case "failure":
-                alert("등록에 실패했습니다.");
-                break;
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching collection add:", error);
-    });
 }
-
-
-
-
 
 // 수집품 조회 화면 열기
 function openCollectionViewModal(no) {
@@ -109,26 +106,26 @@ function fetchCollectionView(no) {
             [csrfHeader]: csrfToken
         }
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-    })
-    .then(html => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
 
-        document.querySelector('.collection-view-layer').innerHTML =
-            doc.querySelector('.collection-view-layer').innerHTML;
+            document.querySelector('.collection-view-layer').innerHTML =
+                doc.querySelector('.collection-view-layer').innerHTML;
 
-        document.addEventListener("DOMContentLoaded", function () {
-            showSlides(collectionSlideIndex);
+            document.addEventListener("DOMContentLoaded", function () {
+                showSlides(collectionSlideIndex);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching collection view:", error);
         });
-    })
-    .catch(error => {
-        console.error("Error fetching collection view:", error);
-    });
 
     console.log("collectionSlideIndex: " + collectionSlideIndex);
 }
@@ -137,120 +134,126 @@ function fetchCollectionView(no) {
 // 수집품 수정 처리
 function updateCollection() {
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+    if (confirm("수정하시겠습니까?")) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-    const formData = new FormData();
-    formData.append("no", document.querySelector("#updateForm #no").value);
-    formData.append("name", document.querySelector("#updateForm #name").value);
-    formData.append("enName", document.querySelector("#updateForm #enName").value);
-    formData.append("price", document.querySelector("#updateForm #price").value);
-    formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
-    formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
-    formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value);
-    formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value);
-    formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
+        const formData = new FormData();
+        formData.append("no", document.querySelector("#updateForm #no").value);
+        formData.append("name", document.querySelector("#updateForm #name").value);
+        formData.append("enName", document.querySelector("#updateForm #enName").value);
+        formData.append("price", document.querySelector("#updateForm #price").value);
+        formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
+        formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
+        formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value);
+        formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value);
+        formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
 
-    const filesInput = document.querySelector("#updateForm #files");
-    for (let i = 0; i < filesInput.files.length; i++) {
-        formData.append("files", filesInput.files[i]);
+        const filesInput = document.querySelector("#updateForm #files");
+        for (let i = 0; i < filesInput.files.length; i++) {
+            formData.append("files", filesInput.files[i]);
+        }
+
+        fetch(`/collection/update`, {
+            method: "PUT",
+            body: formData,
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        })
+            .then(response => response.text())
+            .then(response => {
+                switch (response) {
+                    case "login":
+                        alert("로그인이 필요합니다.");
+                        location.href = "/home";
+                        break;
+                    case "success":
+                        alert("수정했습니다.");
+                        break;
+                    case "failure":
+                        alert("수정에 실패했습니다.");
+                        break;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching collection update:", error);
+            });
     }
-
-    fetch(`/collection/update`, {
-        method: "PUT",
-        body: formData,
-        headers: {
-            [csrfHeader]: csrfToken
-        }
-    })
-    .then(response => response.text())
-    .then(response => {
-        switch (response) {
-            case "login":
-                alert("로그인이 필요합니다.");
-                location.href = "/home";
-                break;
-            case "success":
-                alert("수정했습니다.");
-                break;
-            case "failure":
-                alert("수정에 실패했습니다.");
-                break;
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching collection update:", error);
-    });
 }
 
 
 // 수집품 삭제 처리
 function deleteCollection(collectionNo) {
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+    if (confirm("삭제하시겠습니까?")) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-    fetch(`/collection/delete?no=${collectionNo}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            [csrfHeader]: csrfToken
-        }
-    })
-    .then(response => response.text())
-    .then(response => {
-        switch (response) {
-            case "login":
-                alert("로그인이 필요합니다.");
-                location.href = "/home";
-                break;
-            case "success":
-                alert("삭제했습니다.");
-                location.href = "/home";
-                break;
-            case "failure":
-                alert("삭제에 실패했습니다.");
-                break;
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching collection delete:", error);
-    });
+        fetch(`/collection/delete?no=${collectionNo}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                [csrfHeader]: csrfToken
+            }
+        })
+            .then(response => response.text())
+            .then(response => {
+                switch (response) {
+                    case "login":
+                        alert("로그인이 필요합니다.");
+                        location.href = "/home";
+                        break;
+                    case "success":
+                        alert("삭제했습니다.");
+                        location.href = "/home";
+                        break;
+                    case "failure":
+                        alert("삭제에 실패했습니다.");
+                        break;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching collection delete:", error);
+            });
+    }
 }
 
 
 // 수집품 첨부파일 삭제 처리
 function deleteFile(fileNo, collectionNo) {
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+    if (confirm("사진을 삭제하시겠습니까?")) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-    fetch(`/collection/deleteFile?no=${fileNo}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            [csrfHeader]: csrfToken
-        }
-    })
-    .then(response => response.text())
-    .then(response => {
-        switch (response) {
-            case "login":
-                alert("로그인이 필요합니다.");
-                location.href = "/home";
-                break;
-            case "success":
-                alert("삭제했습니다.");
-                fetchCollectionView(collectionNo);
-                break;
-            case "failure":
-                alert("삭제에 실패했습니다.");
-                break;
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching collection delete:", error);
-    });
+        fetch(`/collection/deleteFile?no=${fileNo}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                [csrfHeader]: csrfToken
+            }
+        })
+            .then(response => response.text())
+            .then(response => {
+                switch (response) {
+                    case "login":
+                        alert("로그인이 필요합니다.");
+                        location.href = "/home";
+                        break;
+                    case "success":
+                        alert("삭제했습니다.");
+                        fetchCollectionView(collectionNo);
+                        break;
+                    case "failure":
+                        alert("삭제에 실패했습니다.");
+                        break;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching collection delete:", error);
+            });
+    }
 }
 
 

@@ -143,6 +143,20 @@
   border-radius: 0 3px 3px 0;
 }
 
+.collection-form-layer .left-side #currentFilenames div,
+.collection-view-layer .left-side #currentFilenames div {
+  overflow: hidden;
+}
+
+.collection-form-layer .left-side #currentFilenames span,
+.collection-view-layer .left-side #currentFilenames span {
+  display: inline-block;
+  max-width: calc(100% - 70px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .collection-form-layer .right-side,
 .collection-view-layer .right-side {
   width: 55%;
