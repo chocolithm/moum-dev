@@ -185,6 +185,18 @@ public class UserController {
     }
   }
 
+  @GetMapping("/delete")
+  public String delete(@AuthenticationPrincipal UserDetails userDetails, Model model, RedirectAttributes redirectAttributes) throws Exception{
+    if (userDetails == null) {
+      throw new Exception("로그인이 필요합니다.");
+    }
+
+    String email = userDetails.getUsername();
+    User user = userService.getByEmail(email);
+
+    model.addAttribute("user", user);
+    return "user/delete";
+  }
   /**
    * 회원 탈퇴를 처리하는 메서드입니다.
    *
