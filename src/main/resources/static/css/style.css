@@ -376,3 +376,16 @@ td {
                      margin-top: 5px;
                      font-weight: bold; /* 강조 */
                  }
+
+                 /* 체크박스 컨테이너 스타일 */
+                 .filter-container {
+                     margin-bottom: 20px;
+                     display: flex;
+                     gap: 15px; /* 체크박스 간의 간격 */
+                 }
+
+                 /* 체크박스 스타일 */
+                 .filter {
+                     margin-right: 10px;
+                     cursor: pointer; /* 포인터 커서로 변경 */
+                 }
