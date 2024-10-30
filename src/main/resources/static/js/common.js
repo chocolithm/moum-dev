@@ -43,12 +43,9 @@ function formatDate(value) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+// 숫자만 입력받는 함수
 function formatNumber(element) {
-    // 현재 입력된 값에서 숫자 외의 문자를 제거
-    let value = element.value.replace(/[^0-9]/g, '');
-
-    // 숫자에 천 단위로 쉼표 추가
-    element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    element.value = element.value.replace(/[^0-9]/g, "");
 }
 
 // 로그인
@@ -269,15 +266,15 @@ function toggleLike(boardNo, userNo) {
         url: "/board/toggleLike",
         type: "POST",
         data: { boardNo: boardNo, userNo: userNo },
-        beforeSend: function(xhr) {
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(csrfHeaders.header, csrfHeaders.token); // CSRF 헤더 추가
         },
-        success: function(response) {
+        success: function (response) {
             $("#likeCount").text(response.likeCount); // 좋아요 수 업데이트
 
             Swal.fire(response.message);
         },
-        error: function(error) {
+        error: function (error) {
             console.error("좋아요 오류:", error);
             Swal.fire("좋아요 처리에 실패했습니다.");
         }

@@ -447,7 +447,15 @@ INSERT INTO chat(chat_id, chatroom_id, user_id, message, chat_date) VALUES
 (14, 2, 4, "수고하세요", "2024-10-11 12:14:36"),
 (15, 2, 1, "아 잠시", "2024-10-11 12:14:52"),
 (16, 2, 1, "깎아드릴게요", "2024-10-11 12:15:02"),
-(17, 2, 4, "고맙습니다~~~", "2024-10-11 12:15:08");
+(17, 2, 4, "고맙습니다~~~", "2024-10-11 12:15:08"),
+(18, 2, 1, "언제 거래 가능하세요?", "2024-10-11 12:15:15"),
+(19, 2, 4, "오늘 오후쯤 괜찮으세요?", "2024-10-11 12:15:20"),
+(20, 2, 1, "네, 어디서 만나면 될까요?", "2024-10-11 12:15:25"),
+(21, 2, 4, "강남역 근처에서 가능하신가요?", "2024-10-11 12:15:30"),
+(22, 2, 1, "네, 그쪽으로 갈게요.", "2024-10-11 12:15:35"),
+(23, 2, 4, "그럼 오늘 3시에 강남역 5번 출구에서 뵈어요.", "2024-10-11 12:15:40"),
+(24, 2, 1, "네 알겠습니다. 그때 뵙겠습니다!", "2024-10-11 12:15:45"),
+(25, 2, 4, "감사합니다~ 안전하게 오세요!", "2024-10-11 12:15:50");
 
 INSERT INTO collection_photo (photo_id, collection_id, filename, origin_filename) VALUES
 (1, 1, "collection-image-1.png", "collection-image-1.png"),
@@ -489,32 +497,32 @@ INSERT INTO achievement (achievement_id, name, content, photo, acquisition_condi
 ('GUNDAM_PRO', '건담 프로', '건담 프라모델 10개를 등록하세요', 'gundam_pro.png', '건담 프라모델 10개 등록', '수집품 관리');
 
 -- 회원 업적 데이터
-INSERT INTO user_achievement (user_id, achievement_id) VALUES
-(1, 'FIRST_POST'),
-(1, 'COLLECTOR_NOVICE'),
-(1, 'LEGO_MASTER'),
-(1, 'SHOE_ENTHUSIAST'),
-(1, 'GUNDAM_PRO'),
-(2, 'FIRST_POST'),
-(2, 'COLLECTOR_NOVICE'),
-(2, 'LEGO_MASTER'),
-(2, 'SHOE_ENTHUSIAST'),
-(2, 'GUNDAM_PRO'),
-(3, 'FIRST_POST'),
-(3, 'COLLECTOR_NOVICE'),
-(3, 'LEGO_MASTER'),
-(3, 'SHOE_ENTHUSIAST'),
-(3, 'GUNDAM_PRO'),
-(4, 'FIRST_POST'),
-(4, 'COLLECTOR_NOVICE'),
-(4, 'LEGO_MASTER'),
-(4, 'SHOE_ENTHUSIAST'),
-(4, 'GUNDAM_PRO'),
-(5, 'FIRST_POST'),
-(5, 'COLLECTOR_NOVICE'),
-(5, 'LEGO_MASTER'),
-(5, 'SHOE_ENTHUSIAST'),
-(5, 'GUNDAM_PRO');
+INSERT INTO user_achievement (user_id, achievement_id, progress, get_date) VALUES
+(1, 'FIRST_POST', 20, null),
+(1, 'COLLECTOR_NOVICE', 40, null),
+(1, 'LEGO_MASTER', 55, null),
+(1, 'SHOE_ENTHUSIAST', 10, null),
+(1, 'GUNDAM_PRO', 100, now()),
+(2, 'FIRST_POST', 70, null),
+(2, 'COLLECTOR_NOVICE', 10, null),
+(2, 'LEGO_MASTER', 75, null),
+(2, 'SHOE_ENTHUSIAST', 20, null),
+(2, 'GUNDAM_PRO', 17, null),
+(3, 'FIRST_POST', 56, null),
+(3, 'COLLECTOR_NOVICE', 20, null),
+(3, 'LEGO_MASTER', 24, null),
+(3, 'SHOE_ENTHUSIAST', 60, null),
+(3, 'GUNDAM_PRO', 90, null),
+(4, 'FIRST_POST', 20, null),
+(4, 'COLLECTOR_NOVICE', 20, null),
+(4, 'LEGO_MASTER', 20, null),
+(4, 'SHOE_ENTHUSIAST', 20, null),
+(4, 'GUNDAM_PRO', 20, null),
+(5, 'FIRST_POST', 20, null),
+(5, 'COLLECTOR_NOVICE', 20, null),
+(5, 'LEGO_MASTER', 20, null),
+(5, 'SHOE_ENTHUSIAST', 20, null),
+(5, 'GUNDAM_PRO', 20, null);
 
 -- 게시글 태그 데이터
 INSERT INTO board_tag (board_id, tag_name) VALUES

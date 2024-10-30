@@ -199,7 +199,7 @@ CREATE TABLE user_achievement (
     user_id        INTEGER     NOT NULL, -- 회원 번호
     achievement_id VARCHAR(50) NOT NULL, -- 업적ID
     progress       INTEGER     NOT NULL DEFAULT 0, -- 진행도
-    get_date       DATETIME    NULL     DEFAULT now() -- 취득일자
+    get_date       DATETIME    NULL      -- 취득일자
 );
 
 -- 회원 업적
