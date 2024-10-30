@@ -1,5 +1,6 @@
 package moum.project.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.StorageService;
 import moum.project.service.UserService;
@@ -41,8 +42,9 @@ public class UserController {
 
   private String folderName = "user/profile/";
 
+
   /**
-   * 이 메서드는 "/admin/myInfo" URL로 들어오는 GET 요청을 처리합니다.
+   * 이 메서드는 "/user/myInfo" URL로 들어오는 GET 요청을 처리합니다.
    *
    * @return "myInfo" 뷰 이름을 반환합니다.
    */
@@ -60,6 +62,24 @@ public class UserController {
   }
 
   /**
+   * 이 메서드는 "/user/update" URL로 들어오는 GET 요청을 처리합니다.
+   *
+   * @return "update" 뷰 이름을 반환합니다.
+   */
+  @GetMapping("/update")
+  public String updateMyInfo(@AuthenticationPrincipal UserDetails userDetails, Model model) throws Exception {
+    if (userDetails == null) {
+      throw new Exception("로그인이 필요합니다.");
+    }
+
+    String email = userDetails.getUsername();
+    User user = userService.getByEmail(email);
+
+    model.addAttribute("user", user);
+    return "user/update";
+  }
+
+  /**
    * 사용자 정보를 업데이트하는 메서드입니다.
    * 닉네임, 비밀번호, 프로필 사진을 수정할 수 있습니다.
    *
@@ -72,14 +92,15 @@ public class UserController {
    * @return 리다이렉트할 페이지 경로
    * @throws Exception 로그인되지 않은 경우 또는 회원 정보가 존재하지 않는 경우
    */
-  @PostMapping("/myInfo")
+  @PostMapping("/update")
   public String updateMyInfo(
       @RequestParam("no") int no,
       @RequestParam("nickname") String nickname,
       @RequestParam(value = "password", required = false) String password,
       @AuthenticationPrincipal UserDetails userDetails,
       MultipartFile file,
-      RedirectAttributes redirectAttributes
+      RedirectAttributes redirectAttributes,
+      HttpSession session
       ) throws Exception {
 
     User old = userService.get(no);
@@ -94,12 +115,16 @@ public class UserController {
     // 닉네임 수정
     if (nickname != null && !nickname.isEmpty()) {
       user.setNickname(nickname);
+    } else {
+      user.setNickname(old.getNickname());
     }
 
-    // 비밀번호 수정 (암호화하여 저장)
-    if (password != null && !password.isEmpty()) {
-      user.setPassword(passwordEncoder.encode(password));
-    }
+      // 비밀번호 수정 (암호화하여 저장)
+      if (password != null && !password.isEmpty()) {
+        user.setPassword(passwordEncoder.encode(password));
+      } else {
+        user.setPassword(old.getPassword());
+      }
 
     // 프로필 사진 처리 로직
     if (file != null && file.getSize() > 0) {

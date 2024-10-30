@@ -18,6 +18,30 @@
     </style>
 </head>
 <body>
+<main>
+    <block data-th-each="achievement : ${list}">
+        <div class="achievement-photo" data-th-id="${achievement.id}">
+
+         <span class="achievement-image">
+             <img data-th-src="@{'/images/achievement/' + ${achievement.photo}}"
+                  class="achievement-img">
+            </span>
+
+            <span class="achievement-details">
+                <div>
+                    <span data-th-text="${achievement.name}">업적명</span>
+                </div>
+                <div>
+                    <span data-th-text="${achievement.content}">설명</span>
+                </div>
+                <div>
+                    <span data-th-text="${achievement.progress}">진행도: ${achievement.progress}</span>
+                </div>
+            </span>
+        </div>
+
+    </block>
+</main>
 <table>
     <!--
 

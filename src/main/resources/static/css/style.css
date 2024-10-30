@@ -303,3 +303,12 @@ td {
     height: 70px;
     width: 70px;
 }
+
+.achievement-photo {
+    border: 1px black solid;
+}
+
+.achievement-photo span {
+    display: inline-block;
+
+}
