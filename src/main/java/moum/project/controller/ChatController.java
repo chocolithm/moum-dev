@@ -37,8 +37,8 @@ public class ChatController {
     return sender;
   }
 
-  @MessageMapping("/{roomNo}")
-  @SendTo("/chat/receive/{roomNo}")
+  @MessageMapping("/chat/{roomNo}")
+  @SendTo("/receive/chat/{roomNo}")
   public Chat sendMessage(
       @DestinationVariable String roomNo,
       Chat chat) throws Exception {

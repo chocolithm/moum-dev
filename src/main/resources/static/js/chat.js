@@ -8,7 +8,7 @@ function connect(chatroomNo) {
   const socket = new SockJS("/ws");
   stompClient = StompJs.Stomp.over(socket);
   stompClient.connect({}, function (frame) {
-    stompClient.subscribe(`/chat/receive/${chatroomNo}`, function (message) {
+    stompClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
       console.log(message);
       showMessage(JSON.parse(message.body));
     });
@@ -30,7 +30,7 @@ function disconnect() {
 async function sendMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message");
   if (messageContent.value != "") {
-    stompClient.send(`/chat/send/${chatroomNo}`, {}, JSON.stringify({
+    stompClient.send(`/send/chat/${chatroomNo}`, {}, JSON.stringify({
       sender: await getSender(),
       chatroom: {
         no: chatroomNo
