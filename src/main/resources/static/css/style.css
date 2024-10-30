@@ -297,3 +297,9 @@ th {
 td {
     padding: 5px;
 }
+
+/* achievement*/
+.achievement-img {
+    height: 70px;
+    width: 70px;
+}

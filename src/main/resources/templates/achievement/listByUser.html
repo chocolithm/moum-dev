@@ -5,6 +5,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+
+
     <title>Document</title>
     <style>
         table, td, tr {
@@ -50,8 +53,10 @@
             <td data-th-text="${achievement.name}">업적명</td>
             <td data-th-text="${achievement.content}">설명</td>
             <td data-th-text="${achievement.photo}">사진</td>
+            <td><img data-th-src="@{'/images/achievement/' + ${achievement.photo}}"
+            class="achievement-img"></td>
             <td data-th-text="${achievement.progress}">진행도</td>
-            <td data-th-text="${achievement.get_date}">취득일자</td>
+            <td data-th-text="${achievement.getDate}">취득일자</td>
         </tr>
     </block>
 

@@ -28,7 +28,7 @@ public class AchievementController {
   @GetMapping("listByUser")
   public String listByUser(Model model, int userNo) throws Exception {
     List<Achievement> list = achievementService.listByUser(userNo);
-    model.addAttribute("ListByUser", list);
+    model.addAttribute("list", list);
     return "achievement/listByUser";
   }
 
