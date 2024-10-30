@@ -15,6 +15,16 @@ function connect(chatroomNo) {
   });
 }
 
+function disconnect() {
+  if (stompClient && stompClient.connected) {
+    stompClient.disconnect(() => {
+      console.log("Disconnected from the chatroom");
+    });
+  } else {
+    console.log("No active STOMP connection to disconnect.");
+  }
+}
+
 async function sendMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message");
   if (messageContent.value != "") {
@@ -65,6 +75,8 @@ function openChatroomModal() {
 function closeChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
+
+  disconnect();
 
   chat_btn.setAttribute("onClick", "openChatroomModal()");
   fadeOut(chatroom_layer)
@@ -157,12 +169,26 @@ function openChat(chatroomNo) {
 
 function closeChat() {
   const chatroom_layer = document.querySelector(".chatroom-layer");
+
+  disconnect();
+
   for (i = 0; i < chatroom_layer.childNodes.length; i++) {
     fadeOut(chatroom_layer.childNodes[i]);
   }
 
   setTimeout(function () {
     chatroom_layer.innerHTML = "";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const boardNo = urlParams.get('no');
+    if (boardNo != null) {
+      const open_chat_btn = document.createElement("button");
+      open_chat_btn.className = "open-chat-btn btn";
+      open_chat_btn.innerHTML = "채팅하기";
+      open_chat_btn.setAttribute("onclick", "openChat(0)");
+      chatroom_layer.appendChild(open_chat_btn);
+    }
+
     fetchChatroomList();
   }, 500);
 }
