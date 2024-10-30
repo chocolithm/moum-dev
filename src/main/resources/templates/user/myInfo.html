@@ -2,11 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-  <title>회원수정</title>
+  <title>내 정보</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
-<!--  <link rel="stylesheet" th:href="@{/css/user.css}">-->
 </head>
 
 <div th:replace="~{header :: header}"></div>
@@ -23,123 +20,22 @@
   </div>
 
   <div th:if="${user}" th:object="${user}">
-    <form enctype="multipart/form-data"
-          method="post"
-          th:action="@{/user/myInfo}"
-          class="profile-form">
+    <div class="profile-image-container">
+      <a th:if="*{photo != null}" th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">
+        <img th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}" class="profile-img" alt="프로필 이미지">
+      </a>
+      <a th:if="*{photo == null}" href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
+        <img src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png" class="profile-img" alt="기본 프로필 이미지">
+      </a>
+    </div>
 
-      <!-- 프로필 이미지 -->
-      <div class="input-field profile-image-container">
-        <a th:if="*{photo != null}"
-           th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">
-          <img th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}"
-               class="profile-img"
-               alt="프로필 이미지">
-        </a>
-        <a th:if="*{photo == null}"
-           href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
-          <img src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png"
-               class="profile-img"
-               alt="기본 프로필 이미지">
-        </a>
-        <input type="file" id="file" name="file" accept="image/*">
-      </div>
+    <div class="user-info">
+      <p>닉네임: <span th:text="*{nickname}"></span></p>
+      <p>이메일: <span th:text="*{email}"></span></p>
+    </div>
 
-      <!-- 사용자 정보 -->
-      <div class="user-info">
-        <input type="hidden" name="no" th:value="*{no}">
-
-        <div class="input-field">
-          <label for="nickname">닉네임</label>
-          <div class="input-with-button">
-            <input id="nickname"
-                   maxlength="10"
-                   minlength="2"
-                   name="nickname"
-                   pattern="^[가-힣a-zA-Z0-9]{2,10}$"
-                   required
-                   title="2~10자의 한글, 영문, 숫자만 사용 가능합니다"
-                   type="text">
-            <button onclick="checkDuplicate('nickname', document.getElementById('nickname').value)" type="button">
-              닉네임 확인
-            </button>
-          </div>
-          <span id="nicknameMessage"></span>
-        </div>
-
-        <div class="input-field">
-          <label for="password">비밀번호</label>
-          <input id="password"
-                 minlength="8"
-                 name="password"
-                 required
-                 type="password">
-            <!--                   pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"-->
-            <!--                   title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다"-->
-
-            <span id="passwordMessage"></span>
-        </div>
-
-        <div class="input-field">
-          <label for="confirmPassword">비밀번호 확인</label>
-          <input id="confirmPassword"
-                 required
-                 type="password">
-          <span id="confirmPasswordMessage"></span>
-        </div>
-
-        <!-- 버튼 그룹 -->
-        <button class="submit-button" type="submit">수정하기</button>
-      </div>
-    </form>
+    <button class="edit-button" onclick="location.href='/user/update'">수정하기</button>
   </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      let passwordMatch = true; // 초기값은 true (비밀번호를 변경하지 않는 경우도 허용)
-
-      // 비밀번호 일치 확인
-      function checkPasswordMatch() {
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const confirmPasswordMessage = document.getElementById('confirmPasswordMessage');
-
-        if (password || confirmPassword) {
-          if (password === confirmPassword) {
-            confirmPasswordMessage.textContent = '비밀번호가 일치합니다.';
-            confirmPasswordMessage.style.color = 'green';
-            passwordMatch = true;
-          } else {
-            confirmPasswordMessage.textContent = '비밀번호가 일치하지 않습니다.';
-            confirmPasswordMessage.style.color = 'red';
-            passwordMatch = false;
-          }
-        } else {
-          confirmPasswordMessage.textContent = '';
-          passwordMatch = true; // 비밀번호를 변경하지 않는 경우
-        }
-      }
-
-      // 비밀번호 입력 필드 이벤트 리스너
-      document.getElementById('password').addEventListener('input', checkPasswordMatch);
-      document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
-
-      // 폼 제출 전 유효성 검사 추가
-      const submitButton = document.querySelector('button[type="submit"]');
-      if (submitButton) {
-        submitButton.addEventListener('click', function(e) {
-          const password = document.getElementById('password').value;
-          const confirmPassword = document.getElementById('confirmPassword').value;
-
-          if ((password || confirmPassword) && !passwordMatch) {
-            e.preventDefault();
-            alert('비밀번호가 일치하지 않습니다.');
-            return false;
-          }
-        });
-      }
-    });
-  </script>
-  <script th:src="@{/js/user.js}"></script>
 </main>
 </body>
 </html>
