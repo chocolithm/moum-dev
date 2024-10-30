@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -29,7 +30,8 @@ import java.util.*;
  * 24. 10. 21.        narilee       최초 생성
  * 24. 10. 25.        narilee       회원 가입 성공시 알림 표시
  * 24. 10. 25.        narilee       회원 가입시 닉네임, 이메일 중복체크
- * 24. 10. 29.        narilee       닉네임, 비밀번호, 프로필 수정 기능 추가)
+ * 24. 10. 29.        narilee       닉네임, 비밀번호, 프로필 수정 기능 추가
+ * 24. 10. 30.        narilee       회원 조회, 수정 페이지 분리
  */
 @Controller
 @RequestMapping("/user")
@@ -99,8 +101,7 @@ public class UserController {
       @RequestParam(value = "password", required = false) String password,
       @AuthenticationPrincipal UserDetails userDetails,
       MultipartFile file,
-      RedirectAttributes redirectAttributes,
-      HttpSession session
+      RedirectAttributes redirectAttributes
       ) throws Exception {
 
     User old = userService.get(no);
@@ -122,8 +123,6 @@ public class UserController {
       // 비밀번호 수정 (암호화하여 저장)
       if (password != null && !password.isEmpty()) {
         user.setPassword(passwordEncoder.encode(password));
-      } else {
-        user.setPassword(old.getPassword());
       }
 
     // 프로필 사진 처리 로직
@@ -183,6 +182,65 @@ public class UserController {
       return "redirect:/home?signupSuccess=true";
     } catch (Exception e) {
       return "redirect:/user/signup?signupError=true";
+    }
+  }
+
+  /**
+   * 회원 탈퇴를 처리하는 메서드입니다.
+   *
+   * @param no 탈퇴할 회원의 번호
+   * @param userDetails 현재 로그인한 사용자의 정보
+   * @param redirectAttributes 리다이렉트 시 전달할 메시지
+   * @return 홈페이지로 리다이렉트
+   * @throws Exception 권한이 없거나 처리 중 오류 발생시
+   */
+  @PostMapping("/delete")
+  public String deleteUser(
+      @RequestParam("no") int no,
+      @AuthenticationPrincipal UserDetails userDetails,
+      RedirectAttributes redirectAttributes,
+      HttpSession session) throws Exception {
+
+    // 로그인 체크
+    if (userDetails == null) {
+      redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
+      return "redirect:/login";
+    }
+
+    try {
+      // 현재 로그인한 사용자 정보 조회
+      User loginUser = userService.getByEmail(userDetails.getUsername());
+
+      // 권한 체크
+      if (loginUser == null || loginUser.getNo() != no) {
+        redirectAttributes.addFlashAttribute("error", "본인 계정만 탈퇴할 수 있습니다.");
+        return "redirect:/user/myInfo";
+      }
+
+      // 프로필 사진 삭제
+      if (loginUser.getPhoto() != null && !loginUser.getPhoto().isEmpty()) {
+        storageService.delete(folderName + loginUser.getPhoto());
+      }
+
+      // 회원 정보 익명화
+      loginUser.setEmail("deleted_" + System.currentTimeMillis());
+      loginUser.setPassword(passwordEncoder.encode("deleted"));
+      loginUser.setNickname("탈퇴한 회원");
+      loginUser.setPhoto(null);
+      loginUser.setEndDate(LocalDate.now());
+
+      // 회원 정보 업데이트
+      userService.update(loginUser);
+
+      // 세션 무효화
+      session.invalidate();
+
+      redirectAttributes.addFlashAttribute("message", "회원 탈퇴가 완료되었습니다.");
+      return "redirect:/home";
+
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", "회원 탈퇴 처리 중 오류가 발생했습니다.");
+      return "redirect:/user/myInfo";
     }
   }
 
