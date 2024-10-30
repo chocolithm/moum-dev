@@ -46,13 +46,24 @@
       <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
     </div>
     <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
-      <button class="btn chat-btn" onClick="openChatroomModal()" style="display: none;">채팅</button>
+      <a class="btn alert-btn" onClick="">
+        <img alt="알림" class="alert-image" src="/images/common/alert.png">
+        알림
+      </a>
+      <a class="btn chat-btn" onClick="openChatroomModal()" style="display: none;">
+        <img alt="채팅" class="chat-image" src="/images/common/chatting.png">
+        채팅
+      </a>
       <a class="btn btn-light"
-        th:href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
-        th:text="${session.nickname}"></a>
-      <form data-th-action="@{/logout}" method="post" style="display: inline;">
+        data-th-href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
+        data-th-utext="'<img alt=\'사용자정보\' class=\'profile-image\' src=\'/images/common/profile.png\'>' + ${session.nickname}">
+      </a>
+      <form data-th-action="@{/logout}" method="post" name="logoutForm" style="display: inline;">
         <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
-        <button class="btn btn-logout" type="submit">로그아웃</button>
+        <a class="btn btn-logout" onclick="document.logoutForm.submit();">
+          <img alt="로그아웃" class="logout-image" src="/images/common/logout.png">
+          로그아웃
+        </a>
       </form>
     </div>
 
@@ -78,9 +89,10 @@
 
     <div class="chatroom-layer"></div>
 
+    <div class="alert-layer"></div>
 
     <!--sweet alert2 테스트!-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 

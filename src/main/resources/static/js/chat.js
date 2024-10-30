@@ -9,7 +9,6 @@ function connect(chatroomNo) {
   stompClient = StompJs.Stomp.over(socket);
   stompClient.connect({}, function (frame) {
     stompClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
-      console.log(message);
       showMessage(JSON.parse(message.body));
     });
   });
@@ -306,8 +305,6 @@ function fetchChatroom(chatroomNo) {
 
 // 채팅방 상단 게시글 정보 생성
 function createBoardInfo(board_info, chatroom) {
-  console.log(chatroom);
-
   const br = document.createElement("br");
 
   const board_status = document.createElement("span");
@@ -380,7 +377,6 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
   const chat_info = document.querySelector(".chat-info");
 
   if (chat_info.scrollTop === 0) {
-    console.log('채팅데이터를 추가로 가져옵니다.');
 
     return new Promise((resolve, reject) => {
       fetch(`/chat/loadChat?no=${chatroomNo}&pageNo=${pageNo}`)
