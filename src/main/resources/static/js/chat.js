@@ -80,7 +80,9 @@ function fetchChatroomList() {
 
   fetch(`/chat/listRoom`)
     .then(response => response.json())
-    .then(data => {
+    .then(async data => {
+
+      const loginUser = await getSender();
 
       data.forEach(chatroom => {
         const div = document.createElement("div");
@@ -92,13 +94,15 @@ function fetchChatroomList() {
         userspan.className = "chatroom-user";
         chatspan.className = "chatroom-content";
 
+        const participant = loginUser.no == chatroom.participant.no ? chatroom.owner : chatroom.participant;
+
         const img = document.createElement("img");
-        img.src = chatroom.participant.photo == null ? "/images/user/default1.png" : "/images/user/default2.png";
+        img.src = participant.photo == null ? "/images/user/default1.png" : "/images/user/default2.png";
         img.alt = "프로필";
         img.className = "profile";
 
         const nickname = document.createElement("div")
-        nickname.innerHTML = chatroom.participant.nickname;
+        nickname.innerHTML = participant.nickname;
         nickname.className = "nickname";
 
         userspan.appendChild(img);
@@ -157,7 +161,7 @@ function closeChat() {
     fadeOut(chatroom_layer.childNodes[i]);
   }
 
-  setTimeout(function() {
+  setTimeout(function () {
     chatroom_layer.innerHTML = "";
     fetchChatroomList();
   }, 500);
@@ -186,7 +190,7 @@ function checkChatroom() {
         chatroom_layer.appendChild(chat_info);
 
         createChatInputbox(chatroom.no);
-        
+
       } else {
 
         try {
@@ -229,6 +233,8 @@ function fetchChatroom(chatroomNo) {
 }
 
 function createBoardInfo(board_info, chatroom) {
+  console.log(chatroom);
+
   const br = document.createElement("br");
 
   const board_status = document.createElement("span");
@@ -242,7 +248,7 @@ function createBoardInfo(board_info, chatroom) {
   const exit_btn = document.createElement("img");
   exit_btn.className = "x";
   exit_btn.alt = "닫기";
-  exit_btn.src="/images/common/x_bg_black.png";
+  exit_btn.src = "/images/common/x_bg_black.png";
   exit_btn.setAttribute("onclick", "closeChat()");
 
   const transaction_type = document.createElement("span");
@@ -273,7 +279,7 @@ function fetchChatContent(chatroomNo, pageNo) {
         const chat_info = document.createElement("div");
         chat_info.className = "chat-info";
 
-        if (data != "" ) {
+        if (data != "") {
           const loginUser = await getSender();
 
           data.reverse().forEach(chat => {
@@ -288,7 +294,7 @@ function fetchChatContent(chatroomNo, pageNo) {
             chat_info.setAttribute("onscroll", `fetchMoreChatContent(${chatroomNo}, ${pageNo + 1})`);
           }
         }
-        
+
         chatroom_layer.appendChild(chat_info);
         chat_info.scrollTop = chat_info.scrollHeight;
 
@@ -321,7 +327,7 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
               const message_box = document.createElement("div");
 
               createChatContent(message_box, loginUser, chat);
-  
+
               chat_info.insertBefore(message_box, chat_info.firstChild);
             })
 
@@ -333,7 +339,7 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
             } else {
               chat_info.removeAttribute('onscroll');
             }
-            
+
           }
 
           resolve();
@@ -351,7 +357,7 @@ function createChatContent(message_box, loginUser, chat) {
   const time = document.createElement("span");
   time.className = "message-time";
   time.innerHTML = calcTime(chat.chatDate);
-  
+
   const message = document.createElement("span");
   message.className = "message";
   message.innerHTML = chat.message;
@@ -359,7 +365,7 @@ function createChatContent(message_box, loginUser, chat) {
   const nickname = document.createElement("div");
   nickname.className = "nickname";
   nickname.innerHTML = chat.sender.nickname;
-  
+
   if (chat.sender.no == loginUser.no) {
 
     message_box.appendChild(time);
@@ -404,8 +410,8 @@ function createChatInputbox(chatroomNo) {
 
   chatroom_layer.appendChild(chat_inputbox);
 
-  input.addEventListener("keydown", function(event) {
-    
+  input.addEventListener("keydown", function (event) {
+
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       btn.click();
@@ -417,19 +423,21 @@ function createChatInputbox(chatroomNo) {
 function createChatroom(boardNo) {
   fetch(`/chat/addRoom?boardNo=${boardNo}`)
     .then(response => response.json())
-    .then(chatroom => {
+    .then(async chatroom => {
 
       if (chatroom == null) {
         alert("생성 중 오류 발생");
         return;
       }
+      await connect(chatroom.no);
+      console.log("after connect");
       sendMessage(chatroom.no);
       const btn = document.querySelector(".chat-btn");
       btn.setAttribute("onclick", `sendMessage(${chatroom.no});`);
     })
     .catch(error => {
       console.error("error creating chatroom", error);
-    }) 
+    })
 }
 
 

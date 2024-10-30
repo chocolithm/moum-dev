@@ -489,32 +489,32 @@ INSERT INTO achievement (achievement_id, name, content, photo, acquisition_condi
 ('GUNDAM_PRO', '건담 프로', '건담 프라모델 10개를 등록하세요', 'gundam_pro.png', '건담 프라모델 10개 등록', '수집품 관리');
 
 -- 회원 업적 데이터
-INSERT INTO user_achievement (user_id, achievement_id) VALUES
-(1, 'FIRST_POST'),
-(1, 'COLLECTOR_NOVICE'),
-(1, 'LEGO_MASTER'),
-(1, 'SHOE_ENTHUSIAST'),
-(1, 'GUNDAM_PRO'),
-(2, 'FIRST_POST'),
-(2, 'COLLECTOR_NOVICE'),
-(2, 'LEGO_MASTER'),
-(2, 'SHOE_ENTHUSIAST'),
-(2, 'GUNDAM_PRO'),
-(3, 'FIRST_POST'),
-(3, 'COLLECTOR_NOVICE'),
-(3, 'LEGO_MASTER'),
-(3, 'SHOE_ENTHUSIAST'),
-(3, 'GUNDAM_PRO'),
-(4, 'FIRST_POST'),
-(4, 'COLLECTOR_NOVICE'),
-(4, 'LEGO_MASTER'),
-(4, 'SHOE_ENTHUSIAST'),
-(4, 'GUNDAM_PRO'),
-(5, 'FIRST_POST'),
-(5, 'COLLECTOR_NOVICE'),
-(5, 'LEGO_MASTER'),
-(5, 'SHOE_ENTHUSIAST'),
-(5, 'GUNDAM_PRO');
+INSERT INTO user_achievement (user_id, achievement_id, progress, get_date) VALUES
+(1, 'FIRST_POST', 20, null),
+(1, 'COLLECTOR_NOVICE', 40, null),
+(1, 'LEGO_MASTER', 55, null),
+(1, 'SHOE_ENTHUSIAST', 10, null),
+(1, 'GUNDAM_PRO', 100, now()),
+(2, 'FIRST_POST', 70, null),
+(2, 'COLLECTOR_NOVICE', 10, null),
+(2, 'LEGO_MASTER', 75, null),
+(2, 'SHOE_ENTHUSIAST', 20, null),
+(2, 'GUNDAM_PRO', 17, null),
+(3, 'FIRST_POST', 56, null),
+(3, 'COLLECTOR_NOVICE', 20, null),
+(3, 'LEGO_MASTER', 24, null),
+(3, 'SHOE_ENTHUSIAST', 60, null),
+(3, 'GUNDAM_PRO', 90, null),
+(4, 'FIRST_POST', 20, null),
+(4, 'COLLECTOR_NOVICE', 20, null),
+(4, 'LEGO_MASTER', 20, null),
+(4, 'SHOE_ENTHUSIAST', 20, null),
+(4, 'GUNDAM_PRO', 20, null),
+(5, 'FIRST_POST', 20, null),
+(5, 'COLLECTOR_NOVICE', 20, null),
+(5, 'LEGO_MASTER', 20, null),
+(5, 'SHOE_ENTHUSIAST', 20, null),
+(5, 'GUNDAM_PRO', 20, null);
 
 -- 게시글 태그 데이터
 INSERT INTO board_tag (board_id, tag_name) VALUES

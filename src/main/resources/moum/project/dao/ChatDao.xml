@@ -28,6 +28,18 @@
     <result column="message" property="lastMessage"/>
     <result column="chat_date" property="chatDate"/>
 
+    <association property="owner" javaType="moum.project.vo.User">
+      <id column="owner_id" property="no"/>
+      <result column="owner_nickname" property="nickname"/>
+      <result column="owner_photo" property="photo"/>
+    </association>
+
+    <association property="participant" javaType="moum.project.vo.User">
+      <id column="participant_id" property="no"/>
+      <result column="participant_nickname" property="nickname"/>
+      <result column="participant_photo" property="photo"/>
+    </association>
+
     <association property="board" javaType="moum.project.vo.Board">
       <id column="board_id" property="no"/>
       <result column="board_user_id" property="userNo"/>
@@ -40,12 +52,6 @@
         <id column="collection_id" property="no"/>
         <result column="name" property="name"/>
       </association>
-    </association>
-
-    <association property="participant" javaType="moum.project.vo.User">
-      <id column="participant_id" property="no"/>
-      <result column="nickname" property="nickname"/>
-      <result column="photo" property="photo"/>
     </association>
 
   </resultMap>
@@ -85,14 +91,19 @@
     select
       cr.chatroom_id,
       cr.user_id as participant_id,
-      u.nickname,
-      u.photo,
+      up.nickname as participant_nickname,
+      up.photo as participant_photo,
+      b.board_id,
+      b.user_id as owner_id,
+      uo.nickname as owner_nickname,
+      uo.photo as owner_photo,
       c1.message,
       c1.chat_date
     from
       chatroom cr
-      left join user u on cr.user_id = u.user_id
+      left join user up on cr.user_id = up.user_id
       left join board b on cr.board_id = b.board_id
+      left join user uo on b.user_id = uo.user_id
       inner join (
         select chatroom_id, message, chat_date
         from chat c
@@ -106,7 +117,7 @@
       b.user_id = #{no}
       or cr.user_id = #{no}
     order by
-      c1.chatroom_id desc
+      c1.chat_date desc
   </select>
 
   <select id="findChat" resultMap="ChatMap" parameterType="int">
