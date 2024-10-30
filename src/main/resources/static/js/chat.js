@@ -1,9 +1,9 @@
 // 채팅 
 
+
 let stompClient = null;
 
-// 채팅
-
+// 소켓 통신 연결
 function connect(chatroomNo) {
   const socket = new SockJS("/ws");
   stompClient = StompJs.Stomp.over(socket);
@@ -15,6 +15,7 @@ function connect(chatroomNo) {
   });
 }
 
+// 소켓 통신 연결 해제
 function disconnect() {
   if (stompClient && stompClient.connected) {
     stompClient.disconnect(() => {
@@ -25,6 +26,7 @@ function disconnect() {
   }
 }
 
+// 소켓 메시지 전송
 async function sendMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message");
   if (messageContent.value != "") {
@@ -39,6 +41,7 @@ async function sendMessage(chatroomNo) {
   }
 }
 
+// 소켓 메시지 출력
 async function showMessage(chat) {
   const chat_info = document.querySelector(".chat-info");
   const message_box = document.createElement("div");
@@ -53,6 +56,14 @@ async function showMessage(chat) {
   }
 }
 
+// [채팅하기] 버튼 생성
+function createOpenChatBtn(open_chat_btn) {
+  open_chat_btn.className = "open-chat-btn btn";
+  open_chat_btn.innerHTML = "채팅하기";
+  open_chat_btn.setAttribute("onclick", "openChat(0)");
+}
+
+// 채팅 모달 열기
 async function openChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
@@ -61,9 +72,7 @@ async function openChatroomModal() {
   const boardNo = urlParams.get('no');
   if (boardNo != null) {
     const open_chat_btn = document.createElement("button");
-    open_chat_btn.className = "open-chat-btn btn";
-    open_chat_btn.innerHTML = "채팅하기";
-    open_chat_btn.setAttribute("onclick", "openChat(0)");
+    createOpenChatBtn(open_chat_btn);
     chatroom_layer.appendChild(open_chat_btn);
   }
 
@@ -72,6 +81,7 @@ async function openChatroomModal() {
   fadeIn(chatroom_layer);
 }
 
+// 채팅 모달 닫기
 function closeChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
@@ -99,11 +109,12 @@ function fetchChatroomList() {
       data.forEach(chatroom => {
         const div = document.createElement("div");
         div.className = "chatroom";
-        div.setAttribute("onclick", `openChat(${chatroom.no})`);
+        div.onclick = () => openChat(chatroom.no);
 
         const userspan = document.createElement("span");
-        const chatspan = document.createElement("span");
         userspan.className = "chatroom-user";
+
+        const chatspan = document.createElement("span");
         chatspan.className = "chatroom-content";
 
         const participant = loginUser.no == chatroom.participant.no ? chatroom.owner : chatroom.participant;
@@ -117,8 +128,7 @@ function fetchChatroomList() {
         nickname.innerHTML = participant.nickname;
         nickname.className = "nickname";
 
-        userspan.appendChild(img);
-        userspan.appendChild(nickname);
+        userspan.append(img, nickname);
 
         const message = document.createElement("div");
         message.className = "message";
@@ -127,13 +137,11 @@ function fetchChatroomList() {
         date.className = "date";
         date.innerHTML = formatDate(chatroom.chatDate);
 
-        chatspan.appendChild(message);
-        chatspan.appendChild(date);
+        chatspan.append(message, date);
 
-        div.appendChild(userspan);
-        div.appendChild(chatspan);
+        div.append(userspan, chatspan);
 
-        chatroom_layer.appendChild(div);
+        chatroom_layer.append(div);
       });
     })
     .catch(error => {
@@ -141,6 +149,7 @@ function fetchChatroomList() {
     });
 }
 
+// 채팅방 열기
 function openChat(chatroomNo) {
 
   if (chatroomNo == 0) {
@@ -169,6 +178,7 @@ function openChat(chatroomNo) {
   }
 }
 
+// 채팅방 닫기
 function closeChat() {
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
@@ -185,9 +195,7 @@ function closeChat() {
     const boardNo = urlParams.get('no');
     if (boardNo != null) {
       const open_chat_btn = document.createElement("button");
-      open_chat_btn.className = "open-chat-btn btn";
-      open_chat_btn.innerHTML = "채팅하기";
-      open_chat_btn.setAttribute("onclick", "openChat(0)");
+      createOpenChatBtn(open_chat_btn);
       chatroom_layer.appendChild(open_chat_btn);
     }
 
@@ -218,9 +226,7 @@ function checkChatroom() {
 
         setTimeout(async function () {
           const chatroom_layer = document.querySelector(".chatroom-layer");
-
           chatroom_layer.innerHTML = "";
-
 
           const board_info = document.createElement("div");
           board_info.className = "board-info";
@@ -230,25 +236,37 @@ function checkChatroom() {
           const chat_info = document.createElement("div");
           chat_info.className = "chat-info";
 
-          chatroom_layer.appendChild(board_info);
-          chatroom_layer.appendChild(chat_info);
+          chatroom_layer.append(board_info, chat_info);
 
           createChatInputbox(chatroom.no);
         }, 500);
 
       } else {
-
-        try {
-          openChat(chatroom.no);
-        } catch (error) {
-          console.error("error fetching chatroom info", error);
-        }
-
+        openChat(chatroom.no);
       }
     })
     .catch(error => {
       console.error("Error fetching new chatroom:", error);
     });
+}
+
+// 새 채팅방에서 채팅 입력 시 DB에 채팅방 생성
+function createChatroom(boardNo) {
+  fetch(`/chat/addRoom?boardNo=${boardNo}`)
+    .then(response => response.json())
+    .then(async chatroom => {
+
+      if (chatroom == null) {
+        alert("생성 중 오류 발생");
+        return;
+      }
+      await connect(chatroom.no);
+      sendMessage(chatroom.no);
+      document.querySelector(".chat-btn").onclick = () => sendMessage(chatroom.no);
+    })
+    .catch(error => {
+      console.error("error creating chatroom", error);
+    })
 }
 
 // 채팅방 정보 로딩
@@ -277,6 +295,7 @@ function fetchChatroom(chatroomNo) {
 
 }
 
+// 채팅방 상단 게시글 정보 생성
 function createBoardInfo(board_info, chatroom) {
   console.log(chatroom);
 
@@ -304,12 +323,7 @@ function createBoardInfo(board_info, chatroom) {
   transaction_price.className = "transaction-price";
   transaction_price.innerHTML = chatroom.board.price != 0 ? chatroom.board.price + "원" : "가격 미정";
 
-  board_info.appendChild(board_status);
-  board_info.appendChild(board_title);
-  board_info.appendChild(exit_btn);
-  board_info.appendChild(br);
-  board_info.appendChild(transaction_type);
-  board_info.appendChild(transaction_price);
+  board_info.append(board_status, board_title, exit_btn, br, transaction_type, transaction_price);
 }
 
 // 채팅 데이터 로딩
@@ -384,7 +398,6 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
             } else {
               chat_info.removeAttribute('onscroll');
             }
-
           }
 
           resolve();
@@ -397,7 +410,7 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
   }
 }
 
-// 채팅창 생성
+// 채팅 데이터 출력
 function createChatContent(message_box, loginUser, chat) {
   const time = document.createElement("span");
   time.className = "message-time";
@@ -412,16 +425,10 @@ function createChatContent(message_box, loginUser, chat) {
   nickname.innerHTML = chat.sender.nickname;
 
   if (chat.sender.no == loginUser.no) {
-
-    message_box.appendChild(time);
-    message_box.appendChild(message);
+    message_box.append(time, message);
     message_box.className = "message-box owner-message-box";
-
   } else {
-
-    message_box.appendChild(nickname);
-    message_box.appendChild(message);
-    message_box.appendChild(time);
+    message_box.append(nickname, message, time);
     message_box.className = "message-box guest-message-box";
   }
 }
@@ -450,42 +457,16 @@ function createChatInputbox(chatroomNo) {
     btn.setAttribute("onclick", `sendMessage(${chatroomNo});`);
   }
 
-  chat_inputbox.appendChild(input);
-  chat_inputbox.appendChild(btn);
-
+  chat_inputbox.append(input, btn);
   chatroom_layer.appendChild(chat_inputbox);
 
   input.addEventListener("keydown", function (event) {
-
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       btn.click();
     }
-
   });
 }
-
-function createChatroom(boardNo) {
-  fetch(`/chat/addRoom?boardNo=${boardNo}`)
-    .then(response => response.json())
-    .then(async chatroom => {
-
-      if (chatroom == null) {
-        alert("생성 중 오류 발생");
-        return;
-      }
-      await connect(chatroom.no);
-      console.log("after connect");
-      sendMessage(chatroom.no);
-      const btn = document.querySelector(".chat-btn");
-      btn.setAttribute("onclick", `sendMessage(${chatroom.no});`);
-    })
-    .catch(error => {
-      console.error("error creating chatroom", error);
-    })
-}
-
-
 
 // 채팅 시간 계산
 function calcTime(chatDate) {
