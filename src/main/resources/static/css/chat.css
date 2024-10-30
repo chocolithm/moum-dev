@@ -65,6 +65,17 @@
   color: lightgrey;
 }
 
+.chatroom-layer .no-room-message {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.chatroom-layer .open-chat-btn {
+  display: flex;
+  margin: 20px auto;
+}
+
 .chatroom-layer .board-info {
   border: 1px solid black;
   background: black;
@@ -118,6 +129,7 @@
 .chatroom-layer .chat-info .message {
   background: lightgrey;
   display: inline-block;
+  max-width: 300px;
   padding: 10px;
   margin: 5px;
   border-radius: 15px;

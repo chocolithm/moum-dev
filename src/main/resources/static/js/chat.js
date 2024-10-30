@@ -106,6 +106,13 @@ function fetchChatroomList() {
 
       const loginUser = await getSender();
 
+      if (data.length == 0) {
+        const div = document.createElement("div");
+        div.className = "no-room-message";
+        div.innerHTML = "채팅 목록이 없습니다.";
+        chatroom_layer.append(div);
+      }
+
       data.forEach(chatroom => {
         const div = document.createElement("div");
         div.className = "chatroom";
@@ -254,15 +261,17 @@ function checkChatroom() {
 function createChatroom(boardNo) {
   fetch(`/chat/addRoom?boardNo=${boardNo}`)
     .then(response => response.json())
-    .then(async chatroom => {
+    .then(chatroom => {
 
       if (chatroom == null) {
         alert("생성 중 오류 발생");
         return;
       }
-      await connect(chatroom.no);
-      sendMessage(chatroom.no);
-      document.querySelector(".chat-btn").onclick = () => sendMessage(chatroom.no);
+      connect(chatroom.no)
+        .then(() => {
+          sendMessage(chatroom.no);
+          document.querySelector(".chat-btn").onclick = () => sendMessage(chatroom.no);
+        });
     })
     .catch(error => {
       console.error("error creating chatroom", error);
