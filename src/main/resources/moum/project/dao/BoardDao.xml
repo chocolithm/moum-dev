@@ -15,41 +15,57 @@
         <result column="view_count" property="viewCount"/>
         <result column="is_public" property="isPublic"/>
         <result column="is_deleted" property="isDeleted"/>
+
+        <result column="price" property="price"/>
+        <result column="status" property="status"/>
+
+        <association property="collection" javaType="moum.project.vo.Collection">
+            <id column="collection_id" property="no"/>
+            <result column="name" property="name"/>
+        </association>
     </resultMap>
 
     <!-- 모든 게시글 조회 (list) -->
     <select id="list" resultMap="BoardMap">
         SELECT
-        board_id,
-        title,
-        content,
-        user_id,
-        post_date,
-        view_count,
-        is_public,
-        is_deleted
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        tb.collection_id,
+        tb.price,
+        tb.status
         FROM
-        board
+        board b
+        left join trade_board tb on b.board_id = tb.board_id
         WHERE
-        is_deleted = 0
+        b.is_deleted = 0
         ORDER BY
-        post_date DESC
+        b.post_date DESC
     </select>
 
     <select id="selectById" resultMap="BoardMap" parameterType="int">
         SELECT
-        board_id,
-        title,
-        content,
-        user_id,
-        post_date,
-        view_count,
-        is_public,
-        is_deleted
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        tb.collection_id,
+        tb.price,
+        tb.status
         FROM
-        board
+        board b
+        left join trade_board tb on b.board_id = tb.board_id
         WHERE
-        board_id = #{boardId} AND is_deleted = 0
+        b.board_id = #{boardId} AND b.is_deleted = 0
     </select>
 
 
@@ -88,18 +104,22 @@
     <!-- 특정 사용자의 게시글 조회 (selectByUserId) -->
     <select id="selectByUserId" resultMap="BoardMap" parameterType="int">
         SELECT
-        board_id,
-        title,
-        content,
-        user_id,
-        post_date,
-        view_count,
-        is_public,
-        is_deleted
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        tb.collection_id,
+        tb.price,
+        tb.status
         FROM
-        board
+        board b
+        left join trade_board tb on b.board_id = tb.board_id
         WHERE
-        user_id = #{userId} AND is_deleted = 0
+        b.user_id = #{userId} AND b.is_deleted = 0
     </select>
 
     <!-- 최근 게시글 조회 (selectRecent) -->
