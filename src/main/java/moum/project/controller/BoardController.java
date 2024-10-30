@@ -112,17 +112,17 @@ public class BoardController {
         return "board/boardView";
     }
 
-    @PostMapping("/increaseLike")
-    @ResponseBody
-    public Map<String, Object> increaseLike(@RequestParam("boardNo") int boardNo) throws Exception {
-        likesService.addLike(boardNo); // 추천수 증가
-        int likeCount = likesService.countLikesByBoard(boardNo); // 최신 추천수 조회
-
-        // 추천수 응답 데이터
-        Map<String, Object> response = new HashMap<>();
-        response.put("likeCount", likeCount);
-        return response;
-    }
+//    @PostMapping("/increaseLike")
+//    @ResponseBody
+//    public Map<String, Object> increaseLike(@RequestParam("boardNo") int boardNo) throws Exception {
+//        likesService.addLike(boardNo); // 추천수 증가
+//        int likeCount = likesService.countLikesByBoard(boardNo); // 최신 추천수 조회
+//
+//        // 추천수 응답 데이터
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("likeCount", likeCount);
+//        return response;
+//    }
 
 
     @PostMapping("update")

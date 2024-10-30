@@ -35,7 +35,7 @@
         <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
         <p>조회수: <span th:text="${board.viewCount}">0</span></p>
         <p>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></p>
-        <button type="button" th:onclick="'increaseLike(' + ${board.no} + ');'" class="like-button">추천하기</button>
+        <button type="button" th:onclick="'toggleLike(' + ${board.no} + ');'" class="like-button">추천하기</button>
         <hr/>
         <div th:text="${board.content}">게시글 내용</div>
     </div>

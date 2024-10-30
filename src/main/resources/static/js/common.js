@@ -252,43 +252,39 @@ function findAllComment(boardNo) {
     })
 }
 
-    function increaseLike(boardNo) {
-    // CSRF 토큰을 메타에서 가져옴
+function getCsrfTokenHeaders() {
+    // CSRF 토큰을 메타 태그에서 가져옵니다.
     const csrfToken = $("meta[name='_csrf']").attr("content");
     const csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-    $.ajax({
-    url: "/board/increaseLike",
-    type: "POST",
-    data: {boardNo: boardNo},
-    beforeSend: function(xhr) {
-    xhr.setRequestHeader(csrfHeader, csrfToken); // CSRF 헤더 추가
-},
-    success: function(response) {
-    $("#likeCount").text(response.likeCount);
-    Swal.fire("추천을 눌렀습니다");
-},
-    error: function(error) {
-    console.error("추천 오류:", error);
-    alert("추천에 실패했습니다.");
-}
-});
+    return {
+        header: csrfHeader,
+        token: csrfToken
+    };
 }
 
 function toggleLike(boardNo, userNo) {
+    const csrfHeaders = getCsrfTokenHeaders();
+
     $.ajax({
-        url: "/likes/toggleLike",
+        url: "/board/toggleLike",
         type: "POST",
         data: { boardNo: boardNo, userNo: userNo },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(csrfHeaders.header, csrfHeaders.token); // CSRF 헤더 추가
+        },
         success: function(response) {
             $("#likeCount").text(response.likeCount); // 좋아요 수 업데이트
+
+            Swal.fire(response.message);
         },
         error: function(error) {
             console.error("좋아요 오류:", error);
-            alert("좋아요 처리에 실패했습니다.");
+            Swal.fire("좋아요 처리에 실패했습니다.");
         }
     });
 }
+
+
 
 
 
