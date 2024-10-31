@@ -3,6 +3,7 @@ package moum.project.controller;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.ChatService;
+import moum.project.vo.Alert;
 import moum.project.vo.Chat;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -29,5 +30,13 @@ public class SocketController {
     } else {
       return null;
     }
+  }
+
+  @MessageMapping("/alert/{userNo}")
+  @SendTo("/receive/alert/{userNo}")
+  public Alert sendAlert(
+      @DestinationVariable String userNo,
+      Alert alert) throws Exception {
+    return null;
   }
 }

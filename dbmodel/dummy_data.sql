@@ -553,6 +553,21 @@ INSERT INTO report_result_category (report_result_id, result_name) VALUES
 (3, '계정 정지'),
 (4, '신고 기각');
 
+-- 알림 데이터
+INSERT INTO alert (user_id, alert_content, alert_date, alert_read) VALUES
+(2, "<a href='/board/boardView?no=4'>게시글이 등록되었습니다.</a>", "2024-10-6 12:13:16", 1),
+(2, "<a href='/board/boardView?no=3'>게시글이 등록되었습니다.</a>", "2024-10-8 13:13:16", 1),
+(2, "<a href='/board/boardView?no=2'>게시글이 등록되었습니다.</a>", "2024-10-8 14:13:16", 1),
+(2, "<a href='/board/boardView?no=1'>게시글이 등록되었습니다.</a>", "2024-10-9 15:13:16", 1),
+(2, "<a href='/board/boardView?no=4'>게시글이 등록되었습니다.</a>", "2024-10-10 12:13:16", 1),
+(2, "<a href='/board/boardView?no=3'>게시글이 등록되었습니다.게시글이 등록되었습니다.</a>", "2024-10-10 13:13:16", 1),
+(2, "<a href='/board/boardView?no=2'>게시글이 등록되었습니다.</a>", "2024-10-10 14:13:16", 0),
+(2, "<a href='/board/boardView?no=1'>게시글이 등록되었습니다.</a>", "2024-10-10 15:13:16", 0),
+(2, "<a href='/board/boardView?no=4'>게시글이 등록되었습니다.</a>", "2024-10-11 12:13:16", 0),
+(2, "<a href='/board/boardView?no=3'>게시글이 등록되었습니다.게시글이 등록되었습니다.게시글이 등록되었습니다.게시글이 등록되었습니다.</a>", "2024-10-11 13:13:16", 0),
+(2, "<a href='/board/boardView?no=2'>게시글이 등록되었습니다.</a>", "2024-10-11 14:13:16", 0),
+(2, "<a href='/board/boardView?no=1'>게시글이 등록되었습니다.</a>", "2024-10-11 15:13:16", 0);
+
 -- 금지어 유형 데이터
 INSERT INTO forbidden_word (word) VALUES
 ('시바'),

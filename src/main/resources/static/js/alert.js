@@ -35,6 +35,7 @@ function fetchAlertContent(pageNo) {
         alerts.forEach(alert => {
           const box = document.createElement("div");
           box.className = alert.read == 1 ? "alert-box read" : "alert-box unread";
+          box.id = `alert-${alert.no}`;
 
           const content = document.createElement("span");
           content.className = "alert-content";
@@ -45,7 +46,10 @@ function fetchAlertContent(pageNo) {
           time.innerHTML = calcTime(alert.date);
 
           box.append(content, time);
-          box.onclick = () => location.href = content.childNodes[0].href;
+          box.onclick = () =>
+            alert.read == 1
+              ? location.href = content.childNodes[0].href
+              : (updateRead(alert.no), location.href = content.childNodes[0].href);
           alert_layer.append(box);
         })
       }
@@ -53,4 +57,14 @@ function fetchAlertContent(pageNo) {
     .catch(error => {
       console.error("error fetching alerts", error);
     })
+}
+
+function updateRead(alertNo) {
+  const box = document.querySelector(`alert-${alertNo}`);
+  fetch(`/alert/read?no=${alertNo}`)
+    .then((result) => {
+      if (result == "success") {
+        location.href = box.firstChild.firstChild.href;
+      }
+    });
 }

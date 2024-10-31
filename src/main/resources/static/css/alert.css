@@ -18,3 +18,40 @@
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
+
+.alert-layer::-webkit-scrollbar {
+  display: none;
+}
+
+.alert-layer .alert-box {
+  border-bottom: 1px solid lightgrey;
+  display: flex;
+  align-items: center;
+  transition: 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.alert-layer .alert-box:hover {
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(2px);
+  cursor: pointer;
+}
+
+.alert-layer .unread {
+  font-weight: bold;
+}
+
+.alert-layer .alert-box:last-child {
+  border-bottom: none;
+}
+
+.alert-layer .alert-box .alert-content {
+  padding: 10px;
+  width: 70%;
+}
+
+.alert-layer .alert-box .alert-time {
+  color: grey;
+  font-size: 0.8rem;
+  padding: 10px;
+}

@@ -9,6 +9,6 @@ public class Alert {
   @EqualsAndHashCode.Include private int no;
   private User user;
   private String content;
-  private LocalDateTime dateTime;
+  private LocalDateTime date;
   private boolean read;
 }
