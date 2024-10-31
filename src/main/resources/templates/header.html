@@ -46,11 +46,11 @@
       <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
     </div>
     <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
-      <a class="btn alert-btn" onClick="">
+      <a class="btn alert-btn" onClick="openAlertModal();">
         <img alt="알림" class="alert-image" src="/images/common/alert.png">
         알림
       </a>
-      <a class="btn chat-btn" onClick="openChatroomModal()" style="display: none;">
+      <a class="btn chat-btn" onClick="openChatroomModal();" style="display: none;">
         <img alt="채팅" class="chat-image" src="/images/common/chatting.png">
         채팅
       </a>

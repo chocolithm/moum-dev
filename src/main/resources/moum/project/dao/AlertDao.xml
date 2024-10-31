@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="moum.project.dao.Alert">
+<mapper namespace="moum.project.dao.AlertDao">
 
   <resultMap id="AlertMap" type="moum.project.vo.Alert">
 

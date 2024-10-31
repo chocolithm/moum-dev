@@ -76,7 +76,7 @@ async function openChatroomModal() {
   }
 
   fetchChatroomList();
-  chat_btn.setAttribute("onClick", "closeChatroomModal()");
+  chat_btn.onclick = () => closeChatroomModal();
   fadeIn(chatroom_layer);
 }
 
@@ -87,7 +87,7 @@ function closeChatroomModal() {
 
   disconnect();
 
-  chat_btn.setAttribute("onClick", "openChatroomModal()");
+  chat_btn.onclick = () => openChatroomModal();
   fadeOut(chatroom_layer)
   setTimeout(function () {
     chatroom_layer.innerHTML = "";
