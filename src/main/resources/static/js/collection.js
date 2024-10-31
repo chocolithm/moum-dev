@@ -15,7 +15,6 @@ function openPostFormModal() {
 
 
 // 게시글 등록 화면 내용 가져오기
-// 게시글 등록 화면 내용 가져오기
 function fetchPostForm() {
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
