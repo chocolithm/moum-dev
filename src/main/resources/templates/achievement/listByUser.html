@@ -2,9 +2,9 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <link href="/css/style.css" rel="stylesheet" type="text/css">
 
 
@@ -17,19 +17,19 @@
         <h2>내 업적</h2> <!-- 제목 추가 -->
         <div class="filter-container">
             <label>
-                <input type="checkbox" class="filter" value="not-started" onchange="filterAchievements()" checked> 미획득
+                <input checked class="filter" onchange="filterAchievements()" type="checkbox" value="not-started"> 미획득
             </label>
             <label>
-                <input type="checkbox" class="filter" value="completed" onchange="filterAchievements()"> 획득
+                <input class="filter" onchange="filterAchievements()" type="checkbox" value="completed"> 획득
             </label>
         </div>
-        <block data-th-each="achievement : ${list}">
-            <div class="achievement-photo" data-th-id="${achievement.id}" data-th-progress="${achievement.progress}">
+        <div class="achievement-container">
+            <div class="achievement-photo" data-th-each="achievement : ${list}" data-th-id="${achievement.id}" data-th-progress="${achievement.progress}">
                 <span class="achievement-image">
-                <img data-th-src="@{${achievement.progress == 100 ?
+                <img class="achievement-img"
+                         data-th-src="@{${achievement.progress == 100 ?
                         '/images/achievement/complete/' + achievement.photo :
-                        '/images/achievement/' + achievement.photo}}"
-                         class="achievement-img">
+                        '/images/achievement/' + achievement.photo}}">
 
                     <!--                '/images/achievement/' + ${achievement.photo}   -->
                 </span>
@@ -48,7 +48,7 @@
                     <div class="progress-text" data-th-text="${achievement.progress} + '%'"></div>
                 </span>
             </div>
-        </block>
+        </div>
      </div>
 </main>
 </body>
