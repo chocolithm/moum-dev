@@ -13,7 +13,19 @@
 
 <div th:replace="~{header}"></div>
 
+
 <main>
+    <div class="search-container">
+        <div class="navigation-pill">
+            <div class="title-wrapper">
+                <div class="title" th:text="'주제별'" style="font-weight: bold">주제별</div>
+            </div>
+        </div>
+        <input type="text" class="search-input" placeholder="Search">
+        <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
     <div class="board">
         <!-- 첫 번째 박스 (인기글) -->
         <div class="boardHomePopular-middle-box">
@@ -26,7 +38,7 @@
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <p style="font-size: 25px; font-weight: bolder;" th:text="${board.title}">게시글 제목</p>
                     </a>
-                    <p1 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p1>
+<!--                    <p1 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p1>-->
                     <!--                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
                     <!--                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
                 </div>
@@ -48,7 +60,7 @@
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <p style="font-size: 25px; font-weight: bold;" th:text="${board.title}">게시글 제목</p>
                     </a>
-                    <p2 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p2>
+<!--                    <p2 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p2>-->
                     <!--                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
                     <!--                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
                 </div>

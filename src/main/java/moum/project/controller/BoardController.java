@@ -23,6 +23,12 @@ public class BoardController {
 
     private final String folderName = "board/";
 
+    @GetMapping({"/", "/tradeHome"})
+    public String TradeHome() throws Exception {
+
+        return "board/tradeHome";
+    }
+
     @GetMapping({"/", "/boardHome"})
     public String boardHome(Model model) throws Exception {
         // 게시글 목록을 가져옴
