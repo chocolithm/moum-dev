@@ -1,6 +1,5 @@
 package moum.project.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.BoardService;
@@ -10,9 +9,6 @@ import moum.project.vo.Board;
 import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
 import moum.project.vo.User;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -35,20 +31,6 @@ public class ChatController {
     User sender = userService.getByEmail(userDetails.getUsername());
     sender.setPassword("");
     return sender;
-  }
-
-  @MessageMapping("/chat/{roomNo}")
-  @SendTo("/receive/chat/{roomNo}")
-  public Chat sendMessage(
-      @DestinationVariable String roomNo,
-      Chat chat) throws Exception {
-
-    chat.setChatDate(LocalDateTime.now());
-    if (chatService.addChat(chat)) {
-      return chat;
-    } else {
-      return null;
-    }
   }
 
   @GetMapping("/checkRoom")

@@ -5,12 +5,19 @@ let stompClient = null;
 
 // 소켓 통신 연결
 function connect(chatroomNo) {
-  const socket = new SockJS("/ws");
-  stompClient = StompJs.Stomp.over(socket);
-  stompClient.connect({}, function (frame) {
-    stompClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
-      showMessage(JSON.parse(message.body));
-    });
+  return new Promise((resolve, reject) => {
+    const socket = new SockJS("/ws");
+    stompClient = StompJs.Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+      stompClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
+        showMessage(JSON.parse(message.body));
+      });
+      resolve();
+    },
+      function (error) {
+        console.error("error connecting to chatroom: ", error);
+        reject();
+      });
   });
 }
 
@@ -28,6 +35,7 @@ function disconnect() {
 // 소켓 메시지 전송
 async function sendMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message");
+  console.log(messageContent);
   if (messageContent.value != "") {
     stompClient.send(`/send/chat/${chatroomNo}`, {}, JSON.stringify({
       sender: await getSender(),
@@ -63,7 +71,9 @@ function createOpenChatBtn(open_chat_btn) {
 }
 
 // 채팅 모달 열기
-async function openChatroomModal() {
+function openChatroomModal() {
+  closeAlertModal();
+
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
@@ -88,7 +98,7 @@ function closeChatroomModal() {
   disconnect();
 
   chat_btn.onclick = () => openChatroomModal();
-  fadeOut(chatroom_layer)
+  fadeOut(chatroom_layer);
   setTimeout(function () {
     chatroom_layer.innerHTML = "";
   }, 500);
@@ -266,9 +276,14 @@ function createChatroom(boardNo) {
         alert("생성 중 오류 발생");
         return;
       }
+
+      console.log("connect");
+
       connect(chatroom.no)
         .then(() => {
+          console.log("sendMessage");
           sendMessage(chatroom.no);
+          console.log("onclick 변경");
           document.querySelector(".chat-btn").onclick = () => sendMessage(chatroom.no);
         });
     })
@@ -471,21 +486,6 @@ function createChatInputbox(chatroomNo) {
       btn.click();
     }
   });
-}
-
-// 채팅 시간 계산
-function calcTime(chatDate) {
-  const now = new Date();
-  const date = new Date(chatDate);
-  if (now.getFullYear() === date.getFullYear()) {
-    if (now.getDate() === date.getDate()) {
-      return date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
-    }
-
-    return (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
-  } else {
-    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
-  }
 }
 
 // sender 로그인 정보 확인
