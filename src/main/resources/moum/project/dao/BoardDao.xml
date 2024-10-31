@@ -21,7 +21,7 @@
 
         <association property="collection" javaType="moum.project.vo.Collection">
             <id column="collection_id" property="no"/>
-            <result column="name" property="name"/>
+            <result column="collection_name" property="name"/>
         </association>
     </resultMap>
 

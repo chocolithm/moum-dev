@@ -4,7 +4,7 @@
         <!-- 수집품 사진 등록 -->
         <div>
             <label for="files">사진 업로드:</label>
-            <input type="file" id="files" name="files" multiple onchange="previewImage(event)">
+            <input id="files" multiple name="files" type="file">
             <!-- 이미지 미리보기 영역 -->
             <div class="slides"></div>
         </div>
@@ -12,7 +12,7 @@
         <!-- 제목 입력 -->
         <div>
             <label for="title">제목:</label>
-            <input type="text" id="title" name="title" required>
+            <input id="title" name="title" required type="text">
         </div>
 
         <!-- 내용 입력 -->
@@ -24,22 +24,22 @@
         <!-- 게시글 종류 선택 -->
         <div>
             <label>게시글 종류:</label>
-            <input type="radio" id="boardType1" name="boardType" value="general" checked>
+            <input checked id="boardType1" name="boardType" type="radio" value="general">
             <label for="boardType1">게시판 글</label>
-            <input type="radio" id="boardType2" name="boardType" value="trade">
+            <input id="boardType2" name="boardType" type="radio" value="trade">
             <label for="boardType2">수집품 거래 글</label>
         </div>
 
         <!-- 수집품 불러오기 버튼 -->
         <div id="collectionSection" style="display: none;">
-            <button type="button" onclick="openCollectionSelection()">수집품 불러오기</button>
+            <button onclick="openCollectionSelection()" type="button">수집품 불러오기</button>
             <!-- 선택된 수집품 표시 영역 -->
             <div id="selectedCollection"></div>
         </div>
 
         <!-- 등록하기 버튼 -->
         <div>
-            <button type="button" onclick="addPost()">등록하기</button>
+            <button onclick="addPost()" type="button">등록하기</button>
         </div>
     </form>
 </div>
