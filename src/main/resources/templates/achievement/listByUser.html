@@ -13,92 +13,45 @@
 </head>
 <body>
 <main>
-    <h2>내 업적</h2> <!-- 제목 추가 -->
-
-    <div class="filter-container">
-        <label>
-            <input type="checkbox" class="filter" value="not-started" checked> 미획득
-        </label>
-        <label>
-            <input type="checkbox" class="filter" value="completed"> 획득
-        </label>
-    </div>
-    <block data-th-each="achievement : ${list}">
-        <div class="achievement-photo" data-th-id="${achievement.id}" data-th-progress="${achievement.progress}">
-            <span class="achievement-image">
-            <img data-th-src="@{${achievement.progress == 100 ?
-                    '/images/achievement/complete/' + achievement.photo :
-                    '/images/achievement/' + achievement.photo}}"
-                     class="achievement-img">
-
-                <!--                '/images/achievement/' + ${achievement.photo}   -->
-            </span>
-
-            <span class="achievement-details">
-                <div>
-                    <span data-th-text="${achievement.name}">업적명</span>
-                </div>
-                <div>
-                    <span data-th-text="${achievement.content}">설명</span>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar"
-                         data-th-class="'progress-bar '+ ${achievement.progress < 50 ? 'low' : (achievement.progress < 80 ? 'medium' : 'high')}"
-                         data-th-style="'width:' + ${achievement.progress} + '%'"></div>
-                </div>
-                <div class="progress-text" data-th-text="${achievement.progress} + '%'"></div>
-            </span>
+  <div class="achievement-user-progress">
+        <h2>내 업적</h2> <!-- 제목 추가 -->
+        <div class="filter-container">
+            <label>
+                <input type="checkbox" class="filter" value="not-started" onchange="filterAchievements()" checked> 미획득
+            </label>
+            <label>
+                <input type="checkbox" class="filter" value="completed" onchange="filterAchievements()"> 획득
+            </label>
         </div>
-    </block>
+        <block data-th-each="achievement : ${list}">
+            <div class="achievement-photo" data-th-id="${achievement.id}" data-th-progress="${achievement.progress}">
+                <span class="achievement-image">
+                <img data-th-src="@{${achievement.progress == 100 ?
+                        '/images/achievement/complete/' + achievement.photo :
+                        '/images/achievement/' + achievement.photo}}"
+                         class="achievement-img">
 
-    <div>
-
-    </div>
-
-
+                    <!--                '/images/achievement/' + ${achievement.photo}   -->
+                </span>
+                <span class="achievement-details">
+                    <div>
+                        <span data-th-text="${achievement.name}">업적명</span>
+                    </div>
+                    <div>
+                        <span data-th-text="${achievement.content}">설명</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar"
+                             data-th-class="'progress-bar '+ ${achievement.progress < 50 ? 'low' : (achievement.progress < 80 ? 'medium' : 'high')}"
+                             data-th-style="'width:' + ${achievement.progress} + '%'"></div>
+                    </div>
+                    <div class="progress-text" data-th-text="${achievement.progress} + '%'"></div>
+                </span>
+            </div>
+        </block>
+     </div>
 </main>
 </body>
 
 </html>
 
-
-<script>
-    document.querySelectorAll('.filter').forEach(checkbox => {
-        checkbox.addEventListener('change', filterAchievements);
-    });
-
-    function filterAchievements() {
-        const checkedValues = Array.from(document.querySelectorAll('.filter:checked')).map(cb => cb.value);
-        const achievements = Array.from(document.querySelectorAll('.achievement-photo'));
-
-        achievements.forEach(achievement => {
-            const progress = parseInt(achievement.getAttribute('progress'));
-            const shouldShow = checkedValues.length === 0 ||
-                (checkedValues.includes('not-started') && progress === 0) ||
-                (checkedValues.includes('not-started') && progress > 0 && progress < 100) ||
-                (checkedValues.includes('completed') && progress === 100);
-
-            achievement.style.display = shouldShow ? 'block' : 'none';
-        });
-    }
-
-    // 정렬 함수 추가
-    function sortAchievements() {
-        const achievementsContainer = document.querySelector('main');
-        const achievements = Array.from(document.querySelectorAll('.achievement-photo'));
-
-        achievements.sort((a, b) => {
-            const progressA = parseInt(a.getAttribute('progress'));
-            const progressB = parseInt(b.getAttribute('progress'));
-            return progressB - progressA; // 내림차순 정렬
-        });
-
-        achievements.forEach(achievement => achievementsContainer.appendChild(achievement));
-    }
-
-    // 페이지 로드 시 정렬 함수 호출
-    window.onload = function() {
-        sortAchievements();
-        filterAchievements(); // 초기 필터링
-    };
-</script>

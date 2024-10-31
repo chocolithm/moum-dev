@@ -36,6 +36,17 @@
 
     <button class="edit-button" onclick="location.href='/user/update'">수정하기</button>
   </div>
+
+  <button class="achievement-list-btn" onclick="openAchievementListByUser()">내 업적 현황</button>
+  <div class="achievement-user-progress layer">
+  </div>
+
 </main>
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>
+
+
+<script src="/js/achievement.js">
+
+</script>
