@@ -20,7 +20,7 @@
         <result column="status" property="status"/>
 
         <association property="collection" javaType="moum.project.vo.Collection">
-            <id column="collection_id" property="no"/>
+            <id column="collection_id" property="collection"/>
             <result column="name" property="name"/>
         </association>
     </resultMap>
@@ -71,9 +71,26 @@
 
     <!-- 새 게시글 생성 (insert) -->
     <insert id="insert" parameterType="moum.project.vo.Board" useGeneratedKeys="true" keyProperty="no" keyColumn="board_id">
-        INSERT INTO board (title, content, user_id, post_date, view_count, is_public, is_deleted)
-        VALUES (#{title}, #{content}, #{userNo}, NOW(), #{viewCount}, #{isPublic}, #{isDeleted})
+        INSERT INTO board (
+        title,
+        content,
+        user_id,
+        post_date,
+        board_type,
+        collection
+        <!-- 필요한 다른 필드 추가 -->
+        )
+        VALUES (
+        #{title},
+        #{content},
+        #{userNo},
+        NOW(),
+        #{boardType},
+        #{collection.no}
+        <!-- 필요한 다른 필드 매핑 -->
+        )
     </insert>
+
 
     <!-- 게시글 수정 (update) -->
     <update id="update" parameterType="moum.project.vo.Board">

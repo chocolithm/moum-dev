@@ -124,7 +124,7 @@ function addPost() {
             formData.append("files", filesInput.files[i]);
         }
 
-        fetch(`/board/add`, {
+        fetch(`/collection/addPost`, {
             method: "POST",
             body: formData,
             headers: {
