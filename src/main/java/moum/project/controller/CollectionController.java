@@ -8,6 +8,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.*;
 import moum.project.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,7 @@ public class CollectionController {
   private final BoardService boardService;
 
   private final String folderName = "collection/";
+
 
   @GetMapping("/form")
   public String form(Model model) throws Exception {
@@ -212,7 +214,7 @@ public class CollectionController {
     if (collectionService.deleteFile(no)) {
       return "success";
     }
-    return "failre";
+    return "failure";
   }
 
 
@@ -250,7 +252,11 @@ public class CollectionController {
   @PostMapping("/addPost")
   @ResponseBody
   public String addPost(Board board, @RequestParam("files") MultipartFile[] files,
-                        @RequestParam(value = "collection.no", required = false) Integer collectionNo) {
+                        @RequestParam(value = "collection.no", required = false) Integer collectionNo, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    board.setUserNo(loginUser.getNo());
+
     try {
       // 게시글 종류에 따라 처리
       if ("trade".equals(board.getBoardType())) {

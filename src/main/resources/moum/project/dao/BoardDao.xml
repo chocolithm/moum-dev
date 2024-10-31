@@ -20,7 +20,7 @@
         <result column="status" property="status"/>
 
         <association property="collection" javaType="moum.project.vo.Collection">
-            <id column="collection_id" property="collection"/>
+            <id column="collection_id" property="no"/>
             <result column="name" property="name"/>
         </association>
     </resultMap>
@@ -76,8 +76,7 @@
         content,
         user_id,
         post_date,
-        board_type,
-        collection
+        board_type
         <!-- 필요한 다른 필드 추가 -->
         )
         VALUES (
@@ -85,9 +84,19 @@
         #{content},
         #{userNo},
         NOW(),
-        #{boardType},
-        #{collection.no}
+        #{boardType}
         <!-- 필요한 다른 필드 매핑 -->
+        )
+    </insert>
+
+    <insert id="boardInsert" parameterType="moum.project.vo.Board">
+        INSERT INTO collection_board (
+        board_id,
+        collection_id
+        )
+        VALUES (
+        #{no},
+        #{collection.no}
         )
     </insert>
 
