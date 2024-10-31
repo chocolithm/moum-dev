@@ -208,3 +208,47 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// 닉네임 수정 창 보이게 하기
+function showNicknameEdit() {
+    document.getElementById('nicknameDisplay').style.display = 'none'; // 닉네임 텍스트 숨김
+    document.getElementById('nicknameEdit').style.display = 'block'; // 닉네임 입력 칸 표시
+    const nicknameInput = document.getElementById('nickname');
+    nicknameInput.value = nicknameInput.getAttribute('value');
+}
+
+// 닉네임 수정 창 숨기기
+function hideNicknameEdit() {
+    const nicknameInput = document.getElementById('nickname');
+    const originalNickname = nicknameInput.getAttribute('value'); // 원래 저장된 값 가져오기
+
+    // 입력 필드 값을 원래 값으로 리셋
+    nicknameInput.value = originalNickname;
+    document.getElementById('nicknameDisplay').style.display = 'flex'; // 닉네임 텍스트 표시
+    document.getElementById('nicknameEdit').style.display = 'none'; // 닉네임 입력 칸 숨김
+
+    document.getElementById('nicknameMessage').textContent = '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    let passwordMatch = true; // 초기값은 true (비밀번호를 변경하지 않는 경우도 허용)
+
+    // 비밀번호 입력 필드 이벤트 리스너
+    document.getElementById('password').addEventListener('input', checkPasswordMatch);
+    document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+
+    // 폼 제출 전 유효성 검사 추가
+    const submitButton = document.querySelector('button[type="submit"]');
+    if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if ((password || confirmPassword) && !passwordMatch) {
+                e.preventDefault();
+                alert('비밀번호가 일치하지 않습니다.');
+                return false;
+            }
+        });
+    }
+});
