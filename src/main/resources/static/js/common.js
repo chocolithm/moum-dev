@@ -1,5 +1,7 @@
 // 공통
-
+let nicknameChecked = false;
+let emailChecked = false;
+let passwordMatch = false;
 
 function openOverlay() {
     fadeIn(document.getElementsByClassName("overlay")[0]);
@@ -162,8 +164,31 @@ function populateEmailField() {
     }
 }
 
+<!--  로그인 실패시 알림-->
+    document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === 'true') {
+    alert("이메일 또는 암호가 맞지 않습니다.");
+}
+});
 
-// 로그인
+<!--  회원가입 성공 또는 실패시 알림-->
+    document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // 회원가입 성공
+    if (urlParams.get('signupSuccess') === 'true') {
+    alert("회원가입이 완료되었습니다.");
+}
+
+    // 회원가입 실패
+    if (urlParams.get('signupError') === 'true') {
+    alert("회원가입 중 오류가 발생했습니다.");
+}
+});
+
+
+
 
 
 // 댓글 저장
@@ -280,8 +305,3 @@ function toggleLike(boardNo, userNo) {
         }
     });
 }
-
-
-
-
-

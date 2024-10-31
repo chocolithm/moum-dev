@@ -252,3 +252,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// 회원 탈퇴 경고
+function confirmWithdraw() {
+    return confirm('정말 탈퇴하시겠습니까?\n 탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.');
+}
