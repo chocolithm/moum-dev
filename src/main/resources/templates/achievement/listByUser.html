@@ -17,19 +17,21 @@
 
     <div class="filter-container">
         <label>
-            <input type="checkbox" class="filter" value="not-started" checked> 미진행
+            <input type="checkbox" class="filter" value="not-started" checked> 미획득
         </label>
         <label>
             <input type="checkbox" class="filter" value="completed"> 획득
         </label>
     </div>
-
     <block data-th-each="achievement : ${list}">
         <div class="achievement-photo" data-th-id="${achievement.id}" data-th-progress="${achievement.progress}">
             <span class="achievement-image">
-                <img data-th-src="@{'/images/achievement/' + ${achievement.photo}}"
+            <img data-th-src="@{${achievement.progress == 100 ?
+                    '/images/achievement/complete/' + achievement.photo :
+                    '/images/achievement/' + achievement.photo}}"
                      class="achievement-img">
-<!--                '/images/achievement/' + ${achievement.photo}   -->
+
+                <!--                '/images/achievement/' + ${achievement.photo}   -->
             </span>
 
             <span class="achievement-details">
@@ -50,6 +52,7 @@
     </block>
 </main>
 </body>
+
 </html>
 
 
