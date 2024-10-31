@@ -1,7 +1,6 @@
 package moum.project.controller;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AchievementService;
 import moum.project.service.StorageService;
@@ -242,11 +241,12 @@ public class UserController {
       }
 
       // 회원 정보 익명화
-      loginUser.setEmail("deleted_" + System.currentTimeMillis());
-      loginUser.setPassword(passwordEncoder.encode("deleted"));
-      loginUser.setNickname("탈퇴한 회원");
       loginUser.setPhoto(null);
+      loginUser.setEmail("deleted_" + System.currentTimeMillis());
+      loginUser.setNickname("탈퇴한 회원_" + System.currentTimeMillis());
+      loginUser.setPassword(passwordEncoder.encode("deleted"));
       loginUser.setEndDate(LocalDate.now());
+      loginUser.setSnsId(null);
 
       // 회원 정보 업데이트
       userService.update(loginUser);
@@ -259,7 +259,7 @@ public class UserController {
 
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", "회원 탈퇴 처리 중 오류가 발생했습니다.");
-      return "redirect:/user/myInfo";
+      return "redirect:/user/delete";
     }
   }
 

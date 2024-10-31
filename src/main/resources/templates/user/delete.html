@@ -1,4 +1,17 @@
-<div class="mt-8">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <title>회원수정</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<div th:replace="~{header :: header}"></div>
+
+<body>
+<main>
   <h2 class="text-2xl font-bold mb-4">회원탈퇴</h2>
 
   <!-- 경고 메시지 표시 -->
@@ -15,10 +28,8 @@
 
   <!-- 탈퇴 폼 -->
   <form th:action="@{/user/delete}" method="post" onsubmit="return confirmWithdraw()">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
     <input type="hidden" name="no" th:value="${user.no}" />
-    <!-- CSRF 토큰 -->
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
     <div class="flex justify-between items-center">
       <a th:href="@{/user/myInfo}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
         취소
@@ -28,10 +39,11 @@
       </button>
     </div>
   </form>
-</div>
 
 <script>
   function confirmWithdraw() {
     return confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.');
   }
 </script>
+</main>
+</body>
