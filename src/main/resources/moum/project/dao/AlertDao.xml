@@ -13,11 +13,11 @@
           useGeneratedKeys="true" keyColumn="alert_id" keyProperty="no">
   </insert>
 
-  <select id="list" resultMap="ChatMap" parameterType="map">
+  <select id="list" resultMap="AlertMap" parameterType="map">
 
   </select>
 
-  <select id="findBy" resultMap="ChatMap" parameterType="int">
+  <select id="findBy" resultMap="AlertMap" parameterType="int">
 
   </select>
 
