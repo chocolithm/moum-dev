@@ -1,9 +1,12 @@
 package moum.project.controller;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.AchievementService;
 import moum.project.service.StorageService;
 import moum.project.service.UserService;
+import moum.project.vo.Achievement;
 import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +44,7 @@ public class UserController {
   private final UserService userService;
   private final StorageService storageService;
   private final PasswordEncoder passwordEncoder;
+  private final AchievementService achievementService;
 
   private String folderName = "user/profile/";
 
@@ -58,6 +62,9 @@ public class UserController {
 
     String email = userDetails.getUsername();
     User user = userService.getByEmail(email);
+
+    List<Achievement> achievementlist = achievementService.listByUser(user.getNo());
+    model.addAttribute("achievementlist", achievementlist);
 
     model.addAttribute("user", user);
     return "user/myInfo";

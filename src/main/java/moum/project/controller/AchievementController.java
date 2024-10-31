@@ -38,7 +38,7 @@ public class AchievementController {
   public String listByUser(Model model, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
     // 로그인한 사용자 정보를 통해 사용자 번호를 가져옵니다.
     User sender = userService.getByEmail(userDetails.getUsername());
-    int userNo = sender.getNo(); // User 객체에서 userNo를 가져옵니다.
+    int userNo = sender.getNo();
 
     List<Achievement> list = achievementService.listByUser(userNo);
     model.addAttribute("list", list);
