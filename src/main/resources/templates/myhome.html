@@ -29,7 +29,7 @@
     </aside>
     <div class="myhome-upper-buttons">
         <button class="btn" onClick="openCollectionFormModal();">수집품 등록</button>
-        <button class="btn" onClick="alert('게시글 연결 필요')">POST</button>
+        <button class="btn" onClick="openPostFormModal();">POST</button>
     </div>
     <div class="myhome-collections clearfix">
         <div data-th-if="${#lists.isEmpty(collectionList)}">
@@ -58,6 +58,12 @@
 
 <!--  수집품 상세 화면  -->
 <div class="layer collection-view-layer"></div>
+
+<!--  게시글 등록 화면  -->
+<div class="layer post-form-layer"></div>
+
+<!--  게시글 상세 화면  -->
+<div class="layer post-view-layer"></div>
 
 
     <script src="/js/collection.js"></script>

@@ -1,12 +1,20 @@
 package moum.project.controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import moum.project.service.BoardService;
+import moum.project.service.CollectionService;
 import moum.project.service.LikesService;
 import moum.project.service.StorageService;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Board;
+import moum.project.vo.Collection;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +28,7 @@ public class BoardController {
     private final BoardService boardService;
     private final StorageService storageService;
     private final LikesService likesService;
+    private final CollectionService collectionService;
 
     private final String folderName = "board/";
 
@@ -34,7 +43,6 @@ public class BoardController {
     public List<Board> getPopularPosts() throws Exception {
         return boardService.listPopular();
     }
-
 
     // 자랑하기 게시글 조회
     @GetMapping("/bragging")
@@ -52,7 +60,6 @@ public class BoardController {
         model.addAttribute("tradePosts", tradePosts);
         return "board/tradeHome";
     }
-
 
     @GetMapping({"/", "/boardHome"})
     public String boardHome(Model model) throws Exception {
@@ -86,7 +93,7 @@ public class BoardController {
         return "board/boardHome";
     }
 
-    @GetMapping({"/", "/boardList"})
+    @GetMapping("/boardList")
     public String boardList(Model model) throws Exception {
         // 모든 게시글 목록을 가져옴
         List<Board> allBoards = boardService.list();
@@ -104,7 +111,7 @@ public class BoardController {
         return "board/boardList";
     }
 
-    @PostMapping("add")
+    @PostMapping("/addGeneral")
     public String add(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
         // 새 게시글에 사용자 번호 설정 (임시로 1번 사용자 설정)
         board.setUserNo(1);
@@ -118,7 +125,7 @@ public class BoardController {
         return "redirect:/board/boardList";
     }
 
-    @GetMapping("list")
+    @GetMapping("/list")
     public String list(Model model) throws Exception {
         // 모든 게시글을 모델에 추가
         List<Board> boardList = boardService.list();
@@ -143,20 +150,7 @@ public class BoardController {
         return "board/boardView";
     }
 
-//    @PostMapping("/increaseLike")
-//    @ResponseBody
-//    public Map<String, Object> increaseLike(@RequestParam("boardNo") int boardNo) throws Exception {
-//        likesService.addLike(boardNo); // 추천수 증가
-//        int likeCount = likesService.countLikesByBoard(boardNo); // 최신 추천수 조회
-//
-//        // 추천수 응답 데이터
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("likeCount", likeCount);
-//        return response;
-//    }
-
-
-    @PostMapping("update")
+    @PostMapping("/update")
     public String update(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
         // 기존 게시글을 가져옴
         Board existingBoard = boardService.get(board.getNo());
@@ -184,7 +178,7 @@ public class BoardController {
         return "redirect:/board/boardView?no=" + existingBoard.getNo();
     }
 
-    @GetMapping("delete")
+    @GetMapping("/delete")
     public String delete(@RequestParam("no") int no) throws Exception {
         // 게시글 삭제
         boardService.delete(no);
@@ -216,4 +210,41 @@ public class BoardController {
 
         return attachedFiles;
     }
+//
+//    @GetMapping("/postForm")
+//    public String postForm() {
+//        return "board/postForm"; // 템플릿 경로
+//    }
+//
+//    @PostMapping("/addPost")
+//    @ResponseBody
+//    public String addPost(Board board, @RequestParam("files") MultipartFile[] files,
+//                          @RequestParam(value = "collection.no", required = false) Integer collectionNo) {
+//        try {
+//            // 게시글 종류에 따라 처리
+//            if ("trade".equals(board.getBoardType())) {
+//                // 수집품 거래 글인 경우
+//                // 수집품 정보를 설정
+//                if (collectionNo != null) {
+//                    Collection collection = collectionService.get(collectionNo);
+//                    board.setCollection(collection);
+//                }
+//                // 추가적인 거래 관련 필드 설정
+//                // 예: 가격, 거래 상태 등
+//            }
+//
+//            // 파일 업로드 처리
+//            List<AttachedFile> attachedFiles = uploadFiles(files);
+//            board.setAttachedFiles(attachedFiles);
+//
+//            // 게시글 등록
+//            boardService.add(board);
+//
+//            return "success";
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "failure";
+//        }
+//    }
+
 }

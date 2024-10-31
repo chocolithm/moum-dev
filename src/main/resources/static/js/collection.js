@@ -5,6 +5,155 @@ function openCollectionFormModal() {
     fadeIn(document.querySelector(".collection-form-layer"));
 }
 
+// 게시글 등록 화면 열기
+function openPostFormModal() {
+    fetchPostForm();
+    openOverlay();
+    fadeIn(document.querySelector(".post-form-layer"));
+}
+
+
+
+// 게시글 등록 화면 내용 가져오기
+// 게시글 등록 화면 내용 가져오기
+function fetchPostForm() {
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute("content");
+
+    // 필요한 초기화 함수가 있다면 호출합니다.
+    // 예: 이미지 슬라이드 인덱스 초기화 등
+
+    fetch(`/collection/boardPostForm`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            [csrfHeader]: csrfToken
+        }
+    })
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            document.querySelector('.post-form-layer').innerHTML =
+                doc.querySelector('.post-form-layer').innerHTML;
+
+            // 필요한 이벤트 리스너를 추가합니다.
+            // 예: 파일 선택 시 미리보기 기능 등
+        })
+        .catch(error => {
+            console.error("Error fetching post form:", error);
+        });
+}
+
+// 게시글 종류 선택에 따른 UI 변경
+document.querySelectorAll("input[name='boardType']").forEach((elem) => {
+    elem.addEventListener("change", function() {
+        const collectionSection = document.getElementById("collectionSection");
+        if (this.value === "trade") {
+            collectionSection.style.display = "block";
+        } else {
+            collectionSection.style.display = "none";
+        }
+    });
+});
+
+// 수집품 선택 화면 열기
+function openCollectionSelection() {
+    // 수집품 선택 화면을 모달로 띄우거나, 팝업으로 구현합니다.
+    // 여기서는 간단히 수집품 목록을 가져와 표시하는 것으로 예시를 들겠습니다.
+
+    fetch(`/collection/list`, {
+        method: "GET"
+    })
+        .then(response => response.json())
+        .then(data => {
+            // 수집품 목록을 표시하고 선택할 수 있도록 구현
+            // 예를 들어, 수집품 목록을 모달로 띄워 선택 시 `selectedCollection`에 표시
+
+            let collectionListHtml = '<ul>';
+            data.forEach(collection => {
+                collectionListHtml += `<li onclick="selectCollection(${collection.no}, '${collection.name}')">${collection.name}</li>`;
+            });
+            collectionListHtml += '</ul>';
+
+            // 모달 창에 수집품 목록을 표시
+            document.querySelector('#collectionSelectionModal .modal-body').innerHTML = collectionListHtml;
+            // 모달 창 열기
+            openModal('#collectionSelectionModal');
+        })
+        .catch(error => {
+            console.error("Error fetching collections:", error);
+        });
+}
+
+// 수집품 선택 시 호출되는 함수
+function selectCollection(no, name) {
+    // 선택된 수집품 정보를 표시
+    const selectedDiv = document.querySelector("#selectedCollection");
+    selectedDiv.dataset.collectionNo = no;
+    selectedDiv.textContent = `선택된 수집품: ${name}`;
+
+    // 모달 창 닫기
+    closeModal('#collectionSelectionModal');
+}
+
+
+
+// 게시글 등록 처리
+function addPost() {
+    if (confirm("등록하시겠습니까?")) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+        const formData = new FormData();
+        formData.append("title", document.querySelector("#postForm #title").value);
+        formData.append("content", document.querySelector("#postForm #content").value);
+        formData.append("boardType", document.querySelector("#postForm input[name='boardType']:checked").value);
+
+        // 선택된 수집품 정보가 있다면 추가
+        const selectedCollectionNo = document.querySelector("#selectedCollection").dataset.collectionNo;
+        if (selectedCollectionNo) {
+            formData.append("collection.no", selectedCollectionNo);
+        }
+
+        // 파일 업로드 처리
+        const filesInput = document.querySelector("#postForm #files");
+        for (let i = 0; i < filesInput.files.length; i++) {
+            formData.append("files", filesInput.files[i]);
+        }
+
+        fetch(`/board/add`, {
+            method: "POST",
+            body: formData,
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        })
+            .then(response => response.text())
+            .then(response => {
+                switch (response) {
+                    case "login":
+                        alert("로그인이 필요합니다.");
+                        location.href = "/login";
+                        break;
+                    case "success":
+                        alert("게시글이 등록되었습니다.");
+                        location.href = "/board/boardList";
+                        break;
+                    case "failure":
+                        alert("등록에 실패했습니다.");
+                        break;
+                }
+            })
+            .catch(error => {
+                console.error("Error adding post:", error);
+            });
+    }
+}
+
+/*----------------------------------------------*/
 // 수집품 등록 화면 내용 가져오기
 function fetchCollectionForm() {
 
@@ -33,7 +182,6 @@ function fetchCollectionForm() {
             console.error("Error fetching collection form:", error);
         });
 }
-
 // 수집품 등록 처리
 function addCollection() {
     if (confirm("등록하시겠습니까?")) {

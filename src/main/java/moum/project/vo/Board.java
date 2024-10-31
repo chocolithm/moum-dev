@@ -21,6 +21,7 @@ public class Board implements Serializable {
     private List<AttachedFile> attachedFiles;
     private String imagePath; // 이미지 경로
     private String description; // 게시글 설명
+    private String boardType; // 게시글 종류 ("general" 또는 "trade")
 
     private Collection collection; // 거래대상 수집품
     private int price; // 가격

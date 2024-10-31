@@ -6,28 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import moum.project.service.CollectionService;
-import moum.project.service.CollectionStatusService;
-import moum.project.service.MaincategoryService;
-import moum.project.service.StorageService;
-import moum.project.service.SubcategoryService;
-import moum.project.service.UserService;
-import moum.project.vo.AttachedFile;
-import moum.project.vo.Collection;
-import moum.project.vo.CollectionStatus;
-import moum.project.vo.Maincategory;
-import moum.project.vo.Subcategory;
-import moum.project.vo.User;
+import moum.project.service.*;
+import moum.project.vo.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -41,6 +26,7 @@ public class CollectionController {
   private final CollectionStatusService collectionStatusService;
   private final StorageService storageService;
   private final UserService userService;
+  private final BoardService boardService;
 
   private final String folderName = "collection/";
 
@@ -228,4 +214,68 @@ public class CollectionController {
     }
     return "failre";
   }
+
+
+  private List<AttachedFile> uploadFiles(MultipartFile[] files) throws Exception {
+    List<AttachedFile> attachedFiles = new ArrayList<>();
+
+    // 파일 배열을 순회하며 업로드
+    for (MultipartFile file : files) {
+      if (file.isEmpty()) {
+        // 파일이 비어 있으면 건너뜀
+        continue;
+      }
+
+      AttachedFile attachedFile = new AttachedFile();
+      attachedFile.setFileCategory(AttachedFile.BOARD); // 파일 카테고리를 게시판 파일로 설정
+      attachedFile.setFilename(UUID.randomUUID().toString()); // 파일 이름을 UUID로 생성
+      attachedFile.setOriginFilename(file.getOriginalFilename()); // 원본 파일 이름 설정
+
+      // 파일 업로드 수행
+      storageService.upload(folderName + attachedFile.getFilename(), file.getInputStream(),
+              Map.of(StorageService.CONTENT_TYPE, file.getContentType()));
+
+      // 업로드된 파일을 첨부 파일 리스트에 추가
+      attachedFiles.add(attachedFile);
+    }
+
+    return attachedFiles;
+  }
+
+  @GetMapping("/boardPostForm")
+  public String postForm() {
+    return "collection/boardPostForm"; // 템플릿 경로
+  }
+
+  @PostMapping("/addPost")
+  @ResponseBody
+  public String addPost(Board board, @RequestParam("files") MultipartFile[] files,
+                        @RequestParam(value = "collection.no", required = false) Integer collectionNo) {
+    try {
+      // 게시글 종류에 따라 처리
+      if ("trade".equals(board.getBoardType())) {
+        // 수집품 거래 글인 경우
+        // 수집품 정보를 설정
+        if (collectionNo != null) {
+          Collection collection = collectionService.get(collectionNo);
+          board.setCollection(collection);
+        }
+        // 추가적인 거래 관련 필드 설정
+        // 예: 가격, 거래 상태 등
+      }
+
+      // 파일 업로드 처리
+      List<AttachedFile> attachedFiles = uploadFiles(files);
+      board.setAttachedFiles(attachedFiles);
+
+      // 게시글 등록
+      boardService.add(board);
+
+      return "success";
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "failure";
+    }
+  }
+
 }
