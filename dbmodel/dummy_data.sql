@@ -489,12 +489,12 @@ INSERT INTO likes (board_id, user_id) VALUES
 (4, 3);
 
 -- 업적 데이터
-INSERT INTO achievement (achievement_id, name, content, photo, acquisition_condition, location) VALUES
-('FIRST_POST', '첫 게시글', '첫 번째 게시글을 작성하세요', 'first_post.png', '게시글 1개 작성', '커뮤니티'),
-('COLLECTOR_NOVICE', '초보 수집가', '첫 번째 수집품을 등록하세요', 'collector_novice.png', '수집품 1개 등록', '수집품 관리'),
-('LEGO_MASTER', '레고 마스터', '레고 수집품 10개를 등록하세요', 'lego_master.png', '레고 수집품 10개 등록', '수집품 관리'),
-('SHOE_ENTHUSIAST', '신발 애호가', '신발 수집품 10개를 등록하세요', 'shoe_enthusiast.png', '신발 수집품 10개 등록', '수집품 관리'),
-('GUNDAM_PRO', '건담 프로', '건담 프라모델 10개를 등록하세요', 'gundam_pro.png', '건담 프라모델 10개 등록', '수집품 관리');
+INSERT INTO achievement (achievement_id, name, content, photo, acquisition_condition, location, score) VALUES
+('FIRST_POST', '첫 게시글', '첫 번째 게시글을 작성하세요', 'first_post.png', '게시글 1개 작성', '커뮤니티', 50),
+('COLLECTOR_NOVICE', '초보 수집가', '첫 번째 수집품을 등록하세요', 'collector_novice.png', '수집품 1개 등록', '수집품 관리', 10),
+('LEGO_MASTER', '레고 마스터', '레고 수집품 10개를 등록하세요', 'lego_master.png', '레고 수집품 10개 등록', '수집품 관리', 20),
+('SHOE_ENTHUSIAST', '신발 애호가', '신발 수집품 10개를 등록하세요', 'shoe_enthusiast.png', '신발 수집품 10개 등록', '수집품 관리', 30 ),
+('GUNDAM_PRO', '건담 프로', '건담 프라모델 10개를 등록하세요', 'gundam_pro.png', '건담 프라모델 10개 등록', '수집품 관리', 40);
 
 -- 회원 업적 데이터
 INSERT INTO user_achievement (user_id, achievement_id, progress, get_date) VALUES
