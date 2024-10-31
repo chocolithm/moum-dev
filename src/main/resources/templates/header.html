@@ -31,7 +31,7 @@
         </li>
         <li class="btn">
           <a
-            data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'alert(\'미구현\')' : '
+            data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHome\'' : '
             swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'});
             openLoginModal()'">수집품거래</a>
         </li>

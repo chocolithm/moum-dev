@@ -13,7 +13,6 @@
 
 <div th:replace="~{header}"></div>
 
-
 <main>
     <div class="search-container">
         <div class="navigation-pill">
@@ -26,20 +25,30 @@
             <i class="fas fa-search"></i>
         </button>
     </div>
-    <div class="tradeHome-list">
-        <div class="tradeHome-item" th:each="product : ${products}">
-            <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
-            <div class="tradeHome-details">
-                <div class="tradeHome-title" th:text="${board.title}">상품 제목</div>
-                <div class="tradeHome-price" th:text="'₩' + ${board.price}">가격</div>
-                <div class="tradeHome-description" th:text="${board.content}">상품 설명</div>
+
+    <div class="post-list">
+        <h2>수집품 거래 게시글</h2>
+        <div class="posts">
+            <div th:each="board : ${tradePosts}">
+                <div class="post">
+                    <div class="boardList-middle-image">
+                        <a th:href="@{/board/boardView(no=${board.no})}">
+                            <img th:src="@{'/images/collections/collection-image-' + ${board.no} + '.png'}" alt="게시글 이미지">
+                        </a>
+                    </div>
+                    <h3>
+                        <a th:href="@{/board/boardView(no=${board.no})}" th:text="${board.title}">게시글 제목</a>
+                    </h3>
+                    <p>가격: <span th:text="${board.price}">가격</span>원</p>
+                    <p>거래상태: <span th:text="${board.status ? '거래중' : '거래완료'}">거래상태</span></p>
+                </div>
             </div>
         </div>
     </div>
 
 </main>
 
-<footer data-th-replace="~{footer :: footer}"></footer>
+<footer th:replace="~{footer :: footer}"></footer>
 
 </body>
 </html>

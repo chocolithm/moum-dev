@@ -345,51 +345,22 @@ div p3 {
 }
 
 /* 중고거래 --------------------------------*/
-
-.tradeHome-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 20px;
+.posts {
+    display: flex;
+    flex-direction: column;
 }
 
-.tradeHome-item {
+.post {
     display: flex;
     flex-direction: row;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-.tradeHome-item img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
+.boardList-middle-image {
     margin-right: 20px;
 }
 
-.tradeHome-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.boardList-middle-image img {
+    width: 100px; /* 이미지 크기 조절 */
+    height: auto;
 }
-
-.tradeHome-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.tradeHome-price {
-    font-size: 16px;
-    color: #007bff;
-    margin-bottom: 10px;
-}
-
-.tradeHome-description {
-    font-size: 14px;
-    color: #555;
-}
-

@@ -21,4 +21,16 @@ public interface BoardDao {
     List<Board> selectByUserId(int userId); // 특정 사용자의 게시글 조회
 
     List<Board> selectRecent(int limit); // 최근 게시글 조회
+
+    // 전체 게시글 조회
+    List<Board> listAll();
+
+    // 인기 게시글 조회
+    List<Board> listPopular();
+
+    // 수집품 거래 게시글 조회
+    List<Board> listTradePosts(int limit);
+
+    // 자랑하기 게시글 조회
+    List<Board> listBraggingPosts();
 }

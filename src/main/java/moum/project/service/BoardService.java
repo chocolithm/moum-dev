@@ -23,4 +23,13 @@ public interface BoardService {
     List<Board> selectByUserId(int userId);
 
     List<Board> selectRecent(int limit);
+
+
+    List<Board> listAll() throws Exception;
+
+    List<Board> listPopular() throws Exception;
+
+    List<Board> listTradePosts() throws Exception;
+
+    List<Board> listBraggingPosts() throws Exception;
 }

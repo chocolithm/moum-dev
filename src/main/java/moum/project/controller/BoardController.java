@@ -23,11 +23,36 @@ public class BoardController {
 
     private final String folderName = "board/";
 
-    @GetMapping({"/", "/tradeHome"})
-    public String TradeHome() throws Exception {
+    // 전체 게시글 조회
+    @GetMapping("/all")
+    public List<Board> getAllPosts() throws Exception {
+        return boardService.listAll();
+    }
 
+    // 인기 게시글 조회
+    @GetMapping("/popular")
+    public List<Board> getPopularPosts() throws Exception {
+        return boardService.listPopular();
+    }
+
+
+    // 자랑하기 게시글 조회
+    @GetMapping("/bragging")
+    public List<Board> getBraggingPosts() throws Exception {
+        return boardService.listBraggingPosts();
+    }
+
+    @GetMapping("/tradeHome")
+    public String tradeHome(Model model) throws Exception {
+        List<Board> tradePosts = boardService.listTradePosts();
+        // 게시글을 3개로 제한
+        if (tradePosts.size() > 3) {
+            tradePosts = tradePosts.subList(0, 3);
+        }
+        model.addAttribute("tradePosts", tradePosts);
         return "board/tradeHome";
     }
+
 
     @GetMapping({"/", "/boardHome"})
     public String boardHome(Model model) throws Exception {
