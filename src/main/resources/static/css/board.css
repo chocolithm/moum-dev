@@ -11,8 +11,7 @@
 
 /* 중앙 위쪽 박스 (인기글) 설정 */
 .board .boardHomePopular-middle-box {
-    width: 100%;
-    height: 600px;
+    width: 25%;
     min-width: 250px;
     border: 1px solid black;
     border-radius: 15px;
@@ -25,7 +24,7 @@
 
 /* 아래 왼쪽 박스 (게시글) 설정 */
 .board .boardHomeRecent-middle-box {
-    width: 55%;
+    width: 25%;
     min-width: 250px;
     border: 1px solid black;
     border-radius: 15px;
@@ -39,7 +38,7 @@
 /*-----------------------------------------------------------------------*/
 /* 오른쪽 박스 (업적 랭킹) 설정 */
 .board .boardHomeAchievement-middle-box {
-    width: 30%;
+    width: 15%;
     min-width: 250px;
     border: 1px solid black;
     border-radius: 15px;
@@ -345,4 +344,52 @@ div p3 {
     justify-content: flex-start;
 }
 
+/* 중고거래 --------------------------------*/
+
+.tradeHome-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.tradeHome-item {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tradeHome-item img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.tradeHome-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tradeHome-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.tradeHome-price {
+    font-size: 16px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.tradeHome-description {
+    font-size: 14px;
+    color: #555;
+}
 

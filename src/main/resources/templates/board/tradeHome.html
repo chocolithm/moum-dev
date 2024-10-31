@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>중고거래홈</title>
+    <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
+    <meta data-th-content="${_csrf.token}" name="csrf-token"/>
+    <meta data-th-content="${_csrf.headerName}" name="csrf-header"/>
+</head>
+
+<body>
+
+<div th:replace="~{header}"></div>
+
+
+<main>
+    <div class="search-container">
+        <div class="navigation-pill">
+            <div class="title-wrapper">
+                <div class="title" th:text="'주제별'" style="font-weight: bold">주제별</div>
+            </div>
+        </div>
+        <input type="text" class="search-input" placeholder="Search">
+        <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+    <div class="tradeHome-list">
+        <div class="tradeHome-item" th:each="product : ${products}">
+            <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
+            <div class="tradeHome-details">
+                <div class="tradeHome-title" th:text="${board.title}">상품 제목</div>
+                <div class="tradeHome-price" th:text="'₩' + ${board.price}">가격</div>
+                <div class="tradeHome-description" th:text="${board.content}">상품 설명</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer data-th-replace="~{footer :: footer}"></footer>
+
+</body>
+</html>
