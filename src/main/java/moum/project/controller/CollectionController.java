@@ -30,6 +30,7 @@ public class CollectionController {
   private final BoardService boardService;
 
   private final String folderName = "collection/";
+  private final String boardFolderName = "board/";
 
 
   @GetMapping("/form")
@@ -234,7 +235,7 @@ public class CollectionController {
       attachedFile.setOriginFilename(file.getOriginalFilename()); // 원본 파일 이름 설정
 
       // 파일 업로드 수행
-      storageService.upload(folderName + attachedFile.getFilename(), file.getInputStream(),
+      storageService.upload(boardFolderName + attachedFile.getFilename(), file.getInputStream(),
               Map.of(StorageService.CONTENT_TYPE, file.getContentType()));
 
       // 업로드된 파일을 첨부 파일 리스트에 추가

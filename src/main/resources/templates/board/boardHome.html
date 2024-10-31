@@ -31,9 +31,9 @@
         <div class="boardHomePopular-middle-box">
             <h2>인기글</h2>
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
-                <a th:href="@{/board/boardView(no=${board.no})}">
-                    <img alt="인기글 이미지" th:src="@{/images/collections/collection-image-__${board.no}__.png}">
-                </a>
+                data-th-id="'board-image-' + ${attachedFile.no}"
+                data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + attachedFile.filename}">
+
                 <div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <p style="font-size: 25px; font-weight: bolder;" th:text="${board.title}">게시글 제목</p>
