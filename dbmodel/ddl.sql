@@ -118,7 +118,8 @@ CREATE TABLE board (
     post_date  DATETIME     NOT NULL DEFAULT now(), -- 작성일자
     view_count INTEGER      NOT NULL DEFAULT 0, -- 조회수
     is_public  TINYINT      NOT NULL DEFAULT 1, -- 공개
-    is_deleted TINYINT      NOT NULL DEFAULT 0 -- 삭제
+    is_deleted TINYINT      NOT NULL DEFAULT 0, -- 삭제
+    board_type VARCHAR(255) NOT NULL  -- 구분
 );
 
 -- 게시글
