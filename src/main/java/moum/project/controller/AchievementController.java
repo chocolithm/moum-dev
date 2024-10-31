@@ -5,7 +5,12 @@ import java.util.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AchievementService;
+import moum.project.service.UserService;
 import moum.project.vo.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +20,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AchievementController {
 
+
   @NonNull
   private final AchievementService achievementService;
+
+  @NonNull
+  private final UserService userService;
 
   @GetMapping("list")
   public String list(Model model) throws Exception {
@@ -26,12 +35,15 @@ public class AchievementController {
   }
 
   @GetMapping("listByUser")
-  public String listByUser(Model model, int userNo) throws Exception {
+  public String listByUser(Model model, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    // 로그인한 사용자 정보를 통해 사용자 번호를 가져옵니다.
+    User sender = userService.getByEmail(userDetails.getUsername());
+    int userNo = sender.getNo(); // User 객체에서 userNo를 가져옵니다.
+
     List<Achievement> list = achievementService.listByUser(userNo);
     model.addAttribute("list", list);
     return "achievement/listByUser";
   }
-
 
   @GetMapping("view")
   @ResponseBody
