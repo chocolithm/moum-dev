@@ -8,11 +8,19 @@ function openOverlay() {
 }
 
 function closeModal() {
+    const layers = document.getElementsByClassName("layer");
+
     fadeOut(document.getElementsByClassName("overlay")[0]);
-    for (i = 0; i < document.getElementsByClassName("layer").length; i++) {
-        document.getElementsByClassName("layer")[i].innerHTML = "";
-        fadeOut(document.getElementsByClassName("layer")[i]);
+    for (i = 0; i < layers.length; i++) {
+        fadeOut(layers[i]);
+        layers[i].innerHTML = "";
     }
+}
+
+// 채팅, 알림 화면 닫기
+function closeHeaderModal(element) {
+    fadeOut(element);
+    element = "";
 }
 
 // fadeIn, fadeOut 사용 시 style에 아래 속성 주셔야 부드럽게 적용됩니다.
@@ -48,6 +56,21 @@ function formatDate(value) {
 // 숫자만 입력받는 함수
 function formatNumber(element) {
     element.value = element.value.replace(/[^0-9]/g, "");
+}
+
+// 채팅, 알림 시간 계산
+function calcTime(dateValue) {
+    const now = new Date();
+    const date = new Date(dateValue);
+    if (now.getFullYear() === date.getFullYear()) {
+        if (now.getDate() === date.getDate()) {
+            return date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
+        }
+
+        return (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
+    } else {
+        return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+    }
 }
 
 // 로그인
@@ -164,27 +187,27 @@ function populateEmailField() {
     }
 }
 
-<!--  로그인 실패시 알림-->
-    document.addEventListener("DOMContentLoaded", function () {
+// 로그인 실패시 알림
+document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('error') === 'true') {
-    alert("이메일 또는 암호가 맞지 않습니다.");
-}
+        alert("이메일 또는 암호가 맞지 않습니다.");
+    }
 });
 
-<!--  회원가입 성공 또는 실패시 알림-->
-    document.addEventListener("DOMContentLoaded", function () {
+// 회원가입 성공 또는 실패시 알림
+document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
 
     // 회원가입 성공
     if (urlParams.get('signupSuccess') === 'true') {
-    alert("회원가입이 완료되었습니다.");
-}
+        alert("회원가입이 완료되었습니다.");
+    }
 
     // 회원가입 실패
     if (urlParams.get('signupError') === 'true') {
-    alert("회원가입 중 오류가 발생했습니다.");
-}
+        alert("회원가입 중 오류가 발생했습니다.");
+    }
 });
 
 
