@@ -14,7 +14,7 @@ public class DefaultAlertService implements AlertService {
 
   @Override
   public boolean add(Alert alert) throws Exception {
-    return false;
+    return alertDao.insert(alert);
   }
 
   @Override

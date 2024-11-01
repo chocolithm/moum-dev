@@ -19,10 +19,18 @@
 
   <insert id="insert" parameterType="moum.project.vo.Alert"
           useGeneratedKeys="true" keyColumn="alert_id" keyProperty="no">
+    insert into alert(user_id, alert_content)
+    values(#{user.no}, #{content})
   </insert>
 
   <select id="list" resultMap="AlertMap" parameterType="map">
-
+    select
+      alert_id,
+      alert_content,
+      alert_date,
+      alert_read
+    from
+      alert
   </select>
 
   <select id="listByUser" resultMap="AlertMap" parameterType="map">

@@ -126,8 +126,10 @@
 
   <select id="findRoom" resultMap="ChatroomMap" parameterType="int">
     select
+      cr.chatroom_id,
+      cr.user_id as participant_id,
       b.board_id,
-      b.user_id as board_user_id,
+      b.user_id as owner_id,
       b.title,
       b.post_date,
       tb.collection_id,

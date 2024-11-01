@@ -33,15 +33,13 @@ function disconnectAlert() {
 // 소켓 메시지 출력
 async function showAlertMessage(alert) {
   const alert_layer = document.querySelector(".alert-layer");
+  const box = document.createElement("div");
 
+  createAlertBoxContent(alert, box);
 
-  createChatContent(message_box, loginUser, chat);
+  alert_layer.insertBefore(box, alert_layer.firstChild);
 
-  chat_info.appendChild(message_box);
-
-  if (chat.sender.no == loginUser.no) {
-    chat_info.scrollTop = chat_info.scrollHeight;
-  }
+  alert_layer.scrollTop = alert_layer.scrollHeight;
 }
 
 
@@ -79,22 +77,9 @@ function fetchAlertContent(pageNo) {
 
         alerts.forEach(alert => {
           const box = document.createElement("div");
-          box.className = alert.read == 1 ? "alert-box read" : "alert-box unread";
-          box.id = `alert-${alert.no}`;
 
-          const content = document.createElement("span");
-          content.className = "alert-content";
-          content.innerHTML = alert.content;
+          createAlertBoxContent(alert, box);
 
-          const time = document.createElement("span");
-          time.className = "alert-time";
-          time.innerHTML = calcTime(alert.date);
-
-          box.append(content, time);
-          box.onclick = () =>
-            alert.read == 1
-              ? location.href = content.childNodes[0].href
-              : (updateRead(alert.no), location.href = content.childNodes[0].href);
           alert_layer.append(box);
         })
       }
@@ -105,7 +90,22 @@ function fetchAlertContent(pageNo) {
 }
 
 function createAlertBoxContent(alert, box) {
+  box.className = alert.read == 1 ? "alert-box read" : "alert-box unread";
+  box.id = `alert-${alert.no}`;
 
+  const content = document.createElement("span");
+  content.className = "alert-content";
+  content.innerHTML = alert.content;
+
+  const time = document.createElement("span");
+  time.className = "alert-time";
+  time.innerHTML = calcTime(alert.date);
+
+  box.append(content, time);
+  box.onclick = () =>
+    alert.read == 1
+      ? location.href = content.childNodes[0].href
+      : (updateRead(alert.no), location.href = content.childNodes[0].href);
 }
 
 function updateRead(alertNo) {
