@@ -54,28 +54,18 @@
 
     </select>
 
-    <select id="listByUser_rank" resultMap="AchievementMap"> <!--목록!-->
+    <select id="listByUserRank" resultMap="AchievementMap"> <!--목록!-->
         select
-        ua.achievement_id,
-        ac.name,
-        ac.content,
-        ac.photo,
-        ac.acquisition_condition,
-        ac.location,
-        ua.progress,
-        ua.get_date,
-        ua.get_score
+        userrank,
+        user_id,
+        nickname,
+        score
         from
-        user_achievement ua
-        left join achievement ac
-        on ua.achievement_id = ac.achievement_id
-        where
-        user_id = #{no}
+        user_achievement_rank
 
-        order by
-     <!--스코어순으로 넣기!-->
+        order by userrank
 
-
+        limit 0, 10;
     </select>
 
 
@@ -98,6 +88,21 @@
         achievement
         where
         achievement_id=#{id}
+    </select>
+
+
+    <select id="findRankByUser" resultMap="AchievementMap" parameterType="int"> <!--조회!-->
+        select
+        userrank,
+        user_id,
+        nickname,
+        score
+        from
+        user_achievement_rank
+
+        where
+        user_id=#{no}
+        order by userrank
     </select>
 
 

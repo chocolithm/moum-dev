@@ -15,4 +15,8 @@ public interface AchievementService {
   boolean update(Achievement achievement) throws Exception;
 
   void delete(String id) throws Exception;
+
+  List<Achievement> listByUserRank() throws Exception;
+
+  Achievement findRankByUser(int no) throws Exception;
 }

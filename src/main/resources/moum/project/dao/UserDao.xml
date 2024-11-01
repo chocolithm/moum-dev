@@ -56,6 +56,7 @@
         user_id=#{no}
     </select>
 
+
     <select id="findByEmail" resultMap="UserMap">
         select
         user_id,

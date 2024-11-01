@@ -8,13 +8,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
-import moum.project.service.BoardService;
-import moum.project.service.CollectionService;
-import moum.project.service.LikesService;
-import moum.project.service.StorageService;
-import moum.project.vo.AttachedFile;
-import moum.project.vo.Board;
-import moum.project.vo.Collection;
+import moum.project.service.*;
+import moum.project.vo.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +26,8 @@ public class BoardController {
     private final StorageService storageService;
     private final LikesService likesService;
     private final CollectionService collectionService;
+    private final AchievementService achievementService;
+    private final UserService userService;
 
     private final String folderName = "board/";
 
@@ -62,7 +61,10 @@ public class BoardController {
     }
 
     @GetMapping({"/", "/boardHome"})
-    public String boardHome(Model model) throws Exception {
+    public String boardHome(Model model,   @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+        String email = userDetails.getUsername();
+        User loginUser = userService.getByEmail(email);
         // 게시글 목록을 가져옴
         List<Board> allBoards = boardService.list();
 
@@ -89,6 +91,12 @@ public class BoardController {
         model.addAttribute("popularBoards", popularBoards);
         model.addAttribute("recentBoards", recentBoards);
         model.addAttribute("achievements", achievements);
+
+        List<Achievement> userRankList = achievementService.listByUserRank();
+        model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+
+        Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
+        model.addAttribute("rankNowUserList", user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
 
         return "board/boardHome";
     }

@@ -25,4 +25,7 @@ public interface AchievementDao {
 
     boolean delete(String id) throws Exception;
 
+    List<Achievement> listByUserRank() throws Exception;
+
+    Achievement findRankByUser(int no) throws Exception;
 }

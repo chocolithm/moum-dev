@@ -43,4 +43,14 @@ public class DefaultAchievementService implements AchievementService {
   public void delete(String id) throws Exception {
     achievementDao.delete(id);
   }
+
+  @Override
+  public List<Achievement> listByUserRank() throws Exception {
+    return achievementDao.listByUserRank();
+  }
+
+  @Override
+  public Achievement findRankByUser(int no) throws Exception {
+    return achievementDao.findRankByUser(no);
+  }
 }

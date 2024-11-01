@@ -71,25 +71,24 @@
         <!-- 세 번째 박스 (업적 랭킹) -->
         <div class="boardHomeAchievement-middle-box">
             <h2>업적 랭킹</h2>
-            <div class="achievement-content">
+            <div class="board-achievement-content">
                 <!-- 왼쪽 열: 총점 -->
-                <div class="achievement-column">
+                <div class="board-achievement-column total-score">
                     <h3>총점</h3>
-                    <ul class="achievement-list" th:each="ranking : ${rankings}">
-                        <li th:text="${ranking.rank + '. ' + ranking.name} + ' ' + ${ranking.points} + '점'">
-                            1. 레고 원더랜드 470점
+                    <ul class="board-achievement-list" th:each="ranking : ${rankList}">
+                        <li th:text="${ranking.rank + '등 ' + ranking.name + '님 ' + ranking.points + '점'}">
+                            테스트
                         </li>
                     </ul>
                 </div>
-                <!-- 오른쪽 열: 보유개수 -->
-                <div class="achievement-column">
-                    <h3>보유개수</h3>
-                    <ul class="achievement-list" th:each="item : ${itemCounts}">
-                        <li th:text="${item.rank + '. ' + item.name} + ' ' + ${item.count} + '개'">
-                            1. 레고 원더랜드 48개
-                        </li>
-                    </ul>
-                </div>
+            </div>
+
+            <!-- 현재 로그인된 유저 정보 -->
+            <div class="board-current-user-achievement">
+                <h3>현재 사용자 정보</h3>
+                <p th:text="'등수: ' + ${currentUser.rank} + '위'"></p>
+                <p th:text="'닉네임: ' + ${currentUser.name}"></p>
+                <p th:text="'총점: ' + ${currentUser.points} + '점'"></p>
             </div>
         </div>
     </div>
