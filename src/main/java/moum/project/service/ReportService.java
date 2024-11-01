@@ -7,9 +7,9 @@ import moum.project.vo.Report;
 public interface ReportService {
   boolean add(Report report) throws Exception;
 
-  List<Alert> list(int no) throws Exception;
+  List<Report> list() throws Exception;
 
-  Alert get(int no) throws Exception;
+  Report get(int no) throws Exception;
 
   boolean update(Report report) throws Exception;
 

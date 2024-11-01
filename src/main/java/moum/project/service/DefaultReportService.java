@@ -8,23 +8,27 @@ import moum.project.vo.Report;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class DefaultReportService implements ReportService {
 
   private final ReportDao reportDao;
+
+  public DefaultReportService(ReportDao reportDao) {
+    this.reportDao = reportDao;
+  }
+
+  public List<Report> list() throws Exception {
+    return reportDao.list();
+  }
+
 
   @Override
   public boolean add(Report report) throws Exception {
     return false;
   }
 
-  @Override
-  public List<Alert> list(int no) throws Exception {
-    return List.of();
-  }
 
   @Override
-  public Alert get(int no) throws Exception {
+  public Report get(int no) throws Exception {
     return null;
   }
 
@@ -36,5 +40,6 @@ public class DefaultReportService implements ReportService {
   @Override
   public boolean delete(int no) throws Exception {
     return false;
+
   }
 }

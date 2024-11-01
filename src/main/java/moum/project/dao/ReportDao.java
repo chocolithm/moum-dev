@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ReportDao {
   boolean insert(Report Report) throws Exception;
 
-  List<Alert> list() throws Exception;
+  List<Report> list() throws Exception;
 
   Alert findBy(int no) throws Exception;
 
