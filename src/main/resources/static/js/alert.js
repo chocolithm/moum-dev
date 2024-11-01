@@ -1,47 +1,4 @@
 
-let stompAlertChatClient = null;
-
-// 소켓 통신 연결
-function connectAlert(userNo) {
-  return new Promise((resolve, reject) => {
-    const socket = new SockJS("/ws");
-    stompAlertChatClient = StompJs.Stomp.over(socket);
-    stompAlertChatClient.connect({}, function (frame) {
-      stompAlertChatClient.subscribe(`/receive/alert/${userNo}`, function (message) {
-        showAlertMessage(JSON.parse(message.body));
-      });
-      resolve();
-    },
-      function (error) {
-        console.error("error connecting to alert: ", error);
-        reject();
-      });
-  });
-}
-
-// 소켓 통신 연결 해제
-function disconnectAlert() {
-  if (stompAlertChatClient && stompAlertChatClient.connected) {
-    stompAlertChatClient.disconnect(() => {
-      console.log("Disconnected from the chatroom");
-    });
-  } else {
-    console.log("No active STOMP connection to disconnect.");
-  }
-}
-
-// 소켓 메시지 출력
-async function showAlertMessage(alert) {
-  const alert_layer = document.querySelector(".alert-layer");
-  const box = document.createElement("div");
-
-  createAlertBoxContent(alert, box);
-
-  alert_layer.insertBefore(box, alert_layer.firstChild);
-
-  alert_layer.scrollTop = alert_layer.scrollHeight;
-}
-
 
 
 function openAlertModal() {

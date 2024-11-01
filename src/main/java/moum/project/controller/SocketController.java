@@ -8,7 +8,6 @@ import moum.project.service.UserService;
 import moum.project.vo.Alert;
 import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
-import moum.project.vo.User;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -49,27 +48,9 @@ public class SocketController {
       }
       alertService.add(alert);
 
-      System.out.println("/receive/alert/" + alert.getUser().getNo());
-      messagingTemplate.convertAndSend("/receive/alert/" + alert.getUser().getNo(), alert);
-
       return chat;
     } else {
       return null;
     }
-  }
-
-  @MessageMapping("/alert/{userNo}")
-  @SendTo("/receive/alert/{userNo}")
-  public Alert sendAlert(
-      @DestinationVariable String userNo,
-      Alert alert) throws Exception {
-    alert.setDate(LocalDateTime.now());
-    User user = userService.get(Integer.parseInt(userNo));
-    alert.setUser(user);
-
-    if (alertService.add(alert)) {
-      return alert;
-    }
-    return null;
   }
 }
