@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moum.project.dao.ReportDao">
+
+  <resultMap id="ReportMap" type="moum.project.vo.Report">
+    <id column="report_id" property="no"/>
+    <result column="report_content" property="reportContent"/>
+    <result column="report_date" property="reportDate"/>
+    <result column="result_content" property="resultContent"/>
+
+    <!-- 신고자 -->
+    <association property="user" javaType="moum.project.vo.User">
+      <id column="user_id" property="no"/>
+      <result column="nickname" property="nickname"/>
+    </association>
+
+    <!-- 신고항목 -->
+    <association property="reportCategory" javaType="moum.project.vo.ReportCategory">
+      <id column="report_category_id" property="no"/>
+      <result column="category_name" property="name"/>
+    </association>
+
+    <!-- 신고처리유형 -->
+    <association property="resultCategory" javaType="moum.project.vo.ReportResultCategory">
+      <id column="report_result_id" property="no"/>
+      <result column="result_name" property="name"/>
+    </association>
+
+  </resultMap>
+
+  <insert id="insert" parameterType="moum.project.vo.Report"
+          useGeneratedKeys="true" keyColumn="alert_id" keyProperty="no">
+
+  </insert>
+
+  <select id="list" resultMap="ReportMap" parameterType="map">
+
+  </select>
+
+  <select id="findBy" resultMap="ReportMap" parameterType="int">
+
+  </select>
+
+  <update id="update" parameterType="int">
+
+  </update>
+
+  <delete id="delete" parameterType="int">
+
+  </delete>
+
+</mapper>

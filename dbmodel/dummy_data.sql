@@ -553,6 +553,11 @@ INSERT INTO report_result_category (report_result_id, result_name) VALUES
 (3, '계정 정지'),
 (4, '신고 기각');
 
+-- 신고 데이터
+INSERT INTO report (report_id, user_id, report_content, report_date, report_category_id) VALUES
+(1, 4, "<a href='/board/boardView?no=4'>재미없어요</a>", "2024-10-17 12:13:16", 2),
+(2, 5, "<a href='/board/boardView?no=4'>노잼</a>", "2024-10-18 16:42:16", 2);
+
 -- 알림 데이터
 INSERT INTO alert (user_id, alert_content, alert_date, alert_read) VALUES
 (2, "<a href='/board/boardView?no=4'>게시글이 등록되었습니다.</a>", "2024-10-6 12:13:16", 1),

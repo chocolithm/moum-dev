@@ -1,16 +1,16 @@
 // 채팅 
 
 
-let stompClient = null;
+let stompChatClient = null;
 
 // 소켓 통신 연결
-function connect(chatroomNo) {
+function connectChat(chatroomNo) {
   return new Promise((resolve, reject) => {
     const socket = new SockJS("/ws");
-    stompClient = StompJs.Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-      stompClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
-        showMessage(JSON.parse(message.body));
+    stompChatClient = StompJs.Stomp.over(socket);
+    stompChatClient.connect({}, function (frame) {
+      stompChatClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
+        showChatMessage(JSON.parse(message.body));
       });
       resolve();
     },
@@ -22,9 +22,9 @@ function connect(chatroomNo) {
 }
 
 // 소켓 통신 연결 해제
-function disconnect() {
-  if (stompClient && stompClient.connected) {
-    stompClient.disconnect(() => {
+function disconnectChat() {
+  if (stompChatClient && stompChatClient.connected) {
+    stompChatClient.disconnect(() => {
       console.log("Disconnected from the chatroom");
     });
   } else {
@@ -33,11 +33,11 @@ function disconnect() {
 }
 
 // 소켓 메시지 전송
-async function sendMessage(chatroomNo) {
+async function sendChatMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message");
-  console.log(messageContent);
+
   if (messageContent.value != "") {
-    stompClient.send(`/send/chat/${chatroomNo}`, {}, JSON.stringify({
+    stompChatClient.send(`/send/chat/${chatroomNo}`, {}, JSON.stringify({
       sender: await getSender(),
       chatroom: {
         no: chatroomNo
@@ -49,7 +49,7 @@ async function sendMessage(chatroomNo) {
 }
 
 // 소켓 메시지 출력
-async function showMessage(chat) {
+async function showChatMessage(chat) {
   const chat_info = document.querySelector(".chat-info");
   const message_box = document.createElement("div");
   const loginUser = await getSender();
@@ -95,7 +95,7 @@ function closeChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
-  disconnect();
+  disconnectChat();
 
   chat_btn.onclick = () => openChatroomModal();
   fadeOut(chatroom_layer);
@@ -186,7 +186,7 @@ function openChat(chatroomNo) {
         await fetchChatroom(chatroomNo);
         await fetchChatContent(chatroomNo, 1);
         createChatInputbox(chatroomNo);
-        connect(chatroomNo);
+        connectChat(chatroomNo);
       } catch (error) {
         console.error("error fetching chatroom info", error);
       }
@@ -198,7 +198,7 @@ function openChat(chatroomNo) {
 function closeChat() {
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
-  disconnect();
+  disconnectChat();
 
   for (i = 0; i < chatroom_layer.childNodes.length; i++) {
     fadeOut(chatroom_layer.childNodes[i]);
@@ -277,14 +277,10 @@ function createChatroom(boardNo) {
         return;
       }
 
-      console.log("connect");
-
-      connect(chatroom.no)
+      connectChat(chatroom.no)
         .then(() => {
-          console.log("sendMessage");
-          sendMessage(chatroom.no);
-          console.log("onclick 변경");
-          document.querySelector(".chat-btn").onclick = () => sendMessage(chatroom.no);
+          sendChatMessage(chatroom.no);
+          document.querySelector(".chat-btn").onclick = () => sendChatMessage(chatroom.no);
         });
     })
     .catch(error => {
@@ -474,7 +470,7 @@ function createChatInputbox(chatroomNo) {
 
     btn.setAttribute("onclick", `createChatroom(${boardNo})`);
   } else {
-    btn.setAttribute("onclick", `sendMessage(${chatroomNo});`);
+    btn.setAttribute("onclick", `sendChatMessage(${chatroomNo});`);
   }
 
   chat_inputbox.append(input, btn);

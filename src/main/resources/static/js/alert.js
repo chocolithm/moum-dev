@@ -1,4 +1,49 @@
 
+let stompAlertChatClient = null;
+
+// 소켓 통신 연결
+function connectAlert(userNo) {
+  return new Promise((resolve, reject) => {
+    const socket = new SockJS("/ws");
+    stompAlertChatClient = StompJs.Stomp.over(socket);
+    stompAlertChatClient.connect({}, function (frame) {
+      stompAlertChatClient.subscribe(`/receive/alert/${userNo}`, function (message) {
+        showAlertMessage(JSON.parse(message.body));
+      });
+      resolve();
+    },
+      function (error) {
+        console.error("error connecting to alert: ", error);
+        reject();
+      });
+  });
+}
+
+// 소켓 통신 연결 해제
+function disconnectAlert() {
+  if (stompAlertChatClient && stompAlertChatClient.connected) {
+    stompAlertChatClient.disconnect(() => {
+      console.log("Disconnected from the chatroom");
+    });
+  } else {
+    console.log("No active STOMP connection to disconnect.");
+  }
+}
+
+// 소켓 메시지 출력
+async function showAlertMessage(alert) {
+  const alert_layer = document.querySelector(".alert-layer");
+
+
+  createChatContent(message_box, loginUser, chat);
+
+  chat_info.appendChild(message_box);
+
+  if (chat.sender.no == loginUser.no) {
+    chat_info.scrollTop = chat_info.scrollHeight;
+  }
+}
+
 
 
 function openAlertModal() {
@@ -57,6 +102,10 @@ function fetchAlertContent(pageNo) {
     .catch(error => {
       console.error("error fetching alerts", error);
     })
+}
+
+function createAlertBoxContent(alert, box) {
+
 }
 
 function updateRead(alertNo) {
