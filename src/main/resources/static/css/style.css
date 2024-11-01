@@ -414,6 +414,7 @@ td {
     margin: 20px;
     display: flex;
     gap: 15px;
+
     /* 체크박스 간의 간격 */
 }
 
@@ -422,4 +423,102 @@ td {
     margin-right: 10px;
     cursor: pointer;
     /* 포인터 커서로 변경 */
+}
+
+/* info achievement 스타일 */
+.achievement-box {
+    width: 180px;
+    height: auto;
+    border: 1px solid #ccc; /* 박스 테두리 */
+    border-radius: 4px; /* 모서리 둥글기 */
+    padding: 2px; /* 안쪽 여백 */
+    background-color: #f9f9f9; /* 배경색 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+     overflow: hidden;
+     align: center;
+
+}
+
+.info-achievement-container {
+    margin-bottom: 3px; /* 각 업적 간 여백 */
+      overflow: hidden;
+      align: center;
+}
+
+
+.info-achievement-details div {
+    margin-bottom: 5px; /* 각 div 간의 여백 */
+      overflow: hidden;
+      align: center;
+}
+
+.info-progress-bar-container {
+    background-color: #f0f0f0; /* 진행도 바 배경색 */
+    border-radius: 4px; /* 둥글게 */
+    overflow: hidden; /* 자식 요소가 부모 영역을 넘지 않게 */
+    align: center;
+}
+
+.info-progress-bar {
+    height: 10px; /* 진행도 바 높이 */
+    transition: width 0.3s; /* 부드러운 애니메이션 효과 */
+    align: center;
+}
+
+.info-progress-bar.low {
+    background-color: #e74c3c; /* 낮은 진행도 색상 (빨간색) */
+    align: center;
+}
+
+.info-progress-bar.medium {
+    background-color: #f1c40f; /* 중간 진행도 색상 (노란색) */
+    align: center;
+}
+
+.info-progress-bar.high {
+    background-color: #2ecc71; /* 높은 진행도 색상 (녹색) */
+    align: center;
+}
+
+.info-progress-text {
+    font-weight: bold; /* 텍스트 두께 */
+    color: #333; /* 텍스트 색상 */
+    text-align: center;
+}
+
+.info-achievement-image {
+    display: flex; /* 이미지와 관련된 내용을 수평으로 정렬 */
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 10px; /* 아래쪽 여백 */
+}
+
+.info-achievement-img {
+    width: 100px; /* 이미지 너비 */
+    height: 100px; /* 이미지 높이 */
+    object-fit: cover; /* 이미지 비율 유지하며 잘리기 */
+    border-radius: 8px; /* 이미지 모서리 둥글기 */
+    border: 2px solid #ddd; /* 이미지 테두리 */
+    transition: transform 0.3s; /* 마우스 오버 시 애니메이션 효과 */
+}
+
+.info-achievement-name {
+    font-size: 18px; /* 글자 크기 */
+    font-weight: bold;
+    color: #333; /* 글자 색상 */
+    margin-bottom: 8px; /* 아래쪽 여백 */
+    text-align: center; /* 중앙 정렬 */
+    text-transform: capitalize; /* 첫 글자 대문자 */
+}
+
+.info-achievement-name span {
+    display: inline-block; /* 블록 요소로 처리하여 여백 효과를 줄 수 있음 */
+    padding: 4px 8px; /* 안쪽 여백 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #f0f0f0; /* 배경색 */
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.info-achievement-name span:hover {
+    background-color: #e0e0e0; /* 마우스 오버 시 배경색 변경 */
 }

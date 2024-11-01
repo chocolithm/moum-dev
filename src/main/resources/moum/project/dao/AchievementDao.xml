@@ -45,8 +45,40 @@
         left join achievement ac
             on ua.achievement_id = ac.achievement_id
         where
-            user_id = #{no};
+            user_id = #{no}
+
+        order by
+                ua.get_date desc,
+                progress desc
+
+
     </select>
+
+    <select id="listByUser_rank" resultMap="AchievementMap"> <!--목록!-->
+        select
+        ua.achievement_id,
+        ac.name,
+        ac.content,
+        ac.photo,
+        ac.acquisition_condition,
+        ac.location,
+        ua.progress,
+        ua.get_date,
+        ua.get_score
+        from
+        user_achievement ua
+        left join achievement ac
+        on ua.achievement_id = ac.achievement_id
+        where
+        user_id = #{no}
+
+        order by
+     <!--스코어순으로 넣기!-->
+
+
+    </select>
+
+
 
     <insert id="insert" parameterType="moum.project.vo.Achievement"> <!--추가!-->
     insert into achievement(achievement_id, name, content, photo, acquisition_condition, location)
