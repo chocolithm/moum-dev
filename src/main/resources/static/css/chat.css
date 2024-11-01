@@ -139,6 +139,17 @@
   border-radius: 15px;
 }
 
+.chatroom-layer .chat-info .new-message-alert {
+  position: absolute;
+  bottom: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: lightgrey;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
 .chatroom-layer .chat-inputbox {
   position: absolute;
   bottom: 10px;

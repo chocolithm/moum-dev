@@ -63,6 +63,11 @@ async function showMessage(chat) {
   } else {
     if (chat_info.scrollTop > chat_info.scrollHeight - chat_info.offsetHeight - 500) {
       chat_info.scrollTop = chat_info.scrollHeight;
+    } else {
+      // const new_message_alert = document.createElement("div");
+      // new_message_alert.className = "new-message-alert";
+      // new_message_alert.innerHTML = "new message";
+      // chat_info.append(new_message_alert);
     }
   }
 
