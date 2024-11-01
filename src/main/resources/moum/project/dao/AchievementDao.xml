@@ -13,6 +13,12 @@
         <result column="location" property="location"/>
         <result column="progress" property="progress"/>
         <result column="get_date" property="getDate"/>
+        <result column="score" property="score"/>
+        <result column="userrank" property="rank"/>
+        <association property="user" javaType="moum.project.vo.User">
+            <id column="user_id" property="no"/>
+            <result column="nickname" property="nickname"/>
+        </association>
 
     </resultMap>
 
