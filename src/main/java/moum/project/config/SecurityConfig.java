@@ -118,7 +118,7 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         )
         .formLogin((form) -> form
-            .loginPage("/auth/form")
+            .loginPage("/home?login=true")
             .loginProcessingUrl("/auth/login")
             .usernameParameter("email")
             .passwordParameter("password")

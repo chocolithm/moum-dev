@@ -75,8 +75,15 @@
     <script>
         window.onload = () => {
             const urlParams = new URLSearchParams(window.location.search);
-        }
+            const login = urlParams.get("login")
+            if (login && login == "true") {
+                openLoginModal();
 
+                urlParams.delete("login");
+                const newUrl = window.location.pathname;
+                window.history.replaceState(null, "", newUrl);
+            }
+        }
     </script>
 
 </body>
