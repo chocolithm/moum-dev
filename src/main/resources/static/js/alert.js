@@ -58,11 +58,16 @@ function createAlertBoxContent(alert, box) {
   time.className = "alert-time";
   time.innerHTML = calcTime(alert.date);
 
-  box.append(content, time);
+  const x = document.createElement("a");
+  x.className = "alert-delete-btn";
+  x.innerText = "x";
+  x.onclick = () => deleteAlert(event, alert.no);
+
+  box.append(content, time, x);
   box.onclick = () =>
     alert.read == 1
       ? location.href = content.childNodes[0].href
-      : (updateRead(alert.no), location.href = content.childNodes[0].href);
+      : (updateRead(alert.no));
 }
 
 function updateRead(alertNo) {
@@ -73,4 +78,21 @@ function updateRead(alertNo) {
         location.href = box.firstChild.firstChild.href;
       }
     });
+}
+
+function deleteAlert(event, alertNo) {
+  event.stopPropagation();
+  fetch(`/alert/delete?no=${alertNo}`)
+    .then(response => response.text())
+    .then(response => {
+      if (response == "success") {
+        const box = document.querySelector(`#alert-${alertNo}`);
+        box.remove();
+      } else {
+        alert("삭제가 불가합니다. 다시 시도해 주세요.");
+      }
+    })
+    .catch (error => {
+      console.error("error deleting alert: ", error);
+    })
 }

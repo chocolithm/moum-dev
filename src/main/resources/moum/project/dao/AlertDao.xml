@@ -59,7 +59,8 @@
   </update>
 
   <delete id="delete" parameterType="int">
-
+    delete from alert
+    where alert_id = #{no}
   </delete>
 
 </mapper>

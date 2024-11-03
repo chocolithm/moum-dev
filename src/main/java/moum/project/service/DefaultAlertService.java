@@ -39,6 +39,6 @@ public class DefaultAlertService implements AlertService {
 
   @Override
   public boolean delete(int no) throws Exception {
-    return false;
+    return alertDao.delete(no);
   }
 }
