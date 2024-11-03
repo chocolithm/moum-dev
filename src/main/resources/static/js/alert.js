@@ -53,22 +53,30 @@ function createAlertBoxContent(alert, box) {
   const content = document.createElement("span");
   content.className = "alert-content";
   content.innerHTML = alert.content;
+  content.onclick = () => alert.read == 1
+    ? location.href = content.childNodes[0].href
+    : (updateRead(alert.no));
+
+  content.addEventListener('mouseenter', () => {
+    box.classList.add('active');
+  });
+
+  content.addEventListener('mouseleave', () => {
+      box.classList.remove('active');
+  });
 
   const time = document.createElement("span");
   time.className = "alert-time";
   time.innerHTML = calcTime(alert.date);
 
-  const x = document.createElement("a");
-  x.className = "alert-delete-btn";
-  x.innerText = "x";
-  x.onclick = () => deleteAlert(event, alert.no);
+  const delete_btn = document.createElement("a");
+  delete_btn.className = "alert-delete-btn";
+  delete_btn.innerText = "x";
+  delete_btn.onclick = () => deleteAlert(event, alert.no);
 
-  box.append(content, time, x);
-  box.onclick = () =>
-    alert.read == 1
-      ? location.href = content.childNodes[0].href
-      : (updateRead(alert.no));
+  box.append(content, time, delete_btn);
 }
+
 
 function updateRead(alertNo) {
   const box = document.querySelector(`alert-${alertNo}`);
