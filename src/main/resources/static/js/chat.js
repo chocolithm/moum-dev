@@ -77,6 +77,9 @@ function createNewMessageAlert() {
     new_message_alert.className = "new-message-alert";
     new_message_alert.append(document.createElement("span"));
     new_message_alert.childNodes[0].innerHTML = "new message";
+    new_message_alert.onclick = () => {
+      chat_info.scrollTop = chat_info.scrollHeight;
+    };
 
     chat_info.addEventListener("scroll", removeNewMessageAlert);
 
