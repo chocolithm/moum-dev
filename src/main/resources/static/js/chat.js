@@ -36,7 +36,7 @@ function disconnect() {
 async function sendMessage(chatroomNo) {
   const messageContent = document.getElementById("new-message");
 
-  if (messageContent.value != "") {
+  if (messageContent.value.trim() != "") {
     stompChatClient.send(`/send/chat/${chatroomNo}`, {}, JSON.stringify({
       sender: await getSender(),
       chatroom: {
