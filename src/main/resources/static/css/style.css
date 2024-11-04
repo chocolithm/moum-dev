@@ -643,56 +643,7 @@ width: 45px;
   margin: 2rem 0;
 }
 
-/* 게시판 업적 랭킹 설정 */
-.boardHomeAchievement-middle-box {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
 
-h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.board-achievement-content {
-    display: flex;
-    justify-content: space-between;
-}
-
-.board-achievement-column {
-    width: 45%;
-    background-color: #fff;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-h3 {
-    margin-bottom: 10px;
-    color: #666;
-}
-
-.board-achievement-list {
-    list-style: none;
-    padding: 0;
-}
-
-.board-achievement-list li {
-    margin: 10px 0;
-    padding: 8px;
-    background-color: #f1f1f1;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
-
-.board-achievement-list li:hover {
-    background-color: #e1e1e1;
-}
 
 
 
