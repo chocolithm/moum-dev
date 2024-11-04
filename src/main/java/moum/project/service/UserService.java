@@ -88,4 +88,5 @@ public interface UserService {
    * @throws Exception DB 조회 중 발생할 수 있는 예외
    */
   User getByEmail(String email) throws Exception;
+
 }

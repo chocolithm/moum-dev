@@ -7,10 +7,6 @@ spring:
     username: moum
     password: bitcamp123!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost/moum
-#    username: moum
-#    password: 1111
-#    driver-class-name: com.mysql.cj.jdbc.Driver
 
   thymeleaf:
     cache: false
@@ -28,9 +24,24 @@ spring:
     resources:
       static-locations: file:src/main/resources/static/
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    auth-code-expiration-millis: 180000
+
 mybatis:
-  mapper-locations: classpath:mappers/*.xml  # ?? XML ?? ?? ??
-  type-aliases-package: moum.project.domain  # ??? ??? ??? ??? ??
+  mapper-locations:
+  type-aliases-package:
 
 logging:
   level:

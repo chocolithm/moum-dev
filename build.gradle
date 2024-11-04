@@ -38,6 +38,7 @@ dependencies {
     // AWS S3 SDK (keeping from the original file)
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.772'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
