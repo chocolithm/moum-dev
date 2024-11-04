@@ -31,7 +31,6 @@
 
     <association property="otherCategory" javaType="moum.project.vo.OtherCategory">
       <result column="other_category_name" property="name"/>
-      <result column="date" property="date"/>
     </association>
 
     <association property="status" javaType="moum.project.vo.CollectionStatus">
@@ -125,7 +124,6 @@
       collection c
       left join collection_status cs on c.status_id = cs.status_id
       left join subcategory sc on c.subcategory_id = sc.subcategory_id
-      left join other_category oc on c.other_
     where
       c.collection_id = (select collection_id from collection_photo where photo_id = #{no})
   </select>
