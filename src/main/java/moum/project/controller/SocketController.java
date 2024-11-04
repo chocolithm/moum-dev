@@ -29,6 +29,10 @@ public class SocketController {
       @DestinationVariable String roomNo,
       Chat chat) throws Exception {
 
+    if (chat.getMessage().trim().isEmpty()) {
+      return null;
+    }
+
     chat.setChatDate(LocalDateTime.now());
 
 
