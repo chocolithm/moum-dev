@@ -222,7 +222,6 @@ CREATE TABLE collection (
     user_id          INTEGER      NOT NULL, -- 소유자 번호
     subcategory_id   INTEGER      NOT NULL, -- 소분류번호
     name             VARCHAR(50)  NOT NULL, -- 제품명
-    en_name          VARCHAR(50)  NULL,     -- 제품명(영문)
     status_id        INTEGER      NULL,     -- 수집품상태번호
     purchase_date    DATE         NULL,     -- 구매일자
     purchase_place   VARCHAR(255) NULL,     -- 구매처

@@ -8,7 +8,6 @@
   <resultMap id="CollectionMap" type="moum.project.vo.Collection">
     <id column="collection_id" property="no"/>
     <result column="name" property="name"/>
-    <result column="en_name" property="enName"/>
     <result column="purchase_date" property="purchaseDate"/>
     <result column="purchase_place" property="purchasePlace"/>
     <result column="price" property="price"/>
@@ -51,9 +50,9 @@
 
   <insert id="insert" parameterType="moum.project.vo.Collection"
           useGeneratedKeys="true" keyColumn="collection_id" keyProperty="no">
-    insert into collection(user_id, subcategory_id, name, en_name, status_id,
+    insert into collection(user_id, subcategory_id, name, status_id,
       purchase_date, purchase_place, price, storage_location)
-    values(#{user.no}, #{subcategory.no}, #{name}, #{enName}, #{status.no},
+    values(#{user.no}, #{subcategory.no}, #{name}, #{status.no},
       #{purchaseDate}, #{purchasePlace}, #{price}, #{storageLocation})
   </insert>
 
@@ -82,7 +81,6 @@
       c.collection_id,
       c.user_id,
       c.name,
-      c.en_name,
       c.price,
       sc.maincategory_id,
       c.subcategory_id,
@@ -108,7 +106,6 @@
       c.collection_id,
       c.user_id,
       c.name,
-      c.en_name,
       c.price,
       sc.maincategory_id,
       c.subcategory_id,
@@ -130,7 +127,6 @@
       collection
     set
       name = #{name},
-      en_name = #{enName},
       subcategory_id = #{subcategory.no},
       status_id = #{status.no},
       purchase_date = #{purchaseDate},

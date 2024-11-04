@@ -189,7 +189,6 @@ function addCollection() {
 
         const formData = new FormData();
         formData.append("name", document.querySelector("#addForm #name").value.trim());
-        formData.append("enName", document.querySelector("#addForm #enName").value.trim());
         formData.append("price", document.querySelector("#addForm #price").value);
         formData.append("maincategory.no", document.querySelector("#addForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#addForm #subcategoryNo").value);
@@ -290,7 +289,6 @@ function updateCollection() {
         const formData = new FormData();
         formData.append("no", document.querySelector("#updateForm #no").value);
         formData.append("name", document.querySelector("#updateForm #name").value.trim());
-        formData.append("enName", document.querySelector("#updateForm #enName").value.trim());
         formData.append("price", document.querySelector("#updateForm #price").value);
         formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
@@ -335,9 +333,6 @@ function updateCollection() {
 
 function validateData(formData) {
     if (formData.get("name") == "") { alert("이름을 입력해주세요."); return false; }
-    if (formData.get("maincategory.no") == "" || formData.get("maincategory.no") == 0) { alert("대분류를 선택해주세요."); return false; }
-    if (formData.get("subcategory.no") == "" || formData.get("subcategory.no") == 0) { alert("소분류를 선택해주세요."); return false; }
-    if (formData.get("storageLocation") == "") { alert("보관장소를 입력해주세요."); return false; }
     if (formData.get("status.no") == "" || formData.get("status.no") == 0) { alert("상태를 선택해주세요."); return false; }
     return true;
 }

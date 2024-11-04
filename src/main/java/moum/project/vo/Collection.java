@@ -16,7 +16,6 @@ public class Collection implements Serializable {
   private Maincategory maincategory;
   private Subcategory subcategory;
   private String name;
-  private String enName;
   private CollectionStatus status;
   private LocalDate purchaseDate;
   private String purchasePlace;
