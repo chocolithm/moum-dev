@@ -50,7 +50,7 @@
         <img alt="알림" class="alert-image" src="/images/common/alert.png">
         알림
       </a>
-      <a class="btn chat-btn" onClick="openChatroomModal();" style="display: none;">
+      <a class="btn chat-btn" onClick="openChatroomModal();">
         <img alt="채팅" class="chat-image" src="/images/common/chatting.png">
         채팅
       </a>
@@ -108,16 +108,6 @@
           closeLoginModal();
         }
       });
-    </script>
-
-    <script>
-      // /board/ 하위에서만 채팅 버튼 보이는 임시 함수 - 향후 삭제
-      window.onload = () => {
-        const btn = document.querySelector(".chat-btn");
-        if (location.pathname.startsWith("/board/")) {
-          btn.style.display = "block";
-        }
-      }
     </script>
 
 

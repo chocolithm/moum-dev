@@ -46,6 +46,10 @@ function fetchAlertContent(pageNo) {
     })
 }
 
+function fetchMoreAlertContent(pageNo) {
+
+}
+
 function createAlertBoxContent(alert, box) {
   box.className = alert.read == 1 ? "alert-box read" : "alert-box unread";
   box.id = `alert-${alert.no}`;
