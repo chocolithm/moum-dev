@@ -5,7 +5,7 @@
 .alert-count {
   color: red;
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 6%;
   transform: translateX(-50%);
 }

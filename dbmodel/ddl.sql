@@ -73,6 +73,9 @@ DROP TABLE IF EXISTS collection_status RESTRICT;
 -- 채팅방
 DROP TABLE IF EXISTS chatroom RESTRICT;
 
+-- 정지회원
+DROP TABLE IF EXISTS user_restricted RESTRICT;
+
 -- 회원
 CREATE TABLE user (
     user_id    INTEGER      NOT NULL, -- 회원 번호
@@ -201,7 +204,8 @@ CREATE TABLE user_achievement (
     user_id        INTEGER     NOT NULL, -- 회원 번호
     achievement_id VARCHAR(50) NOT NULL, -- 업적ID
     progress       INTEGER     NOT NULL DEFAULT 0, -- 진행도
-    get_date       DATETIME    NULL      -- 취득일자
+    get_date       DATETIME    NULL,     -- 취득일자
+    is_primary     TINYINT     NULL     DEFAULT 0 -- 대표업적
 );
 
 -- 회원 업적
@@ -542,6 +546,13 @@ ALTER TABLE chatroom
 ALTER TABLE chatroom
     MODIFY COLUMN chatroom_id INTEGER NOT NULL AUTO_INCREMENT;
 
+-- 정지회원
+CREATE TABLE user_restricted (
+    user_id    INTEGER  NOT NULL, -- 회원 번호
+    start_date DATETIME NOT NULL, -- 시작일자
+    end_date   DATETIME NOT NULL  -- 종료일자
+);
+
 -- 회원
 ALTER TABLE user
     ADD CONSTRAINT FK_google_TO_user -- 구글 -> 회원
@@ -827,6 +838,16 @@ ALTER TABLE chatroom
     ADD CONSTRAINT FK_user_TO_chatroom -- 회원 -> 채팅방
     FOREIGN KEY (
     user_id -- 참여자 번호
+    )
+    REFERENCES user ( -- 회원
+    user_id -- 회원 번호
+    );
+
+-- 정지회원
+ALTER TABLE user_restricted
+    ADD CONSTRAINT FK_user_TO_user_restricted -- 회원 -> 정지회원
+    FOREIGN KEY (
+    user_id -- 회원 번호
     )
     REFERENCES user ( -- 회원
     user_id -- 회원 번호
