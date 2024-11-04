@@ -27,7 +27,7 @@ a {
 }
 
 
-.modal-content {
+.modal > .modal-content {
     background-color: white;
     margin: 15% auto;
     padding: 20px;
@@ -642,9 +642,3 @@ width: 45px;
   align-items: flex-start;
   margin: 2rem 0;
 }
-
-
-
-
-
-

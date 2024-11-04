@@ -6,23 +6,54 @@
     <script src="/js/common.js"></script> <!-- common.js 로드 -->
 </head>
 <body onload="populateEmailField()"> <!-- 이메일 필드 자동 채우기 -->
-<h2>로그인</h2>
 <form th:action="@{/auth/login}" method="post" onsubmit="handleLoginSubmit()">
-    <div>
-        <label for="email">이메일:</label>
-        <input type="email" id="email" name="email" required data-th-value="${email}" value="hong@test.com"><br>
-    </div>
-    <div>
-        <label for="password">암호:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
-        <input type="checkbox" id="saveEmail" name="saveEmail"> 이메일 저장<br>
-    </div>
-    <div>
-        <button type="submit">로그인</button>
-    </div>
-</form>
+    <div class="login-form-container p-4">
 
+        <form id="loginForm" action="/auth/login" method="post" onsubmit="handleLoginSubmit()">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control rounded-2" id="email" name="email" placeholder="이메일을 입력하세요">
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control rounded-2" id="password" name="password" placeholder="비밀번호를 입력하세요">
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="saveEmail" name="saveEmail">
+                        <label class="form-check-label" for="saveEmail">
+                            ID 저장
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100 mb-2 py-2">로그인</button>
+
+            <div class="social-login d-grid gap-2 mt-3">
+                <button type="button" class="btn w-100 py-2 text-white" style="background-color: #1EC800;">
+                    NAVER 로그인(예정)
+                </button>
+                <button type="button" class="btn w-100 py-2" style="background-color: #FEE500;">
+                    KAKAO 로그인(예정)
+                </button>
+                <button type="button" class="btn btn-light w-100 py-2 border">
+                    GOOGLE 로그인(예정)
+                </button>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="#" onclick="openSignupModal()" class="text-decoration-none text-secondary me-2">회원가입</a>
+                <span class="text-secondary">|</span>
+                <a href="/auth/resetPassword" class="text-decoration-none text-secondary ms-2">비밀번호 찾기</a>
+            </div>
+        </form>
+    </div>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+</form>
 </body>
 </html>

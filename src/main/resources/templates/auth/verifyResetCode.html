@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>인증 코드 확인</title>
+  <script src="/js/common.js"></script> <!-- common.js 로드 -->
+</head>
+<body>
+<h2>인증 코드 확인</h2>
+<form th:action="@{/auth/verifyResetCode}" method="post">
+  <div>
+    <label for="inputCode">인증 코드:</label>
+    <input type="text" id="inputCode" name="inputCode" required>
+    <input type="hidden" name="authCode" th:value="${authCode}">
+    <input type="hidden" name="email" th:value="${email}">
+  </div>
+  <div>
+    <button type="submit">확인</button>
+  </div>
+</form>
+<div th:if="${error}">
+  <p th:text="${error}"></p>
+</div>
+</body>
+</html>
