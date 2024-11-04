@@ -38,12 +38,45 @@ function fetchAlertContent(pageNo) {
           createAlertBoxContent(alert, box);
 
           alert_layer.append(box);
+          alert_layer.setAttribute('onscroll', `fetchMoreAlertContent(2)`);
         })
       }
     })
     .catch(error => {
       console.error("error fetching alerts", error);
     })
+}
+
+function fetchMoreAlertContent(pageNo) {
+  const alert_layer = document.querySelector(".alert-layer");
+
+  if (alert_layer.scrollTop > alert_layer.scrollHeight - alert_layer.offsetHeight - 50) {
+    console.log("데이터 추가로딩");
+    fetch(`/alert/listByUser?pageNo=${pageNo}`)
+      .then(response => response.json())
+      .then(alerts => {
+        if (alerts && alerts.length > 0) {
+          const alert_layer = document.querySelector(".alert-layer");
+
+          alerts.forEach(alert => {
+            const box = document.createElement("div");
+
+            createAlertBoxContent(alert, box);
+
+            alert_layer.append(box);
+          })
+
+          if (alerts.length == 20) {
+            alert_layer.setAttribute('onscroll', `fetchMoreAlertContent(${pageNo + 1})`);
+          } else {
+            alert_layer.removeAttribute('onscroll');
+          }
+        }
+      })
+      .catch(error => {
+        console.error("error fetching alerts", error);
+      })
+  }
 }
 
 function createAlertBoxContent(alert, box) {
@@ -53,21 +86,26 @@ function createAlertBoxContent(alert, box) {
   const content = document.createElement("span");
   content.className = "alert-content";
   content.innerHTML = alert.content;
-  content.onclick = () => alert.read == 1
-    ? location.href = content.childNodes[0].href
-    : (updateRead(alert.no));
+
+  const time = document.createElement("span");
+  time.className = "alert-time";
+  time.innerHTML = calcTime(alert.date);
 
   content.addEventListener('mouseenter', () => {
     box.classList.add('active');
   });
 
   content.addEventListener('mouseleave', () => {
-      box.classList.remove('active');
+    box.classList.remove('active');
   });
 
-  const time = document.createElement("span");
-  time.className = "alert-time";
-  time.innerHTML = calcTime(alert.date);
+  time.addEventListener('mouseenter', () => {
+    box.classList.add('active');
+  });
+
+  time.addEventListener('mouseleave', () => {
+    box.classList.remove('active');
+  });
 
   const delete_btn = document.createElement("a");
   delete_btn.className = "alert-delete-btn";
@@ -75,6 +113,9 @@ function createAlertBoxContent(alert, box) {
   delete_btn.onclick = () => deleteAlert(event, alert.no);
 
   box.append(content, time, delete_btn);
+  box.onclick = () => alert.read == 1
+    ? location.href = content.childNodes[0].href
+    : (updateRead(alert.no));
 }
 
 
@@ -100,7 +141,7 @@ function deleteAlert(event, alertNo) {
         alert("삭제가 불가합니다. 다시 시도해 주세요.");
       }
     })
-    .catch (error => {
+    .catch(error => {
       console.error("error deleting alert: ", error);
     })
 }

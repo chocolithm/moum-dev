@@ -33,6 +33,11 @@ public class DefaultAlertService implements AlertService {
   }
 
   @Override
+  public boolean updateTime(int no) throws Exception {
+    return alertDao.updateTime(no);
+  }
+
+  @Override
   public boolean updateRead(int no) throws Exception {
     return alertDao.updateRead(no);
   }
@@ -40,5 +45,10 @@ public class DefaultAlertService implements AlertService {
   @Override
   public boolean delete(int no) throws Exception {
     return alertDao.delete(no);
+  }
+
+  @Override
+  public int exists(Alert alert) throws Exception {
+    return alertDao.exists(alert);
   }
 }

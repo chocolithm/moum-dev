@@ -17,7 +17,11 @@ public interface AlertService {
 
   Alert get(int no) throws Exception;
 
+  boolean updateTime(int no) throws Exception;
+
   boolean updateRead(int no) throws Exception;
 
   boolean delete(int no) throws Exception;
+
+  int exists(Alert alert) throws Exception;
 }

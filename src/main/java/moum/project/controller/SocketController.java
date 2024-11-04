@@ -4,14 +4,13 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AlertService;
 import moum.project.service.ChatService;
-import moum.project.service.UserService;
 import moum.project.vo.Alert;
 import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,8 +21,7 @@ public class SocketController {
 
   private final ChatService chatService;
   private final AlertService alertService;
-  private final UserService userService;
-  private final SimpMessagingTemplate messagingTemplate;
+  private final SimpUserRegistry simpUserRegistry;
 
   @MessageMapping("/chat/{roomNo}")
   @SendTo("/receive/chat/{roomNo}")
@@ -32,25 +30,47 @@ public class SocketController {
       Chat chat) throws Exception {
 
     chat.setChatDate(LocalDateTime.now());
+
+
     if (chatService.addChat(chat)) {
 
-      Chatroom chatroom = chatService.getRoom(chat.getChatroom().getNo());
+      int connectedUsers = getConnectedUsersInRoom(roomNo);
+      if (connectedUsers < 2) {
 
-      Alert alert = new Alert();
-      alert.setContent("새로운 메시지가 도착했습니다.");
-      alert.setDate(LocalDateTime.now());
-      alert.setRead(false);
+        Chatroom chatroom = chatService.getRoom(chat.getChatroom().getNo());
 
-      if (chatroom.getParticipant().getNo() == chat.getSender().getNo()) {
-        alert.setUser(chatroom.getOwner());
-      } else {
-        alert.setUser(chatroom.getParticipant());
+        Alert alert = new Alert();
+        alert.setCategory("chatroom");
+        alert.setCategoryNo(chatroom.getNo());
+
+        if (chatroom.getParticipant().getNo() == chat.getSender().getNo()) {
+          alert.setUser(chatroom.getOwner());
+        } else {
+          alert.setUser(chatroom.getParticipant());
+        }
+
+        if (alertService.exists(alert) == 0) {
+          alert.setContent("새로운 메시지가 도착했습니다.");
+          alert.setDate(LocalDateTime.now());
+          alert.setRead(false);
+          alertService.add(alert);
+
+        } else {
+          alertService.updateTime(alert.getNo());
+        }
       }
-      alertService.add(alert);
 
       return chat;
     } else {
       return null;
     }
+  }
+
+  private int getConnectedUsersInRoom(String roomNo) {
+    return (int) simpUserRegistry.getUsers().stream()
+        .flatMap(user -> user.getSessions().stream())
+        .filter(session -> session.getSubscriptions().stream()
+            .anyMatch(subscription -> subscription.getDestination().equals("/receive/chat/" + roomNo)))
+        .count();
   }
 }
