@@ -3,6 +3,7 @@
 
 function openAlertModal() {
   closeChatroomModal();
+  countAlert();
 
   const alert_btn = document.querySelector(".alert-btn");
   const alert_layer = document.querySelector(".alert-layer");
@@ -113,20 +114,34 @@ function createAlertBoxContent(alert, box) {
   delete_btn.onclick = () => deleteAlert(event, alert.no);
 
   box.append(content, time, delete_btn);
-  box.onclick = () => alert.read == 1
-    ? location.href = content.childNodes[0].href
-    : (updateRead(alert.no));
+  box.onclick = () => {
+    console.log(alert);
+    if (alert.read == 1) {
+      executeAlert(alert);
+
+    } else {
+      updateRead(alert);
+    }
+  }
 }
 
 
-function updateRead(alertNo) {
-  const box = document.querySelector(`alert-${alertNo}`);
-  fetch(`/alert/read?no=${alertNo}`)
+function updateRead(alert) {
+  fetch(`/alert/read?no=${alert.no}`)
     .then((result) => {
-      if (result == "success") {
-        location.href = box.firstChild.firstChild.href;
+      if (result.ok) {
+        executeAlert(alert);
       }
     });
+}
+
+function executeAlert(alert) {
+  if (alert.category == "chatroom") {
+    openChatroomModal();
+    openChat(alert.categoryNo);
+  } else if (alert.category == "board") {
+    location.href = `/board/boardView?no=${alert.categoryNo}`;
+  }
 }
 
 function deleteAlert(event, alertNo) {

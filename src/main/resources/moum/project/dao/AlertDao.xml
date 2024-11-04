@@ -30,7 +30,9 @@
       alert_id,
       alert_content,
       alert_date,
-      alert_read
+      alert_read,
+      alert_category,
+      alert_category_id
     from
       alert
   </select>
@@ -40,7 +42,9 @@
       alert_id,
       alert_content,
       alert_date,
-      alert_read
+      alert_read,
+      alert_category,
+      alert_category_id
     from
       alert
     where
