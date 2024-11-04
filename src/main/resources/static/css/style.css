@@ -431,13 +431,12 @@ td {
         height: 300px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        padding: 2px;
+        padding: 20px;
         background-color: #f9f9f9;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         text-align: center;
         position: relative;
-        padding: 20px;
 }
 
 .achievement-box h2 {
@@ -590,8 +589,8 @@ width: 45px;
 
 /* myinfo 프로필 설정 */
 .profile-container {
-    width: 300px; /* 박스 너비 */
-    height: 300px; /* 박스 높이 */
+    width: 400px; /* 박스 너비 */
+    height: auto; /* 박스 높이 */
     border: 1px solid #ccc; /* 테두리 */
     border-radius: 8px; /* 모서리 둥글기 */
     padding: 10px; /* 안쪽 여백 */
@@ -643,8 +642,50 @@ width: 45px;
   margin: 2rem 0;
 }
 
+/* my info board 스타일 */
+.my-info-board-container {
+  width: 400px;
+        height: 300px;
+    padding: 20px;
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    background-color: #fff; /* 배경색 추가 (선택사항) */
+}
 
 
+.my-info-board {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 게시글 간 간격 조정 */
+}
 
+.my-info-achievement-photo {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc; /* 테두리 추가 (선택사항) */
+    padding: 10px;
+    border-radius: 5px; /* 모서리 둥글게 */
+}
 
+.my-info-achievement-image {
+    flex-shrink: 0; /* 이미지 크기 고정 */
+}
 
+.my-info-achievement-img {
+    width: 60px; /* 이미지 너비 조정 */
+    height: auto; /* 비율 유지 */
+    margin-right: 10px; /* 이미지와 텍스트 간 간격 조정 */
+}
+
+.info-achievement-details {
+    flex-grow: 1; /* 텍스트 부분이 남은 공간 차지 */
+}
+
+.my-info-achievement-name span {
+    font-size: 14px; /* 게시글 제목 크기 조정 */
+}
+
+.my-info-progress-text {
+    font-size: 12px; /* 진행 텍스트 크기 조정 */
+    color: #666; /* 텍스트 색상 조정 */
+}
