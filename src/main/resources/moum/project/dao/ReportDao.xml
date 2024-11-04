@@ -33,7 +33,7 @@
   </resultMap>
 
   <insert id="insert" parameterType="moum.project.vo.Report"
-          useGeneratedKeys="true" keyColumn="alert_id" keyProperty="no">
+          useGeneratedKeys="true" keyColumn="report_id" keyProperty="no">
 
   </insert>
 
