@@ -3,7 +3,9 @@ package moum.project.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.dao.AchievementDao;
 import moum.project.dao.UserDao;
+import moum.project.vo.Achievement;
 import moum.project.vo.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -28,6 +30,7 @@ public class DefaultUserService implements UserService {
 
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
+    private final AchievementDao achievementDao;
 
     /**
      * 새로운 사용자를 시스템에 추가합니다.
@@ -40,6 +43,11 @@ public class DefaultUserService implements UserService {
     public void add(User user) throws Exception {
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       userDao.insert(user);
+      List<Achievement> achievementList = achievementDao.list();
+      for (Achievement achievement: achievementList){
+          achievement.setUser(user);
+          achievementDao.insertByUser(achievement);
+      }
     }
 
     /**

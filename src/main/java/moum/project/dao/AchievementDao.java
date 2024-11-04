@@ -28,4 +28,6 @@ public interface AchievementDao {
     List<Achievement> listByUserRank() throws Exception;
 
     Achievement findRankByUser(int no) throws Exception;
+
+    boolean insertByUser(Achievement achievement) throws Exception;
 }
