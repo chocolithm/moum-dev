@@ -11,4 +11,6 @@ public class Alert {
   private String content;
   private LocalDateTime date;
   private boolean read;
+  private String category;
+  private int categoryNo;
 }
