@@ -33,17 +33,19 @@
         <div class="input-field">
             <label for="email">이메일</label>
             <div class="input-with-button">
-                <input id="email"
-                       name="email"
-                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                       required
-                       title="유효한 이메일 주소를 입력해주세요"
-                       type="email">
-                <button onclick="checkDuplicate('email', document.getElementById('email').value)" type="button">
-                    이메일 확인
-                </button>
+                <input type="email" id="email" name="email" required>
+                <button type="button" id="emailCheckButton" onclick="checkDuplicate('email', document.getElementById('email').value)">이메일 확인</button>
             </div>
             <span id="emailMessage"></span>
+        </div>
+
+        <div id="authCodeField" class="input-field" style="display:none;">
+            <label for="authCode">인증 코드</label>
+            <div class="input-with-button">
+                <input type="text" id="authCode" name="authCode">
+                <button type="button" onclick="verifyAuthCode()">인증 코드 확인</button>
+            </div>
+            <span id="authCodeMessage"></span>
         </div>
 
         <div class="input-field">
@@ -52,9 +54,9 @@
                    minlength="8"
                    name="password"
                    required
-                   type="password">
-<!--                   pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"-->
-<!--                   title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다"-->
+                   type="password"
+                   pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+                   title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다">
 
             <span id="passwordMessage"></span>
         </div>

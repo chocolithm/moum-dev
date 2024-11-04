@@ -2,6 +2,8 @@
 //let nicknameChecked = false;
 //let emailChecked = false;
 //let passwordMatch = false;
+let lastSentTime = 0;  // 마지막 인증 코드 발송 시간을 저장하는 변수
+let countdownTimer = null;
 
 // 닉네임 입력 필드 변경 감지
 document.getElementById('nickname').addEventListener('input', function() {
@@ -22,13 +24,13 @@ document.getElementById('password').addEventListener('input', function() {
     const password = this.value;
     const passwordMessage = document.getElementById('passwordMessage');
 
-    // if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
-    //     passwordMessage.textContent = '최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다.';
-    //     passwordMessage.style.color = 'red';
-    // } else {
-    //     passwordMessage.textContent = '사용 가능한 비밀번호입니다.';
-    //     passwordMessage.style.color = 'green';
-    // }
+    if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
+        passwordMessage.textContent = '최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다.';
+        passwordMessage.style.color = 'red';
+    } else {
+        passwordMessage.textContent = '사용 가능한 비밀번호입니다.';
+        passwordMessage.style.color = 'green';
+    }
     checkPasswordMatch();
 });
 
@@ -82,37 +84,184 @@ function checkDuplicate(type, value) {
     fetch('/user/check-duplicate?' + params.toString(), {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            [csrfHeader]: csrfToken
         }
     })
         .then(response => response.json())
         .then(data => {
             if (type === 'nickname') {
-                if (data.isNicknameTaken) {
-                    document.getElementById('nicknameMessage').textContent = '이미 사용중인 닉네임입니다.';
-                    document.getElementById('nicknameMessage').style.color = 'red';
-                    nicknameChecked = false;
-                } else {
-                    document.getElementById('nicknameMessage').textContent = '사용 가능한 닉네임입니다.';
-                    document.getElementById('nicknameMessage').style.color = 'green';
-                    nicknameChecked = true;
-                }
+                handleNicknameCheckResult(data);
             } else if (type === 'email') {
-                if (data.isEmailTaken) {
-                    document.getElementById('emailMessage').textContent = '이미 사용중인 이메일입니다.';
-                    document.getElementById('emailMessage').style.color = 'red';
-                    emailChecked = false;
-                } else {
-                    document.getElementById('emailMessage').textContent = '사용 가능한 이메일입니다.';
-                    document.getElementById('emailMessage').style.color = 'green';
-                    emailChecked = true;
-                }
+                handleEmailCheckResult(data, value);
             }
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
+
+function handleNicknameCheckResult(data) {
+    if (data.isNicknameTaken) {
+        document.getElementById('nicknameMessage').textContent = '이미 사용중인 닉네임입니다.';
+        document.getElementById('nicknameMessage').style.color = 'red';
+        nicknameChecked = false;
+    } else {
+        document.getElementById('nicknameMessage').textContent = '사용 가능한 닉네임입니다.';
+        document.getElementById('nicknameMessage').style.color = 'green';
+        nicknameChecked = true;
+    }
+}
+
+function handleEmailCheckResult(data, email) {
+    if (data.isEmailTaken) {
+        document.getElementById('emailMessage').textContent = '이미 사용중인 이메일입니다.';
+        document.getElementById('emailMessage').style.color = 'red';
+        emailChecked = false;
+    } else {
+        // 이메일 중복이 아닐 경우 인증 코드 발송
+        sendAuthCode(email);
+    }
+}
+
+function sendAuthCode(email) {
+    if (!email.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/)) {
+        document.getElementById('emailMessage').textContent = '유효한 이메일 주소를 입력해주세요.';
+        document.getElementById('emailMessage').style.color = 'red';
+        return;
+    }
+
+    const currentTime = new Date().getTime();
+    const threeMinutesInMillis = 3 * 60 * 1000;
+
+    // 이미 타이머가 실행 중인 경우
+    if (countdownTimer) {
+        return;
+    }
+
+    const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
+    const csrfToken = document.querySelector("meta[name='_csrf']").content;
+
+    fetch('/emailCheck', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            [csrfHeader]: csrfToken
+        },
+        body: JSON.stringify({ email: email })
+    })
+        .then(response => response.text())
+        .then(authCode => {
+            if (authCode !== "duplicate") {
+                document.getElementById('emailMessage').textContent = '인증 코드가 발송되었습니다. 3분후 다시 보낼 수 있습니다.';
+                document.getElementById('emailMessage').style.color = 'green';
+                sessionStorage.setItem('authCode', authCode);
+                document.getElementById('authCodeField').style.display = 'block';
+
+                // 타이머 시작
+                startTimer();
+
+                // 마지막 발송 시간 업데이트
+                lastSentTime = currentTime;
+
+                // 이메일 중복 확인 버튼 비활성화
+                const emailCheckButton = document.querySelector('button[onclick*="checkDuplicate(\'email\'"]');
+                if (emailCheckButton) {
+                    emailCheckButton.disabled = true;
+                }
+            }
+        })
+        .catch(error => {
+            console.error('인증 코드 요청 오류:', error);
+        });
+}
+
+function startTimer() {
+    let timeLeft = 180; // 3분 = 180초
+
+    // 타이머 표시할 요소 생성 (없는 경우)
+    let timerElement = document.getElementById('timer');
+    if (!timerElement) {
+        timerElement = document.createElement('span');
+        timerElement.id = 'timer';
+        timerElement.style.marginLeft = '10px';
+        document.getElementById('emailMessage').appendChild(timerElement);
+    }
+
+    // 이전 타이머가 있다면 제거
+    if (countdownTimer) {
+        clearInterval(countdownTimer);
+    }
+
+    // 새 타이머 시작
+    countdownTimer = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+        // 시간 표시 업데이트
+        timerElement.textContent = `(${minutes}:${seconds < 10 ? '0' : ''}${seconds})`;
+
+        if (timeLeft <= 0) {
+            // 타이머 종료
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+
+            // 이메일 중복 확인 버튼 활성화
+            const emailCheckButton = document.querySelector('button[onclick*="checkDuplicate(\'email\'"]');
+            if (emailCheckButton) {
+                emailCheckButton.disabled = false;
+            }
+
+            // 타이머 텍스트 제거
+            timerElement.remove();
+
+            document.getElementById('emailMessage').textContent = '인증 코드를 다시 요청할 수 있습니다.';
+            document.getElementById('emailMessage').style.color = 'blue';
+        }
+
+        timeLeft--;
+    }, 1000);
+}
+
+function verifyAuthCode() {
+    const enteredCode = document.getElementById('authCode').value;
+    const sentCode = sessionStorage.getItem('authCode');
+
+    if (enteredCode === sentCode) {
+        document.getElementById('authCodeMessage').textContent = '인증이 완료되었습니다.';
+        document.getElementById('authCodeMessage').style.color = 'green';
+        emailChecked = true;
+
+        // 인증 완료 시 타이머 제거
+        if (countdownTimer) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+
+        // 타이머 표시 제거
+        const timerElement = document.getElementById('timer');
+        if (timerElement) {
+            timerElement.remove();
+        }
+
+        // 이메일 중복 확인 버튼 비활성화 유지
+        const emailCheckButton = document.querySelector('button[onclick*="checkDuplicate(\'email\'"]');
+        if (emailCheckButton) {
+            emailCheckButton.disabled = true;
+        }
+    } else {
+        document.getElementById('authCodeMessage').textContent = '인증 코드가 일치하지 않습니다.';
+        document.getElementById('authCodeMessage').style.color = 'red';
+        emailChecked = false;
+    }
+}
+
+// 페이지 이탈 시 타이머 정리
+window.addEventListener('beforeunload', () => {
+    if (countdownTimer) {
+        clearInterval(countdownTimer);
+    }
+});
 
 // 폼 제출 전 유효성 검사 강화
 document.getElementById('signupForm').addEventListener('submit', function(e) {
@@ -257,6 +406,3 @@ document.addEventListener('DOMContentLoaded', function() {
 function confirmWithdraw() {
     return confirm('정말 탈퇴하시겠습니까?\n 탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.');
 }
-
-
-
