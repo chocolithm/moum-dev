@@ -95,6 +95,7 @@ public class ChatController {
   @GetMapping("/loadChat")
   @ResponseBody
   public List<Chat> loadChat(int no, int pageNo) throws Exception {
-    return chatService.loadChat(no, (pageNo - 1) * 20, 20);
+    int pageCount = 20;
+    return chatService.loadChat(no, (pageNo - 1) * pageCount, pageCount);
   }
 }

@@ -38,6 +38,7 @@ function fetchAlertContent(pageNo) {
           createAlertBoxContent(alert, box);
 
           alert_layer.append(box);
+          alert_layer.setAttribute('onscroll', `fetchMoreAlertContent(2)`);
         })
       }
     })
@@ -47,7 +48,35 @@ function fetchAlertContent(pageNo) {
 }
 
 function fetchMoreAlertContent(pageNo) {
+  const alert_layer = document.querySelector(".alert-layer");
 
+  if (alert_layer.scrollTop > alert_layer.scrollHeight - alert_layer.offsetHeight - 50) {
+    console.log("데이터 추가로딩");
+    fetch(`/alert/listByUser?pageNo=${pageNo}`)
+      .then(response => response.json())
+      .then(alerts => {
+        if (alerts && alerts.length > 0) {
+          const alert_layer = document.querySelector(".alert-layer");
+
+          alerts.forEach(alert => {
+            const box = document.createElement("div");
+
+            createAlertBoxContent(alert, box);
+
+            alert_layer.append(box);
+          })
+
+          if (alerts.length == 20) {
+            alert_layer.setAttribute('onscroll', `fetchMoreAlertContent(${pageNo + 1})`);
+          } else {
+            alert_layer.removeAttribute('onscroll');
+          }
+        }
+      })
+      .catch(error => {
+        console.error("error fetching alerts", error);
+      })
+  }
 }
 
 function createAlertBoxContent(alert, box) {
