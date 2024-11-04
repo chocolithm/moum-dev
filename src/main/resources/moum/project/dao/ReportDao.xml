@@ -63,7 +63,7 @@
 <!--  </select>-->
 
   <!-- 신고 리스트 + 조인 -->
-  <select id="list" resultType="moum.project.vo.Report">
+  <select id="list" resultMap="ReportMap">
     SELECT
       r.report_id,
       r.user_id,
