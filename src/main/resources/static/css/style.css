@@ -27,9 +27,11 @@ a {
 }
 
 
-.modal-content {
+.modal > .modal-content {
     background-color: white;
-    margin: 15% auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     padding: 20px;
     border: 1px solid #888;
     width: 40%;
@@ -427,16 +429,17 @@ td {
 
 /* info achievement 스타일 */
 .achievement-box {
-     width: 400px;
-        height: 300px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 20px;
-        background-color: #f9f9f9;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        text-align: center;
-        position: relative;
+    width: 400px;
+    height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 2px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+    padding: 20px;
 }
 
 .achievement-box h2 {
@@ -444,7 +447,7 @@ td {
 }
 
 .achievement-box .title-section {
-  display: flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
@@ -456,18 +459,21 @@ td {
 
 
 .info-achievement-container {
-    margin-top: 1rem; /* 각 업적 간 여백 */
-        height: calc(100% - 60px); /* 제목과 헤더를 위한 공간 제외 */
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
+    margin-top: 1rem;
+    /* 각 업적 간 여백 */
+    height: calc(100% - 60px);
+    /* 제목과 헤더를 위한 공간 제외 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 
 .info-achievement-details div {
-    margin-bottom: 5px; /* 각 div 간의 여백 */
-      overflow: hidden;
-      align: center;
+    margin-bottom: 5px;
+    /* 각 div 간의 여백 */
+    overflow: hidden;
+    align: center;
 }
 
 .info-achievement-details {
@@ -492,96 +498,128 @@ td {
 }
 
 .info-progress-bar-container {
-    background-color: #f0f0f0; /* 진행도 바 배경색 */
-    border-radius: 4px; /* 둥글게 */
-    overflow: hidden; /* 자식 요소가 부모 영역을 넘지 않게 */
+    background-color: #f0f0f0;
+    /* 진행도 바 배경색 */
+    border-radius: 4px;
+    /* 둥글게 */
+    overflow: hidden;
+    /* 자식 요소가 부모 영역을 넘지 않게 */
     align: center;
 }
 
 .info-progress-bar {
-    height: 10px; /* 진행도 바 높이 */
-    transition: width 0.3s; /* 부드러운 애니메이션 효과 */
+    height: 10px;
+    /* 진행도 바 높이 */
+    transition: width 0.3s;
+    /* 부드러운 애니메이션 효과 */
     align: center;
 }
 
 .info-progress-bar.low {
-    background-color: #e74c3c; /* 낮은 진행도 색상 (빨간색) */
+    background-color: #e74c3c;
+    /* 낮은 진행도 색상 (빨간색) */
     align: center;
 }
 
 .info-progress-bar.medium {
-    background-color: #f1c40f; /* 중간 진행도 색상 (노란색) */
+    background-color: #f1c40f;
+    /* 중간 진행도 색상 (노란색) */
     align: center;
 }
 
 .info-progress-bar.high {
-    background-color: #2ecc71; /* 높은 진행도 색상 (녹색) */
+    background-color: #2ecc71;
+    /* 높은 진행도 색상 (녹색) */
     align: center;
 }
 
 .info-progress-text {
-    font-weight: bold; /* 텍스트 두께 */
-    color: #333; /* 텍스트 색상 */
+    font-weight: bold;
+    /* 텍스트 두께 */
+    color: #333;
+    /* 텍스트 색상 */
     text-align: center;
 }
 
 .info-achievement-image {
-    display: flex; /* 이미지와 관련된 내용을 수평으로 정렬 */
-    justify-content: center; /* 중앙 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
-    margin-bottom: 10px; /* 아래쪽 여백 */
+    display: flex;
+    /* 이미지와 관련된 내용을 수평으로 정렬 */
+    justify-content: center;
+    /* 중앙 정렬 */
+    align-items: center;
+    /* 수직 중앙 정렬 */
+    margin-bottom: 10px;
+    /* 아래쪽 여백 */
 }
 
 .info-achievement-img {
-   width: auto;
+    width: auto;
     height: 40px;
-    object-fit: cover; /* 이미지 비율 유지하며 잘리기 */
-    border-radius: 8px; /* 이미지 모서리 둥글기 */
-    border: 2px solid #ddd; /* 이미지 테두리 */
-    transition: transform 0.3s; /* 마우스 오버 시 애니메이션 효과 */
+    object-fit: cover;
+    /* 이미지 비율 유지하며 잘리기 */
+    border-radius: 8px;
+    /* 이미지 모서리 둥글기 */
+    border: 2px solid #ddd;
+    /* 이미지 테두리 */
+    transition: transform 0.3s;
+    /* 마우스 오버 시 애니메이션 효과 */
 }
 
 .info-achievement-name {
-    font-size: 18px; /* 글자 크기 */
+    font-size: 18px;
+    /* 글자 크기 */
     font-weight: bold;
-    color: #333; /* 글자 색상 */
-    margin-bottom: 8px; /* 아래쪽 여백 */
-    text-align: center; /* 중앙 정렬 */
-    text-transform: capitalize; /* 첫 글자 대문자 */
+    color: #333;
+    /* 글자 색상 */
+    margin-bottom: 8px;
+    /* 아래쪽 여백 */
+    text-align: center;
+    /* 중앙 정렬 */
+    text-transform: capitalize;
+    /* 첫 글자 대문자 */
 }
 
 .info-achievement-name span {
-    display: inline-block; /* 블록 요소로 처리하여 여백 효과를 줄 수 있음 */
-    padding: 4px 8px; /* 안쪽 여백 */
-    border-radius: 4px; /* 모서리 둥글게 */
-    background-color: #f0f0f0; /* 배경색 */
-    transition: background-color 0.3s; /* 배경색 전환 효과 */
+    display: inline-block;
+    /* 블록 요소로 처리하여 여백 효과를 줄 수 있음 */
+    padding: 4px 8px;
+    /* 안쪽 여백 */
+    border-radius: 4px;
+    /* 모서리 둥글게 */
+    background-color: #f0f0f0;
+    /* 배경색 */
+    transition: background-color 0.3s;
+    /* 배경색 전환 효과 */
 }
 
 .info-achievement-name span:hover {
-    background-color: #e0e0e0; /* 마우스 오버 시 배경색 변경 */
+    background-color: #e0e0e0;
+    /* 마우스 오버 시 배경색 변경 */
 }
 
 /* 내 업적 더보기 버튼 위치 조정 */
 .achievement-header {
-    display: flex; /* 수평 정렬을 위한 Flexbox 사용 */
+    display: flex;
+    /* 수평 정렬을 위한 Flexbox 사용 */
     align-items: right;
-    margin-bottom: 10px; /* 아래쪽 여백 추가 */
+    margin-bottom: 10px;
+    /* 아래쪽 여백 추가 */
     width: 30px;
-        height: auto;
-        position: absolute;
-        right: 20px;
-        top: 10px;
+    height: auto;
+    position: absolute;
+    right: 20px;
+    top: 10px;
 }
 
 .achievement-header img {
-cursor: pointer;
-width: 45px;
- height: auto;
+    cursor: pointer;
+    width: 45px;
+    height: auto;
 }
 
 .achievement-list-btn {
-    margin-left: 10px; /* 제목과 버튼 사이의 여백 */
+    margin-left: 10px;
+    /* 제목과 버튼 사이의 여백 */
     display: inline-block;
     padding: 10px -120px;
 }
@@ -589,103 +627,88 @@ width: 45px;
 
 /* myinfo 프로필 설정 */
 .profile-container {
-    width: 400px; /* 박스 너비 */
-    height: auto; /* 박스 높이 */
-    border: 1px solid #ccc; /* 테두리 */
-    border-radius: 8px; /* 모서리 둥글기 */
-    padding: 10px; /* 안쪽 여백 */
-    background-color: #f9f9f9; /* 배경색 */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-    display: flex; /* Flexbox 사용 */
-    flex-direction: column; /* 수직 정렬 */
-    align-items: center; /* 가로 중앙 정렬 */
-    justify-content: center; /* 세로 중앙 정렬 */
+    width: 300px;
+    /* 박스 너비 */
+    height: 300px;
+    /* 박스 높이 */
+    border: 1px solid #ccc;
+    /* 테두리 */
+    border-radius: 8px;
+    /* 모서리 둥글기 */
+    padding: 10px;
+    /* 안쪽 여백 */
+    background-color: #f9f9f9;
+    /* 배경색 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* 그림자 효과 */
+    display: flex;
+    /* Flexbox 사용 */
+    flex-direction: column;
+    /* 수직 정렬 */
+    align-items: center;
+    /* 가로 중앙 정렬 */
+    justify-content: center;
+    /* 세로 중앙 정렬 */
     flex: 0 50 50px;
     min-width: 300px;
 }
 
 .profile-image-container {
-    margin-bottom: 10px; /* 이미지와 사용자 정보 사이 여백 */
+    margin-bottom: 10px;
+    /* 이미지와 사용자 정보 사이 여백 */
 }
 
 .profile-img {
-    width: 100px; /* 이미지 너비 */
-    height: 100px; /* 이미지 높이 */
-    border-radius: 50%; /* 원형으로 만들기 */
-    object-fit: cover; /* 비율 유지 */
-    border: 2px solid #ddd; /* 이미지 테두리 */
+    width: 100px;
+    /* 이미지 너비 */
+    height: 100px;
+    /* 이미지 높이 */
+    border-radius: 50%;
+    /* 원형으로 만들기 */
+    object-fit: cover;
+    /* 비율 유지 */
+    border: 2px solid #ddd;
+    /* 이미지 테두리 */
 }
 
 .user-info {
-    text-align: left; /* 중앙 정렬 */
-    margin-bottom: 10px; /* 정보와 버튼 사이 여백 */
+    text-align: left;
+    /* 중앙 정렬 */
+    margin-bottom: 10px;
+    /* 정보와 버튼 사이 여백 */
 }
 
 .edit-button {
-    padding: 8px 16px; /* 버튼 안쪽 여백 */
-    border: none; /* 테두리 없애기 */
-    border-radius: 4px; /* 모서리 둥글기 */
-    background-color: #007bff; /* 버튼 배경색 */
-    color: white; /* 텍스트 색상 */
-    cursor: pointer; /* 커서 모양 변경 */
-    transition: background-color 0.3s; /* 배경색 전환 효과 */
+    padding: 8px 16px;
+    /* 버튼 안쪽 여백 */
+    border: none;
+    /* 테두리 없애기 */
+    border-radius: 4px;
+    /* 모서리 둥글기 */
+    background-color: #007bff;
+    /* 버튼 배경색 */
+    color: white;
+    /* 텍스트 색상 */
+    cursor: pointer;
+    /* 커서 모양 변경 */
+    transition: background-color 0.3s;
+    /* 배경색 전환 효과 */
 }
 
 .edit-button:hover {
-    background-color: #0056b3; /* 마우스 오버 시 배경색 변경 */
+    background-color: #0056b3;
+    /* 마우스 오버 시 배경색 변경 */
 }
 
 .my-info-wrapper {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  margin: 2rem 0;
-}
-
-/* my info board 스타일 */
-.my-info-board-container {
-  width: 400px;
-        height: 300px;
-    padding: 20px;
-    border: 1px solid #ccc; /* 테두리 추가 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    background-color: #fff; /* 배경색 추가 (선택사항) */
-}
-
-
-.my-info-board {
     display: flex;
-    flex-direction: column;
-    gap: 15px; /* 게시글 간 간격 조정 */
+    gap: 2rem;
+    align-items: flex-start;
+    margin: 2rem 0;
 }
 
-.my-info-achievement-photo {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc; /* 테두리 추가 (선택사항) */
-    padding: 10px;
-    border-radius: 5px; /* 모서리 둥글게 */
-}
 
-.my-info-achievement-image {
-    flex-shrink: 0; /* 이미지 크기 고정 */
-}
 
-.my-info-achievement-img {
-    width: 60px; /* 이미지 너비 조정 */
-    height: auto; /* 비율 유지 */
-    margin-right: 10px; /* 이미지와 텍스트 간 간격 조정 */
-}
 
-.info-achievement-details {
-    flex-grow: 1; /* 텍스트 부분이 남은 공간 차지 */
-}
 
-.my-info-achievement-name span {
-    font-size: 14px; /* 게시글 제목 크기 조정 */
-}
 
-.my-info-progress-text {
-    font-size: 12px; /* 진행 텍스트 크기 조정 */
-    color: #666; /* 텍스트 색상 조정 */
-}

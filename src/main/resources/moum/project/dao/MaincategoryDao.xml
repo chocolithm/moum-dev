@@ -20,6 +20,8 @@
       category_name
     from
       maincategory
+    where
+      maincategory_id != 999
   </select>
 
   <select id="findBy">

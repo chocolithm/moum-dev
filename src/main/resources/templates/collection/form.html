@@ -31,10 +31,6 @@
         <td><input id="name" name="name" type="text"></td>
       </tr>
       <tr>
-        <td><label for="enName">상품 영문명</label></td>
-        <td><input id="enName" name="enName" type="text"></td>
-      </tr>
-      <tr>
         <td><label for="price">가격</label></td>
         <td><input id="price" name="price" oninput="formatNumber(this);" type="text"></td>
       </tr>
@@ -43,11 +39,11 @@
         <td>
           <select id="maincategoryNo" name="maincategory.no" onChange="fetchSubcategories(this.value)">
             <option value="0">선택</option>
-            <data-th-block data-th-each="maincategory : ${maincategoryList}">
-              <option data-th-text="${maincategory.name}"
+              <option data-th-each="maincategory : ${maincategoryList}"
+                      data-th-text="${maincategory.name}"
                       data-th-value="${maincategory.no}"
                       value="1">maincategory</option>
-            </data-th-block>
+            <option value="999">기타</option>
           </select>
         </td>
       </tr>
@@ -58,6 +54,10 @@
 
           </select>
         </td>
+      </tr>
+      <tr style="display: none;">
+        <td><label for="otherCategory">분류명</label></td>
+        <td><input id="otherCategory" name="otherCategory" type="text"></td>
       </tr>
       <tr>
         <td><label for="purchasePlace">구매처</label></td>

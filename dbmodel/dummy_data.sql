@@ -2,7 +2,8 @@
 INSERT INTO maincategory (maincategory_id, category_name) VALUES
 (1, '건담프라모델'),
 (2, '레고'),
-(3, '신발');
+(3, '신발'),
+(999, '기타');
 
 -- 유형 소분류 데이터
 INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
@@ -113,7 +114,8 @@ INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
 (105, 3, '베트멍'),
 (106, 3, '퓨마'),
 (107, 1, '프리미엄 반다이'),
-(108, 1, '하이 레졸루션 모델');
+(108, 1, '하이 레졸루션 모델'),
+(999, 999, '기타');
 
 -- 회원 데이터
 INSERT INTO user (user_id, email, nickname, password, admin) VALUES
@@ -146,15 +148,15 @@ INSERT INTO collection_status (status_id, status_name) VALUES
 
 -- 수집품 데이터
 INSERT INTO collection (collection_id, user_id, subcategory_id, name, en_name, status_id, purchase_date, purchase_place, price, storage_location) VALUES
-(1, 1, 15, '레고 시티 경찰서', 'Lego City Police', 1, '2023-01-15', '레고 공식 스토어', 200000, '선반'),
-(2, 1, 15, '레고 시티 소방서', 'Lego City Fire Station', 2, '2023-01-16', '레고 공식 스토어', 165000, '집'),
-(3, 1, 15, '레고 시티 딜리버리트럭', 'Lego City Delivery Truck', 1, '2023-02-09', '레고 중고 스토어', 200000, '창고'),
-(4, 1, 15, '레고 시티 굴착기', 'Lego City Gulchak', 3, '2023-08-11', '레고 공식 스토어', 140000, '선반'),
-(5, 1, 4, '나이키 에어맥스', 'Nike Airmax', 3, '2023-02-20', '나이키 매장', 150000, '신발장'),
-(6, 1, 7, 'HG 건담 바바토스', 'HG Babatos', 2, '2023-03-10', '건담베이스', 20000, '진열장'),
-(7, 1, 2, '레고 밀레니엄 팔콘', 'Lego Millenium Falcon', 1, '2023-04-05', '레고 공식 스토어', 300000, '책상'),
-(8, 1, 4, '나이키 에어맥스2', 'Nike Airmax2', 1, '2023-04-16', '당근', 180000, '신발장'),
-(9, 1, 4, '나이키 에어맥스3', 'Nike Airmax3', 2, '2023-04-20', '나이키 매장', 150000, '신발장');
+(1, 1, 15, 'Lego City Police', 1, '2023-01-15', '레고 공식 스토어', 200000, '선반'),
+(2, 1, 15, 'Lego City Fire Station', 2, '2023-01-16', '레고 공식 스토어', 165000, '집'),
+(3, 1, 15, 'Lego City Delivery Truck', 1, '2023-02-09', '레고 중고 스토어', 200000, '창고'),
+(4, 1, 15, 'Lego City Gulchak', 3, '2023-08-11', '레고 공식 스토어', 140000, '선반'),
+(5, 1, 4, '나이키 에어맥스', 3, '2023-02-20', '나이키 매장', 150000, '신발장'),
+(6, 1, 7, 'HG 건담 바바토스', 2, '2023-03-10', '건담베이스', 20000, '진열장'),
+(7, 1, 2, '레고 밀레니엄 팔콘', 1, '2023-04-05', '레고 공식 스토어', 300000, '책상'),
+(8, 1, 4, 'Nike Airmax2', 1, '2023-04-16', '당근', 180000, '신발장'),
+(9, 1, 4, 'Nike Airmax3', 2, '2023-04-20', '나이키 매장', 150000, '신발장');
 
 
 -- 게시글 데이터
