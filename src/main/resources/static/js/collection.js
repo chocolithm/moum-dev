@@ -192,6 +192,7 @@ function addCollection() {
         formData.append("price", document.querySelector("#addForm #price").value);
         formData.append("maincategory.no", document.querySelector("#addForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#addForm #subcategoryNo").value);
+        formData.append("otherCategory.name", document.querySelector("#addForm #otherCategory").value);
         formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value.trim());
         formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#addForm #statusNo").value);
@@ -292,6 +293,7 @@ function updateCollection() {
         formData.append("price", document.querySelector("#updateForm #price").value);
         formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
+        formData.append("otherCategory.name", document.querySelector("#addForm #otherCategory").value);
         formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value.trim());
         formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
@@ -436,12 +438,17 @@ function changeSlide(n) {
 
 // 소분류 데이터 조회
 function fetchSubcategories(maincategoryNo) {
-    const subcategorySelect = document.getElementById("subcategoryNo");
+    const subcategorySelect = document.querySelector("#subcategoryNo");
+    const otherCategoryInput = document.querySelector("#otherCategory");
     subcategorySelect.innerHTML = "";
 
     if (maincategoryNo == 0) {
+        otherCategoryInput.parentNode.parentNode.style.display = "none";
+        subcategorySelect.parentNode.parentNode.style.display = "table-row";
         subcategorySelect.disabled = true;
-    } else if (maincategoryNo > 0) {
+    } else if (maincategoryNo > 0 && maincategoryNo < 999) {
+        otherCategoryInput.parentNode.parentNode.style.display = "none";
+        subcategorySelect.parentNode.parentNode.style.display = "table-row";
         subcategorySelect.disabled = false;
         fetch(`/subcategory/list?maincategoryNo=${maincategoryNo}`)
             .then(response => response.json())
@@ -459,6 +466,15 @@ function fetchSubcategories(maincategoryNo) {
             .catch(error => {
                 console.error("Error fetching subcategories:", error);
             });
+    } else if (maincategoryNo == 999) {
+        subcategorySelect.parentNode.parentNode.style.display = "none";
+        otherCategoryInput.parentNode.parentNode.style.display = "table-row";
+        subcategorySelect.disabled = true;
+
+        const option = document.createElement("option");
+        option.value = 999;
+        subcategorySelect.appendChild(option);
+        option.selected = true;
     }
 }
 

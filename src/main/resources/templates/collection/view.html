@@ -57,10 +57,11 @@
             <option data-th-each="maincategory : ${maincategoryList}"
                     data-th-selected="${maincategory.no} == ${collection.maincategory.no}" data-th-text="${maincategory.name}"
                     data-th-value="${maincategory.no}" value="1">대분류명</option>
+            <option value="999">기타</option>
           </select>
         </td>
       </tr>
-      <tr>
+      <tr style="${collection.otherCategory == null ? 'display: table-row;' : 'display: none;'}">
         <td><label for="subcategoryNo">소분류</label></td>
         <td>
           <select id="subcategoryNo" name="subcategory.no">
@@ -70,6 +71,10 @@
                     data-th-value="${subcategory.no}" value="1">소분류명</option>
           </select>
         </td>
+      </tr>
+      <tr style="${collection.otherCategory != null ? 'display: table-row;' : 'display: none;'}">
+        <td><label for="otherCategory">분류명</label></td>
+        <td><input data-th-value="${collection.otherCategory.name}" id="otherCategory" name="otherCategory" type="text" value="기타분류"></td>
       </tr>
       <tr>
         <td><label for="purchasePlace">구매처</label></td>

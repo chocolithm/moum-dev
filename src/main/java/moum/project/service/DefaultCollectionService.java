@@ -3,6 +3,7 @@ package moum.project.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.CollectionDao;
+import moum.project.dao.OtherCategoryDao;
 import moum.project.dao.UserDao;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Collection;
@@ -16,6 +17,7 @@ public class DefaultCollectionService implements CollectionService {
 
   private final CollectionDao collectionDao;
   private final UserDao userDao;
+  private final OtherCategoryDao otherCategoryDao;
 
   @Override
   @Transactional
@@ -23,6 +25,9 @@ public class DefaultCollectionService implements CollectionService {
     if (collectionDao.insert(collection)) {
       if (collection.getAttachedFiles().size() > 0) {
         collectionDao.insertFiles(collection);
+      }
+      if (!collection.getOtherCategory().getName().isEmpty()) {
+        otherCategoryDao.insert(collection.getOtherCategory());
       }
       return true;
     }

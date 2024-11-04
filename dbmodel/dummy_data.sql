@@ -2,7 +2,8 @@
 INSERT INTO maincategory (maincategory_id, category_name) VALUES
 (1, '건담프라모델'),
 (2, '레고'),
-(3, '신발');
+(3, '신발'),
+(999, '기타');
 
 -- 유형 소분류 데이터
 INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
@@ -113,7 +114,8 @@ INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
 (105, 3, '베트멍'),
 (106, 3, '퓨마'),
 (107, 1, '프리미엄 반다이'),
-(108, 1, '하이 레졸루션 모델');
+(108, 1, '하이 레졸루션 모델'),
+(999, 999, '기타');
 
 -- 회원 데이터
 INSERT INTO user (user_id, email, nickname, password, admin) VALUES
