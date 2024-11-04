@@ -29,9 +29,18 @@
 
 
     <div class="boardView">
-        <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
+        <div th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}">
+            <div class="slider">
+                <div class="slides">
+                    <img th:each="attachedFile : ${board.attachedFiles}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${attachedFile.filename}}"
+                         alt="게시글 이미지">
+                </div>
+            </div>
+        </div>
         <h2 th:text="${board.title}">게시글 제목</h2>
-<!--        <p>작성자: <span th:text="${board.userNo}">작성자 ID</span></p>-->
+
+        <!--<p>작성자: <span th:text="${board.userNo}">작성자 ID</span></p>-->
         <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
         <p>조회수: <span th:text="${board.viewCount}">0</span></p>
         <p>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></p>

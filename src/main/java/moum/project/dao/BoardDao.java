@@ -1,5 +1,6 @@
 package moum.project.dao;
 
+import moum.project.vo.AttachedFile;
 import moum.project.vo.Board;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
@@ -33,4 +34,9 @@ public interface BoardDao {
 
     // 자랑하기 게시글 조회
     List<Board> listBraggingPosts();
+
+    void insertAttachedFiles(List<AttachedFile> attachedFiles); // 첨부 파일 삽입
+
+    void deleteAttachedFilesByBoardId(int boardId); // 첨부 파일 삭제
+
 }

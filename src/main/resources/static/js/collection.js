@@ -23,7 +23,7 @@ function fetchPostForm() {
     // 필요한 초기화 함수가 있다면 호출합니다.
     // 예: 이미지 슬라이드 인덱스 초기화 등
 
-    fetch(`/collection/boardPostForm`, {
+    fetch(`/board/boardPostForm`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -123,7 +123,7 @@ function addPost() {
             formData.append("files", filesInput.files[i]);
         }
 
-        fetch(`/collection/addPost`, {
+        fetch(`/board/addPost`, {
             method: "POST",
             body: formData,
             headers: {

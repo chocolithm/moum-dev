@@ -8,8 +8,16 @@ public class AttachedFile {
   public static final int BOARD = 2;
   public static final int PROFILE = 3;
 
-  @EqualsAndHashCode.Include private int no;
-  @EqualsAndHashCode.Include private int fileCategory; // 수집품(1) or 게시글(2)
-  private String filename;
-  private String originFilename;
+  @EqualsAndHashCode.Include
+  private int no; // photo_id에 매핑
+  private int boardNo; // board_id에 매핑
+  // 필요에 따라 collectionNo 필드도 추가 가능
+  // private int collectionNo;
+
+  // fileCategory 필드는 현재 테이블과 매핑되지 않으므로 필요에 따라 유지
+  private int fileCategory; // 필요하지 않다면 제거 가능
+
+  private String filename; // filename에 매핑
+  private String originFilename; // origin_filename에 매핑
+
 }

@@ -7,6 +7,7 @@
 
     <!-- BoardMap: Board 객체와 매핑 -->
     <resultMap id="BoardMap" type="moum.project.vo.Board">
+        <!-- 게시글 기본 정보 매핑 -->
         <id column="board_id" property="no"/>
         <result column="title" property="title"/>
         <result column="content" property="content"/>
@@ -15,7 +16,7 @@
         <result column="view_count" property="viewCount"/>
         <result column="is_public" property="isPublic"/>
         <result column="is_deleted" property="isDeleted"/>
-
+        <result column="board_type" property="boardType"/>
         <result column="price" property="price"/>
         <result column="status" property="status"/>
 
@@ -23,9 +24,17 @@
             <id column="collection_id" property="no"/>
             <result column="collection_name" property="name"/>
         </association>
+
+        <!-- attachedFiles 매핑 수정 -->
+        <collection property="attachedFiles" ofType="moum.project.vo.AttachedFile">
+            <id column="photo_id" property="no"/>
+            <result column="board_id" property="boardNo"/>
+            <result column="filename" property="filename"/>
+            <result column="origin_filename" property="originFilename"/>
+        </collection>
     </resultMap>
 
-    <!-- 모든 게시글 조회 (list) -->
+    <!-- 게시글 목록 조회 -->
     <select id="list" resultMap="BoardMap">
         SELECT
         b.board_id,
@@ -36,18 +45,25 @@
         b.view_count,
         b.is_public,
         b.is_deleted,
-        tb.collection_id,
+        b.board_type,
         tb.price,
-        tb.status
+        tb.status,
+        c.collection_id,
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.board_id AS bp_board_id,
+        bp.filename,
+        bp.origin_filename
         FROM
         board b
-        left join trade_board tb on b.board_id = tb.board_id
+        LEFT JOIN trade_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
         WHERE
         b.is_deleted = 0
-        ORDER BY
-        b.post_date DESC
     </select>
 
+    <!-- 게시글 상세 조회 -->
     <select id="selectById" resultMap="BoardMap" parameterType="int">
         SELECT
         b.board_id,
@@ -58,15 +74,46 @@
         b.view_count,
         b.is_public,
         b.is_deleted,
+        b.board_type,
         tb.collection_id,
         tb.price,
-        tb.status
+        tb.status,
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.board_id AS bp_board_id,
+        bp.filename,
+        bp.origin_filename
         FROM
         board b
-        left join trade_board tb on b.board_id = tb.board_id
+        LEFT JOIN trade_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
         WHERE
-        b.board_id = #{boardId} AND b.is_deleted = 0
+        b.board_id = #{no} AND b.is_deleted = 0
     </select>
+
+
+    <insert id="insertAttachedFiles" parameterType="java.util.List">
+        INSERT INTO board_photo (
+        board_id,
+        filename,
+        origin_filename
+        )
+        VALUES
+        <foreach collection="list" item="file" separator=",">
+            (
+            #{file.boardNo},
+            #{file.filename},
+            #{file.originFilename}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteAttachedFilesByBoardId" parameterType="int">
+        DELETE FROM board_photo WHERE board_id = #{no}
+    </delete>
+
+
 
 
     <!-- 새 게시글 생성 (insert) -->
@@ -77,7 +124,6 @@
         user_id,
         post_date,
         board_type
-        <!-- 필요한 다른 필드 추가 -->
         )
         VALUES (
         #{title},
@@ -85,7 +131,6 @@
         #{userNo},
         NOW(),
         #{boardType}
-        <!-- 필요한 다른 필드 매핑 -->
         )
     </insert>
 
@@ -117,17 +162,17 @@
     <update id="delete" parameterType="int">
         UPDATE board
         SET is_deleted = 1
-        WHERE board_id = #{boardId}
+        WHERE board_id = #{no}
     </update>
+
 
     <!-- 조회수 증가 (increaseViewCount) -->
     <update id="increaseViewCount" parameterType="int">
         UPDATE board
         SET view_count = view_count + 1
-        WHERE board_id = #{boardId}
+        WHERE board_id = #{no}
     </update>
 
-    <!-- 특정 사용자의 게시글 조회 (selectByUserId) -->
     <select id="selectByUserId" resultMap="BoardMap" parameterType="int">
         SELECT
         b.board_id,
@@ -143,10 +188,11 @@
         tb.status
         FROM
         board b
-        left join trade_board tb on b.board_id = tb.board_id
+        LEFT JOIN trade_board tb ON b.board_id = tb.board_id
         WHERE
         b.user_id = #{userId} AND b.is_deleted = 0
     </select>
+
 
     <!-- 최근 게시글 조회 (selectRecent) -->
     <select id="selectRecent" resultMap="BoardMap" parameterType="int">
@@ -165,7 +211,7 @@
         is_deleted = 0
         ORDER BY
         post_date DESC
-        LIMIT #{limit}
+        LIMIT #{no}
     </select>
 
 
@@ -190,7 +236,6 @@
 
     <!-- 인기 게시글 조회 (listPopular) -->
     <select id="listPopular" resultMap="BoardMap">
-        <!-- 조회수 1000 이상이며 지난 1시간 이내에 작성된 게시글 -->
         SELECT
         b.board_id,
         b.title,
@@ -230,7 +275,7 @@
         b.is_deleted = 0
         ORDER BY
         b.post_date DESC
-        LIMIT #{limit}
+        LIMIT #{no}
     </select>
 
 

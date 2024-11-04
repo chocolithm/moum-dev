@@ -13,7 +13,6 @@
 
 <div th:replace="~{header}"></div>
 
-
 <main>
     <div class="search-container">
         <div class="navigation-pill">
@@ -26,26 +25,31 @@
             <i class="fas fa-search"></i>
         </button>
     </div>
+
     <div class="board">
-        <!-- 첫 번째 박스 (인기글) -->
+        <!-- 인기글 섹션 -->
         <div class="boardHomePopular-middle-box">
             <h2>인기글</h2>
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
-                data-th-id="'board-image-' + ${attachedFile.no}"
-                data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + attachedFile.filename}">
-
+                <a th:href="@{/board/boardView(no=${board.no})}">
+                    <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
+                    <img th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
+                         alt="게시글 이미지">
+                    <!-- 첨부 파일이 없을 경우 기본 이미지를 표시 -->
+                    <img th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                         th:src="@{/images/default-image.png}"
+                         alt="기본 이미지">
+                </a>
                 <div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <p style="font-size: 25px; font-weight: bolder;" th:text="${board.title}">게시글 제목</p>
                     </a>
-<!--                    <p1 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p1>-->
-                    <!--                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
-                    <!--                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
                 </div>
             </div>
         </div>
 
-        <!-- 두 번째 박스 (게시글) -->
+        <!-- 최근 게시글 섹션 -->
         <div class="boardHomeRecent-middle-box">
             <h2>
                 <button onclick="location.href='/board/boardList'" style="background: none; border: none; font-size: 24px; cursor: pointer; font-weight: bold;">
@@ -54,45 +58,47 @@
             </h2>
             <div class="boardHomeRecent-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
-                    <img alt="게시글 이미지" th:src="@{/images/collections/collection-image-__${board.no}__.png}">
+                    <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
+                    <img th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
+                         alt="게시글 이미지">
+                    <!-- 첨부 파일이 없을 경우 기본 이미지를 표시 -->
+                    <img th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                         th:src="@{/images/default-image.png}"
+                         alt="기본 이미지">
                 </a>
                 <div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <p style="font-size: 25px; font-weight: bold;" th:text="${board.title}">게시글 제목</p>
                     </a>
-<!--                    <p2 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p2>-->
-                    <!--                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
-                    <!--                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
                 </div>
             </div>
         </div>
 
-
-<!-- 게시판 업적 랭킹 -->
+        <!-- 업적 랭킹 섹션 -->
         <div class="boardHomeAchievement-middle-box">
             <h2>업적 랭킹</h2>
             <div class="board-achievement-content">
                 <div class="board-achievement-column total-score">
                     <h3>업적 랭킹 순위</h3>
                     <ul class="board-achievement-list" th:each="ranking, status : ${rankList}">
-                        <li data-th-if="${status.index < 10}" data-th-text="${ranking.rank} + '등 ' + ${ranking.user.nickname} + '님 ' + ${ranking.score} + '점'"></li>
+                        <li th:if="${status.index < 10}" th:text="${ranking.rank} + '등 ' + ${ranking.user.nickname} + '님 ' + ${ranking.score} + '점'"></li>
                     </ul>
                 </div>
             </div>
 
-        <!-- 게시판 업적 랭킹-현재 로그인된 유저 정보 -->
-        <div class="board-current-user-achievement">
-            <h3>현재 업적 정보</h3>
-            <div data-th-if="${rankNowUserList != null}">
-                <p data-th-text="${rankNowUserList.rank} + '위 ' + ${rankNowUserList.user.nickname} + '님 ' + ${rankNowUserList.score} + '점'"></p>
-            </div>
-            <div data-th-if="${rankNowUserList == null}">
-                <p class="noData">현재 업적 정보가 없습니다.</p>
+            <!-- 현재 로그인된 유저 정보 -->
+            <div class="board-current-user-achievement">
+                <h3>현재 업적 정보</h3>
+                <div th:if="${rankNowUserList != null}">
+                    <p th:text="${rankNowUserList.rank} + '위 ' + ${rankNowUserList.user.nickname} + '님 ' + ${rankNowUserList.score} + '점'"></p>
+                </div>
+                <div th:if="${rankNowUserList == null}">
+                    <p class="noData">현재 업적 정보가 없습니다.</p>
+                </div>
             </div>
         </div>
     </div>
-    </div>
-
 </main>
 
 <footer data-th-replace="~{footer :: footer}"></footer>
