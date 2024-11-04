@@ -18,7 +18,7 @@
 
         <tr data-th-each="report : ${reportList}">
             <td data-th-text="${report.no}">신고번호</td>
-            <td data-th-text="${report.reportContent}">신고내용</td>
+            <td data-th-utext="${report.reportContent}">신고내용</td>
             <td data-th-text="${report.reportDate}">신고일시</td>
         </tr>
 
