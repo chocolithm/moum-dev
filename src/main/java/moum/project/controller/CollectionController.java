@@ -6,14 +6,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import moum.project.service.*;
-import moum.project.vo.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import moum.project.service.BoardService;
+import moum.project.service.CollectionService;
+import moum.project.service.CollectionStatusService;
+import moum.project.service.MaincategoryService;
+import moum.project.service.StorageService;
+import moum.project.service.SubcategoryService;
+import moum.project.service.UserService;
+import moum.project.vo.AttachedFile;
+import moum.project.vo.Board;
+import moum.project.vo.Collection;
+import moum.project.vo.CollectionStatus;
+import moum.project.vo.Maincategory;
+import moum.project.vo.Subcategory;
+import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -216,6 +233,15 @@ public class CollectionController {
       return "success";
     }
     return "failure";
+  }
+
+  private boolean validateColletion(Collection collection) {
+    if (collection.getName().trim().isEmpty()) {return false;}
+    if (collection.getMaincategory().getNo() == 0) {return false;}
+    if (collection.getSubcategory().getNo() == 0) {return false;}
+    if (collection.getStorageLocation().trim().isEmpty()) {return false;}
+    if (collection.getStatus().getNo() == 0) {return false;}
+    return true;
   }
 
 

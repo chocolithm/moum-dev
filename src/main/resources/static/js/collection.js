@@ -48,7 +48,7 @@ function fetchPostForm() {
 
 // 게시글 종류 선택에 따른 UI 변경
 document.querySelectorAll("input[name='boardType']").forEach((elem) => {
-    elem.addEventListener("change", function() {
+    elem.addEventListener("change", function () {
         const collectionSection = document.getElementById("collectionSection");
         if (this.value === "trade") {
             collectionSection.style.display = "block";
@@ -188,46 +188,48 @@ function addCollection() {
         const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
         const formData = new FormData();
-        formData.append("name", document.querySelector("#addForm #name").value);
-        formData.append("enName", document.querySelector("#addForm #enName").value);
+        formData.append("name", document.querySelector("#addForm #name").value.trim());
+        formData.append("enName", document.querySelector("#addForm #enName").value.trim());
         formData.append("price", document.querySelector("#addForm #price").value);
         formData.append("maincategory.no", document.querySelector("#addForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#addForm #subcategoryNo").value);
-        formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value);
-        formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value);
+        formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value.trim());
+        formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#addForm #statusNo").value);
 
-        const filesInput = document.querySelector("#addForm #files");
-        for (let i = 0; i < filesInput.files.length; i++) {
-            formData.append("files", filesInput.files[i]);
-        }
-
-        fetch(`/collection/add`, {
-            method: "POST",
-            body: formData,
-            headers: {
-                [csrfHeader]: csrfToken
+        if (validateData(formData)) {
+            const filesInput = document.querySelector("#addForm #files");
+            for (let i = 0; i < filesInput.files.length; i++) {
+                formData.append("files", filesInput.files[i]);
             }
-        })
-            .then(response => response.text())
-            .then(response => {
-                switch (response) {
-                    case "login":
-                        alert("로그인이 필요합니다.");
-                        location.href = "/home";
-                        break;
-                    case "success":
-                        alert("등록했습니다.");
-                        location.href = "/home";
-                        break;
-                    case "failure":
-                        alert("등록에 실패했습니다.");
-                        break;
+
+            fetch(`/collection/add`, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    [csrfHeader]: csrfToken
                 }
             })
-            .catch(error => {
-                console.error("Error fetching collection add:", error);
-            });
+                .then(response => response.text())
+                .then(response => {
+                    switch (response) {
+                        case "login":
+                            alert("로그인이 필요합니다.");
+                            location.href = "/home";
+                            break;
+                        case "success":
+                            alert("등록했습니다.");
+                            location.href = "/home";
+                            break;
+                        case "failure":
+                            alert("등록에 실패했습니다.");
+                            break;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching collection add:", error);
+                });
+        }
     }
 }
 
@@ -287,46 +289,57 @@ function updateCollection() {
 
         const formData = new FormData();
         formData.append("no", document.querySelector("#updateForm #no").value);
-        formData.append("name", document.querySelector("#updateForm #name").value);
-        formData.append("enName", document.querySelector("#updateForm #enName").value);
+        formData.append("name", document.querySelector("#updateForm #name").value.trim());
+        formData.append("enName", document.querySelector("#updateForm #enName").value.trim());
         formData.append("price", document.querySelector("#updateForm #price").value);
         formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
-        formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value);
-        formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value);
+        formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value.trim());
+        formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
 
-        const filesInput = document.querySelector("#updateForm #files");
-        for (let i = 0; i < filesInput.files.length; i++) {
-            formData.append("files", filesInput.files[i]);
-        }
-
-        fetch(`/collection/update`, {
-            method: "PUT",
-            body: formData,
-            headers: {
-                [csrfHeader]: csrfToken
+        if (validateData(formData)) {
+            const filesInput = document.querySelector("#updateForm #files");
+            for (let i = 0; i < filesInput.files.length; i++) {
+                formData.append("files", filesInput.files[i]);
             }
-        })
-            .then(response => response.text())
-            .then(response => {
-                switch (response) {
-                    case "login":
-                        alert("로그인이 필요합니다.");
-                        location.href = "/home";
-                        break;
-                    case "success":
-                        alert("수정했습니다.");
-                        break;
-                    case "failure":
-                        alert("수정에 실패했습니다.");
-                        break;
+
+            fetch(`/collection/update`, {
+                method: "PUT",
+                body: formData,
+                headers: {
+                    [csrfHeader]: csrfToken
                 }
             })
-            .catch(error => {
-                console.error("Error fetching collection update:", error);
-            });
+                .then(response => response.text())
+                .then(response => {
+                    switch (response) {
+                        case "login":
+                            alert("로그인이 필요합니다.");
+                            location.href = "/home";
+                            break;
+                        case "success":
+                            alert("수정했습니다.");
+                            break;
+                        case "failure":
+                            alert("수정에 실패했습니다.");
+                            break;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching collection update:", error);
+                });
+        }
     }
+}
+
+function validateData(formData) {
+    if (formData.get("name") == "") { alert("이름을 입력해주세요."); return false; }
+    if (formData.get("maincategory.no") == "" || formData.get("maincategory.no") == 0) { alert("대분류를 선택해주세요."); return false; }
+    if (formData.get("subcategory.no") == "" || formData.get("subcategory.no") == 0) { alert("소분류를 선택해주세요."); return false; }
+    if (formData.get("storageLocation") == "") { alert("보관장소를 입력해주세요."); return false; }
+    if (formData.get("status.no") == "" || formData.get("status.no") == 0) { alert("상태를 선택해주세요."); return false; }
+    return true;
 }
 
 
