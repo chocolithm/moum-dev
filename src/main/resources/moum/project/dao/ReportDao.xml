@@ -50,16 +50,35 @@
   </delete>
 
   <!-- 신고 리스트 -->
+<!--  <select id="list" resultType="moum.project.vo.Report">-->
+<!--    SELECT-->
+<!--    report_id,-->
+<!--    user_id,-->
+<!--    report_category_id,-->
+<!--    report_content,-->
+<!--    report_date,-->
+<!--    report_result_id,-->
+<!--    result_content-->
+<!--    FROM report-->
+<!--  </select>-->
+
+  <!-- 신고 리스트 + 조인 -->
   <select id="list" resultType="moum.project.vo.Report">
     SELECT
-    report_id,
-    user_id,
-    report_category_id,
-    report_content,
-    report_date,
-    report_result_id,
-    result_content
-    FROM report
+      r.report_id,
+      r.user_id,
+      u.nickname,
+      r.report_category_id,
+      rc.category_name,
+      r.report_content,
+      r.report_date,
+      r.report_result_id,
+      rrc.result_name,
+      r.result_content
+    FROM report r
+      left join user u on r.user_id = u.user_id
+      left join report_category rc on r.report_category_id = rc.report_category_id
+      left join report_result_category rrc on r.report_result_id = rrc.report_result_id
   </select>
 
 </mapper>
