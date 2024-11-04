@@ -25,18 +25,6 @@
     values(#{user.no}, #{content}, #{category}, #{categoryNo})
   </insert>
 
-  <select id="list" resultMap="AlertMap" parameterType="map">
-    select
-      alert_id,
-      alert_content,
-      alert_date,
-      alert_read,
-      alert_category,
-      alert_category_id
-    from
-      alert
-  </select>
-
   <select id="listByUser" resultMap="AlertMap" parameterType="map">
     select
       alert_id,
@@ -52,10 +40,6 @@
     order by
       alert_date desc
     limit #{pageNo}, #{pageCount}
-  </select>
-
-  <select id="findBy" resultMap="AlertMap" parameterType="int">
-
   </select>
 
   <update id="updateTime" parameterType="int">

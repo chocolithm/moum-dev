@@ -18,18 +18,8 @@ public class DefaultAlertService implements AlertService {
   }
 
   @Override
-  public List<Alert> list(int no) throws Exception {
-    return List.of();
-  }
-
-  @Override
   public List<Alert> listByUser(int userNo, int pageNo, int pageCount) throws Exception {
     return alertDao.listByUser(userNo, pageNo, pageCount);
-  }
-
-  @Override
-  public Alert get(int no) throws Exception {
-    return null;
   }
 
   @Override

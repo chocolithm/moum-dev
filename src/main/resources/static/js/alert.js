@@ -1,6 +1,4 @@
-
-
-
+// 알림창 열기
 function openAlertModal() {
   closeChatroomModal();
   countAlert();
@@ -15,17 +13,19 @@ function openAlertModal() {
 
 }
 
+// 알림창 닫기
 function closeAlertModal() {
   const alert_btn = document.querySelector(".alert-btn");
   const alert_layer = document.querySelector(".alert-layer");
 
   alert_btn.onclick = () => openAlertModal();
   fadeOut(alert_layer);
-  setTimeout(function () {
+  setTimeout(() => {
     alert_layer.innerHTML = "";
   }, 500);
 }
 
+// 알림 목록 로딩
 function fetchAlertContent(pageNo) {
   fetch(`/alert/listByUser?pageNo=${pageNo}`)
     .then(response => response.json())
@@ -48,6 +48,7 @@ function fetchAlertContent(pageNo) {
     })
 }
 
+// 알림 목록 추가로딩
 function fetchMoreAlertContent(pageNo) {
   const alert_layer = document.querySelector(".alert-layer");
 
@@ -80,6 +81,7 @@ function fetchMoreAlertContent(pageNo) {
   }
 }
 
+// 알림 목록 구조 생성
 function createAlertBoxContent(alert, box) {
   box.className = alert.read == 1 ? "alert-box read" : "alert-box unread";
   box.id = `alert-${alert.no}`;
@@ -125,7 +127,7 @@ function createAlertBoxContent(alert, box) {
   }
 }
 
-
+// 읽음 처리
 function updateRead(alert) {
   fetch(`/alert/read?no=${alert.no}`)
     .then((result) => {
@@ -135,6 +137,7 @@ function updateRead(alert) {
     });
 }
 
+// 알림 링크 실행
 function executeAlert(alert) {
   if (alert.category == "chatroom") {
     openChatroomModal();
@@ -144,6 +147,7 @@ function executeAlert(alert) {
   }
 }
 
+// 알림 삭제
 function deleteAlert(event, alertNo) {
   event.stopPropagation();
   fetch(`/alert/delete?no=${alertNo}`)
@@ -162,6 +166,7 @@ function deleteAlert(event, alertNo) {
     })
 }
 
+// 알림 개수
 function countAlert() {
   fetch(`/alert/count`)
     .then(response => response.text())
@@ -176,6 +181,7 @@ function countAlert() {
     })
 }
 
+// 화면 로딩 시 알림 개수 카운트
 window.onload = async () => {
   countAlert();
 }

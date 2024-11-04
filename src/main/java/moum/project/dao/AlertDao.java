@@ -9,15 +9,11 @@ import org.apache.ibatis.annotations.Param;
 public interface AlertDao {
   boolean insert(Alert alert) throws Exception;
 
-  List<Alert> list() throws Exception;
-
   List<Alert> listByUser(
       @Param("userNo") int userNo,
       @Param("pageNo") int pageNo,
       @Param("pageCount") int pageCount
   ) throws Exception;
-
-  Alert findBy(int no) throws Exception;
 
   boolean updateTime(int no) throws Exception;
 

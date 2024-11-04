@@ -34,8 +34,7 @@ public class SocketController {
 
     if (chatService.addChat(chat)) {
 
-      int connectedUsers = getConnectedUsersInRoom(roomNo);
-      if (connectedUsers < 2) {
+      if (getConnectedUsersInRoom(roomNo) < 2) {
 
         Chatroom chatroom = chatService.getRoom(chat.getChatroom().getNo());
 
