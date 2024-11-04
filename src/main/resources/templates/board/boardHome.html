@@ -79,23 +79,23 @@
         <div class="boardHomeAchievement-middle-box">
             <h2>업적 랭킹</h2>
             <div class="board-achievement-content">
+                <!-- 업적 랭킹 순위 -->
                 <div class="board-achievement-column total-score">
                     <h3>업적 랭킹 순위</h3>
                     <ul class="board-achievement-list" th:each="ranking, status : ${rankList}">
                         <li th:if="${status.index < 10}" th:text="${ranking.rank} + '등 ' + ${ranking.user.nickname} + '님 ' + ${ranking.score} + '점'"></li>
                     </ul>
                 </div>
-            </div>
 
-            <!-- 현재 로그인된 유저 정보 -->
-            <div class="board-current-user-achievement">
-                <h3>현재 업적 정보</h3>
-                <div th:if="${rankNowUserList != null}">
-                    <p th:text="${rankNowUserList.rank} + '위 ' + ${rankNowUserList.user.nickname} + '님 ' + ${rankNowUserList.score} + '점'"></p>
-                </div>
-                <div th:if="${rankNowUserList == null}">
-                    <p class="noData">현재 업적 정보가 없습니다.</p>
-                </div>
+                <!-- 현재 로그인된 유저 정보 -->
+                <div class="board-current-user-achievement">
+                    <h3>현재 업적 정보</h3>
+                    <div th:if="${rankNowUserList != null}">
+                        <p th:text="${rankNowUserList.rank} + '위 ' + ${rankNowUserList.user.nickname} + '님 ' + ${rankNowUserList.score} + '점'"></p>
+                    </div>
+                    <div th:if="${rankNowUserList == null}">
+                        <p class="noData">현재 업적 정보가 없습니다.</p>
+                    </div>
             </div>
         </div>
     </div>

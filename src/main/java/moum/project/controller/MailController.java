@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
  * -----------------------------------------------------------
  * 24. 11. 4.        narilee       최초 생성
  */
-
 @RestController
 @RequiredArgsConstructor
 public class MailController {
@@ -40,7 +39,7 @@ public class MailController {
    *
    * @param mailDTO 이메일 정보를 담고 있는 DTO
    * @return 중복되지 않은 경우 생성된 인증 코드를 반환
-   * @throws Exception 메일 발송 슬패 등의 예외 발생 시
+   * @throws Exception 메일 발송 실패 등의 예외 발생 시
    */
   @ResponseBody
   @PostMapping("/emailCheck")
@@ -55,5 +54,25 @@ public class MailController {
     // 중복이 아닐 경우 인증 코드 발송
     String authCode = mailService.sendSimpleMessage(email);
     return authCode;
+  }
+
+  /**
+   * 이메일 중복 확인 및 인증 코드 발송을 처리합니다.
+   *
+   * @param mailDTO 이메일 정보를 담고 있는 DTO
+   * @return 중복되는 경우 생성된 인증 코드를 반환
+   * @throws Exception 메일 발송 실패 등의 예외 발생 시
+   */
+  @ResponseBody
+  @PostMapping("/findEmail")
+  public String findEmail(@RequestBody MailDTO mailDTO) throws Exception {
+    String email = mailDTO.getEmail();
+
+    if (userService.isEmailTaken(email)) {
+      String authCode = mailService.sendSimpleMessage(email);
+      return authCode;
+    }
+
+    return "존재하지 않는 이메일입니다.";
   }
 }
