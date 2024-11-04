@@ -64,13 +64,38 @@ async function showMessage(chat) {
     if (chat_info.scrollTop > chat_info.scrollHeight - chat_info.offsetHeight - 500) {
       chat_info.scrollTop = chat_info.scrollHeight;
     } else {
-      // const new_message_alert = document.createElement("div");
-      // new_message_alert.className = "new-message-alert";
-      // new_message_alert.innerHTML = "new message";
-      // chat_info.append(new_message_alert);
+      createNewMessageAlert();
     }
   }
+}
 
+function createNewMessageAlert() {
+  const chat_info = document.querySelector(".chat-info");
+
+  if (document.querySelector(".new-message-alert") == null) {
+    const new_message_alert = document.createElement("div");
+    new_message_alert.className = "new-message-alert";
+    new_message_alert.append(document.createElement("span"));
+    new_message_alert.childNodes[0].innerHTML = "new message";
+
+    chat_info.addEventListener("scroll", removeNewMessageAlert);
+
+    chat_info.append(new_message_alert);
+    fadeIn(new_message_alert);
+  }
+}
+
+function removeNewMessageAlert() {
+  const chat_info = document.querySelector(".chat-info");
+  const new_message_alert = document.querySelector(".new-message-alert");
+
+  if (chat_info.scrollTop >= chat_info.scrollHeight - chat_info.offsetHeight - 50) {
+    chat_info.removeEventListener("scroll", removeNewMessageAlert);
+    fadeOut(new_message_alert);
+    setTimeout(() => {
+      new_message_alert.remove();
+    }, 500);
+  }
 }
 
 // [채팅하기] 버튼 생성

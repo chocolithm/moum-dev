@@ -140,14 +140,21 @@
 }
 
 .chatroom-layer .chat-info .new-message-alert {
+  display: none;
   position: absolute;
   bottom: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: lightgrey;
-  opacity: 1;
+  left: 50%;
+  transform: translate(-50%);
+  opacity: 0;
   transition: opacity 0.5s ease-in-out;
+}
+
+.chatroom-layer .chat-info .new-message-alert span {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background: lightgrey;
+  color: grey;
 }
 
 .chatroom-layer .chat-inputbox {
