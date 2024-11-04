@@ -83,4 +83,14 @@
       and alert_read = 0
   </select>
 
+  <select id="countUnreadByUser" parameterType="int">
+    select
+      count(*)
+    from
+      alert
+    where
+      user_id = #{no}
+      and alert_read = 0
+  </select>
+
 </mapper>

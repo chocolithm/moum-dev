@@ -137,6 +137,7 @@ function deleteAlert(event, alertNo) {
       if (response == "success") {
         const box = document.querySelector(`#alert-${alertNo}`);
         box.remove();
+        countAlert();
       } else {
         alert("삭제가 불가합니다. 다시 시도해 주세요.");
       }
@@ -144,4 +145,22 @@ function deleteAlert(event, alertNo) {
     .catch(error => {
       console.error("error deleting alert: ", error);
     })
+}
+
+function countAlert() {
+  fetch(`/alert/count`)
+    .then(response => response.text())
+    .then(count => {
+      if (count > 0) {
+        document.querySelector(".alert-count").innerHTML = count;
+      }
+    })
+    .catch(error => {
+      console.error("error fetching alert counts: ", error);
+      return 0;
+    })
+}
+
+window.onload = async () => {
+  countAlert();
 }

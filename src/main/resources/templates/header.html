@@ -48,6 +48,7 @@
     <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
       <a class="btn alert-btn" onClick="openAlertModal();">
         <img alt="알림" class="alert-image" src="/images/common/alert.png">
+        <span class="alert-count"></span>
         알림
       </a>
       <a class="btn chat-btn" onClick="openChatroomModal();">
@@ -109,6 +110,8 @@
         }
       });
     </script>
+
+    
 
 
   </header>

@@ -47,4 +47,11 @@ public class AlertController {
     }
     return "failure";
   }
+
+  @GetMapping("count")
+  @ResponseBody
+  public int count(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    return alertService.countUnreadByUser(loginUser.getNo());
+  }
 }

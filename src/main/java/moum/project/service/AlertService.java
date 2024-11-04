@@ -24,4 +24,6 @@ public interface AlertService {
   boolean delete(int no) throws Exception;
 
   int exists(Alert alert) throws Exception;
+
+  int countUnreadByUser(int no) throws Exception;
 }

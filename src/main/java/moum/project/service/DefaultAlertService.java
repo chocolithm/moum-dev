@@ -51,4 +51,9 @@ public class DefaultAlertService implements AlertService {
   public int exists(Alert alert) throws Exception {
     return alertDao.exists(alert);
   }
+
+  @Override
+  public int countUnreadByUser(int no) throws Exception {
+    return alertDao.countUnreadByUser(no);
+  }
 }

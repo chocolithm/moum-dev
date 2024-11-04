@@ -27,4 +27,6 @@ public interface AlertDao {
 
   int exists(Alert alert) throws Exception;
 
+  int countUnreadByUser(int no) throws Exception;
+
 }
