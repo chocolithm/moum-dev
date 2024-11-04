@@ -19,4 +19,5 @@ public interface AchievementService {
   List<Achievement> listByUserRank() throws Exception;
 
   Achievement findRankByUser(int no) throws Exception;
+
 }

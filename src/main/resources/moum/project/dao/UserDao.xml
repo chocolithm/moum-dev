@@ -34,7 +34,8 @@
         user_id asc
     </select>
 
-    <insert id="insert" parameterType="moum.project.vo.User">
+    <insert id="insert" parameterType="moum.project.vo.User"
+            useGeneratedKeys="true" keyColumn="user_id" keyProperty="no">
         insert into user(nickname, email, password, admin, photo, end_date, last_login, sns_id)
         values (#{nickname}, #{email}, #{password}, #{admin}, #{photo}, #{endDate}, #{lastLogin}, #{snsId})
     </insert>

@@ -82,6 +82,12 @@
     </insert>
 
 
+    <!--1,2번!--> <insert id="insertByUser" parameterType="moum.project.vo.Achievement">
+        insert into user_achievement(achievement_id, user_id)
+        values (#{id}, #{user.no})
+    </insert>
+
+
     <select id="findBy" resultMap="AchievementMap" parameterType="String"> <!--조회!-->
         select
         achievement_id
