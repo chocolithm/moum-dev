@@ -25,41 +25,29 @@
         </button>
     </div>
 
-
-
     <div class="boardList">
-        <!-- 첫 번째 박스 (인기글) -->
+        <!-- 첫 번째 박스 (전체 게시글) -->
         <div class="boardList-middle-box">
             <h2>전체 게시글</h2>
             <div class="boardList-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
-                    <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">
+                    <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
+                    <img th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
+                         alt="게시글 이미지">
+                    <!-- 첨부 파일이 없을 경우 기본 이미지를 표시 -->
+                    <img th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                         th:src="@{/images/default-image.png}"
+                         alt="기본 이미지">
                 </a>
                 <div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <p th:text="${board.title}" style="font-size: 25px; font-weight: bolder;">게시글 제목</p>
                     </a>
                     <p3 th:text="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p3>
-                    <!--                    <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
-                    <!--                    <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
                 </div>
             </div>
         </div>
-
-<!--    &lt;!&ndash; 게시글 목록 &ndash;&gt;-->
-<!--    <div class="boardList-middle-image" th:each="board : ${recentBoards}">-->
-<!--        <a th:href="@{/board/boardView(no=${board.no})}">-->
-<!--            <img th:src="@{/images/collections/collection-image-__${board.no}__.png}" alt="게시글 이미지">-->
-<!--        </a>-->
-<!--        <div>-->
-<!--            <a th:href="@{/board/boardView(no=${board.no})}">-->
-<!--                <p th:text="${board.title}" style="font-weight: bold;">게시글 제목</p>-->
-<!--            </a>-->
-<!--            <p th:text="${board.description != null ? board.description : '설명이 없습니다.'}">게시글 설명</p>-->
-<!--            <p>조회수: <span th:text="${board.viewCount}">0</span></p>-->
-<!--            <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>-->
-<!--        </div>-->
-<!--    </div>-->
     </div>
 </main>
 
