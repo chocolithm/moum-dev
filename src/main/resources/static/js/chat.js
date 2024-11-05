@@ -318,7 +318,7 @@ function createChatroom(boardNo) {
       connect(chatroom.no)
         .then(() => {
           sendMessage(chatroom.no);
-          document.querySelector(".chat-btn").onclick = () => sendMessage(chatroom.no);
+          document.querySelector(".chatroom-layer .chat-btn").onclick = () => sendMessage(chatroom.no);
         });
     })
     .catch(error => {

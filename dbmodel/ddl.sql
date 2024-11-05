@@ -544,6 +544,13 @@ ALTER TABLE chatroom
     chatroom_id -- 채팅방번호
     );
 
+-- 채팅방 유니크 인덱스
+CREATE UNIQUE INDEX UIX_chatroom
+    ON chatroom ( -- 채팅방
+        board_id ASC, -- 게시글 번호
+        user_id ASC   -- 참여자 번호
+    );
+
 ALTER TABLE chatroom
     MODIFY COLUMN chatroom_id INTEGER NOT NULL AUTO_INCREMENT;
 
