@@ -67,6 +67,7 @@ public class UserController {
     model.addAttribute("achievementlist", achievementlist);
 
     model.addAttribute("user", user);
+    model.addAttribute("listGetUserAchievement", achievementService.listUserGetAchievement(user.getNo()));
     return "user/myInfo";
   }
 
