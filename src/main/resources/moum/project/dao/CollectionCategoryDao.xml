@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="moum.project.dao.CollectionCategoryDao">
+
+  <resultMap id="SubcategoryMap" type="moum.project.vo.Subcategory">
+    <id column="subcategory_id" property="no"/>
+    <result column="category_name" property="name"/>
+
+    <association property="maincategory" javaType="moum.project.vo.Maincategory">
+      <id column="maincategory_id" property="no"/>
+      <result column="category_name" property="name"/>
+    </association>
+  </resultMap>
+
+  <resultMap id="MaincategoryMap" type="moum.project.vo.Maincategory">
+    <id column="maincategory_id" property="no"/>
+    <result column="category_name" property="name"/>
+  </resultMap>
+
+  <select id="listSubcategory" resultMap="SubcategoryMap" parameterType="int">
+    select
+      subcategory_id,
+      category_name
+    from
+      subcategory
+    where
+      maincategory_id = #{maincategoryNo}
+  </select>
+
+  <select id="listMaincategory" resultMap="MaincategoryMap">
+    select
+      maincategory_id,
+      category_name
+    from
+      maincategory
+    where
+      maincategory_id != 999
+  </select>
+</mapper>

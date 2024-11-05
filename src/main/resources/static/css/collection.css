@@ -17,6 +17,11 @@
   margin: 5px auto;
 }
 
+.sidemenu li input,
+.sidemenu li label {
+  cursor: pointer;
+}
+
 .main-section {
   margin-left: 300px;
   display: flex;
