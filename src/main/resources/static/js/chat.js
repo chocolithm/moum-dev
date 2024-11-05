@@ -187,6 +187,11 @@ function fetchChatroomList() {
         const message = document.createElement("div");
         message.className = "message";
         message.innerHTML = chatroom.lastMessage;
+
+        if (loginUser.no != chatroom.senderNo && chatroom.read == 0) {
+          message.innerHTML = "<span style='color: red'>●</span> " + message.innerHTML;
+        }
+
         const date = document.createElement("div");
         date.className = "date";
         date.innerHTML = formatDate(chatroom.chatDate);
@@ -225,6 +230,7 @@ function openChat(chatroomNo) {
         await fetchChatContent(chatroomNo, 1);
         createChatInputbox(chatroomNo);
         connect(chatroomNo);
+        countAlert();
       } catch (error) {
         console.error("error fetching chatroom info", error);
       }
@@ -318,7 +324,7 @@ function createChatroom(boardNo) {
       connect(chatroom.no)
         .then(() => {
           sendMessage(chatroom.no);
-          document.querySelector(".chat-btn").onclick = () => sendMessage(chatroom.no);
+          document.querySelector(".chatroom-layer .chat-btn").onclick = () => sendMessage(chatroom.no);
         });
     })
     .catch(error => {

@@ -9,6 +9,7 @@
     <id column="chat_id" property="no"/>
     <result column="message" property="message"/>
     <result column="chat_date" property="chatDate"/>
+    <result column="chat_read" property="read"/>
     
     <association property="chatroom" javaType="moum.project.vo.Chatroom">
       <id column="chatroom_id" property="no"/>
@@ -27,6 +28,8 @@
     <id column="chatroom_id" property="no"/>
     <result column="message" property="lastMessage"/>
     <result column="chat_date" property="chatDate"/>
+    <result column="chat_read" property="read"/>
+    <result column="sender_id" property="senderNo"/>
 
     <association property="owner" javaType="moum.project.vo.User">
       <id column="owner_id" property="no"/>
@@ -58,8 +61,8 @@
 
   <insert id="insertChat" parameterType="moum.project.vo.Chat"
           useGeneratedKeys="true" keyColumn="chat_id" keyProperty="no">
-    insert into chat(chatroom_id, user_id, message)
-    values(#{chatroom.no}, #{sender.no}, #{message})
+    insert into chat(chatroom_id, user_id, message, chat_read)
+    values(#{chatroom.no}, #{sender.no}, #{message}, #{read})
   </insert>
 
   <insert id="insertRoom" parameterType="moum.project.vo.Chatroom"
@@ -98,14 +101,16 @@
       uo.nickname as owner_nickname,
       uo.photo as owner_photo,
       c1.message,
-      c1.chat_date
+      c1.user_id as sender_id,
+      c1.chat_date,
+      c1.chat_read
     from
       chatroom cr
       left join user up on cr.user_id = up.user_id
       left join board b on cr.board_id = b.board_id
       left join user uo on b.user_id = uo.user_id
       inner join (
-        select chatroom_id, message, chat_date
+        select chatroom_id, user_id, message, chat_date, chat_read
         from chat c
         where chat_date = (
             select max(chat_date)
@@ -154,8 +159,12 @@
       and user_id = #{userNo}
   </select>
 
-  <update id="update" parameterType="moum.project.vo.Chat">
-
+  <update id="updateRead" parameterType="map">
+    update chat
+    set chat_read = 1
+    where
+      chatroom_id = #{chatroomNo}
+      and user_id != #{userNo}
   </update>
 
   <delete id="delete" parameterType="int">

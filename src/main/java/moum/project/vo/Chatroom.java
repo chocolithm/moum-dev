@@ -10,8 +10,10 @@ public class Chatroom {
   private Board board;
   private User owner;
   private User participant;
+  private int senderNo;
   private String lastMessage;
   private LocalDateTime chatDate;
+  private boolean read;
 
   public Chatroom() {
 

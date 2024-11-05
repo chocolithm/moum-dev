@@ -186,7 +186,8 @@ CREATE TABLE chat (
     chatroom_id INTEGER  NOT NULL, -- 채팅방번호
     user_id     INTEGER  NOT NULL, -- 발신자 번호
     message     TEXT     NOT NULL, -- 대화내용
-    chat_date   DATETIME NOT NULL DEFAULT now() -- 작성일
+    chat_date   DATETIME NOT NULL DEFAULT now(), -- 작성일
+    chat_read   TINYINT  NOT NULL DEFAULT 0 -- 읽기여부
 );
 
 -- 채팅
@@ -226,7 +227,7 @@ CREATE TABLE collection (
     status_id        INTEGER      NULL,     -- 수집품상태번호
     purchase_date    DATE         NULL,     -- 구매일자
     purchase_place   VARCHAR(255) NULL,     -- 구매처
-    price            INTEGER      NULL,     -- 가격
+    price            INTEGER      NULL     DEFAULT 0, -- 가격
     storage_location VARCHAR(255) NULL,     -- 보관장소
     post_date        DATETIME     NOT NULL DEFAULT now() -- 등록일시
 );
@@ -541,6 +542,13 @@ ALTER TABLE chatroom
     ADD CONSTRAINT PK_chatroom -- 채팅방 기본키
     PRIMARY KEY (
     chatroom_id -- 채팅방번호
+    );
+
+-- 채팅방 유니크 인덱스
+CREATE UNIQUE INDEX UIX_chatroom
+    ON chatroom ( -- 채팅방
+        board_id ASC, -- 게시글 번호
+        user_id ASC   -- 참여자 번호
     );
 
 ALTER TABLE chatroom

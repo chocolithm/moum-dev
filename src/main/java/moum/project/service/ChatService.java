@@ -16,4 +16,6 @@ public interface ChatService {
   Chatroom getRoom(int roomNo) throws Exception;
 
   Chatroom getRoomByBoard(int boardNo, int userNo) throws Exception;
+
+  boolean updateRead(int roomNo, int userNo) throws Exception;
 }

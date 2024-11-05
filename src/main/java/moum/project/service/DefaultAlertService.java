@@ -33,6 +33,11 @@ public class DefaultAlertService implements AlertService {
   }
 
   @Override
+  public boolean updateReadByCategoryAndUser(Alert alert) throws Exception {
+    return alertDao.updateReadByCategoryAndUser(alert);
+  }
+
+  @Override
   public boolean delete(int no) throws Exception {
     return alertDao.delete(no);
   }

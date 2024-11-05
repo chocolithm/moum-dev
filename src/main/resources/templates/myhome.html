@@ -27,18 +27,19 @@
             </li>
         </ul>
     </aside>
-    <div class="myhome-upper-buttons">
-        <button class="btn" onClick="openCollectionFormModal();">수집품 등록</button>
-        <button class="btn" onClick="openPostFormModal();">POST</button>
-    </div>
-    <div class="myhome-collections clearfix">
-        <div data-th-if="${#lists.isEmpty(collectionList)}">
-            <p>소집품이 없습니다.</p>
+    <section class="main-section">
+        <div class="myhome-upper-buttons">
+            <button class="btn" onClick="openCollectionFormModal();">수집품 등록</button>
+            <button class="btn" onClick="openPostFormModal();">POST</button>
         </div>
-        <div data-th-if="${not #lists.isEmpty(collectionList)}">
+        <div class="myhome-collections">
+            <div data-th-if="${#lists.isEmpty(collectionList)}">
+                <p>소집품이 없습니다.</p>
+            </div>
             <button data-th-attr="onclick='openCollectionViewModal(' + ${collection.no} + ');'"
                     data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategory.no}"
-                    data-th-each="collection : ${collectionList}">
+                    data-th-each="collection : ${collectionList}"
+                    data-th-if="${not #lists.isEmpty(collectionList)}">
                 <img class="collection-image"
                      data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
                      data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}" />
@@ -48,7 +49,7 @@
                 <div class="collection-title" data-th-text="${collection.name}"></div>
             </button>
         </div>
-    </div>
+    </section>
 </main>
 
 <footer data-th-replace="~{footer :: footer}"></footer>

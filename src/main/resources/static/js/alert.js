@@ -15,6 +15,7 @@ function openAlertModal() {
 
 // 알림창 닫기
 function closeAlertModal() {
+  countAlert();
   const alert_btn = document.querySelector(".alert-btn");
   const alert_layer = document.querySelector(".alert-layer");
 
@@ -122,13 +123,13 @@ function createAlertBoxContent(alert, box) {
       executeAlert(alert);
 
     } else {
-      updateRead(alert);
+      updateAlertRead(alert);
     }
   }
 }
 
 // 읽음 처리
-function updateRead(alert) {
+function updateAlertRead(alert) {
   fetch(`/alert/read?no=${alert.no}`)
     .then((result) => {
       if (result.ok) {
@@ -173,6 +174,8 @@ function countAlert() {
     .then(count => {
       if (count > 0) {
         document.querySelector(".alert-count").innerHTML = count;
+      } else {
+        document.querySelector(".alert-count").innerHTML = "";
       }
     })
     .catch(error => {
