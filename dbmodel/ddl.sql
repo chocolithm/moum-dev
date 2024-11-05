@@ -76,9 +76,6 @@ DROP TABLE IF EXISTS chatroom RESTRICT;
 -- 정지회원
 DROP TABLE IF EXISTS user_restricted RESTRICT;
 
--- 기타 분류
-DROP TABLE IF EXISTS other_category RESTRICT;
-
 -- 회원
 CREATE TABLE user (
     user_id    INTEGER      NOT NULL, -- 회원 번호
@@ -221,17 +218,17 @@ ALTER TABLE user_achievement
 
 -- 수집품
 CREATE TABLE collection (
-    collection_id       INTEGER      NOT NULL, -- 수집품 번호
-    user_id             INTEGER      NOT NULL, -- 소유자 번호
-    subcategory_id      INTEGER      NULL,     -- 소분류번호
-    other_category_name VARCHAR(50)  NULL,     -- 기타 분류명
-    name                VARCHAR(50)  NOT NULL, -- 제품명
-    status_id           INTEGER      NULL,     -- 수집품상태번호
-    purchase_date       DATE         NULL,     -- 구매일자
-    purchase_place      VARCHAR(255) NULL,     -- 구매처
-    price               INTEGER      NULL,     -- 가격
-    storage_location    VARCHAR(255) NULL,     -- 보관장소
-    post_date           DATETIME     NOT NULL DEFAULT now() -- 등록일시
+    collection_id    INTEGER      NOT NULL, -- 수집품 번호
+    user_id          INTEGER      NOT NULL, -- 소유자 번호
+    subcategory_id   INTEGER      NOT NULL, -- 소분류번호
+    other_category   VARCHAR(50)  NULL,     -- 기타 분류명
+    name             VARCHAR(50)  NOT NULL, -- 제품명
+    status_id        INTEGER      NULL,     -- 수집품상태번호
+    purchase_date    DATE         NULL,     -- 구매일자
+    purchase_place   VARCHAR(255) NULL,     -- 구매처
+    price            INTEGER      NULL,     -- 가격
+    storage_location VARCHAR(255) NULL,     -- 보관장소
+    post_date        DATETIME     NOT NULL DEFAULT now() -- 등록일시
 );
 
 -- 수집품
@@ -554,12 +551,6 @@ CREATE TABLE user_restricted (
     user_id    INTEGER  NOT NULL, -- 회원 번호
     start_date DATETIME NOT NULL, -- 시작일자
     end_date   DATETIME NOT NULL  -- 종료일자
-);
-
--- 기타 분류
-CREATE TABLE other_category (
-    category_name VARCHAR(50) NOT NULL, -- 분류명
-    date          DATETIME    NOT NULL DEFAULT now() -- 등록일자
 );
 
 -- 회원

@@ -13,6 +13,7 @@
     <result column="price" property="price"/>
     <result column="storage_location" property="storageLocation"/>
     <result column="post_date" property="postDate"/>
+    <result column="other_category" property="otherCategory"/>
 
     <association property="user" javaType="moum.project.vo.User">
       <id column="user_id" property="no"/>
@@ -27,10 +28,6 @@
     <association property="subcategory" javaType="moum.project.vo.Subcategory">
       <id column="subcategory_id" property="no"/>
       <result column="subcategory_name" property="name"/>
-    </association>
-
-    <association property="otherCategory" javaType="moum.project.vo.OtherCategory">
-      <result column="other_category_name" property="name"/>
     </association>
 
     <association property="status" javaType="moum.project.vo.CollectionStatus">
@@ -53,9 +50,9 @@
 
   <insert id="insert" parameterType="moum.project.vo.Collection"
           useGeneratedKeys="true" keyColumn="collection_id" keyProperty="no">
-    insert into collection(user_id, subcategory_id, name, status_id, other_category_name,
+    insert into collection(user_id, subcategory_id, name, status_id, other_category,
       purchase_date, purchase_place, price, storage_location)
-    values(#{user.no}, #{subcategory.no}, #{name}, #{status.no}, #{otherCategory.name},
+    values(#{user.no}, #{subcategory.no}, #{name}, #{status.no}, #{otherCategory},
       #{purchaseDate}, #{purchasePlace}, #{price}, #{storageLocation})
   </insert>
 
@@ -65,7 +62,7 @@
       c.name,
       sc.maincategory_id,
       c.subcategory_id,
-      c.other_category_name,
+      c.other_category,
       c.status_id,
       cs.status_name,
       cp.photo_id,
@@ -88,7 +85,7 @@
       c.price,
       sc.maincategory_id,
       c.subcategory_id,
-      c.other_category_name,
+      c.other_category,
       c.purchase_date,
       c.purchase_place,
       c.storage_location,
@@ -114,7 +111,7 @@
       c.price,
       sc.maincategory_id,
       c.subcategory_id,
-      c.other_category_name,
+      c.other_category,
       c.purchase_date,
       c.purchase_place,
       c.storage_location,
@@ -134,7 +131,7 @@
     set
       name = #{name},
       subcategory_id = #{subcategory.no},
-      other_category_name = #{otherCategory.name}
+      other_category = #{otherCategory}
       status_id = #{status.no},
       purchase_date = #{purchaseDate},
       purchase_place = #{purchasePlace},

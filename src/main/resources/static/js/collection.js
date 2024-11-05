@@ -192,7 +192,7 @@ function addCollection() {
         formData.append("price", document.querySelector("#addForm #price").value);
         formData.append("maincategory.no", document.querySelector("#addForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#addForm #subcategoryNo").value);
-        formData.append("otherCategory.name", document.querySelector("#addForm #otherCategory").value);
+        formData.append("otherCategory", document.querySelector("#addForm #otherCategory").value.trim());
         formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value.trim());
         formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#addForm #statusNo").value);
@@ -293,7 +293,7 @@ function updateCollection() {
         formData.append("price", document.querySelector("#updateForm #price").value);
         formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
-        formData.append("otherCategory.name", document.querySelector("#addForm #otherCategory").value);
+        formData.append("otherCategory", document.querySelector("#addForm #otherCategory").value.trim());
         formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value.trim());
         formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
@@ -441,6 +441,7 @@ function fetchSubcategories(maincategoryNo) {
     const subcategorySelect = document.querySelector("#subcategoryNo");
     const otherCategoryInput = document.querySelector("#otherCategory");
     subcategorySelect.innerHTML = "";
+    otherCategoryInput.value = "";
 
     if (maincategoryNo == 0) {
         otherCategoryInput.parentNode.parentNode.style.display = "none";
@@ -473,8 +474,8 @@ function fetchSubcategories(maincategoryNo) {
 
         const option = document.createElement("option");
         option.value = 999;
-        subcategorySelect.appendChild(option);
         option.selected = true;
+        subcategorySelect.appendChild(option);
     }
 }
 
