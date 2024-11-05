@@ -9,6 +9,7 @@
     <id column="chat_id" property="no"/>
     <result column="message" property="message"/>
     <result column="chat_date" property="chatDate"/>
+    <result column="chat_read" property="read"/>
     
     <association property="chatroom" javaType="moum.project.vo.Chatroom">
       <id column="chatroom_id" property="no"/>
@@ -60,8 +61,8 @@
 
   <insert id="insertChat" parameterType="moum.project.vo.Chat"
           useGeneratedKeys="true" keyColumn="chat_id" keyProperty="no">
-    insert into chat(chatroom_id, user_id, message)
-    values(#{chatroom.no}, #{sender.no}, #{message})
+    insert into chat(chatroom_id, user_id, message, chat_read)
+    values(#{chatroom.no}, #{sender.no}, #{message}, #{read})
   </insert>
 
   <insert id="insertRoom" parameterType="moum.project.vo.Chatroom"

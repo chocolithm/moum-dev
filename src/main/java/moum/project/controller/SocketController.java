@@ -35,11 +35,15 @@ public class SocketController {
 
     chat.setChatDate(LocalDateTime.now());
 
+    int connectUserCount = getConnectedUsersInRoom(roomNo);
+
+    if (connectUserCount >= 2) {
+      chat.setRead(true);
+    }
 
     if (chatService.addChat(chat)) {
 
-      if (getConnectedUsersInRoom(roomNo) < 2) {
-
+      if (connectUserCount < 2) {
         Chatroom chatroom = chatService.getRoom(chat.getChatroom().getNo());
 
         Alert alert = new Alert();

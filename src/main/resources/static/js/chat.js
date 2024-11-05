@@ -230,6 +230,7 @@ function openChat(chatroomNo) {
         await fetchChatContent(chatroomNo, 1);
         createChatInputbox(chatroomNo);
         connect(chatroomNo);
+        countAlert();
       } catch (error) {
         console.error("error fetching chatroom info", error);
       }
