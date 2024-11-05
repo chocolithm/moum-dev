@@ -57,7 +57,7 @@
             <option data-th-each="maincategory : ${maincategoryList}"
                     data-th-selected="${maincategory.no} == ${collection.maincategory.no}" data-th-text="${maincategory.name}"
                     data-th-value="${maincategory.no}" value="1">대분류명</option>
-            <option value="999">기타</option>
+            <option data-th-selected="${collection.maincategory.no == 999}" value="999">기타</option>
           </select>
         </td>
       </tr>
