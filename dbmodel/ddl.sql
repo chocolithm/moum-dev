@@ -186,7 +186,8 @@ CREATE TABLE chat (
     chatroom_id INTEGER  NOT NULL, -- 채팅방번호
     user_id     INTEGER  NOT NULL, -- 발신자 번호
     message     TEXT     NOT NULL, -- 대화내용
-    chat_date   DATETIME NOT NULL DEFAULT now() -- 작성일
+    chat_date   DATETIME NOT NULL DEFAULT now(), -- 작성일
+    chat_read   TINYINT  NOT NULL DEFAULT 0 -- 읽기여부
 );
 
 -- 채팅
@@ -226,7 +227,7 @@ CREATE TABLE collection (
     status_id        INTEGER      NULL,     -- 수집품상태번호
     purchase_date    DATE         NULL,     -- 구매일자
     purchase_place   VARCHAR(255) NULL,     -- 구매처
-    price            INTEGER      NULL,     -- 가격
+    price            INTEGER      NULL     DEFAULT 0, -- 가격
     storage_location VARCHAR(255) NULL,     -- 보관장소
     post_date        DATETIME     NOT NULL DEFAULT now() -- 등록일시
 );
