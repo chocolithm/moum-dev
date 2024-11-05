@@ -2,9 +2,11 @@ package moum.project.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.AlertService;
 import moum.project.service.BoardService;
 import moum.project.service.ChatService;
 import moum.project.service.UserService;
+import moum.project.vo.Alert;
 import moum.project.vo.Board;
 import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
@@ -24,6 +26,7 @@ public class ChatController {
   private final ChatService chatService;
   private final UserService userService;
   private final BoardService boardService;
+  private final AlertService alertService;
 
   @GetMapping("/sender")
   @ResponseBody
@@ -92,6 +95,12 @@ public class ChatController {
 
     User loginUser = userService.getByEmail(userDetails.getUsername());
     chatService.updateRead(no, loginUser.getNo());
+
+    Alert alert = new Alert();
+    alert.setCategory("chatroom");
+    alert.setCategoryNo(no);
+    alert.setUser(loginUser);
+    alertService.updateReadByCategoryAndUser(alert);
 
     return chatService.getRoom(no);
   }

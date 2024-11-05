@@ -187,9 +187,11 @@ function fetchChatroomList() {
         const message = document.createElement("div");
         message.className = "message";
         message.innerHTML = chatroom.lastMessage;
-        if (chatroom.read == 0) {
+
+        if (loginUser.no != chatroom.senderNo && chatroom.read == 0) {
           message.innerHTML = "<span style='color: red'>●</span> " + message.innerHTML;
         }
+
         const date = document.createElement("div");
         date.className = "date";
         date.innerHTML = formatDate(chatroom.chatDate);

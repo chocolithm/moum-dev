@@ -54,6 +54,14 @@
     where alert_id = #{no}
   </update>
 
+  <update id="updateReadByCategoryAndUser" parameterType="moum.project.vo.Alert">
+    update alert
+    set alert_read = 1
+    where alert_category = #{category}
+      and alert_category_id = #{categoryNo}
+      and user_id = #{user.no}
+  </update>
+
   <delete id="delete" parameterType="int">
     delete from alert
     where alert_id = #{no}
