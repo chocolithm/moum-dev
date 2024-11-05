@@ -88,7 +88,11 @@ public class ChatController {
 
   @GetMapping("/openRoom")
   @ResponseBody
-  public Chatroom openRoom(int no) throws Exception {
+  public Chatroom openRoom(int no, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    chatService.updateRead(no, loginUser.getNo());
+
     return chatService.getRoom(no);
   }
 

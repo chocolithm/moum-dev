@@ -12,6 +12,7 @@ public class Chatroom {
   private User participant;
   private String lastMessage;
   private LocalDateTime chatDate;
+  private boolean read;
 
   public Chatroom() {
 

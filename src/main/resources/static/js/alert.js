@@ -122,13 +122,13 @@ function createAlertBoxContent(alert, box) {
       executeAlert(alert);
 
     } else {
-      updateRead(alert);
+      updateAlertRead(alert);
     }
   }
 }
 
 // 읽음 처리
-function updateRead(alert) {
+function updateAlertRead(alert) {
   fetch(`/alert/read?no=${alert.no}`)
     .then((result) => {
       if (result.ok) {

@@ -42,4 +42,9 @@ public class DefaultChatService implements ChatService {
   public Chatroom getRoomByBoard(int boardNo, int userNo) throws Exception {
     return chatDao.findRoomByBoard(boardNo, userNo);
   }
+
+  @Override
+  public boolean updateRead(int roomNo, int userNo) throws Exception {
+    return chatDao.updateRead(roomNo, userNo);
+  }
 }

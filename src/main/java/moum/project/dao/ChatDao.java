@@ -24,4 +24,6 @@ public interface ChatDao {
   Chatroom findRoom(int roomNo) throws Exception;
 
   Chatroom findRoomByBoard(int boardNo, int userNo) throws Exception;
+
+  boolean updateRead(@Param("chatroomNo") int chatroomNo, @Param("userNo") int userNo) throws Exception;
 }
