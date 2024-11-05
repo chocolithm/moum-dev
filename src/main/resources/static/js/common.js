@@ -97,6 +97,10 @@ function openLoginModal() {
             document.getElementById('loginFormContainer').innerHTML = data;
             modal.style.display = "block";
             populateEmailField();
+
+            // 배경 고정 및 스크롤 비활성화
+            document.body.style.overflow = "hidden";  // 스크롤 비활성화
+            document.body.style.position = "fixed";   // 페이지 위치 고정
         });
 }
 
@@ -119,6 +123,10 @@ function openSignupModal() {
                 }
                 document.body.appendChild(newScript);
             });
+
+            // 배경 고정 및 스크롤 비활성화
+            document.body.style.overflow = "hidden";  // 스크롤 비활성화
+            document.body.style.position = "fixed";   // 페이지 위치 고정
         });
 }
 
@@ -127,6 +135,10 @@ function closeLoginModal() {
     var modal = document.getElementById("loginModal");
     modal.style.display = "none";
     document.getElementById("loginFormContainer").innerHTML = "";
+
+    // 배경 고정 해제 및 스크롤 복구
+    document.body.style.overflow = "auto";   // 스크롤 활성화
+    document.body.style.position = "static"; // 페이지 위치 고정 해제
 }
 
 // 회원가입 모달 닫기
@@ -134,6 +146,10 @@ function closeSignupModal() {
     var modal = document.getElementById("signupModal");
     modal.style.display = "none";
     document.getElementById("signupFormContainer").innerHTML = "";
+
+    // 배경 고정 해제 및 스크롤 복구
+    document.body.style.overflow = "auto";   // 스크롤 활성화
+    document.body.style.position = "static"; // 페이지 위치 고정 해제
 }
 
 // 모달 외부 클릭 시 모달 닫기 처리
