@@ -56,9 +56,32 @@
         order by
                 ua.get_date desc,
                 progress desc
-
-
     </select>
+
+
+    <select id="listUserGetAchievement" resultMap="AchievementMap"> <!--목록!-->
+        select
+        ua.achievement_id,
+        ac.name,
+        ac.content,
+        ac.photo,
+        ac.acquisition_condition,
+        ac.location,
+        ua.progress,
+        ua.get_date
+        from
+        user_achievement ua
+        left join achievement ac
+        on ua.achievement_id = ac.achievement_id
+        where
+        user_id = #{no}
+        and
+        progress = 100
+
+        order by
+        ac.name desc;
+    </select>
+
 
     <select id="listByUserRank" resultMap="AchievementMap"> <!--목록!-->
         select

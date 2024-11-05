@@ -53,4 +53,9 @@ public class DefaultAchievementService implements AchievementService {
   public Achievement findRankByUser(int no) throws Exception {
     return achievementDao.findRankByUser(no);
   }
+
+  @Override
+  public List<Achievement> listUserGetAchievement(int no) throws Exception {
+    return achievementDao.listUserGetAchievement(no);
+  }
 }
