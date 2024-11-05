@@ -3,15 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>관리 페이지</title>
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link href="/css/style.css" rel="stylesheet" type="text/css">
+  <link href="/css/admin.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-<header th:replace="~{header :: header}"></header>
+  <header data-th-replace="~{header :: header}"></header>
 
-<h1> 공사중! </h1>
-<h1> 관리자용 페이지가 표시 될 페이지 입니다. </h1>
-<h1> 만드실 입주자 대환영!</h1>
+  <main>
+
+    <aside class="sidemenu clearfix">
+      <ul>
+        <li>
+          <input id="boardAdmin" type="checkbox">
+          <label for="boardAdmin">게시글 관리</label>
+        </li>
+        <li>
+          <input id="categoryAdmin" type="checkbox">
+          <label for="categoryAdmin">수집품 분류 관리</label>
+        </li>
+        <li>
+          <input id="achievementAdmin" type="checkbox">
+          <label for="achievementAdmin">업적 관리</label>
+        </li>
+        <li>
+          <input id="userAdmin" type="checkbox">
+          <label for="userAdmin">회원 관리</label>
+        </li>
+        <li>
+          <input id="reportAdmin" type="checkbox">
+          <label for="reportAdmin">신고/유해콘텐츠 관리</label>
+        </li>
+        <li>
+          <input id="statisticsAdmin" type="checkbox">
+          <label for="statisticsAdmin">통계 조회</label>
+        </li>
+      </ul>
+    </aside>
+    <section class="main-section">
+      <h1>입주합니다.</h1>
+    </section>
+  </main>
+
+  <footer data-th-replace="~{footer :: footer}"></footer>
 
 </body>
 </html>
