@@ -132,12 +132,16 @@ function sendAuthCode(email) {
     }
 
     const currentTime = new Date().getTime();
-    const threeMinutesInMillis = 3 * 60 * 1000;
 
-    // 이미 타이머가 실행 중인 경우
-    if (countdownTimer) {
-        return;
-    }
+    // 버튼 비활성화 및 메시지 업데이트
+    const emailCheckButton = document.querySelector('button[onclick*="checkDuplicate(\'email\'"]');
+    if (emailCheckButton.disabled) return;
+    emailCheckButton.disabled = true;
+
+    // 인증 코드가 발송되었음을 표시하고 타이머 즉시 시작
+    document.getElementById('emailMessage').textContent = '인증 코드가 발송되었습니다. 3분 후 다시 보낼 수 있습니다.';
+    document.getElementById('emailMessage').style.color = 'green';
+    if (!countdownTimer) startTimer();
 
     const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
     const csrfToken = document.querySelector("meta[name='_csrf']").content;
@@ -153,33 +157,34 @@ function sendAuthCode(email) {
         .then(response => response.text())
         .then(authCode => {
             if (authCode !== "duplicate") {
-                document.getElementById('emailMessage').textContent = '인증 코드가 발송되었습니다. 3분후 다시 보낼 수 있습니다.';
-                document.getElementById('emailMessage').style.color = 'green';
                 sessionStorage.setItem('authCode', authCode);
                 document.getElementById('authCodeField').style.display = 'block';
-
-                // 타이머 시작
-                startTimer();
-
-                // 마지막 발송 시간 업데이트
-                lastSentTime = currentTime;
-
-                // 이메일 중복 확인 버튼 비활성화
-                const emailCheckButton = document.querySelector('button[onclick*="checkDuplicate(\'email\'"]');
-                if (emailCheckButton) {
-                    emailCheckButton.disabled = true;
-                }
+            } else {
+                // 중복된 이메일일 경우 메시지와 버튼 상태 복구
+                emailCheckButton.disabled = false;
+                clearInterval(countdownTimer);
+                countdownTimer = null;
+                document.getElementById('emailMessage').textContent = '중복된 이메일입니다.';
+                document.getElementById('emailMessage').style.color = 'red';
+                const timerElement = document.getElementById('timer');
+                if (timerElement) timerElement.remove(); // 타이머 제거
             }
         })
         .catch(error => {
             console.error('인증 코드 요청 오류:', error);
+            emailCheckButton.disabled = false;
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+            document.getElementById('emailMessage').textContent = '인증 코드 발송에 실패했습니다. 다시 시도해 주세요.';
+            document.getElementById('emailMessage').style.color = 'red';
+            const timerElement = document.getElementById('timer');
+            if (timerElement) timerElement.remove(); // 타이머 제거
         });
 }
 
 function startTimer() {
     let timeLeft = 180; // 3분 = 180초
 
-    // 타이머 표시할 요소 생성 (없는 경우)
     let timerElement = document.getElementById('timer');
     if (!timerElement) {
         timerElement = document.createElement('span');
@@ -188,37 +193,30 @@ function startTimer() {
         document.getElementById('emailMessage').appendChild(timerElement);
     }
 
-    // 이전 타이머가 있다면 제거
     if (countdownTimer) {
         clearInterval(countdownTimer);
     }
 
-    // 새 타이머 시작
     countdownTimer = setInterval(() => {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
-
-        // 시간 표시 업데이트
         timerElement.textContent = `(${minutes}:${seconds < 10 ? '0' : ''}${seconds})`;
 
         if (timeLeft <= 0) {
-            // 타이머 종료
             clearInterval(countdownTimer);
             countdownTimer = null;
 
-            // 이메일 중복 확인 버튼 활성화
+            // 타이머 종료 후 버튼 다시 활성화
             const emailCheckButton = document.querySelector('button[onclick*="checkDuplicate(\'email\'"]');
             if (emailCheckButton) {
                 emailCheckButton.disabled = false;
             }
 
-            // 타이머 텍스트 제거
+            // 타이머 텍스트 제거 및 메시지 업데이트
             timerElement.remove();
-
             document.getElementById('emailMessage').textContent = '인증 코드를 다시 요청할 수 있습니다.';
             document.getElementById('emailMessage').style.color = 'blue';
         }
-
         timeLeft--;
     }, 1000);
 }

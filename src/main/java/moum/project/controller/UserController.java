@@ -186,7 +186,7 @@ public class UserController {
   public String signupSubmit(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
     try {
       userService.add(user);
-      return "redirect:/home?signupSuccess=true";
+      return "redirect:/home?openLoginModal=true";
     } catch (Exception e) {
       return "redirect:/user/signup?signupError=true";
     }
