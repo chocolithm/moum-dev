@@ -190,7 +190,7 @@ function updateCollection() {
         formData.append("price", document.querySelector("#updateForm #price").value);
         formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
         formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
-        formData.append("otherCategory", document.querySelector("#addForm #otherCategory").value.trim());
+        formData.append("otherCategory", document.querySelector("#updateForm #otherCategory").value.trim());
         formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value.trim());
         formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#updateForm #statusNo").value);

@@ -131,7 +131,7 @@
     set
       name = #{name},
       subcategory_id = #{subcategory.no},
-      other_category = #{otherCategory}
+      other_category = #{otherCategory},
       status_id = #{status.no},
       purchase_date = #{purchaseDate},
       purchase_place = #{purchasePlace},
