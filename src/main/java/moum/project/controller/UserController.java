@@ -86,6 +86,7 @@ public class UserController {
     User user = userService.getByEmail(email);
 
     model.addAttribute("user", user);
+    model.addAttribute("listGetUserAchievement", achievementService.listUserGetAchievement(user.getNo()));
     return "user/update";
   }
 

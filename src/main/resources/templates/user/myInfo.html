@@ -34,24 +34,22 @@
                 <p>이메일: <span th:text="*{email}"></span></p>
             </div>
 
+            <div class="user-info-dropdown">
+                <div th:if="${#lists.size(listGetUserAchievement) > 0}" class="user-title-dropdown">
+                    <label for="user-title">업적 선택:</label>
+                    <select id="user-title" name="user-title">
+                        <option th:each="title : ${listGetUserAchievement}" th:value="${title.name}" th:text="${title.name}">업적</option>
+                    </select>
+                    <!--<button class="edit-button" onclick="location.href='/user/achievement'">수정하기</button> !-->
+                </div>
+
             <button class="edit-button" onclick="location.href='/user/update'">수정하기</button>
         </div>
-
+        </div>
+    </div>
 
         <!-- 드롭다운 기능 들어간 유저 인포-->
-        <div class="user-info-dropdown">
-            <p>닉네임: <span th:text="${user.nickname}"></span></p>
 
-            <div th:if="${#lists.size(listGetUserAchievement) > 0}" class="user-title-dropdown">
-                <label for="user-title">업적 선택:</label>
-                <select id="user-title" name="user-title">
-                    <option th:each="title : ${listGetUserAchievement}" th:value="${title.name}" th:text="${title.name}">업적</option>
-                </select>
-                <!--<button class="edit-button" onclick="location.href='/user/achievement'">수정하기</button> !-->
-            </div>
-
-        </div>
-        </div>
 
 
 
