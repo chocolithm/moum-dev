@@ -1,7 +1,3 @@
-// signup에서 user.js 호출할 때마다 let 변수를 생성하면서 오류 발생하므로 header로 옮깁니다.
-//let nicknameChecked = false;
-//let emailChecked = false;
-//let passwordMatch = false;
 let lastSentTime = 0;  // 마지막 인증 코드 발송 시간을 저장하는 변수
 let countdownTimer = null;
 

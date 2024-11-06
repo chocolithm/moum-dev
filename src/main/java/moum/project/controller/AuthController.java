@@ -1,14 +1,17 @@
 package moum.project.controller;
 
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Collections;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.UserDao;
+import moum.project.dto.MailDTO;
 import moum.project.service.MailService;
+import moum.project.service.UserService;
 import moum.project.vo.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,12 +32,15 @@ import org.springframework.web.bind.annotation.*;
  * 24. 10. 23.        narilee       쿠키 적용
  * 24. 10. 24.        narilee       스프링 시큐리티로 로그인, 로그아웃 이관
  * 24. 11. 04.        narilee       비밀번호 변경 기능 추가
+ * 24. 11. 05.        narilee       비밀번호 찾기 기능 추가
+ * 24. 11. 06.        narilee       비밀번호 찾기 기능 변수명 newPassword -> password
  */
 @Controller
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
+  private final UserService userService;
   private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
   private final UserDao userDao;
@@ -70,103 +76,73 @@ public class AuthController {
   }
 
   /**
-   * 비밀번호 재설정 페이지를 보여줍니다.
-   *
-   * @param model Spring MVC 모델
-   * @return 비밀번호 재설정 페이지 뷰 이름
+   * 비밀번호 재설정 페이지를 표시합니다.
    */
-  @GetMapping("/resetPassword")
-  public String resetPassword(Model model) {
-    return "auth/resetPassword";
+  @GetMapping("/reset-password")
+  public String resetPasswordForm() {
+    return "auth/reset-password";
   }
 
   /**
-   * 비밀번호 재설정을 위한 인증 코드를 이메일로 전송합니다.
+   * 비밀번호 재설정을 처리합니다.
+   * 이메일 인증 후 새로운 비밀번호로 업데이트합니다.
    *
-   * @param email 사용자 이메일 주소
-   * @param model Spring MVC 모델
-   * @return 인증 코드 확인 페이지 또는 에러 발생 시 비밀번호 재설정 페이지
-   * @throws MessagingException 이메일 전송 실패 시 발생
+   * @param requestBody 이메일과 새 비밀번호 정보를 포함한 요청
+   * @return 처리 결과를 담은 ResponseEntity
    */
-  @PostMapping("/sendPasswordResetCode")
-  public String sendPasswordResetCode(@RequestParam String email, Model model)
-      throws MessagingException {
-    User user = userDao.findByEmail(email); // 이메일로 사용자 조회
-    if (user != null) {
-      String authCode = mailService.sendSimpleMessage(email); // 인증 코드 전송
-      model.addAttribute("authCode", authCode); // 인증 코드를 모델에 추가
-      model.addAttribute("email", email); // 이메일 추가
-      return "/auth/verifyResetCode"; // 인증 코드 확인 페이지로 이동
-    } else {
-      model.addAttribute("error", "해당 이메일을 사용하는 계정을 찾을 수 없습니다.");
-      return "/auth/resetPassword"; // 비밀번호 찾기 페이지로 다시 이동
-    }
-  }
+  @PostMapping("/reset-password")
+  @ResponseBody
+  public ResponseEntity<String> resetPassword(
+      @RequestBody Map<String, String> requestBody
+    ) {
 
+    String email = requestBody.get("email");
+    String password = requestBody.get("password");
 
-  /**
-   * 인증 코드 확인 페이지를 보여줍니다.
-   *
-   * @param model Spring MVC 모델
-   * @return 인증 코드 확인 페이지 뷰 이름
-   */
-  @GetMapping("/verifyResetCode")
-  public String verifyResetCode(Model model) {
-    return "auth/verifyResetCode";
-  }
+    try {
+      // 이메일로 사용자 찾기
+      User user = userService.getByEmail(email);
+      if (user == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("사용자를 찾을 수 없습니다.");
+      }
 
-  /**
-   * 사용자가 입력한 인증 코드의 유효성을 검증합니다.
-   *
-   * @param email 사용자 이메일 주소
-   * @param inputCode 사용자가 입력한 인증 코드
-   * @param authCode 시스템이 생성한 인증 코드
-   * @param model Spring MVC 모델
-   * @return 인증 성공 시 새 비밀번호 설정 페이지, 실패 시 인증 코드 확인 페이지
-   */
-  @PostMapping("/verifyResetCode")
-  public String verifyResetCode(@RequestParam String email, @RequestParam String inputCode,
-      @RequestParam String authCode, Model model) {
-    if (inputCode.equals(authCode)) { // 입력한 코드가 인증 코드와 일치하는지 확인
-      model.addAttribute("email", email); // 이메일 추가
-      return "/auth/setNewPassword"; // 비밀번호 재설정 페이지로 이동
-    } else {
-      model.addAttribute("error", "인증 코드가 올바르지 않습니다.");
-      return "/auth/verifyResetCode"; // 인증 코드 확인 페이지로 다시 이동
+      // 새 비밀번호 암호화 및 저장
+      user.setPassword(passwordEncoder.encode(password));
+      userService.update(user);
+
+      return ResponseEntity.ok().body("success");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("비밀번호 변경 중 오류가 발생했습니다.");
     }
   }
 
   /**
-   * 새 비밀번호 설정 페이지를 보여줍니다.
+   * 이메일 존재 여부를 확인하고 인증 코드를 발송합니다.
    *
-   * @param model Spring MVC 모델
-   * @return 새 비밀번호 설정 페이지 뷰 이름
+   * @param mailDTO 메일 전송을 위한 데이터 전송 객체
+   * @return 인증 메일
    */
-  @GetMapping("/setNewPassword")
-  public String setNewPassword(Model model) {
-    return "auth/setNewPassword";
-  }
+  @PostMapping("/check-email")
+  @ResponseBody
+  public ResponseEntity<String> checkEmail(@RequestBody MailDTO mailDTO) {
+    try {
+      String email = mailDTO.getEmail();
 
-  /**
-   * 새로운 비밀번호를 설정하고 저장합니다.
-   *
-   * @param email 사용자 이메일 주소
-   * @param newPassword 새로 설정할 비밀번호
-   * @param model Spring MVC 모델
-   * @return 성공 시 로그인 페이지로 리다이렉트, 실패 시 비밀번호 재설정 페이지
-   * @throws Exception 비밀번호 업데이트 실패 시 발생
-   */
-  @PostMapping("/setNewPassword")
-  public String setNewPassword(@RequestParam String email, @RequestParam String newPassword, Model model)
-      throws Exception {
-    User user = userDao.findByEmail(email);
-    if (user != null) {
-      user.setPassword(passwordEncoder.encode(newPassword)); // 새 비밀번호 설정
-      userDao.update(user); // 데이터베이스에 업데이트
-      return "redirect:/auth/form?passwordResetSuccess=true"; // 로그인 페이지로 리다이렉트
-    } else {
-      model.addAttribute("error", "비밀번호 재설정 중 오류가 발생했습니다.");
-      return "/auth/setNewPassword"; // 비밀번호 재설정 페이지로 다시 이동
+      // 이메일 존재 여부 확인
+      if (!userService.isEmailTaken(email)) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("등록되지 않은 이메일입니다.");
+      }
+
+      // 인증 코드 생성 및 발송
+      String authCode = mailService.sendSimpleMessage(email);
+      return ResponseEntity.ok(authCode);
+
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("인증 코드 발송 중 오류가 발생했습니다.");
     }
   }
 }
