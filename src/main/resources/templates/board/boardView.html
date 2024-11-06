@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 상세보기</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/board.css}">
+    <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
 
@@ -18,11 +18,11 @@
     <div class="search-container">
         <div class="navigation-pill">
             <div class="title-wrapper">
-                <div class="title" th:text="'주제별'" style="font-weight: bold">주제별</div>
+                <div class="title" style="font-weight: bold" th:text="'주제별'">주제별</div>
             </div>
         </div>
-        <input type="text" class="search-input" placeholder="Search">
-        <button type="submit" class="search-button">
+        <input class="search-input" placeholder="Search" type="text">
+        <button class="search-button" type="submit">
             <i class="fas fa-search"></i>
         </button>
     </div>
@@ -32,9 +32,9 @@
         <div th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}">
             <div class="slider">
                 <div class="slides">
-                    <img th:each="attachedFile : ${board.attachedFiles}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${attachedFile.filename}}"
-                         alt="게시글 이미지">
+                    <img alt="게시글 이미지"
+                         th:each="attachedFile : ${board.attachedFiles}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${attachedFile.filename}}">
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
         <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
         <p>조회수: <span th:text="${board.viewCount}">0</span></p>
         <p>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></p>
-        <button type="button" th:onclick="'toggleLike(' + ${board.no} + ');'" class="like-button">추천하기</button>
+        <button class="like-button" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
         <hr/>
         <div th:text="${board.content}">게시글 내용</div>
     </div>
@@ -54,8 +54,8 @@
         <fieldset>
             <legend class="skipinfo">댓글 입력</legend>
             <div class="cm_input">
-                <p><textarea id="content" name="content" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
-                <span><button type="button" class="btns" data-th-onclick="'saveComment(' + ${board.no} + ');'">등 록</button> <i id="counter">0/300자</i></span>
+                <p><textarea cols="90" id="content" name="content" onkeyup="countingLength(this);" placeholder="댓글을 입력해 주세요." rows="4"></textarea></p>
+                <span><button class="btns" data-th-onclick="'saveComment(' + ${board.no} + ');'" type="button">등 록</button> <i id="counter">0/300자</i></span>
             </div>
             <div class="cm_list">
 
@@ -65,6 +65,7 @@
 </main>
 
 <script src="/js/board.js"></script>
+<footer th:replace="~{footer :: footer}"></footer>
 
 </body>
 </html>
