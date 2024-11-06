@@ -1,6 +1,13 @@
-<!-- postForm.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="csrf-token" th:content="${_csrf.token}"/>
+    <meta name="csrf-header" th:content="${_csrf.headerName}"/>
+    <title>게시글 등록</title>
+</head>
+<body>
 <div class="post-form-layer">
-    <form id="postForm">
+    <form id="postForm" th:action="@{/board/addPost}" th:method="post" enctype="multipart/form-data">
         <!-- 수집품 사진 등록 -->
         <div>
             <label for="files">사진 업로드:</label>
@@ -12,29 +19,73 @@
         <!-- 제목 입력 -->
         <div>
             <label for="title">제목:</label>
-            <input id="title" name="title" required type="text">
+            <input id="title" name="title" required type="text" th:value="${post?.title}">
         </div>
 
         <!-- 내용 입력 -->
         <div>
             <label for="content">내용:</label>
-            <textarea id="content" name="content" required></textarea>
+            <textarea id="content" name="content" required th:text="${post?.content}"></textarea>
         </div>
 
         <!-- 게시글 종류 선택 -->
         <div>
             <label>게시글 종류:</label>
-            <input checked id="boardType1" name="boardType" type="radio" value="general">
-            <label for="boardType1">게시판 글</label>
-            <input id="boardType2" name="boardType" type="radio" value="trade">
-            <label for="boardType2">수집품 거래 글</label>
+            <input checked id="general" name="boardType" type="radio" value="general" onclick="toggleFields(this)"
+                   th:checked="${post?.boardType == 'general'}">
+            <label for="general">게시판 글</label>
+            <input id="trade" name="boardType" type="radio" value="trade" onclick="toggleFields(this)"
+                   th:checked="${post?.boardType == 'trade'}">
+            <label for="trade">수집품 거래 글</label>
+        </div>
+
+        <!-- 수집품 거래 글 전용 입력 필드 -->
+        <div id="tradeFields" th:style="${post?.boardType == 'trade' ? 'display:block;' : 'display:none;'}">
+            <!-- 가격 입력 -->
+            <div>
+                <label for="price">가격:</label>
+                <input id="price" name="price" type="number" th:value="${post?.price}">
+            </div>
+
+            <!-- 상품 상태 선택 -->
+            <div>
+                <label for="status">상품 상태:</label>
+                <select id="status" name="status">
+                    <option value="1">미개봉</option>
+                    <option value="2">사용감 없음</option>
+                    <option value="3">사용감 있음</option>
+                </select>
+            </div>
+
+            <!-- 판매 또는 구매 선택 -->
+            <div>
+                <label>판매 또는 구매:</label>
+                <input id="sell" name="transactionType" type="radio" value="sell"
+                       th:checked="${post?.transactionType == 'sell'}">
+                <label for="sell">판매</label>
+                <input id="buy" name="transactionType" type="radio" value="buy"
+                       th:checked="${post?.transactionType == 'buy'}">
+                <label for="buy">구매</label>
+            </div>
+
+            <!-- 전화번호 입력 -->
+            <div>
+                <label for="contact">전화번호:</label>
+                <input id="contact" name="contact" type="tel" th:value="${post?.contact}">
+            </div>
         </div>
 
         <!-- 수집품 불러오기 버튼 -->
-        <div id="collectionSection" style="display: none;">
+        <div id="collectionSection" th:style="${post?.boardType == 'trade' ? 'display:block;' : 'display:none;'}">
             <button onclick="openCollectionSelection()" type="button">수집품 불러오기</button>
             <!-- 선택된 수집품 표시 영역 -->
-            <div id="selectedCollection"></div>
+            <div id="collectionSelectionModal">
+
+            </div>
+            <div id="selectedCollection">
+
+
+            </div>
         </div>
 
         <!-- 등록하기 버튼 -->
@@ -43,3 +94,7 @@
         </div>
     </form>
 </div>
+
+<script src="/js/board.js"></script>
+</body>
+</html>

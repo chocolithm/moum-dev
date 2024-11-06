@@ -25,7 +25,11 @@ public class Board implements Serializable {
 
     private Collection collection; // 거래대상 수집품
     private int price; // 가격
-    private boolean status; // 거래상태
+    private CollectionStatus collectionStatus;
+    private boolean status;
     private int likeCount; // 추천수 추가
+    private String transactionType;
+    private String contact;
+
 
 }

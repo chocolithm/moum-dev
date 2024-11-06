@@ -28,6 +28,7 @@ public class BoardController {
     private final CollectionService collectionService;
     private final AchievementService achievementService;
     private final UserService userService;
+    private final CollectionStatusService collectionStatusService;
 
     private final String boardFolderName = "board/";
 
@@ -54,8 +55,8 @@ public class BoardController {
     public String tradeHome(Model model) throws Exception {
         List<Board> tradePosts = boardService.listTradePosts();
         // 게시글을 3개로 제한
-        if (tradePosts.size() > 3) {
-            tradePosts = tradePosts.subList(0, 3);
+        if (tradePosts.size() > 10) {
+            tradePosts = tradePosts.subList(0, 10);
         }
         model.addAttribute("tradePosts", tradePosts);
         return "board/tradeHome";
@@ -240,30 +241,45 @@ public class BoardController {
 
     @PostMapping("/addPost")
     @ResponseBody
-    public String addPost(Board board, @RequestParam("files") MultipartFile[] files,
-                          @RequestParam(value = "collection.no", required = false) Integer collectionNo, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    public String addPost(Board board,
+                          Model model,
+                          @RequestParam("files") MultipartFile[] files,
+                          @RequestParam(value = "collection.no", required = false) Integer collectionNo,
+                          @RequestParam(value = "price", required = false) Integer price,
+                          @RequestParam(value = "contact", required = false) String contact,
+                          @RequestParam(value = "status", required = false) Integer status,
+                          @RequestParam(value = "transactionType", required = false) String transactionType,
+                          @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
         User loginUser = userService.getByEmail(userDetails.getUsername());
         board.setUserNo(loginUser.getNo());
+        List<CollectionStatus> collectionStatusList = collectionStatusService.list();
+
 
         try {
-            // 게시글 종류에 따라 처리
             if ("trade".equals(board.getBoardType())) {
-                // 수집품 거래 글인 경우
-                // 수집품 정보를 설정
+                // 전체 CollectionStatus 리스트를 모델에 추가 (필요한 경우)
+                model.addAttribute("collectionStatusList", collectionStatusList);
+
                 if (collectionNo != null) {
                     Collection collection = collectionService.get(collectionNo);
                     board.setCollection(collection);
                 }
-                // 추가적인 거래 관련 필드 설정
-                // 예: 가격, 거래 상태 등
+
+                board.setPrice(price);
+                board.setContact(contact);
+                board.setTransactionType(transactionType);
+
+                // 개별 CollectionStatus 객체를 ID로 조회하여 설정
+                if (status != null) {
+                    CollectionStatus collectionStatus = collectionStatusService.getById(status);
+                    board.setCollectionStatus(collectionStatus);
+                }
             }
 
-            // 파일 업로드 처리
             List<AttachedFile> attachedFiles = uploadFiles(files);
             board.setAttachedFiles(attachedFiles);
 
-            // 게시글 등록
             boardService.add(board);
 
             return "success";
@@ -272,5 +288,8 @@ public class BoardController {
             return "failure";
         }
     }
+
+
+
 
 }

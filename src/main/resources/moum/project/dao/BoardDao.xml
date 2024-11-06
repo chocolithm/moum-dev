@@ -25,6 +25,12 @@
             <result column="collection_name" property="name"/>
         </association>
 
+        <association property="collectionStatus" javaType="moum.project.vo.CollectionStatus">
+            <id column="status_id" property="no"/>
+            <result column="status_name" property="name"/>
+        </association>
+
+
         <!-- attachedFiles 매핑 수정 -->
         <collection property="attachedFiles" ofType="moum.project.vo.AttachedFile">
             <id column="photo_id" property="no"/>

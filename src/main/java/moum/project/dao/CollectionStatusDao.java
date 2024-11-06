@@ -4,6 +4,7 @@ import java.util.List;
 import moum.project.vo.Collection;
 import moum.project.vo.CollectionStatus;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface CollectionStatusDao {
@@ -16,4 +17,8 @@ public interface CollectionStatusDao {
   boolean update(CollectionStatus status) throws Exception;
 
   boolean delete(int no) throws Exception;
+  
+  CollectionStatus findById(@Param("id") int id) throws Exception;
+
+
 }
