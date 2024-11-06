@@ -77,10 +77,11 @@
             </div>
         </div>
 
+
+
         <div class="achievement-box">
             <div class="title-section">
                 <h2>내 업적</h2> <!-- 제목 추가 -->
-
                 <div class="achievement-header">
                     <img src="/images/user/more/three-dots.png"
                          alt="내 업적 현황"
@@ -109,6 +110,9 @@
                      data-th-class="'progress-bar ' + (${achievement.progress < 50 ? 'low' : (achievement.progress < 80 ? 'medium' : 'high')})"
                      data-th-style="'width:' + ${achievement.progress} + '%'"></div>
             </div>
+
+
+
             <div class="info-progress-text" data-th-text="${achievement.progress} + '%'"></div>
         </span>
                 </div>
