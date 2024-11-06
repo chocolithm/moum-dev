@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.CollectionCategoryService;
 import moum.project.service.CollectionService;
 import moum.project.service.CollectionStatusService;
-import moum.project.service.MaincategoryService;
 import moum.project.service.StorageService;
-import moum.project.service.SubcategoryService;
 import moum.project.service.UserService;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Collection;
@@ -36,9 +35,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class CollectionController {
 
   private final CollectionService collectionService;
-  private final MaincategoryService maincategoryService;
-  private final SubcategoryService subcategoryService;
-  private final CollectionStatusService collectionStatusService;
+  private final CollectionCategoryService categoryService;
+  private final CollectionStatusService statusService;
   private final StorageService storageService;
   private final UserService userService;
 
@@ -47,8 +45,8 @@ public class CollectionController {
 
   @GetMapping("/form")
   public String form(Model model) throws Exception {
-    List<Maincategory> maincategoryList = maincategoryService.list();
-    List<CollectionStatus> collectionStatusList = collectionStatusService.list();
+    List<Maincategory> maincategoryList = categoryService.listMaincategory();
+    List<CollectionStatus> collectionStatusList = statusService.list();
 
     model.addAttribute("maincategoryList", maincategoryList);
     model.addAttribute("collectionStatusList", collectionStatusList);
@@ -108,9 +106,9 @@ public class CollectionController {
   @GetMapping("/view")
   public String view(int no, Model model) throws Exception {
     Collection collection = collectionService.get(no);
-    List<Maincategory> maincategoryList = maincategoryService.list();
-    List<Subcategory> subcategoryList = subcategoryService.list(collection.getMaincategory().getNo());
-    List<CollectionStatus> collectionStatusList = collectionStatusService.list();
+    List<Maincategory> maincategoryList = categoryService.listMaincategory();
+    List<Subcategory> subcategoryList = categoryService.listSubcategory(collection.getMaincategory().getNo());
+    List<CollectionStatus> collectionStatusList = statusService.list();
 
     model.addAttribute("collection", collection);
     model.addAttribute("maincategoryList", maincategoryList);
@@ -236,6 +234,11 @@ public class CollectionController {
     return true;
   }
 
+  @GetMapping("/subcategory/list")
+  @ResponseBody
+  public List<Subcategory> list(int maincategoryNo) throws Exception {
+    return categoryService.listSubcategory(maincategoryNo);
+  }
 
 
 

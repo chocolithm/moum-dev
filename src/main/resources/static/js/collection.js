@@ -348,7 +348,7 @@ function fetchSubcategories(maincategoryNo) {
         otherCategoryInput.parentNode.parentNode.style.display = "none";
         subcategorySelect.parentNode.parentNode.style.display = "table-row";
         subcategorySelect.disabled = false;
-        fetch(`/subcategory/list?maincategoryNo=${maincategoryNo}`)
+        fetch(`/collection/subcategory/list?maincategoryNo=${maincategoryNo}`)
             .then(response => response.json())
             .then(data => {
                 data.forEach((subcategory, index) => {

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface CollectionCategoryDao {
-  List<Subcategory> list(int maincategoryNo) throws Exception;
+  List<Subcategory> listSubcategory(int maincategoryNo) throws Exception;
 
-  List<Maincategory> list() throws Exception;
+  List<Maincategory> listMaincategory() throws Exception;
 }

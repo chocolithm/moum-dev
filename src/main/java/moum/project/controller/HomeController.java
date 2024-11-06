@@ -3,8 +3,8 @@ package moum.project.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.CollectionCategoryService;
 import moum.project.service.CollectionService;
-import moum.project.service.MaincategoryService;
 import moum.project.service.UserService;
 import moum.project.vo.Collection;
 import moum.project.vo.Maincategory;
@@ -34,7 +34,7 @@ public class HomeController {
 
   private final UserService userService;
   private final CollectionService collectionService;
-  private final MaincategoryService maincategoryService;
+  private final CollectionCategoryService categoryService;
 
   /**
    * 이 메서드는 "/", "/home" URL로 들어오는 GET 요청을 처리합니다.
@@ -55,7 +55,7 @@ public class HomeController {
       User loginUser = userService.getByEmail(email);
 
       List<Collection> collectionList = collectionService.list(loginUser.getNo());
-      List<Maincategory> maincategoryList = maincategoryService.list();
+      List<Maincategory> maincategoryList = categoryService.listMaincategory();
 
       model.addAttribute("collectionList", collectionList);
       model.addAttribute("maincategoryList", maincategoryList);

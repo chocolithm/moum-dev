@@ -5,7 +5,7 @@ import moum.project.vo.Maincategory;
 import moum.project.vo.Subcategory;
 
 public interface CollectionCategoryService {
-  List<Subcategory> list(int maincategoryNo) throws Exception;
+  List<Subcategory> listSubcategory(int maincategoryNo) throws Exception;
 
-  List<Maincategory> list() throws Exception;
+  List<Maincategory> listMaincategory() throws Exception;
 }

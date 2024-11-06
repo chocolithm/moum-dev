@@ -14,12 +14,12 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   private final CollectionCategoryDao collectionCategoryDao;
 
   @Override
-  public List<Subcategory> list(int maincategoryNo) throws Exception {
-    return collectionCategoryDao.list(maincategoryNo);
+  public List<Subcategory> listSubcategory(int maincategoryNo) throws Exception {
+    return collectionCategoryDao.listSubcategory(maincategoryNo);
   }
 
   @Override
-  public List<Maincategory> list() throws Exception {
-    return List.of();
+  public List<Maincategory> listMaincategory() throws Exception {
+    return collectionCategoryDao.listMaincategory();
   }
 }
