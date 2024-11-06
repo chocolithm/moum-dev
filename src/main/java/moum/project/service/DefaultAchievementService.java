@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.AchievementDao;
 import moum.project.vo.Achievement;
+import moum.project.vo.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,9 +36,20 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
+  public boolean updateMyinfoAchievement(Achievement achievement) throws Exception {
+    return achievementDao.updateMyinfoAchievement(achievement);
+  }
+
+  @Override
+  public boolean deleteMyinfoAchievement(User user) throws Exception {
+    return achievementDao.deleteMyinfoAchievement(user);
+  }
+
+  @Override
   public boolean update(Achievement achievement) throws Exception {
     return achievementDao.update(achievement);
   }
+
 
   @Override
   public void delete(String id) throws Exception {
@@ -57,5 +69,10 @@ public class DefaultAchievementService implements AchievementService {
   @Override
   public List<Achievement> listUserGetAchievement(int no) throws Exception {
     return achievementDao.listUserGetAchievement(no);
+  }
+
+  @Override
+  public Achievement findPrimary(int no) throws Exception {
+    return achievementDao.findPrimary(no);
   }
 }

@@ -2,6 +2,7 @@ package moum.project.service;
 
 import java.util.List;
 import moum.project.vo.Achievement;
+import moum.project.vo.User;
 
 public interface AchievementService {
   void add(Achievement achievement) throws Exception;
@@ -21,4 +22,10 @@ public interface AchievementService {
   Achievement findRankByUser(int no) throws Exception;
 
   List<Achievement> listUserGetAchievement(int userNo) throws Exception;
+
+  boolean updateMyinfoAchievement(Achievement achievement) throws Exception;
+
+  boolean deleteMyinfoAchievement(User user) throws Exception;
+
+  Achievement findPrimary(int no) throws Exception;
 }
