@@ -63,7 +63,8 @@ public class BoardController {
     }
 
     @GetMapping({"/", "/boardHome"})
-    public String boardHome(Model model,   @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    public String boardHome(Model model, @AuthenticationPrincipal UserDetails userDetails)
+        throws Exception {
 
         String email = userDetails.getUsername();
         User loginUser = userService.getByEmail(email);
@@ -84,9 +85,9 @@ public class BoardController {
 
         // 고정된 업적 데이터 추가
         List<Map<String, Object>> achievements = List.of(
-                Map.of("rank", 1, "name", "레고 윈터랜드"),
-                Map.of("rank", 2, "name", "대디하디"),
-                Map.of("rank", 3, "name", "피규어 레이더")
+            Map.of("rank", 1, "name", "레고 윈터랜드"),
+            Map.of("rank", 2, "name", "대디하디"),
+            Map.of("rank", 3, "name", "피규어 레이더")
         );
 
         // 모델에 데이터 추가
@@ -95,10 +96,13 @@ public class BoardController {
         model.addAttribute("achievements", achievements);
 
         List<Achievement> userRankList = achievementService.listByUserRank();
-        model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+        model.addAttribute("rankList",
+            userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
 
-        Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
-        model.addAttribute("rankNowUserList", user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+        Achievement user_achievement_ranklist = achievementService.findRankByUser(
+            loginUser.getNo());
+        model.addAttribute("rankNowUserList",
+            user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
 
         return "board/boardHome";
     }
@@ -161,7 +165,8 @@ public class BoardController {
     }
 
     @PostMapping("/update")
-    public String update(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
+    public String update(Board board, @RequestParam("files") MultipartFile[] files)
+        throws Exception {
         // 기존 게시글을 가져옴
         Board existingBoard = boardService.get(board.getNo());
         if (existingBoard == null) {
@@ -196,13 +201,17 @@ public class BoardController {
     }
 
 
-
     private List<AttachedFile> uploadFiles(MultipartFile[] files) throws Exception {
         List<AttachedFile> attachedFiles = new ArrayList<>();
 
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
                 continue;
+            }
+
+            // 파일 크기 제한 (10MB)
+            if (file.getSize() > 10 * 1024 * 1024) {  // 10MB 초과 시 예외 처리
+                throw new IllegalArgumentException("파일 크기는 10MB를 초과할 수 없습니다.");
             }
 
             AttachedFile attachedFile = new AttachedFile();
@@ -217,11 +226,11 @@ public class BoardController {
 
             // 파일 업로드 수행
             storageService.upload(
-                    boardFolderName + attachedFile.getFilename(),
-                    file.getInputStream(),
-                    Map.of(
-                            StorageService.CONTENT_TYPE, file.getContentType()
-                    )
+                boardFolderName + attachedFile.getFilename(),
+                file.getInputStream(),
+                Map.of(
+                    StorageService.CONTENT_TYPE, file.getContentType()
+                )
             );
 
             attachedFiles.add(attachedFile);
@@ -229,8 +238,6 @@ public class BoardController {
 
         return attachedFiles;
     }
-
-
 
 
 
@@ -242,19 +249,18 @@ public class BoardController {
     @PostMapping("/addPost")
     @ResponseBody
     public String addPost(Board board,
-                          Model model,
-                          @RequestParam("files") MultipartFile[] files,
-                          @RequestParam(value = "collection.no", required = false) Integer collectionNo,
-                          @RequestParam(value = "price", required = false) Integer price,
-                          @RequestParam(value = "contact", required = false) String contact,
-                          @RequestParam(value = "status", required = false) Integer status,
-                          @RequestParam(value = "transactionType", required = false) String transactionType,
-                          @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+        Model model,
+        @RequestParam("files") MultipartFile[] files,
+        @RequestParam(value = "collection.no", required = false) Integer collectionNo,
+        @RequestParam(value = "price", required = false) Integer price,
+        @RequestParam(value = "contact", required = false) String contact,
+        @RequestParam(value = "status", required = false) Integer status,
+        @RequestParam(value = "transactionType", required = false) String transactionType,
+        @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
         User loginUser = userService.getByEmail(userDetails.getUsername());
         board.setUserNo(loginUser.getNo());
         List<CollectionStatus> collectionStatusList = collectionStatusService.list();
-
 
         try {
             if ("trade".equals(board.getBoardType())) {
@@ -288,6 +294,51 @@ public class BoardController {
             return "failure";
         }
     }
+
+
+    @GetMapping("/boardDetailForm")
+    public String boardDetailForm(Model model) {
+        return "board/boardDetailForm";
+    }
+
+
+
+    @PostMapping("/addDetailPost")
+    public String addDetailPost(Board board,
+        @RequestParam("files") MultipartFile[] files,
+        @AuthenticationPrincipal UserDetails userDetails,
+        Model model) throws Exception {
+
+        // boardType을 "general"로 설정
+        board.setBoardType("general");
+
+        User loginUser = userService.getByEmail(userDetails.getUsername());
+        board.setUserNo(loginUser.getNo());
+
+        try {
+            List<AttachedFile> attachedFiles = uploadFiles(files);
+            board.setAttachedFiles(attachedFiles);
+
+            boardService.add(board);
+
+            // 업로드된 파일의 URL 리스트 생성
+            List<String> imageUrls = attachedFiles.stream()
+                .map(file -> "/uploads/" + boardFolderName + file.getFilename())
+                .toList();
+
+            model.addAttribute("imageUrls", imageUrls);  // 모델에 추가해 클라이언트에 전달
+
+            return "redirect:/board/boardList";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "failure";
+        }
+    }
+
+
+
+
+
 
 
 

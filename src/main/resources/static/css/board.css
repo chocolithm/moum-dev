@@ -98,7 +98,27 @@
     padding: 50px;
     gap: 20px;
 }
+     /* 글쓰기 버튼 스타일 */
+ .write-button {
+     display: inline-block;
+     padding: 8px 16px;
+     font-weight: bold;
+     font-size: 16px;
+     color: #000000;
+     background-color: rgb(255, 255, 255);
+     border: none;
+     border-radius: 12px; /* 모서리를 둥글게 */
+     text-decoration: none;
+     position: absolute;
+     right: 20px;
+     top: 10px;
+ }
 
+
+
+.write-button:hover {
+    background-color: #ffffff; /* 호버 시 색상 변경 */
+}
 .boardList-middle-box {
     width: 85%;
     min-width: 250px;

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>전체게시판</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/board.css}">
+
 </head>
 
 <body>
@@ -27,8 +28,12 @@
 
     <div class="boardList">
         <!-- 첫 번째 박스 (전체 게시글) -->
-        <div class="boardList-middle-box">
+        <div class="boardList-middle-box" style="position: relative; padding-top: 40px;">
             <h2>전체 게시글</h2>
+
+            <!-- 글쓰기 버튼을 박스 내부 오른쪽 상단에 위치 -->
+            <a th:href="@{/board/boardDetailForm}" class="write-button">글쓰기</a>
+
             <div class="boardList-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
                     <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
