@@ -11,6 +11,9 @@ function openAlertModal() {
   fadeIn(alert_layer);
   alert_btn.onclick = () => closeAlertModal();
 
+  document.querySelector("main").addEventListener("click", function () {
+    closeAlertModal();
+  }, { once: true });
 }
 
 // 알림창 닫기

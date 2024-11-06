@@ -126,6 +126,10 @@ function openChatroomModal() {
   fetchChatroomList();
   chat_btn.onclick = () => closeChatroomModal();
   fadeIn(chatroom_layer);
+
+  document.querySelector("main").addEventListener("click", function () {
+    closeChatroomModal();
+  }, { once: true });
 }
 
 // 채팅 모달 닫기
