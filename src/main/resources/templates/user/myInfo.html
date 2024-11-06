@@ -36,15 +36,16 @@
 
             <div class="user-info-dropdown">
                 <div th:if="${#lists.size(listGetUserAchievement) > 0}" class="user-title-dropdown">
-                    <label for="user-title">업적 선택:</label>
-                    <select id="user-title" name="user-title">
-                        <option th:each="title : ${listGetUserAchievement}" th:value="${title.name}" th:text="${title.name}">업적</option>
-                    </select>
-                    <!--<button class="edit-button" onclick="location.href='/user/achievement'">수정하기</button> !-->
+                    <p data-th-text="'업적:' + ${primaryAchievement.name}"></p>
+                </div>
+
+                <div th:if="${#lists.size(listGetUserAchievement) == 0}" class="user-title-dropdown">
+                    <p>업적을 등록해주세요.</p>
                 </div>
 
             <button class="edit-button" onclick="location.href='/user/update'">수정하기</button>
         </div>
+
         </div>
     </div>
 

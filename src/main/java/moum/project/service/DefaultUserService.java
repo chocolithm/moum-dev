@@ -1,6 +1,5 @@
 package moum.project.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.AchievementDao;
@@ -61,7 +60,12 @@ public class DefaultUserService implements UserService {
       return userDao.list();
     }
 
-    /**
+  @Override
+  public List<User> listByPage(int pageNo, int pageCount) throws Exception {
+    return userDao.listByPage(pageNo, pageCount);
+  }
+
+  /**
      * 지정된 사용자 번호에 해당하는 사용자 정보를 반환합니다.
      *
      * @param userNo 조회할 사용자의 번호

@@ -140,6 +140,18 @@
         order by userrank
     </select>
 
+    <select id="findPrimary" resultMap="AchievementMap" parameterType="int">
+    select
+        a.name
+        from
+        achievement a
+        left join user_achievement ua on a.achievement_id=ua.achievement_id
+
+        where
+        ua.user_id=#{no}
+        and
+        ua.is_primary = 1
+    </select>
 
     <update id="update" parameterType="moum.project.vo.Achievement"> <!--수정!-->
     update achievement set
@@ -150,6 +162,20 @@
         location=#{location}
         where
         achievement_id=#{id}
+    </update>
+
+    <update id="updateMyinfoAchievement" parameterType="moum.project.vo.Achievement"> <!--수정!-->
+        update user_achievement set
+        is_primary = 1
+        where
+        user_id=#{user.no} and achievement_id=#{id}
+    </update>
+
+    <update id="deleteMyinfoAchievement" parameterType="moum.project.vo.User"> <!--수정!-->
+        update user_achievement set
+        is_primary = 0
+        where
+        user_id=#{no}
     </update>
 
     <delete id="delete" parameterType="String"> <!--삭제!-->

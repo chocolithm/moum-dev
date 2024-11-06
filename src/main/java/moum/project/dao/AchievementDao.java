@@ -32,4 +32,10 @@ public interface AchievementDao {
     boolean insertByUser(Achievement achievement) throws Exception;
 
     List<Achievement> listUserGetAchievement(int userNo) throws Exception;
+
+    boolean updateMyinfoAchievement(Achievement achievement) throws Exception;
+
+    boolean deleteMyinfoAchievement(User user) throws Exception;
+
+    Achievement findPrimary(int no) throws Exception;
 }

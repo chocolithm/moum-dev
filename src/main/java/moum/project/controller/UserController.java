@@ -68,6 +68,7 @@ public class UserController {
 
     model.addAttribute("user", user);
     model.addAttribute("listGetUserAchievement", achievementService.listUserGetAchievement(user.getNo()));
+    model.addAttribute("primaryAchievement", achievementService.findPrimary(user.getNo()));
     return "user/myInfo";
   }
 
@@ -108,6 +109,7 @@ public class UserController {
       @RequestParam("no") int no,
       @RequestParam("nickname") String nickname,
       @RequestParam(value = "password", required = false) String password,
+      @RequestParam("user-achievement") String userAchievementId,
       @AuthenticationPrincipal UserDetails userDetails,
       MultipartFile file,
       RedirectAttributes redirectAttributes
@@ -133,6 +135,12 @@ public class UserController {
       if (password != null && !password.isEmpty()) {
         user.setPassword(passwordEncoder.encode(password));
       }
+
+      //업적 수정
+      achievementService.deleteMyinfoAchievement(user);
+      Achievement achievement = new Achievement(userAchievementId);
+      achievement.setUser(user);
+      achievementService.updateMyinfoAchievement(achievement);
 
     // 프로필 사진 처리 로직
     if (file != null && file.getSize() > 0) {

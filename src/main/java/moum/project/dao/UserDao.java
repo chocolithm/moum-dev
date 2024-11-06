@@ -1,12 +1,11 @@
 package moum.project.dao;
 
 
+import java.time.LocalDateTime;
+import java.util.List;
 import moum.project.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * packageName    : moum.project.Service
@@ -40,6 +39,10 @@ public interface UserDao {
      * @throws Exception 데이터베이스 작업 중 오류 발생시
      */
     List<User> list() throws Exception;
+
+    List<User> listByPage(
+        @Param("pageNo") int pageNo,
+        @Param("pageCount") int pageCount) throws Exception;
 
     /**
      * 사용자 번호로 특정 사용자를 조회합니다.

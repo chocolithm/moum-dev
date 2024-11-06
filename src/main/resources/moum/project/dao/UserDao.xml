@@ -34,6 +34,24 @@
         user_id asc
     </select>
 
+    <select id="listByPage" resultMap="UserMap" parameterType="map">
+        select
+            user_id,
+            nickname,
+            email,
+            admin,
+            photo,
+            start_date,
+            end_date,
+            last_login,
+            sns_id
+        from
+            user
+        order by
+            user_id asc
+        limit #{pageNo}, #{pageCount}
+    </select>
+
     <insert id="insert" parameterType="moum.project.vo.User"
             useGeneratedKeys="true" keyColumn="user_id" keyProperty="no">
         insert into user(nickname, email, password, admin, photo, end_date, last_login, sns_id)

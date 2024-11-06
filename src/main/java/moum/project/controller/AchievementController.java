@@ -45,6 +45,7 @@ public class AchievementController {
     return "achievement/listByUser";
   }
 
+
   @GetMapping("view")
   @ResponseBody
   public Object view(String id) throws Exception {
@@ -71,5 +72,6 @@ public class AchievementController {
     achievementService.update(achievement);
     return achievementService.get(achievement.getId());
   }
+
 
 }
