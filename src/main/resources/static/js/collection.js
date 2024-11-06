@@ -217,6 +217,7 @@ function updateCollection() {
                             break;
                         case "success":
                             alert("수정했습니다.");
+                            fetchCollectionView(formData.get("no"));
                             break;
                         case "failure":
                             alert("수정에 실패했습니다.");
