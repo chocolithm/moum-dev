@@ -64,6 +64,19 @@ public class UserController {
     User user = userService.getByEmail(email);
 
     List<Achievement> achievementlist = achievementService.listByUser(user.getNo());
+//    반복문 예시
+    for (int i = 0; i < achievementlist.size(); i++){
+      Achievement achievement = achievementlist.get(i);
+      if(achievement.getProgress() == 100){
+        achievementlist.remove(i--);
+      }
+    }
+//    for (Achievement achievement: achievementlist){
+//      if(achievement.getProgress() == 100){
+//        achievementlist.remove(achievement);
+//      }
+//    }
+
     model.addAttribute("achievementlist", achievementlist);
 
     model.addAttribute("user", user);
