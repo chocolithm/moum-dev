@@ -79,34 +79,37 @@
 
         <div class="achievement-box">
             <div class="title-section">
-                <h2>내 업적</h2>
+                <h2>내 업적</h2> <!-- 제목 추가 -->
+
                 <div class="achievement-header">
                     <img src="/images/user/more/three-dots.png"
                          alt="내 업적 현황"
                          class="achievement-list-btn"
-                         onclick="openAchievementListByUser()">
+                         onclick="openAchievementListByUser()"
+                         style=""> <!-- 이미지 크기는 적절히 조정 -->
+                    style="">
                 </div>
             </div>
-
             <div class="info-achievement-container">
                 <div class="info-achievement-photo custom-achievement"
-                     th:each="achievement : ${sortedAchievements}"
-                     th:if="${achievement.progress < 100}">
+                     data-th-each="achievement, iterStat : ${achievementlist}"
+                     data-th-if="${iterStat.index < 3 and achievement.progress < 100}"
+                     data-th-id="${achievement.id}"
+                     data-th-progress="${achievement.progress}">
         <span class="info-achievement-image">
             <img class="info-achievement-img"
-                 th:src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}"/>
+                 data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}">
         </span>
                     <span class="info-achievement-details">
             <div class="info-achievement-name">
-                <span th:text="${achievement.name}">업적명</span>
+                <span data-th-text="${achievement.name}">업적명</span>
             </div>
-
             <div class="info-achievement-photo-progressbar">
                 <div class="info-progress-bar"
-                     th:class="'progress-bar ' + (${achievement.progress < 50} ? 'low' : (${achievement.progress < 80} ? 'medium' : 'high'))"
-                     th:style="'width:' + ${achievement.progress} + '%'"></div>
+                     data-th-class="'progress-bar ' + (${achievement.progress < 50 ? 'low' : (achievement.progress < 80 ? 'medium' : 'high')})"
+                     data-th-style="'width:' + ${achievement.progress} + '%'"></div>
             </div>
-            <div class="info-progress-text" th:text="${achievement.progress} + '%'"></div>
+            <div class="info-progress-text" data-th-text="${achievement.progress} + '%'"></div>
         </span>
                 </div>
             </div>
