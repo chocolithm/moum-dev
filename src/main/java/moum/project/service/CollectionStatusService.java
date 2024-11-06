@@ -14,4 +14,7 @@ public interface CollectionStatusService {
   boolean update(CollectionStatus status) throws Exception;
 
   void delete(int no) throws Exception;
+
+  CollectionStatus getById(int id) throws Exception;
+
 }

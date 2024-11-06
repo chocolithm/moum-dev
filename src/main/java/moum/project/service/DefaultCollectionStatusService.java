@@ -40,4 +40,14 @@ public class DefaultCollectionStatusService implements CollectionStatusService {
   public void delete(int no) throws Exception {
 
   }
+
+  // ID로 CollectionStatus 조회 메서드
+  @Override
+  public CollectionStatus getById(int id) throws Exception {
+    CollectionStatus status = collectionStatusDao.findById(id);
+    if (status == null) {
+      throw new IllegalArgumentException("해당 상태를 찾을 수 없습니다: " + id);
+    }
+    return status;
+  }
 }
