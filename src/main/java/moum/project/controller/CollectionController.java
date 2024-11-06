@@ -65,6 +65,10 @@ public class CollectionController {
       return "login";
     }
 
+    if (!validateColletion(collection)) {
+      return "failure";
+    }
+
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
 
@@ -135,6 +139,10 @@ public class CollectionController {
 
     if (userDetails == null) {
       return "login";
+    }
+
+    if (!validateColletion(collection)) {
+      return "failure";
     }
 
     String email = userDetails.getUsername();
@@ -239,6 +247,7 @@ public class CollectionController {
   private boolean validateColletion(Collection collection) {
     if (collection.getName().trim().isEmpty()) {return false;}
     if (collection.getStatus().getNo() == 0) {return false;}
+    if (collection.getMaincategory().getNo() == 999 && collection.getOtherCategory().isEmpty()) {return false;}
     return true;
   }
 
@@ -247,7 +256,5 @@ public class CollectionController {
   public List<Subcategory> list(int maincategoryNo) throws Exception {
     return categoryService.listSubcategory(maincategoryNo);
   }
-
-
 
 }

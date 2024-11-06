@@ -233,6 +233,8 @@ function updateCollection() {
 function validateData(formData) {
     if (formData.get("name") == "") { alert("이름을 입력해주세요."); return false; }
     if (formData.get("status.no") == "" || formData.get("status.no") == 0) { alert("상태를 선택해주세요."); return false; }
+    if (formData.get("maincategory.no") == 999 && formData.get("otherCategory") == "") { alert("분류명을 입력해주세요."); return false; }
+    if (formData.get("price") == "") { formData.set("price", 0); }
     return true;
 }
 
