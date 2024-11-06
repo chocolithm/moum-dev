@@ -13,49 +13,49 @@
     <h3 class="text-center mb-3 text-primary">환영합니다!</h3>
     <h6 class="text-center mb-4 text-secondary">사용할 아이디 / 비밀번호를 입력하세요</h6>
 
-    <form id="signupForm" th:action="@{/user/signup}" method="post" class="needs-validation" novalidate>
+    <form class="needs-validation" id="signupForm" method="post" novalidate th:action="@{/user/signup}">
         <!-- 닉네임 필드 -->
         <div class="mb-3">
-            <label for="nickname" class="form-label">닉네임</label>
+            <label class="form-label" for="nickname">닉네임</label>
             <div class="input-group">
-                <input type="text" class="form-control rounded-2" id="nickname" name="nickname" required>
-                <button type="button" class="btn btn-dark ms-2 rounded-2" onclick="checkDuplicate('nickname', document.getElementById('nickname').value)">중복검사</button>
+                <input class="form-control rounded-2" id="nickname" name="nickname" required type="text">
+                <button class="btn btn-dark ms-2 rounded-2" onclick="checkDuplicate('nickname', document.getElementById('nickname').value)" type="button">중복검사</button>
             </div>
-            <div id="nicknameMessage" class="form-text"></div>
+            <div class="form-text" id="nicknameMessage"></div>
         </div>
 
         <!-- 이메일 필드 -->
         <div class="mb-3">
-            <label for="email" class="form-label">아이디 (이메일)</label>
+            <label class="form-label" for="email">이메일</label>
             <div class="input-group">
-                <input type="email" class="form-control rounded-2" id="email" name="email" required>
-                <button type="button" class="btn btn-dark ms-2 rounded-2" onclick="checkDuplicate('email', document.getElementById('email').value)">중복검사</button>
+                <input class="form-control rounded-2" id="email" name="email" required type="email">
+                <button class="btn btn-dark ms-2 rounded-2" onclick="checkDuplicate('email', document.getElementById('email').value)" type="button">중복검사</button>
             </div>
-            <div id="emailMessage" class="form-text"></div>
+            <div class="form-text" id="emailMessage"></div>
         </div>
 
         <!-- 인증번호 필드 -->
         <div class="mb-3" id="authCodeField" style="display:none;">
-            <label for="authCode" class="form-label">인증 코드</label>
+            <label class="form-label" for="authCode">인증 코드</label>
             <div class="input-group">
-                <input type="text" class="form-control rounded-2" id="authCode" name="authCode">
-                <button type="button" class="btn btn-dark ms-2 rounded-2" onclick="verifyAuthCode()">인증확인</button>
+                <input class="form-control rounded-2" id="authCode" name="authCode" type="text">
+                <button class="btn btn-dark ms-2 rounded-2" onclick="verifyAuthCode()" type="button">인증확인</button>
             </div>
-            <div id="authCodeMessage" class="form-text"></div>
+            <div class="form-text" id="authCodeMessage"></div>
         </div>
 
         <!-- 비밀번호 필드 -->
         <div class="mb-3">
-            <label for="password" class="form-label">비밀번호</label>
-            <input type="password" class="form-control rounded-2" id="password" name="password" required>
-            <span id="passwordMessage" class="form-text mt-1"></span>
+            <label class="form-label" for="password">비밀번호</label>
+            <input class="form-control rounded-2" id="password" name="password" required type="password">
+            <span class="form-text mt-1" id="passwordMessage"></span>
         </div>
 
         <!-- 비밀번호 확인 필드 -->
         <div class="mb-3">
-            <label for="confirmPassword" class="form-label">비밀번호 재확인</label>
-            <input type="password" class="form-control rounded-2" id="confirmPassword" name="confirmPassword" required>
-            <span id="confirmPasswordMessage" class="form-text mt-1"></span>
+            <label class="form-label" for="confirmPassword">비밀번호 재확인</label>
+            <input class="form-control rounded-2" id="confirmPassword" name="confirmPassword" required type="password">
+            <span class="form-text mt-1" id="confirmPasswordMessage"></span>
         </div>
 
         <!-- 에러 메시지 -->
@@ -65,7 +65,7 @@
 
         <!-- 제출 버튼 -->
         <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-dark py-2 rounded-2">가입하기</button>
+            <button class="btn btn-dark py-2 rounded-2" type="submit">가입하기</button>
         </div>
     </form>
 </div>

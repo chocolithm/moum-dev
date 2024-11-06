@@ -3,6 +3,7 @@ let nicknameChecked = false;
 let emailChecked = false;
 let passwordMatch = false;
 
+
 function openOverlay() {
     fadeIn(document.getElementsByClassName("overlay")[0]);
 }
@@ -131,6 +132,28 @@ function openSignupModal() {
         });
 }
 
+// 비밀번호 재설정 모달 열기
+function openResetPasswordModal() {
+    var modal = document.getElementById("resetPasswordModal");
+    fetch('/auth/reset-password')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('resetPasswordFormContainer').innerHTML = data;
+            modal.style.display = "block";
+            // 모달 내부 스크립트 실행을 위한 코드 추가
+            const scripts = document.querySelector('#resetPasswordFormContainer').querySelectorAll('script');
+            scripts.forEach(script => {
+                const newScript = document.createElement('script');
+                if (script.src) {
+                    newScript.src = script.src;
+                } else {
+                    newScript.textContent = script.textContent;
+                }
+                document.body.appendChild(newScript);
+            });
+        });
+}
+
 // 로그인 모달 닫기
 function closeLoginModal() {
     var modal = document.getElementById("loginModal");
@@ -151,6 +174,13 @@ function closeSignupModal() {
     // 배경 고정 해제 및 스크롤 복구
     // document.body.style.overflow = "auto";   // 스크롤 활성화
     // document.body.style.position = "static"; // 페이지 위치 고정 해제
+}
+
+// 비밀번호 재설정 모달 닫기
+function closeResetPasswordModal() {
+    var modal = document.getElementById("resetPasswordModal");
+    modal.style.display = "none";
+    document.getElementById("resetPasswordFormContainer").innerHTML = "";
 }
 
 // 모달 외부 클릭 시 모달 닫기 처리
