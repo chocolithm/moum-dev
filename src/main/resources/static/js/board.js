@@ -128,7 +128,7 @@ function addPost() {
 }
 
 // 댓글 저장
-function saveComment(boardNo) {
+function saveComment(boardNo, userNo) {
 
     const content = document.getElementById('content');
     // isValid(content, '댓글');
@@ -139,7 +139,7 @@ function saveComment(boardNo) {
         boardNo: boardNo,
         content: content.value,
         // writer : '홍길동',
-        userNo: 5
+        userNo: userNo
     }
 
     const header = $("meta[name='_csrf_header']").attr('content');
