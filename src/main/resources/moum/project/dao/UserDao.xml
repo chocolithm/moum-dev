@@ -47,6 +47,8 @@
             sns_id
         from
             user
+        where
+            end_date is null
         order by
             user_id asc
         limit #{pageNo}, #{pageCount}

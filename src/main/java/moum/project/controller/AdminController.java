@@ -46,7 +46,7 @@ public class AdminController {
 
   @GetMapping("/user/list")
   @ResponseBody
-  public List<User> list() throws Exception {
-    return userService.list();
+  public List<User> list(int pageNo, int pageCount) throws Exception {
+    return userService.listByPage((pageNo - 1) * pageCount, pageCount);
   }
 }

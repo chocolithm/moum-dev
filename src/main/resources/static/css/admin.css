@@ -32,18 +32,52 @@
   height: calc(100vh - 350px);
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
   border: 1px solid lightgrey;
   border-radius: 25px;
   background-color: rgb(245, 245, 245);
+  overflow: hidden;
 }
 
 .main-section .table-section table {
   width: 95%;
-  height: 95%;
   border-radius: 25px;
   border: none;
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
+  border-collapse: collapse;
+}
+
+.main-section .table-section thead {
+  position: sticky;
+  top: 0;
+  background-color: rgb(245, 245, 245);
+  z-index: 1;
+}
+
+.main-section .table-section tbody {
+  display: block;
+  max-height: calc(100vh - 400px);
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+.main-section .table-section tbody::-webkit-scrollbar {
+  display: none;
+}
+
+.main-section .table-section tbody tr,
+.main-section .table-section thead tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border: 1px lightgrey solid;
+}
+
+.main-section .table-section th,
+.main-section .table-section td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 3px;
+  border: 1px lightgrey solid;
 }
