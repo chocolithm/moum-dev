@@ -105,6 +105,14 @@ public class CollectionController {
     return "failure";
   }
 
+  @GetMapping("/list")
+  @ResponseBody
+  public List<Collection> list(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    String email = userDetails.getUsername();
+    User loginUser = userService.getByEmail(email);
+    return collectionService.list(loginUser.getNo());
+  }
+
   @GetMapping("/view")
   public String view(int no, Model model) throws Exception {
     Collection collection = collectionService.get(no);

@@ -26,7 +26,7 @@ function openCollectionSelection() {
             collectionListHtml += '</ul>';
 
             // 모달 창에 수집품 목록을 표시
-            document.querySelector('#collectionSelectionModal .modal-body').innerHTML = collectionListHtml;
+            document.querySelector('#collectionSelectionModal').innerHTML = collectionListHtml;
             // 모달 창 열기
             openModal('#collectionSelectionModal');
         })

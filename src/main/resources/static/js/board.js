@@ -39,17 +39,39 @@ function fetchPostForm() {
         });
 }
 
-// 게시글 종류 선택에 따른 UI 변경
-document.querySelectorAll("input[name='boardType']").forEach((elem) => {
-    elem.addEventListener("change", function () {
-        const collectionSection = document.getElementById("collectionSection");
-        if (this.value === "trade") {
-            collectionSection.style.display = "block";
-        } else {
-            collectionSection.style.display = "none";
-        }
-    });
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//     // 초기 상태 설정
+//     const initialBoardType = document.querySelector("input[name='boardType']:checked").value;
+//     toggleFields(initialBoardType);
+//
+//     // 라디오 버튼 변경 시마다 상태 업데이트
+//     document.querySelectorAll("input[name='boardType']").forEach((elem) => {
+//         elem.addEventListener("change", function () {
+//             toggleFields(this.value);
+//         });
+//     });
+// });
+// document.querySelector("#general").addEventListener("click", function (){
+//     toggleFields(this);
+// })
+//
+// document.querySelector("#trade").addEventListener("click", function (){
+//     toggleFields(this);
+// })
+
+function toggleFields(boardType) {
+    const collectionSection = document.getElementById("collectionSection");
+    const tradeFields = document.getElementById("tradeFields");
+
+    if (boardType.value === "trade") {
+        collectionSection.style.display = "block";
+        tradeFields.style.display = "block";
+    } else {
+        collectionSection.style.display = "none";
+        tradeFields.style.display = "none";
+    }
+}
+
 
 // 게시글 등록 처리
 function addPost() {
@@ -62,10 +84,12 @@ function addPost() {
         formData.append("content", document.querySelector("#postForm #content").value);
         formData.append("boardType", document.querySelector("#postForm input[name='boardType']:checked").value);
 
-        // 선택된 수집품 정보가 있다면 추가
-        const selectedCollectionNo = document.querySelector("#selectedCollection").dataset.collectionNo;
-        if (selectedCollectionNo) {
-            formData.append("collection.no", selectedCollectionNo);
+        // 수집품 거래 글 전용 필드 추가
+        if (document.querySelector("#postForm input[name='boardType']:checked").value === "trade") {
+            formData.append("price", document.querySelector("#postForm #price").value);
+            formData.append("status", document.querySelector("#postForm #status").value);
+            formData.append("transactionType", document.querySelector("#postForm input[name='transactionType']:checked").value);
+            formData.append("contact", document.querySelector("#postForm #contact").value);
         }
 
         // 파일 업로드 처리

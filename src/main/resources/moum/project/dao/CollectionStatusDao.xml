@@ -22,8 +22,14 @@
       collection_status
   </select>
 
-  <select id="findBy">
-
+  <select id="findById" resultMap="CollectionStatusMap" parameterType="int">
+    select
+      status_id,
+      status_name
+    from
+      collection_status
+    where
+      status_id = #{id}
   </select>
 
   <update id="update">
