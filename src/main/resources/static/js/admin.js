@@ -101,7 +101,7 @@ function createUserTable() {
 
   table.append(thead);
 
-  fetchUserData(1, 20);
+  fetchUserData(1, 50);
 }
 
 function fetchUserData(pageNo, pageCount) {
@@ -132,4 +132,8 @@ function fetchUserData(pageNo, pageCount) {
     .catch(error => {
       console.error("error fetching user list: ", error);
     })
+}
+
+function createPagination(pageNo, pageCount, data) {
+
 }
