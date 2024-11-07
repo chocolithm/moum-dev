@@ -208,7 +208,6 @@
 
     <select id="count">
         select count(*)
-        from user
-        where end_date is null
+        from achievement
     </select>
 </mapper>

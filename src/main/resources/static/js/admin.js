@@ -95,6 +95,7 @@ function createAdminTableHead(menu) {
 
 function fetchAdminData(menu, pageNo, pageCount) {
   const table = document.querySelector(".table-section table");
+
   if (table.querySelector("tbody")) {
     table.querySelector("tbody").remove();
   }
@@ -108,7 +109,7 @@ function fetchAdminData(menu, pageNo, pageCount) {
       if (menu == "user") {
         data.forEach(user => {
           tbody.innerHTML += `
-            <tr>
+            <tr onclick="fetchAdminDetail('user', ${user.no})">
               <td>${user.no}</td>
               <td>${user.email}</td>
               <td>${user.nickname}</td>
@@ -124,7 +125,7 @@ function fetchAdminData(menu, pageNo, pageCount) {
       if (menu == "board") {
         data.forEach(board => {
           tbody.innerHTML += `
-            <tr>
+            <tr onclick="fetchAdminDetail('board', ${board.no})">
               <td>${board.no}</td>
               <td>${board.title}</td>
               <td>${board.user.endDate == null ? board.user.nickname : "탈퇴한 회원"}</td>
@@ -139,7 +140,7 @@ function fetchAdminData(menu, pageNo, pageCount) {
       if (menu == "category") {
         data.forEach(category => {
           tbody.innerHTML += `
-            <tr>
+            <tr onclick="fetchAdminDetail(${category.no == 0 ? '\'maincategory\', ' + category.maincategory.no : '\'subcategory\', ' + category.no})">
               <td>${category.no == 0 ? "main-" + category.maincategory.no : "sub-" + category.no}</td>
               <td>${category.maincategory.name}</td>
               <td>${category.name == null ? "-" : category.name}</td>
@@ -152,7 +153,7 @@ function fetchAdminData(menu, pageNo, pageCount) {
       if (menu == "achievement") {
         data.forEach(achievement => {
           tbody.innerHTML += `
-            <tr>
+            <tr onclick="fetchAdminDetail('achievement', '${achievement.id}')">
               <td>${achievement.id}</td>
               <td>${achievement.name}</td>
               <td>${achievement.content}</td>
@@ -186,7 +187,7 @@ function createAdminPagination(menu, pageCount) {
         pageButton.classList.add('page-button');
 
         pageButton.addEventListener('click', () => {
-          fetchData(menu, i, pageCount);
+          fetchAdminData(menu, i, pageCount);
         });
 
         paginationContainer.appendChild(pageButton);
@@ -197,6 +198,34 @@ function createAdminPagination(menu, pageCount) {
     });
 }
 
-function createView(menu) {
+function fetchAdminDetail(menu, no) {
+  const table_section = document.querySelector(".table-section");
+  table_section.querySelector("table").remove();
 
+  fetch(`/admin/${menu}?no=${no}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data == "user") {
+
+      }
+
+      if (data == "board") {
+
+      }
+
+      if (data == "maincategory") {
+
+      }
+
+      if (data == "subcategory") {
+
+      }
+
+      if (data == "achievement") {
+
+      }
+    })
+    .catch(error => {
+      console.error('error creating detail:', error);
+    });
 }

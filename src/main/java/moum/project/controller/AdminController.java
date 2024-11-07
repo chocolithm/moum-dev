@@ -59,22 +59,10 @@ public class AdminController {
     return userService.listByPage((pageNo - 1) * pageCount, pageCount);
   }
 
-  @GetMapping("/user/count")
-  @ResponseBody
-  public int countUser() throws Exception {
-    return userService.count();
-  }
-
   @GetMapping("/board/list")
   @ResponseBody
   public List<Board> listBoard(int pageNo, int pageCount) throws Exception {
     return boardService.listByPage((pageNo - 1) * pageCount, pageCount);
-  }
-
-  @GetMapping("/board/count")
-  @ResponseBody
-  public int countBoard() throws Exception {
-    return boardService.count();
   }
 
   @GetMapping("/category/list")
@@ -83,21 +71,63 @@ public class AdminController {
     return categoryService.listByPage((pageNo - 1) * pageCount, pageCount);
   }
 
-  @GetMapping("/category/count")
-  @ResponseBody
-  public int countCategory() throws Exception {
-    return categoryService.count();
-  }
-
   @GetMapping("/achievement/list")
   @ResponseBody
   public List<Achievement> listAchievement(int pageNo, int pageCount) throws Exception {
     return achievementService.listByPage((pageNo - 1) * pageCount, pageCount);
   }
 
+  @GetMapping("/user/count")
+  @ResponseBody
+  public int countUser() throws Exception {
+    return userService.count();
+  }
+
+  @GetMapping("/board/count")
+  @ResponseBody
+  public int countBoard() throws Exception {
+    return boardService.count();
+  }
+
+  @GetMapping("/category/count")
+  @ResponseBody
+  public int countCategory() throws Exception {
+    return categoryService.count();
+  }
+
   @GetMapping("/achievement/count")
   @ResponseBody
   public int countAchievement() throws Exception {
     return achievementService.count();
+  }
+
+  @GetMapping("/user")
+  @ResponseBody
+  public User getUser(int no) throws Exception {
+    return userService.get(no);
+  }
+
+  @GetMapping("/board")
+  @ResponseBody
+  public Board getBoard(int no) throws Exception {
+    return boardService.get(no);
+  }
+
+  @GetMapping("/maincategory")
+  @ResponseBody
+  public List<Subcategory> getMaincategory(int no) throws Exception {
+    return categoryService.getMaincategory(no);
+  }
+
+  @GetMapping("/subcategory")
+  @ResponseBody
+  public Subcategory getSubcategory(int no) throws Exception {
+    return categoryService.getSubcategory(no);
+  }
+
+  @GetMapping("/achievement")
+  @ResponseBody
+  public Achievement getAchievement(String no) throws Exception {
+    return achievementService.get(no);
   }
 }

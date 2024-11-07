@@ -24,6 +24,16 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   }
 
   @Override
+  public Subcategory getSubcategory(int no) throws Exception {
+    return categoryDao.findSubcategory(no);
+  }
+
+  @Override
+  public List<Subcategory> getMaincategory(int no) throws Exception {
+    return categoryDao.findMaincategory(no);
+  }
+
+  @Override
   public List<Subcategory> listByPage(int pageNo, int pageCount) throws Exception {
     return categoryDao.listByPage(pageNo, pageCount);
   }
