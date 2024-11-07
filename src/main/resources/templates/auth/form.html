@@ -5,7 +5,6 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>로그인</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body onload="populateEmailField()"> <!-- 이메일 필드 자동 채우기 -->
 <form th:action="@{/auth/login}" method="post" onsubmit="handleLoginSubmit()">
