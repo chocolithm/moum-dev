@@ -303,6 +303,7 @@ public class BoardController {
 
 
 
+    @ResponseBody
     @PostMapping("/addDetailPost")
     public String addDetailPost(Board board,
         @RequestParam("files") MultipartFile[] files,
@@ -328,7 +329,7 @@ public class BoardController {
 
             model.addAttribute("imageUrls", imageUrls);  // 모델에 추가해 클라이언트에 전달
 
-            return "redirect:/board/boardList";
+            return "success";
         } catch (Exception e) {
             e.printStackTrace();
             return "failure";
