@@ -100,7 +100,7 @@ function openSignupFromLoginModal() {
     openSignupModal(); // 회원가입 모달 열기
 }
 
-// 로그인 모달에서 회원가입 모달로 전환하는 함수
+// 로그인 모달에서 비밀번호 변경 모달로 전환하는 함수
 function openResetPasswordFromLoginModal() {
     closeLoginModal(); // 로그인 모달 닫기
     document.getElementById('loginFormContainer').innerHTML = "";
@@ -196,13 +196,17 @@ function closeResetPasswordModal() {
 
 // 모달 외부 클릭 시 모달 닫기 처리
 window.onclick = function (event) {
-    var loginModal = document.getElementById("loginModal");
-    var signupModal = document.getElementById("signupModal");
+    const loginModal = document.getElementById("loginModal");
+    const signupModal = document.getElementById("signupModal");
+    const resetPasswordModal = document.getElementById("resetPasswordModal");
     if (event.target === loginModal) {
         closeLoginModal();
     }
     if (event.target === signupModal) {
         closeSignupModal();
+    }
+    if (event.target === resetPasswordModal) {
+        closeResetPasswordModal()
     }
 }
 
