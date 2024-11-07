@@ -11,98 +11,100 @@
 
 <body>
 <main>
+
     <h1>내 정보</h1>
-    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div class="wrapper">
+        <div class="alert alert-success" th:if="${message}" th:text="${message}"></div>
+        <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
 
-    <div th:unless="${user}">
-        <p>사용자 정보를 찾을 수 없습니다.</p>
-    </div>
+        <div th:unless="${user}">
+            <p>사용자 정보를 찾을 수 없습니다.</p>
+        </div>
 
-    <div class="my-info-wrapper">
-        <div th:if="${user}" th:object="${user}" class="profile-container">
-            <div class="profile-image-container">
-                <a th:if="*{photo != null}" th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">
-                    <img th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}" class="profile-img" alt="프로필 이미지">
-                </a>
-                <a th:if="*{photo == null}" href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
-                    <img src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png" class="profile-img" alt="기본 프로필 이미지">
-                </a>
-            </div>
-
-            <div class="user-info">
-                <p>닉네임: <span th:text="*{nickname}"></span></p>
-                <p>이메일: <span th:text="*{email}"></span></p>
-            </div>
-
-            <div class="user-info-dropdown">
-                <div th:if="${#lists.size(listGetUserAchievement) > 0}" class="user-title-dropdown">
-                    <p th:text="'업적: ' + ${primaryAchievement.name}"></p>
+        <div class="my-info-wrapper">
+            <div class="profile-container" th:if="${user}" th:object="${user}">
+                <div class="profile-image-container">
+                    <a th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}" th:if="*{photo != null}">
+                        <img alt="프로필 이미지" class="profile-img" th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">
+                    </a>
+                    <a href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png" th:if="*{photo == null}">
+                        <img alt="기본 프로필 이미지" class="profile-img" src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
+                    </a>
                 </div>
 
-                <div th:if="${#lists.size(listGetUserAchievement) == 0}" class="user-title-dropdown">
-                    <p>업적을 등록해주세요.</p>
+                <div class="user-info">
+                    <p>닉네임: <span th:text="*{nickname}"></span></p>
+                    <p>이메일: <span th:text="*{email}"></span></p>
                 </div>
 
-                <button class="edit-button" onclick="location.href='/user/update'">수정하기</button>
+                <div class="user-info-dropdown">
+                    <div class="user-title-dropdown" th:if="${#lists.size(listGetUserAchievement) > 0}">
+                        <p th:text="'업적: ' + ${primaryAchievement.name}"></p>
+                    </div>
+
+                    <div class="user-title-dropdown" th:if="${#lists.size(listGetUserAchievement) == 0}">
+                        <p>업적을 등록해주세요.</p>
+                    </div>
+
+                    <button class="edit-button" onclick="location.href='/user/update'">수정하기</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 내 게시글 섹션 시작 -->
-    <div class="layout-container">
-        <div class="my-info-board-container">
-            <h2>내 게시글</h2>
-            <div class="my-info-board">
-                <div class="my-info-achievement-photo custom-achievement">
+        <!-- 내 게시글 섹션 시작 -->
+        <div class="layout-container">
+            <div class="my-info-board-container">
+                <h2>내 게시글</h2>
+                <div class="my-info-board">
+                    <div class="my-info-achievement-photo custom-achievement">
                     <span class="my-info-achievement-image">
-                        <img class="my-info-achievement-img" src="/images/post/example1.png" alt="게시글 이미지">
+                        <img alt="게시글 이미지" class="my-info-achievement-img" src="/images/post/example1.png">
                     </span>
-                    <span class="info-achievement-details">
+                        <span class="info-achievement-details">
                         <div class="my-info-achievement-name">
                             <span>첫 번째 게시글</span>
                         </div>
                     </span>
-                </div>
+                    </div>
 
-                <div class="my-info-achievement-photo custom-achievement">
+                    <div class="my-info-achievement-photo custom-achievement">
                     <span class="my-info-achievement-image">
-                        <img class="my-info-achievement-img" src="/images/post/example2.png" alt="게시글 이미지">
+                        <img alt="게시글 이미지" class="my-info-achievement-img" src="/images/post/example2.png">
                     </span>
-                    <span class="info-achievement-details">
+                        <span class="info-achievement-details">
                         <div class="my-info-achievement-name">
                             <span>두 번째 게시글</span>
                         </div>
                     </span>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
 
-        <div class="achievement-box">
-            <div class="title-section">
-                <h2>내 업적</h2> <!-- 제목 추가 -->
-                <div class="achievement-header">
-                    <img src="/images/user/more/three-dots.png"
-                         alt="내 업적 현황"
-                         class="achievement-list-btn"
-                         onclick="openAchievementListByUser()"
-                         style=""> <!-- 이미지 크기는 적절히 조정 -->
-                    style="">
+            <div class="achievement-box">
+                <div class="title-section">
+                    <h2>내 업적</h2> <!-- 제목 추가 -->
+                    <div class="achievement-header">
+                        <img alt="내 업적 현황"
+                             class="achievement-list-btn"
+                             onclick="openAchievementListByUser()"
+                             src="/images/user/more/three-dots.png"
+                             style=""> <!-- 이미지 크기는 적절히 조정 -->
+                        style="">
+                    </div>
                 </div>
-            </div>
-            <div class="info-achievement-container">
-                <div class="info-achievement-photo custom-achievement"
-                     data-th-each="achievement, iterStat : ${achievementlist}"
-                     data-th-if="${iterStat.index < 3 and achievement.progress < 100}"
-                     data-th-id="${achievement.id}"
-                     data-th-progress="${achievement.progress}">
+                <div class="info-achievement-container">
+                    <div class="info-achievement-photo custom-achievement"
+                         data-th-each="achievement, iterStat : ${achievementlist}"
+                         data-th-id="${achievement.id}"
+                         data-th-if="${iterStat.index < 3 and achievement.progress < 100}"
+                         data-th-progress="${achievement.progress}">
         <span class="info-achievement-image">
             <img class="info-achievement-img"
                  data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}">
         </span>
-                    <span class="info-achievement-details">
+                        <span class="info-achievement-details">
             <div class="info-achievement-name">
                 <span data-th-text="${achievement.name}">업적명</span>
             </div>
@@ -116,14 +118,16 @@
 
             <div class="info-progress-text" data-th-text="${achievement.progress} + '%'"></div>
         </span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="achievement-user-progress layer">
-            <!-- 추가적인 사용자 진행 상황을 여기에 표시 -->
+            <div class="achievement-user-progress layer">
+                <!-- 추가적인 사용자 진행 상황을 여기에 표시 -->
+            </div>
         </div>
     </div>
+
 </main>
 
 <div th:replace="~{footer :: footer}"></div>

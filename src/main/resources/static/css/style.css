@@ -116,6 +116,10 @@ main {
     margin-top: 115px;
 }
 
+main h1 {
+    margin: 20px 0;
+}
+
 main .main-image {
     background: black;
     position: relative;
@@ -437,7 +441,6 @@ td {
 /* info achievement 스타일 */
 .achievement-box {
     width: 400px;
-    height: 400px;
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 2px;
@@ -656,31 +659,24 @@ td {
 
 
 /* myinfo 프로필 설정 */
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
 .profile-container {
     width: 300px;
-    /* 박스 너비 */
-    height: 300px;
-    /* 박스 높이 */
+    height: 100%;
     border: 1px solid #ccc;
-    /* 테두리 */
     border-radius: 8px;
-    /* 모서리 둥글기 */
     padding: 10px;
-    /* 안쪽 여백 */
     background-color: #f9f9f9;
-    /* 배경색 */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    /* 그림자 효과 */
     display: flex;
-    /* Flexbox 사용 */
     flex-direction: column;
-    /* 수직 정렬 */
     align-items: center;
-    /* 가로 중앙 정렬 */
     justify-content: center;
-    /* 세로 중앙 정렬 */
-    flex: 0 50 50px;
-    min-width: 300px;
 }
 
 .profile-image-container {
@@ -734,12 +730,17 @@ td {
     display: flex;
     gap: 2rem;
     align-items: flex-start;
-    margin: 2rem 0;
+    height: inherit;
+}
+
+.layout-container {
+    display: flex;
+    flex-direction: row;
 }
 
 /* my-info-board */
 .my-info-board-container {
-    width: 80%;
+    width: 50%;
     /* 너비를 80%로 줄임 (필요에 따라 값 조정 가능) */
     max-width: 700px;
     /* 최대 너비를 설정하여 너무 커지지 않도록 */
@@ -772,6 +773,7 @@ td {
     /* 여러 게시글이 가로로 배치되도록 */
     gap: 20px;
     /* 게시글 사이 간격 */
+    height: 80%;
 }
 
 /* 게시글 개별 스타일 */
