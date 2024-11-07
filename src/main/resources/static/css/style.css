@@ -87,7 +87,6 @@ header > h1 {
 
 header img {
     vertical-align: middle;
-    height: 20px;
     width: 50px;
     height: auto;
     transition: transform 0.3s ease;
