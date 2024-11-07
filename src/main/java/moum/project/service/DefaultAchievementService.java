@@ -75,4 +75,14 @@ public class DefaultAchievementService implements AchievementService {
   public Achievement findPrimary(int no) throws Exception {
     return achievementDao.findPrimary(no);
   }
+
+  @Override
+  public List<Achievement> listByPage(int pageNo, int pageCount) throws Exception {
+    return achievementDao.listByPage(pageNo, pageCount);
+  }
+
+  @Override
+  public int count() throws Exception {
+    return achievementDao.count();
+  }
 }

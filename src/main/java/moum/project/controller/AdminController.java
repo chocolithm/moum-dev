@@ -2,9 +2,11 @@ package moum.project.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.AchievementService;
 import moum.project.service.BoardService;
 import moum.project.service.CollectionCategoryService;
 import moum.project.service.UserService;
+import moum.project.vo.Achievement;
 import moum.project.vo.Board;
 import moum.project.vo.Subcategory;
 import moum.project.vo.User;
@@ -34,6 +36,7 @@ public class AdminController {
   private final UserService userService;
   private final BoardService boardService;
   private final CollectionCategoryService categoryService;
+  private final AchievementService achievementService;
 
   /**
    * 이 메서드는 "/admin/management" URL로 들어오는 GET 요청을 처리합니다.
@@ -84,5 +87,17 @@ public class AdminController {
   @ResponseBody
   public int countCategory() throws Exception {
     return categoryService.count();
+  }
+
+  @GetMapping("/achievement/list")
+  @ResponseBody
+  public List<Achievement> listAchievement(int pageNo, int pageCount) throws Exception {
+    return achievementService.listByPage((pageNo - 1) * pageCount, pageCount);
+  }
+
+  @GetMapping("/achievement/count")
+  @ResponseBody
+  public int countAchievement() throws Exception {
+    return achievementService.count();
   }
 }

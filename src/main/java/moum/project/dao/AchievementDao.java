@@ -1,12 +1,11 @@
 package moum.project.dao;
 
 
+import java.util.List;
 import moum.project.vo.Achievement;
 import moum.project.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 @Mapper
 public interface AchievementDao {
@@ -38,4 +37,10 @@ public interface AchievementDao {
     boolean deleteMyinfoAchievement(User user) throws Exception;
 
     Achievement findPrimary(int no) throws Exception;
+
+    List<Achievement> listByPage(
+        @Param("pageNo") int pageNo,
+        @Param("pageCount") int pageCount) throws Exception;
+
+    int count() throws Exception;
 }

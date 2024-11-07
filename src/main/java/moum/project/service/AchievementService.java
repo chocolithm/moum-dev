@@ -28,4 +28,8 @@ public interface AchievementService {
   boolean deleteMyinfoAchievement(User user) throws Exception;
 
   Achievement findPrimary(int no) throws Exception;
+
+  List<Achievement> listByPage(int pageNo, int pageCount) throws Exception;
+
+  int count() throws Exception;
 }
