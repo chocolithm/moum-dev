@@ -1,3 +1,4 @@
+<!-- 게시글 상세보기 화면 (HTML) -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,27 +7,12 @@
     <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
 <body>
 <div th:replace="~{header}"></div>
 <main>
-
-    <div class="search-container">
-        <div class="navigation-pill">
-            <div class="title-wrapper">
-                <div class="title" style="font-weight: bold" th:text="'주제별'">주제별</div>
-            </div>
-        </div>
-        <input class="search-input" placeholder="Search" type="text">
-        <button class="search-button" type="submit">
-            <i class="fas fa-search"></i>
-        </button>
-    </div>
-
 
     <div class="boardView">
         <div th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}">
@@ -39,33 +25,23 @@
             </div>
         </div>
         <h2 th:text="${board.title}">게시글 제목</h2>
-
-        <!--<p>작성자: <span th:text="${board.userNo}">작성자 ID</span></p>-->
         <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
         <p>조회수: <span th:text="${board.viewCount}">0</span></p>
         <p>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></p>
         <button class="like-button" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
         <hr/>
         <div th:utext="${board.content}">게시글 내용</div>
-    </div>
 
-    <!--/* 댓글 작성 */-->
-    <div class="cm_write">
-        <fieldset>
-            <legend class="skipinfo">댓글 입력</legend>
-            <div class="cm_input">
-                <p><textarea cols="90" id="content" name="content" onkeyup="countingLength(this);" placeholder="댓글을 입력해 주세요." rows="4"></textarea></p>
-                <span><button class="btns" data-th-onclick="'saveComment(' + ${board.no} + ');'" type="button">등 록</button> <i id="counter">0/300자</i></span>
-            </div>
-            <div class="cm_list">
+        <div class="action-buttons" th:inline="javascript">
+            <button class="edit-button" onclick="editPost(/*[[${board.no}]]*/)">수정하기</button>
+            <a th:href="@{/board/delete(id=${board.no})}">글삭제</a>
+        </div>
 
-            </div>
-        </fieldset>
+
     </div>
 </main>
 
 <script src="/js/board.js"></script>
 <footer th:replace="~{footer :: footer}"></footer>
-
 </body>
 </html>

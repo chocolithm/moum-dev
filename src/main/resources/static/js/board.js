@@ -289,3 +289,39 @@ function toggleLike(boardNo, userNo) {
         }
     });
 }
+
+
+// 게시글 수정 함수
+function editPost(boardNo) {
+    if (boardNo) {
+        window.location.href = "/board/update?no=" + boardNo;
+    } else {
+        console.error("게시글 번호가 정의되지 않았습니다.");
+        alert("게시글 번호가 유효하지 않습니다.");
+    }
+}
+
+function deletePost(boardNo) {
+    if (!boardNo) {
+        alert("게시글 번호를 확인할 수 없습니다.");
+        return;
+    }
+    if (confirm("정말 이 게시글을 삭제하시겠습니까?")) {
+        $.ajax({
+            url: '/board/delete?no=' + boardNo, // URL에 no 값을 직접 포함
+            type: 'DELETE',
+            headers: {
+                [document.querySelector('meta[name="_csrf_header"]').content]: document.querySelector('meta[name="_csrf"]').content
+            },
+            success: function(response) {
+                alert("게시글이 삭제되었습니다.");
+                window.location.href = "/board/boardList";
+            },
+            error: function() {
+                alert("삭제 중 오류가 발생했습니다.");
+            }
+        });
+    }
+}
+
+

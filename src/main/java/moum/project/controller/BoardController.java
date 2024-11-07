@@ -10,6 +10,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.*;
 import moum.project.vo.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -164,9 +165,16 @@ public class BoardController {
         return "board/boardView";
     }
 
+
+    @GetMapping("/update")
+    public String updateForm(@RequestParam("no") int no, Model model) throws Exception {
+        Board board = boardService.get(no);
+        model.addAttribute("board", board);
+        return "board/updateForm"; // 업데이트 폼 페이지로 이동
+    }
+
     @PostMapping("/update")
-    public String update(Board board, @RequestParam("files") MultipartFile[] files)
-        throws Exception {
+    public String update(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
         // 기존 게시글을 가져옴
         Board existingBoard = boardService.get(board.getNo());
         if (existingBoard == null) {
@@ -176,7 +184,14 @@ public class BoardController {
 
         // 기존 게시글의 첨부 파일 목록 가져오기
         List<AttachedFile> existingFiles = existingBoard.getAttachedFiles();
-        List<AttachedFile> newFiles = uploadFiles(files);
+        List<AttachedFile> newFiles = new ArrayList<>();
+
+        // 파일 업로드 처리 및 예외 처리
+        try {
+            newFiles = uploadFiles(files);
+        } catch (Exception e) {
+            throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
+        }
 
         // 새로운 파일이 비어 있지 않으면 기존 파일에 추가
         if (!newFiles.isEmpty()) {
@@ -188,17 +203,24 @@ public class BoardController {
         existingBoard.setTitle(board.getTitle());
         existingBoard.setContent(board.getContent());
 
-        // 게시글 업데이트
-        boardService.update(existingBoard);
+        // 게시글 업데이트 예외 처리
+        try {
+            boardService.update(existingBoard);
+        } catch (Exception e) {
+            throw new RuntimeException("게시글 업데이트 중 오류가 발생했습니다.", e);
+        }
+
         return "redirect:/board/boardView?no=" + existingBoard.getNo();
     }
 
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public String delete(@RequestParam("no") int no) throws Exception {
         // 게시글 삭제
         boardService.delete(no);
         return "redirect:/board/boardList";
     }
+
+
 
 
     private List<AttachedFile> uploadFiles(MultipartFile[] files) throws Exception {

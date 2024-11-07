@@ -319,6 +319,40 @@ div p3 {
     justify-content: flex-start;
 }
 
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.edit-button, .delete-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button {
+    background-color: #4CAF50; /* 녹색 */
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.delete-button {
+    background-color: #f44336; /* 빨간색 */
+}
+
+.delete-button:hover {
+    background-color: #e53935;
+}
+
+
 /* 중고거래 --------------------------------*/
 .posts {
     display: flex;
