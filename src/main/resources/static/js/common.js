@@ -96,12 +96,14 @@ document.addEventListener('DOMContentLoaded', function () {
 // 로그인 모달에서 회원가입 모달로 전환하는 함수
 function openSignupFromLoginModal() {
     closeLoginModal(); // 로그인 모달 닫기
+    document.getElementById('loginFormContainer').innerHTML = "";
     openSignupModal(); // 회원가입 모달 열기
 }
 
 // 로그인 모달에서 회원가입 모달로 전환하는 함수
 function openResetPasswordFromLoginModal() {
     closeLoginModal(); // 로그인 모달 닫기
+    document.getElementById('loginFormContainer').innerHTML = "";
     openResetPasswordModal(); // 회원가입 모달 열기
 }
 
@@ -173,7 +175,7 @@ function closeLoginModal() {
     const modal = document.getElementById("loginModal");
     modal.style.display = "none";
     document.getElementById("loginFormContainer").innerHTML = "";
-    fadeOut(modal)
+    fadeOut(modal);
 }
 
 // 회원가입 모달 닫기
@@ -181,7 +183,7 @@ function closeSignupModal() {
     const modal = document.getElementById("signupModal");
     modal.style.display = "none";
     document.getElementById("signupFormContainer").innerHTML = "";
-    fadeOut(modal)
+    fadeOut(modal);
 }
 
 // 비밀번호 재설정 모달 닫기
@@ -189,7 +191,7 @@ function closeResetPasswordModal() {
     const modal = document.getElementById("resetPasswordModal");
     modal.style.display = "none";
     document.getElementById("resetPasswordFormContainer").innerHTML = "";
-    fadeOut(modal)
+    fadeOut(modal);
 }
 
 // 모달 외부 클릭 시 모달 닫기 처리
