@@ -40,10 +40,6 @@ public interface UserDao {
      */
     List<User> list() throws Exception;
 
-    List<User> listByPage(
-        @Param("pageNo") int pageNo,
-        @Param("pageCount") int pageCount) throws Exception;
-
     /**
      * 사용자 번호로 특정 사용자를 조회합니다.
      *
@@ -106,5 +102,10 @@ public interface UserDao {
     void updateLastLogin(@Param("userId") int userId, @Param("lastLoginTime")
     LocalDateTime lastLoginTime);
 
+    List<User> listByPage(
+        @Param("pageNo") int pageNo,
+        @Param("pageCount") int pageCount) throws Exception;
+
+    int count() throws Exception;
 
 }

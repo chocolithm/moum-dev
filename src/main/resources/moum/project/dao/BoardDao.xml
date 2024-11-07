@@ -30,6 +30,11 @@
             <result column="status_name" property="name"/>
         </association>
 
+        <association property="user" javaType="moum.project.vo.User">
+            <id column="writer_id" property="no"/>
+            <result column="nickname" property="nickname"/>
+            <result column="end_date" property="endDate"/>
+        </association>
 
         <!-- attachedFiles 매핑 수정 -->
         <collection property="attachedFiles" ofType="moum.project.vo.AttachedFile">
@@ -305,6 +310,35 @@
         b.is_deleted = 0
         ORDER BY
         b.post_date DESC
+    </select>
+
+    <select id="listByPage" resultMap="BoardMap" parameterType="map">
+        SELECT
+            b.board_id,
+            b.title,
+            b.user_id,
+            u.user_id as writer_id,
+            u.nickname,
+            u.end_date,
+            b.post_date,
+            b.view_count,
+            b.is_public,
+            b.is_deleted,
+            b.board_type
+        FROM
+            board b
+            left join user u on b.user_id = u.user_id
+        WHERE
+            b.is_deleted = 0
+        ORDER BY
+            b.board_id desc
+        LIMIT #{pageNo}, #{pageCount}
+    </select>
+
+    <select id="count">
+        select count(*)
+        from board
+        where is_deleted = 0
     </select>
 
 </mapper>

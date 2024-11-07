@@ -2,7 +2,9 @@ package moum.project.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.BoardService;
 import moum.project.service.UserService;
+import moum.project.vo.Board;
 import moum.project.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AdminController {
 
   private final UserService userService;
+  private final BoardService boardService;
 
   /**
    * 이 메서드는 "/admin/management" URL로 들어오는 GET 요청을 처리합니다.
@@ -46,7 +49,25 @@ public class AdminController {
 
   @GetMapping("/user/list")
   @ResponseBody
-  public List<User> list(int pageNo, int pageCount) throws Exception {
+  public List<User> listUser(int pageNo, int pageCount) throws Exception {
     return userService.listByPage((pageNo - 1) * pageCount, pageCount);
+  }
+
+  @GetMapping("/user/count")
+  @ResponseBody
+  public int countUser() throws Exception {
+    return userService.count();
+  }
+
+  @GetMapping("/board/list")
+  @ResponseBody
+  public List<Board> listBoard(int pageNo, int pageCount) throws Exception {
+    return boardService.listByPage((pageNo - 1) * pageCount, pageCount);
+  }
+
+  @GetMapping("/board/count")
+  @ResponseBody
+  public int countBoard() throws Exception {
+    return boardService.count();
   }
 }

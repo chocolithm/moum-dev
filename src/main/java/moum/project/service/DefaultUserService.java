@@ -60,11 +60,6 @@ public class DefaultUserService implements UserService {
       return userDao.list();
     }
 
-  @Override
-  public List<User> listByPage(int pageNo, int pageCount) throws Exception {
-    return userDao.listByPage(pageNo, pageCount);
-  }
-
   /**
      * 지정된 사용자 번호에 해당하는 사용자 정보를 반환합니다.
      *
@@ -136,5 +131,15 @@ public class DefaultUserService implements UserService {
   @Override
   public User getByEmail(String email) throws Exception {
     return userDao.findByEmail(email);
+  }
+
+  @Override
+  public List<User> listByPage(int pageNo, int pageCount) throws Exception {
+    return userDao.listByPage(pageNo, pageCount);
+  }
+
+  @Override
+  public int count() throws Exception {
+    return userDao.count();
   }
 }

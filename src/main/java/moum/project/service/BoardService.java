@@ -1,9 +1,7 @@
 package moum.project.service;
 
-import moum.project.vo.Board;
-import moum.project.vo.Collection;
-
 import java.util.List;
+import moum.project.vo.Board;
 
 public interface BoardService {
 
@@ -32,4 +30,8 @@ public interface BoardService {
     List<Board> listTradePosts() throws Exception;
 
     List<Board> listBraggingPosts() throws Exception;
+
+    List<Board> listByPage(int pageNo, int pageCount) throws Exception;
+
+    int count() throws Exception;
 }

@@ -1,9 +1,10 @@
 package moum.project.dao;
 
+import java.util.List;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Board;
 import org.apache.ibatis.annotations.Mapper;
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface BoardDao {
@@ -39,4 +40,9 @@ public interface BoardDao {
 
     void deleteAttachedFilesByBoardId(int boardId); // 첨부 파일 삭제
 
+    List<Board> listByPage(
+        @Param("pageNo") int pageNo,
+        @Param("pageCount") int pageCount) throws Exception;
+
+    int count() throws Exception;
 }

@@ -1,15 +1,12 @@
 package moum.project.service;
 
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.BoardDao;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Board;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DefaultBoardService implements BoardService {
@@ -109,4 +106,13 @@ public class DefaultBoardService implements BoardService {
         return boardDao.selectRecent(limit);
     }
 
+    @Override
+    public List<Board> listByPage(int pageNo, int pageCount) throws Exception {
+        return boardDao.listByPage(pageNo, pageCount);
+    }
+
+    @Override
+    public int count() throws Exception {
+        return boardDao.count();
+    }
 }
