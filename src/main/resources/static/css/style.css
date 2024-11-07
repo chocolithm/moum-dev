@@ -326,6 +326,12 @@ td {
     margin: 15px;
     display: flex;
     overflow-y: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 효과 적용 */
+}
+
+.achievement-photo:hover {
+    transform: translateY(-5px); /* 마우스 올리면 살짝 위로 올라오는 효과 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 강화 */
 }
 
 .achievement-photo span {
@@ -376,6 +382,12 @@ td {
     /* 바가 컨테이너를 넘지 않도록 */
     margin: 10px 0;
     position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.progress-bar-container:hover {
+    transform: translateY(-5px); /* 마우스 올리면 살짝 위로 올라오는 효과 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 강화 */
 }
 
 .progress-bar {
@@ -416,8 +428,6 @@ td {
     margin: 20px;
     display: flex;
     gap: 15px;
-
-    /* 체크박스 간의 간격 */
 }
 
 /* 체크박스 스타일 */
@@ -440,7 +450,14 @@ td {
     text-align: center;
     position: relative;
     padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.achievement-box:hover {
+    transform: translateY(-5px); /* 마우스 올리면 살짝 위로 올라오는 효과 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 강화 */
+}
+
 
 .achievement-box h2 {
     margin: 0;
@@ -454,7 +471,6 @@ td {
     align: center;
     font-weight: bold;
     font-size: 25px;
-
 }
 
 
@@ -489,6 +505,12 @@ td {
     margin: 5px 0;
     display: flex;
     align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-achievement-photo:hover {
+    transform: translateY(-5px); /* 마우스 올리면 살짝 위로 올라오는 효과 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 강화 */
 }
 
 /* 진행바 크기 조정 */
@@ -561,8 +583,13 @@ td {
     /* 이미지 모서리 둥글기 */
     border: 2px solid #ddd;
     /* 이미지 테두리 */
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     /* 마우스 오버 시 애니메이션 효과 */
+}
+
+.info-achievement-img:hover {
+    transform: translateY(-5px); /* 마우스 올리면 살짝 위로 올라오는 효과 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 강화 */
 }
 
 .info-achievement-name {
@@ -740,7 +767,7 @@ td {
     width: calc(50% - 10px); /* 두 개의 게시글이 한 줄에 표시되도록 */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden; /* 내용이 넘치지 않게 */
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* 게시글 이미지 영역 스타일 */
@@ -774,7 +801,7 @@ td {
 /* hover 효과 */
 .my-info-achievement-photo:hover {
     transform: translateY(-5px); /* 마우스 올리면 살짝 올라오는 효과 */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 강화 */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* 그림자 강화 (더 부드럽고 넓게) */
 }
 
 /* 반응형 디자인 */
