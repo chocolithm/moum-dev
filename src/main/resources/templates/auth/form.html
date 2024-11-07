@@ -47,9 +47,13 @@
             </div>
 
             <div class="text-center mt-3">
-                <a href="#" onclick="openSignupModal()" class="text-decoration-none text-secondary me-2">회원가입</a>
+                <!-- 회원가입 모달 열기 -->
+                <a href="#" onclick="openSignupFromLoginModal()" class="text-decoration-none text-secondary me-2" data-bs-toggle="modal" data-bs-target="#signupModal">회원가입</a>
+
                 <span class="text-secondary">|</span>
-                <a href="#" onclick="openResetPasswordModal()" class="text-decoration-none text-secondary ms-2">비밀번호 찾기</a>
+
+                <!-- 비밀번호 찾기 모달 열기 -->
+                <a href="#" onclick="openResetPasswordFromLoginModal()" class="text-decoration-none text-secondary ms-2" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">비밀번호 찾기</a>
             </div>
         </form>
     </div>
