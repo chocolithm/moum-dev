@@ -19,12 +19,18 @@
     <aside class="sidemenu clearfix">
         <ul>
             <li data-th-each="maincategory : ${maincategoryList}">
-                <input checked data-th-class="myhome-maincategory"
+                <input checked class="myhome-maincategory"
                        data-th-id="'maincategory-' + ${maincategory.no}"
                        data-th-value="'maincategory-' + ${maincategory.no}"
                        onClick="filterCategories(this)"
                        type="checkbox" value="maincategory">
                 <label data-th-for="'maincategory-' + ${maincategory.no}" data-th-text="${maincategory.name}"></label>
+            </li>
+            <li>
+                <input checked class="myhome-maincategory" id="maincategory-999"
+                       onClick="filterCategories(this)" type="checkbox"
+                       value="maincategory-999">
+                <label data-th-for="maincategory-999" data-th-text="기타"></label>
             </li>
         </ul>
     </aside>
