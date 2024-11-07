@@ -79,8 +79,8 @@ function calcTime(dateValue) {
 
 // 로그인
 
-var modal = document.getElementById("loginModal");
-var btn = document.getElementById("openModalBtn");
+const modal = document.getElementById("loginModal");
+const btn = document.getElementById("openModalBtn");
 
 // 페이지 로드 시 실행되는 함수
 document.addEventListener('DOMContentLoaded', function () {
@@ -93,97 +93,103 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// 로그인 모달에서 회원가입 모달로 전환하는 함수
+function openSignupFromLoginModal() {
+    closeLoginModal(); // 로그인 모달 닫기
+    openSignupModal(); // 회원가입 모달 열기
+}
+
+// 로그인 모달에서 회원가입 모달로 전환하는 함수
+function openResetPasswordFromLoginModal() {
+    closeLoginModal(); // 로그인 모달 닫기
+    openResetPasswordModal(); // 회원가입 모달 열기
+}
+
 // 로그인 모달 열기 및 form.html 로드
 function openLoginModal() {
-    var modal = document.getElementById("loginModal");
+    const modal = document.getElementById("loginModal");
     fetch('/auth/form')
         .then(response => response.text())
         .then(data => {
             document.getElementById('loginFormContainer').innerHTML = data;
             modal.style.display = "block";
             populateEmailField();
-
-            // 배경 고정 및 스크롤 비활성화
-            // document.body.style.overflow = "hidden";  // 스크롤 비활성화
-            // document.body.style.position = "fixed";   // 페이지 위치 고정
+            fadeIn(modal)
         });
 }
 
 // 회원가입 모달 열기 및 signup.html 로드
 function openSignupModal() {
-    var modal = document.getElementById("signupModal");
+    const modal = document.getElementById("signupModal");
     fetch('/user/signup')
         .then(response => response.text())
         .then(data => {
             document.getElementById('signupFormContainer').innerHTML = data;
             modal.style.display = "block";
+
             // 모달 내부의 스크립트 실행을 위한 코드 추가
             const scripts = document.querySelector('#signupFormContainer').querySelectorAll('script');
             scripts.forEach(script => {
                 const newScript = document.createElement('script');
                 if (script.src) {
                     newScript.src = script.src;
+                    newScript.async = false;
                 } else {
                     newScript.textContent = script.textContent;
                 }
                 document.body.appendChild(newScript);
             });
-
-            // 배경 고정 및 스크롤 비활성화
-            // document.body.style.overflow = "hidden";  // 스크롤 비활성화
-            // document.body.style.position = "fixed";   // 페이지 위치 고정
+            fadeIn(modal)
         });
 }
 
 // 비밀번호 재설정 모달 열기
 function openResetPasswordModal() {
-    var modal = document.getElementById("resetPasswordModal");
+    const modal = document.getElementById("resetPasswordModal");
     fetch('/auth/reset-password')
         .then(response => response.text())
         .then(data => {
             document.getElementById('resetPasswordFormContainer').innerHTML = data;
             modal.style.display = "block";
+
             // 모달 내부 스크립트 실행을 위한 코드 추가
             const scripts = document.querySelector('#resetPasswordFormContainer').querySelectorAll('script');
             scripts.forEach(script => {
                 const newScript = document.createElement('script');
                 if (script.src) {
                     newScript.src = script.src;
+                    newScript.async = false;
                 } else {
                     newScript.textContent = script.textContent;
                 }
                 document.body.appendChild(newScript);
             });
+            fadeIn(modal)
         });
 }
 
 // 로그인 모달 닫기
 function closeLoginModal() {
-    var modal = document.getElementById("loginModal");
+    const modal = document.getElementById("loginModal");
     modal.style.display = "none";
     document.getElementById("loginFormContainer").innerHTML = "";
-
-    // 배경 고정 해제 및 스크롤 복구
-    // document.body.style.overflow = "auto";   // 스크롤 활성화
-    // document.body.style.position = "static"; // 페이지 위치 고정 해제
+    fadeOut(modal)
 }
 
 // 회원가입 모달 닫기
 function closeSignupModal() {
-    var modal = document.getElementById("signupModal");
+    const modal = document.getElementById("signupModal");
     modal.style.display = "none";
     document.getElementById("signupFormContainer").innerHTML = "";
-
-    // 배경 고정 해제 및 스크롤 복구
-    // document.body.style.overflow = "auto";   // 스크롤 활성화
-    // document.body.style.position = "static"; // 페이지 위치 고정 해제
+    fadeOut(modal)
 }
 
 // 비밀번호 재설정 모달 닫기
 function closeResetPasswordModal() {
-    var modal = document.getElementById("resetPasswordModal");
+    const modal = document.getElementById("resetPasswordModal");
     modal.style.display = "none";
     document.getElementById("resetPasswordFormContainer").innerHTML = "";
+    fadeOut(modal)
 }
 
 // 모달 외부 클릭 시 모달 닫기 처리
@@ -259,8 +265,3 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("회원가입 중 오류가 발생했습니다.");
     }
 });
-
-
-
-
-
