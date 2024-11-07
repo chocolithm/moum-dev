@@ -30,6 +30,8 @@
         <!-- 인기글 섹션 -->
         <div class="boardHomePopular-middle-box">
             <h2>인기글</h2>
+            <a th:href="@{/board/boardDetailForm}" class="write-button">글쓰기</a>
+
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
                     <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
