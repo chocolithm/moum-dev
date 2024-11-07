@@ -6,7 +6,7 @@ adminSelects.forEach(input => {
     selectAdminMenu(this);
   }
 })
-document.querySelector("#user-admin").click();
+document.querySelector("#board-admin").click();
 
 
 function selectAdminMenu(element) {
