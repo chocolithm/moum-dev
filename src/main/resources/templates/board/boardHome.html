@@ -17,11 +17,11 @@
     <div class="search-container">
         <div class="navigation-pill">
             <div class="title-wrapper">
-                <div class="title" th:text="'주제별'" style="font-weight: bold">주제별</div>
+                <div class="title" style="font-weight: bold" th:text="'주제별'">주제별</div>
             </div>
         </div>
-        <input type="text" class="search-input" placeholder="Search">
-        <button type="submit" class="search-button">
+        <input class="search-input" placeholder="Search" type="text">
+        <button class="search-button" type="submit">
             <i class="fas fa-search"></i>
         </button>
     </div>
@@ -30,18 +30,18 @@
         <!-- 인기글 섹션 -->
         <div class="boardHomePopular-middle-box">
             <h2>인기글</h2>
-            <a th:href="@{/board/boardDetailForm}" class="write-button">글쓰기</a>
+            <a class="write-button" th:href="@{/board/boardDetailForm}">글쓰기</a>
 
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
                     <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
-                    <img th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
-                         alt="게시글 이미지">
+                    <img alt="게시글 이미지"
+                         th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
                     <!-- 첨부 파일이 없을 경우 기본 이미지를 표시 -->
-                    <img th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-                         th:src="@{/images/default-image.png}"
-                         alt="기본 이미지">
+                    <img alt="기본 이미지"
+                         th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                         th:src="@{/images/default-image.png}">
                 </a>
                 <div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
@@ -61,13 +61,13 @@
             <div class="boardHomeRecent-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
                     <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
-                    <img th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
-                         alt="게시글 이미지">
+                    <img alt="게시글 이미지"
+                         th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
                     <!-- 첨부 파일이 없을 경우 기본 이미지를 표시 -->
-                    <img th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-                         th:src="@{/images/default-image.png}"
-                         alt="기본 이미지">
+                    <img alt="기본 이미지"
+                         th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                         th:src="@{/images/default-image.png}">
                 </a>
                 <div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
@@ -88,18 +88,25 @@
                         <li th:if="${status.index < 10}" th:text="${ranking.rank} + '등 ' + ${ranking.user.nickname} + '님 ' + ${ranking.score} + '점'"></li>
                     </ul>
                     <!-- 현재 로그인된 유저 정보 -->
-                    <div class="board-current-user-achievement">
-                        <h3>현재 업적 정보</h3>
-                        <div th:if="${rankNowUserList != null}">
-                            <p th:text="${rankNowUserList.rank} + '위 ' + ${rankNowUserList.user.nickname} + '님 ' + ${rankNowUserList.score} + '점'"></p>
-                        </div>
-                        <div th:if="${rankNowUserList == null}">
-                            <p class="noData">현재 업적 정보가 없습니다.</p>
-                        </div>
+                    <span style="display: inline-block; max-width: 100%; overflow: hidden; white-space: nowrap;">-------------------------------------------------------------------------------------------</span>
+                    <ul class="board-achievement-list" th:if="${rankNowUserList != null}">
+                        <li th:text="${rankNowUserList.rank} + '위 ' + ${rankNowUserList.user.nickname} + '님 ' + ${rankNowUserList.score} + '점'"></li>
+                    </ul>
+                    <ul class="board-achievement-list noData" th:if="${rankNowUserList == null}">
+                        <li>현재 업적 정보가 없습니다.</li>
+                    </ul>
+
+<!--                    <div class="board-current-user-achievement">-->
+<!--                        <h3>현재 업적 정보</h3>-->
+<!--                        <div th:if="${rankNowUserList != null}">-->
+<!--                            <p th:text="${rankNowUserList.rank} + '위 ' + ${rankNowUserList.user.nickname} + '님 ' + ${rankNowUserList.score} + '점'"></p>-->
+<!--                        </div>-->
+<!--                        <div th:if="${rankNowUserList == null}">-->
+<!--                            <p class="noData">현재 업적 정보가 없습니다.</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
                 </div>
-
-
             </div>
         </div>
     </div>
