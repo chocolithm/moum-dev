@@ -18,16 +18,13 @@
             <img src="/images/logo.png" alt="홈" class="d-inline-block align-text-top">
               <span class="fs-6">모음</span>
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
           swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'});
           openLoginModal()'"
-                   class="nav-link active" aria-current="page" href="#">게시판</a>
+                   class="nav-link" aria-current="page" href="#">게시판</a>
               </li>
               <li class="nav-item">
                 <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHome\'' : '
@@ -40,37 +37,38 @@
               </li>
             </ul>
           </div>
-        </div>
 
-        <div class="login-state pos-right" data-th-unless="${#authorization.expression('isAuthenticated()')}">
-            <button class="btn btn-join" onclick="openSignupModal();">회원가입</button>
-            <button class="btn btn-login" onClick="openLoginModal();">로그인</button>
-        </div>
-        <div class="login-state pos-right" data-th-if="${#authorization.expression('isAuthenticated()')}">
-            <a class="btn alert-btn" onClick="openAlertModal();">
-                <img alt="알림" class="alert-image" src="/images/common/alert.png">
-                <span class="alert-count"></span>
-                알림
-            </a>
-            <a class="btn chat-btn" onClick="openChatroomModal();">
-                <img alt="채팅" class="chat-image" src="/images/common/chatting.png">
-                채팅
-            </a>
-            <a class="btn btn-light"
-               data-th-href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
-               data-th-utext="'<img alt=\'사용자정보\' class=\'profile-image\' src=\'/images/common/profile.png\'>' + ${session.nickname}">
-            </a>
-            <form data-th-action="@{/logout}" method="post" name="logoutForm" style="display: inline;">
-                <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>
-                <a class="btn btn-logout" onclick="document.logoutForm.submit();">
-                    <img alt="로그아웃" class="logout-image" src="/images/common/logout.png">
-                    로그아웃
+            <!-- 비로그인 상태 -->
+            <div class="login-state d-flex align-items-center gap-3" data-th-unless="${#authorization.expression('isAuthenticated()')}">
+                <button type="button" class="btn btn-outline-dark" onclick="openSignupModal();">회원 가입</button>
+                <button type="button" class="btn btn-dark" onClick="openLoginModal();">로그인</button>
+            </div>
+
+            <!-- 로그인 상태 -->
+            <div class="login-state d-flex align-items-center gap-3" data-th-if="${#authorization.expression('isAuthenticated()')}">
+                <a class="btn alert-btn d-flex align-items-center gap-2" onClick="openAlertModal();">
+                    <img alt="알림" class="alert-image" src="/images/common/alert.png">
+                    <span class="alert-count"></span>
+                    알림
                 </a>
-            </form>
+                <a class="btn chat-btn d-flex align-items-center gap-2" onClick="openChatroomModal();">
+                    <img alt="채팅" class="chat-image" src="/images/common/chatting.png">
+                    채팅
+                </a>
+                <a class="btn btn-light d-flex align-items-center gap-2"
+                   data-th-href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
+                   data-th-utext="'<img alt=\'사용자정보\' class=\'profile-image\' src=\'/images/common/profile.png\'>' + ${session.nickname}">
+                </a>
+                <form data-th-action="@{/logout}" method="post" name="logoutForm" class="d-inline">
+                    <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>
+                    <a class="btn btn-logout d-flex align-items-center gap-2" onclick="document.logoutForm.submit();">
+                        <img alt="로그아웃" class="logout-image" src="/images/common/logout.png">
+                        로그아웃
+                    </a>
+                </form>
+            </div>
         </div>
     </nav>
-
-
 
     <!-- 로그인 모달 -->
     <div class="modal" id="loginModal">
