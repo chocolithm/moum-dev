@@ -389,11 +389,13 @@ h3 {
     padding: 8px; /* 항목 내부 여백 */
     background-color: #f1f1f1; /* 배경색 설정 */
     border-radius: 4px; /* 둥근 모서리 */
-    transition: background-color 0.3s; /* 부드러운 전환 효과 */
+    transition: background-color 0.3s, transform 0.3s ease, box-shadow 0.3s ease; /* 추가된 효과들 */
 }
 
 .board-achievement-list li:hover {
     background-color: #e1e1e1; /* 마우스 오버 시 배경색 변화 */
+     transform: translateY(-8px); /* 마우스 오버 시 조금 더 위로 올라오게 수정 */
+     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* 그림자 크기와 흐림 정도를 좀 더 강화 */
 }
 
 /* 게시판 업적 랭킹 - 현재 사용자 정보 */
@@ -409,7 +411,14 @@ h3 {
     width: 265px; /* 너비 설정 */
     height: 30px;
     margin-top: 10px;
+    transition: all 0.3s ease;
 }
+
+.board-current-user-achievement:hover {
+    transform: translateY(-5px); /* 마우스 올리면 살짝 위로 올라오는 효과 */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12); /* 그림자 강화 */
+}
+
 
 .board-current-user-achievement h3 {
     font-size: 20px; /* 폰트 크기 조정 */
@@ -417,7 +426,6 @@ h3 {
     margin-bottom: 5px; /* 아래쪽 여백 */
      margin-top: -1px; /* 상단 여백 줄이기 (위로 밀기) */
     text-align: center;
-    
 }
 
 .board-current-user-achievement p {
