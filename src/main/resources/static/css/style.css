@@ -68,7 +68,7 @@ body {
 
 /* header */
 header {
-    padding: 30px;
+    padding: 20px;
     position: fixed;
     top: 0;
     left: 0;
@@ -87,7 +87,7 @@ header > h1 {
 
 header img {
     vertical-align: middle;
-    width: 50px;
+    width: 100px;
     height: auto;
     transition: transform 0.3s ease;
 }
@@ -98,6 +98,7 @@ header img:hover {
 
 header > nav {
     display: inline;
+    font-size: 20px;
 }
 
 header > nav > ul {
