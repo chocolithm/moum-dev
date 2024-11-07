@@ -24,13 +24,17 @@
                 <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
           swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'});
           openLoginModal()'"
-                   class="nav-link" aria-current="page" href="#">게시판</a>
+                   class="nav-link" aria-current="page" href="#">
+                    <span class="fw-bold">게시판</span>
+                </a>
               </li>
               <li class="nav-item">
                 <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHome\'' : '
             swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'});
             openLoginModal()'"
-                   class="nav-link" href="#">수집품거래</a>
+                   class="nav-link" href="#">
+                    <span class="fw-bold">수집품 거래</span>
+                </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link disabled" href="http://192.168.0.16:3000#" tabindex="-1" aria-disabled="true">하비위키</a>
