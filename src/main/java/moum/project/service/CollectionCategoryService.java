@@ -8,4 +8,8 @@ public interface CollectionCategoryService {
   List<Subcategory> listSubcategory(int maincategoryNo) throws Exception;
 
   List<Maincategory> listMaincategory() throws Exception;
+
+  List<Subcategory> listByPage(int pageNo, int pageCount) throws Exception;
+
+  int count() throws Exception;
 }

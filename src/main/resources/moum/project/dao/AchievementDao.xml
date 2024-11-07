@@ -15,6 +15,8 @@
         <result column="get_date" property="getDate"/>
         <result column="score" property="score"/>
         <result column="userrank" property="rank"/>
+        <result column="complete_count" property="completeCount"/>
+
         <association property="user" javaType="moum.project.vo.User">
             <id column="user_id" property="no"/>
             <result column="nickname" property="nickname"/>
@@ -179,7 +181,34 @@
     </update>
 
     <delete id="delete" parameterType="String"> <!--삭제!-->
-    delete from achievement
-    where achievement_id=#{id}
+        delete from achievement
+        where achievement_id=#{id}
     </delete>
+
+    <select id="listByPage" resultMap="AchievementMap" parameterType="map">
+        SELECT
+            a.achievement_id,
+            a.name,
+            a.content,
+            a.photo,
+            a.acquisition_condition,
+            a.location,
+            COALESCE(SUM(CASE WHEN ua.progress = 100 THEN 1 ELSE 0 END), 0) AS complete_count
+        FROM
+            achievement a
+        LEFT JOIN
+            user_achievement ua ON a.achievement_id = ua.achievement_id
+        GROUP BY
+            a.achievement_id, a.name, a.content, a.photo, a.acquisition_condition, a.location
+        ORDER BY
+            a.achievement_id DESC
+        LIMIT
+            #{pageNo}, #{pageCount};
+    </select>
+
+    <select id="count">
+        select count(*)
+        from user
+        where end_date is null
+    </select>
 </mapper>

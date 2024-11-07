@@ -1,10 +1,8 @@
 package moum.project.vo;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-import lombok.Data;
-
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 public class Achievement implements Serializable {
@@ -21,6 +19,7 @@ public class Achievement implements Serializable {
     private int rank;
     private int score;
     private User user;
+    private int completeCount;
 
     public Achievement(String id) {
         this.id = id;

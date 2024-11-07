@@ -11,15 +11,25 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultCollectionCategoryService implements CollectionCategoryService {
 
-  private final CollectionCategoryDao collectionCategoryDao;
+  private final CollectionCategoryDao categoryDao;
 
   @Override
   public List<Subcategory> listSubcategory(int maincategoryNo) throws Exception {
-    return collectionCategoryDao.listSubcategory(maincategoryNo);
+    return categoryDao.listSubcategory(maincategoryNo);
   }
 
   @Override
   public List<Maincategory> listMaincategory() throws Exception {
-    return collectionCategoryDao.listMaincategory();
+    return categoryDao.listMaincategory();
+  }
+
+  @Override
+  public List<Subcategory> listByPage(int pageNo, int pageCount) throws Exception {
+    return categoryDao.listByPage(pageNo, pageCount);
+  }
+
+  @Override
+  public int count() throws Exception {
+    return categoryDao.count();
   }
 }

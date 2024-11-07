@@ -14,7 +14,7 @@ function selectAdminMenu(element) {
 
   switch (id) {
     case "board-admin": toggleMenu("board", 1, 20); break;
-    case "category-admin": createCategoryTable(); break;
+    case "category-admin": toggleMenu("category", 1, 20); break;
     case "achievement-admin": createAchievementTable(); break;
     case "user-admin": toggleMenu("user", 1, 20); break;
     case "report-admin": alert("신고/유해콘텐츠 관리"); break;
@@ -37,24 +37,6 @@ function createBoardTable() {
         <th>작성일</th>
         <th>조회수</th>
         <th>추천수</th>
-      </tr>
-    </thead>
-  `;
-}
-
-function createCategoryTable() {
-  const title = document.querySelector("h1");
-  const table = document.querySelector(".table-section table");
-
-  title.innerHTML = "수집품 분류 관리";
-
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th>번호</th>
-        <th>대분류</th>
-        <th>소분류</th>
-        <th>보유자 수</th>
       </tr>
     </thead>
   `;
@@ -121,6 +103,31 @@ function createTableHead(menu) {
     `;
   }
 
+  if (menu == "category") {
+    title.innerHTML = "수집품 분류 관리";
+    table.innerHTML = `
+        <tr>
+          <th>번호</th>
+          <th>대분류</th>
+          <th>소분류</th>
+          <th>보유자 수</th>
+        </tr>
+    `;
+  }
+
+  if (menu == "achievement") {
+    title.innerHTML = "업적 관리";
+    table.innerHTML = `
+        <tr>
+          <th>업적ID</th>
+          <th>업적명</th>
+          <th>설명</th>
+          <th>점수</th>
+          <th>취득자수</th>
+        </tr>
+    `;
+  }
+
   table.append(thead);
 }
 
@@ -165,6 +172,23 @@ function fetchData(menu, pageNo, pageCount) {
             </tr>
           `;
         });
+      }
+
+      if (menu == "category") {
+        data.forEach(category => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${category.no == null ? category.maincategory.no : category.no}</td>
+              <td>${category.maincategory.name}</td>
+              <td>${category.name == null ? "-" : category.name}</td>
+              <td>${category.count}</td>
+            </tr>
+          `;
+        });
+      }
+
+      if (menu == "achievement") {
+
       }
 
       table.append(tbody);
