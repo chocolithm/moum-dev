@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/board")
@@ -213,12 +214,15 @@ public class BoardController {
         return "redirect:/board/boardView?no=" + existingBoard.getNo();
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public String delete(@RequestParam("no") int no) throws Exception {
-        // 게시글 삭제
+        // 게시글과 첨부 파일 삭제
         boardService.delete(no);
-        return "redirect:/board/boardList";
+        return "redirect:/board/boardList?deleted=true";
     }
+
+
+
 
 
 
