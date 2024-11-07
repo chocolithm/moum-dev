@@ -35,8 +35,6 @@ public interface UserService {
    */
   List<User> list() throws Exception;
 
-  List<User> listByPage(int pageNo, int pageCount) throws Exception;
-
   /**
    * 지정된 사용자 번호에 해당하는 사용자 정보를 반환합니다.
    *
@@ -91,4 +89,7 @@ public interface UserService {
    */
   User getByEmail(String email) throws Exception;
 
+  List<User> listByPage(int pageNo, int pageCount) throws Exception;
+
+  int count() throws Exception;
 }
