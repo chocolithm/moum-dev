@@ -11,7 +11,7 @@
 
     <association property="maincategory" javaType="moum.project.vo.Maincategory">
       <id column="maincategory_id" property="no"/>
-      <result column="category_name" property="name"/>
+      <result column="maincategory_name" property="name"/>
     </association>
   </resultMap>
 
@@ -38,5 +38,26 @@
       maincategory
     where
       maincategory_id != 999
+  </select>
+
+  <select id="listByPage" resultMap="SubcategoryMap" parameterType="map">
+    select
+      null as subcategory_id,
+      null as category_name,
+      maincategory_id,
+      category_name as maincategory_name
+    from
+      maincategory
+
+    union
+
+    select
+      s.subcategory_id,
+      s.category_name,
+      s.maincategory_id,
+      m.category_name as maincategory_name
+    from
+      subcategory s
+      left join maincategory m on s.maincategory_id = m.maincategory_id
   </select>
 </mapper>
