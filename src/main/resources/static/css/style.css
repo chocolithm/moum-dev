@@ -78,6 +78,8 @@ header {
     z-index: 100;
 }
 
+
+
 header > h1 {
     display: inline;
     font-size: 14px;
@@ -88,6 +90,11 @@ header img {
     height: 20px;
     width: 50px;
     height: auto;
+    transition: transform 0.3s ease;
+}
+
+header img:hover {
+    transform: scale(1.1); /* 이미지 크기 확대 */
 }
 
 header > nav {
@@ -201,11 +208,12 @@ footer {
     font-weight: bold;
     font-size: 14px;
     border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
