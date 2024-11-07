@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
   <title></title>
   <script src="/js/common.js"></script>
 </head>
@@ -15,37 +15,37 @@
     <nav class="navbar navbar-expand-lg" style="background-color: #ffffff;">
         <div class="container-fluid">
           <a class="navbar-brand" href="/home">
-            <img src="/images/logo.png" alt="홈" class="d-inline-block align-text-top">
+            <img alt="홈" class="d-inline-block align-text-top" src="/images/logo.png">
               <span class="fs-6">모음</span>
           </a>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
+                <a aria-current="page"
+                   class="nav-link" data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
           swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'});
-          openLoginModal()'"
-                   class="nav-link" aria-current="page" href="#">
+          openLoginModal()'" href="#">
                     <span class="fw-bold">게시판</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHome\'' : '
+                <a class="nav-link"
+                   data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHome\'' : '
             swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'});
-            openLoginModal()'"
-                   class="nav-link" href="#">
+            openLoginModal()'" href="#">
                     <span class="fw-bold">수집품 거래</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disabled" href="http://192.168.0.16:3000#" tabindex="-1" aria-disabled="true">하비위키</a>
+                <a aria-disabled="true" class="nav-link disabled" href="http://192.168.0.16:3000#" tabindex="-1">하비위키</a>
               </li>
             </ul>
           </div>
 
             <!-- 비로그인 상태 -->
             <div class="login-state d-flex align-items-center gap-3" data-th-unless="${#authorization.expression('isAuthenticated()')}">
-                <button type="button" class="btn btn-outline-dark" onclick="openSignupModal();">회원 가입</button>
-                <button type="button" class="btn btn-dark" onClick="openLoginModal();">로그인</button>
+                <button class="btn btn-outline-dark" onclick="openSignupModal();" type="button">회원 가입</button>
+                <button class="btn btn-dark" onClick="openLoginModal();" type="button">로그인</button>
             </div>
 
             <!-- 로그인 상태 -->
@@ -63,7 +63,7 @@
                    data-th-href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
                    data-th-utext="'<img alt=\'사용자정보\' class=\'profile-image\' src=\'/images/common/profile.png\'>' + ${session.nickname}">
                 </a>
-                <form data-th-action="@{/logout}" method="post" name="logoutForm" class="d-inline">
+                <form class="d-inline" data-th-action="@{/logout}" method="post" name="logoutForm">
                     <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>
                     <a class="btn btn-logout d-flex align-items-center gap-2" onclick="document.logoutForm.submit();">
                         <img alt="로그아웃" class="logout-image" src="/images/common/logout.png">

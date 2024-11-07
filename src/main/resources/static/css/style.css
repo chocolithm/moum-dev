@@ -105,10 +105,6 @@ header > nav > ul {
     display: inline;
 }
 
-header .logout-image {
-    width: 20px;
-}
-
 header .profile-image {
     width: 24px;
 }

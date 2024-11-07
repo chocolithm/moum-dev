@@ -13,23 +13,23 @@ function selectAdminMenu(element) {
   const id = element.id;
 
   switch (id) {
-    case "board-admin": toggleMenu("board", 1, 20); break;
-    case "category-admin": toggleMenu("category", 1, 20); break;
-    case "achievement-admin": toggleMenu("achievement", 1, 20); break;
-    case "user-admin": toggleMenu("user", 1, 20); break;
+    case "board-admin": toggleAdminMenu("board", 1, 20); break;
+    case "category-admin": toggleAdminMenu("category", 1, 20); break;
+    case "achievement-admin": toggleAdminMenu("achievement", 1, 20); break;
+    case "user-admin": toggleAdminMenu("user", 1, 20); break;
     case "report-admin": alert("신고/유해콘텐츠 관리"); break;
     case "statistics-admin": alert("통계 조회"); break;
     default: alert("잘못된 접근입니다.");
   }
 }
 
-function toggleMenu(menu, pageNo, pageCount) {
-  createTableHead(menu);
-  fetchData(menu, pageNo, pageCount);
-  createPagination(menu, pageCount);
+function toggleAdminMenu(menu, pageNo, pageCount) {
+  createAdminTableHead(menu);
+  fetchAdminData(menu, pageNo, pageCount);
+  createAdminPagination(menu, pageCount);
 }
 
-function createTableHead(menu) {
+function createAdminTableHead(menu) {
   const title = document.querySelector("h1");
   const table = document.querySelector(".table-section table");
   const thead = document.createElement("thead");
@@ -93,7 +93,7 @@ function createTableHead(menu) {
   table.append(thead);
 }
 
-function fetchData(menu, pageNo, pageCount) {
+function fetchAdminData(menu, pageNo, pageCount) {
   const table = document.querySelector(".table-section table");
   if (table.querySelector("tbody")) {
     table.querySelector("tbody").remove();
@@ -170,7 +170,7 @@ function fetchData(menu, pageNo, pageCount) {
     })
 }
 
-function createPagination(menu, pageCount) {
+function createAdminPagination(menu, pageCount) {
   fetch(`/admin/${menu}/count`)
     .then(response => response.text())
     .then(length => {
@@ -195,4 +195,8 @@ function createPagination(menu, pageCount) {
     .catch(error => {
       console.error('error creating pagination:', error);
     });
+}
+
+function createView(menu) {
+
 }
