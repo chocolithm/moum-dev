@@ -46,7 +46,7 @@
         <p>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></p>
         <button class="like-button" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
         <hr/>
-        <div th:text="${board.content}">게시글 내용</div>
+        <div th:utext="${board.content}">게시글 내용</div>
     </div>
 
     <!--/* 댓글 작성 */-->
