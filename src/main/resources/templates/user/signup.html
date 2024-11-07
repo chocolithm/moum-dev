@@ -70,51 +70,7 @@
 </div>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    .container {
-        max-width: 500px;
-    }
-    .form-control {
-        padding: 0.7rem;
-        border-radius: 4px;
-    }
-    .form-control:focus {
-        box-shadow: none;
-        border-color: #ced4da;
-    }
-    .btn:focus {
-        box-shadow: none;
-    }
-    .btn {
-        padding: 0.7rem 1.5rem;
-    }
-    .form-text {
-        display: block;
-        font-size: 0.875rem;
-    }
-    h6 {
-        color: #666;
-    }
-    /* 비밀번호 메시지 스타일 */
-    #passwordMessage, #confirmPasswordMessage {
-        display: block;
-        margin-top: 4px;
-    }
-    /* 입력창 간격 조정 */
-    .form-label {
-        margin-bottom: 8px;
-        display: block;
-    }
-    /* 비밀번호 입력창 크기 조정 */
-    input[type="password"] {
-        width: 100%;
-    }
-    /* 에러 메시지 스타일 */
-    .error-message {
-        font-size: 0.875rem;
-        text-align: center;
-    }
-</style>
+<link rel="stylesheet" th:href="@{/css/style.css}">
 <script th:src="@{/js/user.js}"></script>
 </body>
 </html>

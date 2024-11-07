@@ -87,8 +87,6 @@ header > h1 {
 
 header img {
     vertical-align: middle;
-    width: 100px;
-    height: auto;
     transition: transform 0.3s ease;
 }
 
@@ -204,7 +202,6 @@ footer {
     text-align: center;
     padding: 10px;
     text-decoration: none;
-    color: black;
     font-weight: bold;
     font-size: 14px;
     border-radius: 10px;
@@ -224,16 +221,6 @@ footer {
 
 .btn-light {
     background-color: white;
-}
-
-.btn-join {
-    background-color: white;
-    border: 1px solid black;
-}
-
-.btn-login {
-    background-color: black;
-    color: white;
 }
 
 .btn-secondary {
