@@ -177,6 +177,7 @@
     </update>
 
 
+
     <!-- 조회수 증가 (increaseViewCount) -->
     <update id="increaseViewCount" parameterType="int">
         UPDATE board

@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <title>전체게시판</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/board.css}">
+    <script>
+        // 페이지 로드 시 삭제 완료 메시지 표시
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get("deleted") === "true") {
+                alert("삭제되었습니다.");
+            }
+        };
+    </script>
 
 </head>
 

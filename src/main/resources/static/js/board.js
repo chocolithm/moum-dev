@@ -289,3 +289,24 @@ function toggleLike(boardNo, userNo) {
         }
     });
 }
+
+
+// 게시글 수정 함수
+function editPost(boardNo) {
+    if (boardNo) {
+        window.location.href = "/board/update?no=" + boardNo;
+    } else {
+        console.error("게시글 번호가 정의되지 않았습니다.");
+        alert("게시글 번호가 유효하지 않습니다.");
+    }
+}
+
+function deletePost(boardNo) {
+    if (confirm("정말 이 게시글을 삭제하시겠습니까?")) {
+        document.getElementById("deleteBoardNo").value = boardNo;
+        document.getElementById("deleteForm").submit();
+    }
+}
+
+
+
