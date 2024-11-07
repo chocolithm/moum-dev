@@ -417,6 +417,7 @@ h3 {
     margin-bottom: 5px; /* 아래쪽 여백 */
      margin-top: -1px; /* 상단 여백 줄이기 (위로 밀기) */
     text-align: center;
+    
 }
 
 .board-current-user-achievement p {
