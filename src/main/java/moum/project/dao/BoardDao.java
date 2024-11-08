@@ -14,6 +14,8 @@ public interface BoardDao {
 
     void insert(Board board); // 새 게시글 생성
 
+    void insertTrade(Board board); // 새 게시글 생성
+
     int update(Board board); // 게시글 수정
 
     int delete(int boardId); // 논리적 삭제

@@ -24,17 +24,27 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a aria-current="page"
-                           class="nav-link" data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
-          swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'});
-          openLoginModal()'" href="#">
+                           class="nav-link"
+                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
+                           swal(\'로그인이 필요합니다!!\', \'\',
+                           {icon: \'warning\'
+                           }).then((value) => {if(value) {
+                           openLoginModal();
+                           }
+                           })'" href="#">
                             <span class="fw-bold">게시판</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
                            data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHome\'' : '
-            swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'});
-            openLoginModal()'" href="#">
+                           swal(\'로그인이 필요합니다!!\',
+                           \'\',
+                           {icon: \'warning\'
+                           }).then((value) => {if(value) {
+                           openLoginModal();
+                           }
+                           })'" href="#">
                             <span class="fw-bold">수집품 거래</span>
                         </a>
                     </li>
@@ -83,7 +93,7 @@
     <div class="modal" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <span class="close" onclick="closeLoginModal()">&times;</span>
+                <span class="close" onclick="closeLoginModal()" style="float: right;">&times;</span>
                 <div id="loginFormContainer">
                     <!-- form.html의 내용이 여기 로드됩니다. -->
                 </div>
@@ -131,9 +141,6 @@
             }
         });
     </script>
-
     </header>
-
 </body>
-
 </html>

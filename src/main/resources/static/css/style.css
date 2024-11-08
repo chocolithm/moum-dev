@@ -47,6 +47,8 @@ a {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    right: 24px;
+    position:absolute
 }
 
 .close:hover, .close:focus {

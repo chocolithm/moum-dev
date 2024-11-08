@@ -14,13 +14,14 @@
 
   </insert>
 
-  <select id="list" resultMap="CollectionStatusMap">
-    select
-      status_id,
-      status_name
-    from
-      collection_status
+  <select id="list" resultType="moum.project.vo.CollectionStatus">
+    SELECT
+    status_id AS no,
+    status_name AS name
+    FROM
+    collection_status
   </select>
+
 
   <select id="findById" resultMap="CollectionStatusMap" parameterType="int">
     select

@@ -1,6 +1,8 @@
 package moum.project.service;
 
 import java.util.List;
+
+import moum.project.vo.AttachedFile;
 import moum.project.vo.Board;
 
 public interface BoardService {
@@ -34,4 +36,6 @@ public interface BoardService {
     List<Board> listByPage(int pageNo, int pageCount) throws Exception;
 
     int count() throws Exception;
+
+    void updateAttachedFiles(int no, List<AttachedFile> newFiles);
 }

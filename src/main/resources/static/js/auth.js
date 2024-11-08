@@ -242,7 +242,12 @@ document.getElementById('resetPasswordForm').addEventListener('submit', function
 
     // 이메일 인증 확인
     if (!emailChecked) {
-        alert('이메일 인증이 필요합니다.');
+        swal({
+            title: "이메일 인증이 필요합니다.",
+            text: "다시 시도해주세요.",
+            icon: "error",
+            button: "확인"
+        });
         return;
     }
 
@@ -250,7 +255,12 @@ document.getElementById('resetPasswordForm').addEventListener('submit', function
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     if (password !== confirmPassword) {
-        alert('비밀번호가 일치하지 않습니다.');
+        swal({
+            title: "비밀번호가 일치하지 않습니다.",
+            text: "다시 시도해주세요.",
+            icon: "error",
+            button: "확인"
+        })
         return;
     }
 
@@ -271,14 +281,29 @@ document.getElementById('resetPasswordForm').addEventListener('submit', function
     })
         .then(response => {
             if (response.ok) {
-                alert('비밀번호가 성공적으로 변경되었습니다.');
-                window.location.href = '/home?openLoginModal=true'; // 로그인 페이지로 이동
+                swal({
+                    title: "비밀번호가 성공적으로 변경되었습니다.",
+                    icon: "success",
+                    buttons: "확인"
+                }).then(() => {
+                    window.location.href = '/home?openLoginModal=true'; // 로그인 페이지로 이동
+                });
             } else {
-                alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+                swal({
+                    title: "비밀번호 변경에 실패했습니다.",
+                    text: "다시 시도해주세요.",
+                    icon: "error",
+                    button: "확인"
+                });
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('오류가 발생했습니다. 다시 시도해주세요.');
+            swal({
+                title: "오류가 발생했습니다.",
+                text: "다시 시도해주세요.",
+                icon: "error",
+                button: "확인"  // 확인 버튼만 표시
+            });
         });
 });

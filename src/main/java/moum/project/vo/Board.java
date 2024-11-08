@@ -28,9 +28,8 @@ public class Board implements Serializable {
     private CollectionStatus collectionStatus;
     private boolean status;
     private int likeCount; // 추천수 추가
-    private String transactionType;
-    private String contact;
-    
+    private String tradeType;
+
     private User user; //작성자 정보를 받기 위한 User 객체
 
 
