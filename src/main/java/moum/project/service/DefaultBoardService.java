@@ -44,6 +44,10 @@ public class DefaultBoardService implements BoardService {
                 file.setBoardNo(board.getNo()); // 게시글 번호 설정
             }
             boardDao.insertAttachedFiles(attachedFiles); // 첨부 파일 삽입
+
+        }
+        if (board.getBoardType().equals("trade")) {
+            boardDao.insertTrade(board);
         }
     }
 
@@ -114,5 +118,10 @@ public class DefaultBoardService implements BoardService {
     @Override
     public int count() throws Exception {
         return boardDao.count();
+    }
+
+    @Override
+    public void updateAttachedFiles(int no, List<AttachedFile> newFiles) {
+
     }
 }

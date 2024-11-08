@@ -127,7 +127,7 @@
 
 
 
-    <!-- 새 게시글 생성 (insert) -->
+    <!-- insert 구문 수정 -->
     <insert id="insert" parameterType="moum.project.vo.Board" useGeneratedKeys="true" keyProperty="no" keyColumn="board_id">
         INSERT INTO board (
         title,
@@ -144,6 +144,22 @@
         #{boardType}
         )
     </insert>
+
+    <insert id="insertTrade" parameterType="moum.project.vo.Board">
+        INSERT INTO trade_board (
+        board_id,
+        collection_id,
+        price,
+        trade_type
+        )
+        VALUES (
+        #{no},
+        #{collection.no},
+        #{price},
+        #{tradeType}
+        )
+    </insert>
+
 
     <insert id="boardInsert" parameterType="moum.project.vo.Board">
         INSERT INTO collection_board (

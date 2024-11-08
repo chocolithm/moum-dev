@@ -26,4 +26,6 @@ public interface CollectionDao {
   boolean deleteFile(int no) throws Exception;
 
   boolean deleteFiles(int no) throws Exception;
-}
+
+  // 모든 컬렉션 목록 조회
+  List<Collection> listAll() throws Exception;}

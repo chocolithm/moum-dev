@@ -30,8 +30,14 @@
         <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
         <p>조회수: <span th:text="${board.viewCount}">0</span></p>
         <p>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></p>
-        <button class="like-button" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
-        <hr/>
+
+        <!-- 게시글 종류에 따라 조건부로 필드를 표시 -->
+        <div th:if="${board.boardType == 'trade'}">
+            <p>가격: <span th:text="${board.price}">0</span>원</p>
+            <p>거래 상태: <span th:text="${board.collectionStatus?.status}">미설정</span></p>
+            <p>거래 방식: <span th:text="${board.tradeType}">거래 방식 없음</span></p>
+        </div>
+
         <div th:utext="${board.content}">게시글 내용</div>
 
         <div class="action-buttons" th:inline="javascript">
@@ -41,10 +47,6 @@
                 <input type="hidden" name="_method" value="DELETE">
                 <button type="submit" class="delete-button">삭제하기</button>
             </form>
-
-
-
-
         </div>
 </main>
 

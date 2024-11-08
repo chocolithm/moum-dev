@@ -174,4 +174,19 @@
     where collection_id = #{no}
   </delete>
 
+  <select id="listAll" resultMap="CollectionMap">
+    SELECT
+    c.collection_id,
+    c.name
+    FROM
+    collection c
+  </select>
+
+    <!-- 특정 컬렉션 조회 쿼리 -->
+    <select id="selectById" parameterType="int" resultType="moum.project.vo.Collection">
+      SELECT * FROM collections WHERE no = #{collectionNo}
+    </select>
+
+
+
 </mapper>
