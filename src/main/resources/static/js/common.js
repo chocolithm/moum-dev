@@ -195,7 +195,7 @@ function closeResetPasswordModal() {
 }
 
 // 모달 외부 클릭 시 모달 닫기 처리
-window.onclick = function (event) {
+window.onmousedown = function (event) {
     const loginModal = document.getElementById("loginModal");
     const signupModal = document.getElementById("signupModal");
     const resetPasswordModal = document.getElementById("resetPasswordModal");
