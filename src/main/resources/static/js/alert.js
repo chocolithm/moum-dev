@@ -176,7 +176,7 @@ function countAlert() {
     .then(response => response.text())
     .then(count => {
       if (count > 0) {
-        document.querySelector(".alert-count").innerHTML = count;
+        document.querySelector(".alert-count").innerHTML = "●";
       } else {
         document.querySelector(".alert-count").innerHTML = "";
       }

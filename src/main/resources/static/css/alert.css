@@ -1,3 +1,7 @@
+.alert-btn {
+  position: relative;
+}
+
 .alert-image {
   width: 22px;
 }
@@ -6,7 +10,7 @@
   color: red;
   position: absolute;
   top: 0;
-  left: 6%;
+  left: 40%;
   transform: translateX(-50%);
 }
 
