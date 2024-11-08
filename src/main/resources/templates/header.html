@@ -26,7 +26,9 @@
                         <a aria-current="page"
                            class="nav-link"
                            data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
-                           swal(\'로그인이 필요합니다!!\', \'\', {icon: \'warning\'}).then((value) => {if(value) {
+                           swal(\'로그인이 필요합니다!!\', \'\',
+                           {icon: \'warning\'
+                           }).then((value) => {if(value) {
                            openLoginModal();
                            }
                            })'" href="#">
