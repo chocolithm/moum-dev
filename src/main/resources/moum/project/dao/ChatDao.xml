@@ -30,6 +30,7 @@
     <result column="chat_date" property="chatDate"/>
     <result column="chat_read" property="read"/>
     <result column="sender_id" property="senderNo"/>
+    <result column="count" property="count"/>
 
     <association property="owner" javaType="moum.project.vo.User">
       <id column="owner_id" property="no"/>
@@ -103,7 +104,8 @@
       c1.message,
       c1.user_id as sender_id,
       c1.chat_date,
-      c1.chat_read
+      c1.chat_read,
+      unread_counts.unread_count as count
     from
       chatroom cr
       left join user up on cr.user_id = up.user_id
@@ -112,17 +114,24 @@
       inner join (
         select chatroom_id, user_id, message, chat_date, chat_read
         from chat c
-        where chat_date = (
+        where
+          chat_date = (
             select max(chat_date)
             from chat
             where chatroom_id = c.chatroom_id
           )
-        ) c1 on cr.chatroom_id = c1.chatroom_id
+      ) c1 on cr.chatroom_id = c1.chatroom_id
+      left join (
+        select chatroom_id, count(*) as unread_count
+        from chat
+        where chat_read = 0
+        group by chatroom_id
+      ) unread_counts on cr.chatroom_id = unread_counts.chatroom_id
     where
       b.user_id = #{no}
       or cr.user_id = #{no}
     order by
-      c1.chat_date desc
+      c1.chat_date desc;
   </select>
 
   <select id="findChat" resultMap="ChatMap" parameterType="int">
