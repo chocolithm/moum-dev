@@ -1,14 +1,26 @@
-// 로딩 시 실행
-
+// 로딩 시 메뉴에 onclick 부여
 const adminSelects = document.querySelectorAll(".sidemenu input");
 adminSelects.forEach(input => {
   input.onclick = function () {
     selectAdminMenu(this);
   }
 })
+
+// 게시글 관리 기본선택
 document.querySelector("#board-admin").click();
 
+// 뒤로가기 시 이전페이지 동작 추가
+window.addEventListener("popstate", function (event) {
+  if (event.state) {
+    const menu = event.state.menu;
+    const pageNo = event.state.pageNo;
+    const pageCount = event.state.pageCount;
 
+    toggleAdminMenu(menu, pageNo, pageCount, true)
+  }
+})
+
+// 메뉴 선택 시 항목별 동작
 function selectAdminMenu(element) {
   const id = element.id;
 
@@ -23,18 +35,21 @@ function selectAdminMenu(element) {
   }
 }
 
-function toggleAdminMenu(menu, pageNo, pageCount) {
+// 메뉴별 화면 생성
+function toggleAdminMenu(menu, pageNo, pageCount, fromPopState = false) {
   createAdminTableHead(menu);
-  fetchAdminData(menu, pageNo, pageCount);
+  fetchAdminData(menu, pageNo, pageCount, fromPopState);
   createAdminPagination(menu, pageCount);
 }
 
+// 목록 테이블 생성
 function createAdminTableHead(menu) {
   const title = document.querySelector("h1");
-  const table = document.querySelector(".table-section table");
+  const content_section = document.querySelector(".content-section");
+  const table = document.createElement("table");
   const thead = document.createElement("thead");
 
-  table.innerHTML = "";
+  content_section.innerHTML = "";
 
   if (menu == "user") {
     title.innerHTML = "회원 관리";
@@ -91,10 +106,12 @@ function createAdminTableHead(menu) {
   }
 
   table.append(thead);
+  content_section.append(table);
 }
 
-function fetchAdminData(menu, pageNo, pageCount) {
-  const table = document.querySelector(".table-section table");
+// 목록 데이터 조회
+function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
+  const table = document.querySelector(".content-section table");
 
   if (table.querySelector("tbody")) {
     table.querySelector("tbody").remove();
@@ -165,12 +182,20 @@ function fetchAdminData(menu, pageNo, pageCount) {
       }
 
       table.append(tbody);
+
+      // 조회 시마다 url 변경
+      if (!fromPopState) {
+        const newUrl = `/admin/management?menu=${menu}&pageNo=${pageNo}&pageCount=${pageCount}`;
+        history.pushState({ menu, pageNo, pageCount }, null, newUrl);
+      }
+
     })
     .catch(error => {
       console.error(`error fetching ${menu} list: `, error);
     })
 }
 
+// 페이징 생성
 function createAdminPagination(menu, pageCount) {
   fetch(`/admin/${menu}/count`)
     .then(response => response.text())
@@ -198,9 +223,15 @@ function createAdminPagination(menu, pageCount) {
     });
 }
 
+// 상세조회 화면
 function fetchAdminDetail(menu, no) {
-  const table_section = document.querySelector(".table-section");
-  table_section.querySelector("table").remove();
+  const content_section = document.querySelector(".content-section");
+  const paginationContainer = document.querySelector('.page-section');
+  const table = content_section.querySelector("table");
+
+  // 목록화면 삭제
+  table.remove();
+  paginationContainer.innerHTML = "";
 
   fetch(`/admin/${menu}?no=${no}`)
     .then(response => response.json())
