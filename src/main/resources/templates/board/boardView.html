@@ -41,7 +41,7 @@
         <div th:utext="${board.content}">게시글 내용</div>
 
         <div class="action-buttons" th:inline="javascript">
-            <button class="edit-button" onclick="editPost(/*[[${board.no}]]*/)">수정하기</button>
+            <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'">수정하기</button>
             <form th:action="@{/board/delete}" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
                 <input type="hidden" name="no" th:value="${board.no}">
                 <input type="hidden" name="_method" value="DELETE">
