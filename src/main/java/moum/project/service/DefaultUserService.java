@@ -142,4 +142,9 @@ public class DefaultUserService implements UserService {
   public int count() throws Exception {
     return userDao.count();
   }
+
+  @Override
+  public boolean updateAdmin(boolean admin, int userNo) throws Exception {
+    return userDao.updateAdmin(admin, userNo);
+  }
 }

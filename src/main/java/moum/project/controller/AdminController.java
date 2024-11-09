@@ -130,4 +130,10 @@ public class AdminController {
   public Achievement getAchievement(String no) throws Exception {
     return achievementService.get(no);
   }
+
+  @GetMapping("/updateAdmin")
+  @ResponseBody
+  public boolean updateAdmin(boolean admin, int userNo) throws Exception {
+    return userService.updateAdmin(admin, userNo);
+  }
 }
