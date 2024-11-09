@@ -8,11 +8,11 @@
   border: 1px solid lightgrey;
   box-shadow: 3px 3px 2px;
   width: 400px;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 136px);
   max-height: calc(1000vh - 100px);
   overflow-y: auto;
   position: fixed;
-  top: 110px;
+  top: 136px;
   right: 0;
   z-index: 50;
   display: none;
@@ -122,8 +122,8 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: calc(100vh - 280px);
-  height: calc(100vh - 280px);
+  max-height: calc(100vh - 306px);
+  height: calc(100vh - 306px);
 }
 
 .chatroom-layer .chat-info::-webkit-scrollbar {
