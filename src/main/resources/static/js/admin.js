@@ -289,7 +289,7 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
               </tr>
               <tr>
                 <td>SNS 연동</td>
-                <td>${user.snsId == null ? "" : ""}</td>
+                <td>${user.snsId == null ? "미연동" : "연동"}</td>
               </tr>
             </tbody>
           </table>
@@ -309,7 +309,46 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
       }
 
       if (menu == "achievement") {
-
+        const achievement = data;
+        content_section.innerHTML = `
+          <div>
+            <img src="${achievement.photo != "" && achievement.photo != null
+            ? 'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/' + achievement.photo
+            : '/images/common2/profile.png'}" alt="업적 사진" class="achievement-img">
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>업적 ID</td>
+                <td>${achievement.id}</td>
+              </tr>
+              <tr>
+                <td>엄적명</td>
+                <td>
+                  <input name="name" type="text" value="${achievement.name}">
+                </td>
+              </tr>
+              <tr>
+                <td>설명</td>
+                <td>
+                  <input name="content" type="text" value="${achievement.content}">
+                </td>
+              </tr>
+              <tr>
+                <td>취득조건</td>
+                <td>
+                  <input name="content" type="text" value="${achievement.condition}">
+                </td>
+              </tr>
+              <tr>
+                <td>점수</td>
+                <td>
+                  <input name="content" type="text" value="${achievement.score}" onchange="formatNumber(this);">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
       }
 
       // 조회 시마다 url 변경

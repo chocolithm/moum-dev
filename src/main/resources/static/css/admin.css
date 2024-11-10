@@ -116,6 +116,7 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-.main-section .content-section .user-profile-img {
+.main-section .content-section .user-profile-img,
+.main-section .content-section .achievement-img {
   width: 300px;
 }
