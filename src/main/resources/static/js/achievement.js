@@ -61,3 +61,17 @@ function sortAchievements() {
 }
 
 
+function filterAchievements() {
+    const checkedValues = Array.from(document.querySelectorAll('.filter:checked')).map(cb => cb.value);
+    const achievements = Array.from(document.querySelectorAll('.achievement-photo'));
+
+    achievements.forEach(achievement => {
+        const progress = parseInt(achievement.getAttribute('progress'));
+        const shouldShow = checkedValues.length === 0 ||
+            (checkedValues.includes('not-started') && progress === 0) ||
+            (checkedValues.includes('not-started') && progress > 0 && progress < 100) ||
+            (checkedValues.includes('completed') && progress === 100);
+
+        achievement.style.display = shouldShow ? 'block' : 'none';
+    });
+}

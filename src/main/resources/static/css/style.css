@@ -72,6 +72,11 @@ body {
     clear: both;
 }
 
+/* 다크 모드에서 제목 색상 변경 myinfo*/
+body.dark-mode h1 {
+    color: white;
+}
+
 /* header */
 header {
     padding: 20px;
