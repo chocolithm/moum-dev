@@ -104,6 +104,8 @@
     </select>
 
 
+
+    <!-- 새로운 첨부파일 추가 -->
     <insert id="insertAttachedFiles" parameterType="java.util.List">
         INSERT INTO board_photo (
         board_id,
@@ -119,11 +121,6 @@
             )
         </foreach>
     </insert>
-
-    <delete id="deleteAttachedFilesByBoardId" parameterType="int">
-        DELETE FROM board_photo WHERE board_id = #{no}
-    </delete>
-
 
 
 
@@ -184,6 +181,24 @@
         WHERE
         board_id = #{no}
     </update>
+
+    <!-- trade_board 수정 -->
+    <update id="updateTrade" parameterType="moum.project.vo.Board">
+        UPDATE trade_board
+        SET
+        collection_id = #{collection.no},
+        price = #{price},
+        status = #{collectionStatus.no},
+        trade_type = #{tradeType}
+        WHERE
+        board_id = #{no}
+    </update>
+
+    <!-- 기존 첨부파일 삭제 -->
+    <delete id="deleteAttachedFilesByBoardId" parameterType="int">
+        DELETE FROM board_photo
+        WHERE board_id = #{no}
+    </delete>
 
     <!-- 논리적 삭제 (delete) -->
     <update id="delete" parameterType="int">

@@ -200,16 +200,16 @@ public class BoardController {
         // 공통 속성 추가
         model.addAttribute("board", board);
 
-        return "board/updateForm"; // 업데이트 폼 페이지로 이동
+        return "board/boardUpdateForm"; // 업데이트 폼 페이지로 이동
     }
 
 
     @PostMapping("/update/{no}")
     public String update(
-            @PathVariable("no") int no,
-            Board updatedBoard,
-            @RequestParam("files") MultipartFile[] files,
-            Model model) throws Exception {
+        @PathVariable("no") int no,
+        Board updatedBoard,
+        @RequestParam("files") MultipartFile[] files,
+        Model model) throws Exception {
 
         // 기존 게시글을 가져옴
         Board existingBoard = boardService.get(no);
@@ -217,34 +217,46 @@ public class BoardController {
             throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + no);
         }
 
+        // 기존 게시글의 번호 설정
+        existingBoard.setNo(no);
+
         // 게시글 종류에 따라 다른 필드를 업데이트
         if ("trade".equals(existingBoard.getBoardType())) {
             existingBoard.setPrice(updatedBoard.getPrice());
             existingBoard.setTradeType(updatedBoard.getTradeType());
 
-            // 거래 상태 업데이트
             if (updatedBoard.getCollectionStatus() != null) {
                 existingBoard.setCollectionStatus(updatedBoard.getCollectionStatus());
             }
 
-            // 거래 대상 수집품 설정
             if (updatedBoard.getCollection() != null) {
                 existingBoard.setCollection(updatedBoard.getCollection());
             }
+
+            // trade_board 테이블 업데이트
+            boardService.updateTrade(existingBoard);
         } else if ("general".equals(existingBoard.getBoardType())) {
             existingBoard.setTitle(updatedBoard.getTitle());
             existingBoard.setContent(updatedBoard.getContent());
         }
 
         // 첨부 파일 처리
-        List<AttachedFile> newFiles = uploadFiles(files);
-        if (!newFiles.isEmpty()) {
-            boardService.updateAttachedFiles(no, newFiles);
+        if (files != null && files.length > 0 && !files[0].isEmpty()) {
+            // 1. 기존 파일 삭제
+            boardService.deleteAttachedFiles(no);
+
+            // 2. 새 파일 업로드 및 DB 저장
+            List<AttachedFile> newFiles = uploadFiles(files);
+            for (AttachedFile file : newFiles) {
+                file.setBoardNo(no);  // 게시글 번호 설정
+            }
+            boardService.insertAttachedFiles(newFiles);
             existingBoard.setAttachedFiles(newFiles);
         }
 
-        // 게시글 업데이트 수행
+        // 게시글 기본 정보 업데이트
         boolean updateSuccessful = boardService.update(existingBoard);
+
         if (updateSuccessful) {
             Board updatedDto = boardService.get(no);
             model.addAttribute("board", updatedDto);
