@@ -16,9 +16,7 @@ public interface CollectionCategoryDao {
 
   List<Subcategory> findMaincategory(int no) throws Exception;
 
-  List<Subcategory> listByPage(
-      @Param("pageNo") int pageNo,
-      @Param("pageCount") int pageCount) throws Exception;
+  List<Subcategory> listSubcategoryByMaincategory(int no) throws Exception;
 
   List<Maincategory> listMaincategoryByPage(
       @Param("pageNo") int pageNo,

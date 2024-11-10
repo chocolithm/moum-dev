@@ -298,12 +298,53 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
 
       }
 
-      if (menu == "maincategory") {
+      if (menu == "category") {
+        const category = data;
 
-      }
+        let content = `
+          <table class="maincategory-table">
+            <tbody>
+              <tr>
+                <td>분류번호</td>
+                <td>${category[0].maincategory.no}</td>
+              </tr>
+              <tr>
+                <td>분류명</td>
+                <td>${category[0].maincategory.name}</td>
+              </tr>
+              <tr>
+                <td>보유자수</td>
+                <td>${category[0].count}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="subcategory-table">
+            <thead>
+              <tr>
+                <th>분류번호</th>
+                <th>소분류</th>
+                <th>취득자수</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
 
-      if (menu == "subcategory") {
+        for (i = 1; i < category.length; i++) {
+          content += `
+            <tr>
+              <td>${category[i].no}</td>
+              <td>${category[i].name}</td>
+              <td>${category[i].count}</td>
+            </tr>
+          `;
+        }
 
+        content += `
+            </tbody>
+          </table>
+        `;
+
+        content_section.innerHTML = content;
       }
 
       if (menu == "achievement") {

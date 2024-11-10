@@ -80,7 +80,7 @@
       s.subcategory_id
   </select>
 
-  <select id="listByPage" resultMap="SubcategoryMap" parameterType="map">
+  <select id="listSubcategoryByMaincategory" resultMap="SubcategoryMap" parameterType="int">
     SELECT
       NULL AS subcategory_id,
       NULL AS category_name,
@@ -95,6 +95,8 @@
       collection c ON s.subcategory_id = c.subcategory_id
     GROUP BY
       m.maincategory_id, m.category_name
+    HAVING
+      m.maincategory_id = #{no}
 
     UNION ALL
 
@@ -112,10 +114,11 @@
       collection c ON s.subcategory_id = c.subcategory_id
     GROUP BY
       s.subcategory_id, s.category_name, s.maincategory_id, m.category_name
+    HAVING
+      s.maincategory_id = #{no}
 
     ORDER BY
       subcategory_id, maincategory_id
-    LIMIT #{pageNo}, #{pageCount}
   </select>
 
   <select id="listMaincategoryByPage" resultMap="MaincategoryMap" parameterType="map">
@@ -135,9 +138,6 @@
   </select>
 
   <select id="count" resultType="int">
-    select
-      (select count(*) from maincategory)
-      +
-      (select count(*) from subcategory) as count
+    select count(*) as count from maincategory
   </select>
 </mapper>

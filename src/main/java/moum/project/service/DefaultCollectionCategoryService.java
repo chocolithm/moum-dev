@@ -34,8 +34,8 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   }
 
   @Override
-  public List<Subcategory> listByPage(int pageNo, int pageCount) throws Exception {
-    return categoryDao.listByPage(pageNo, pageCount);
+  public List<Subcategory> listSubcategoryByMaincategory(int no) throws Exception {
+    return categoryDao.listSubcategoryByMaincategory(no);
   }
 
   @Override

@@ -120,3 +120,57 @@
 .main-section .content-section .achievement-img {
   width: 300px;
 }
+
+.main-section .content-section .maincategory-table,
+.main-section .content-section .subcategory-table {
+  margin: 0 5px;
+}
+
+.main-section .content-section .subcategory-table {
+  width: 95%;
+  height: 90%;
+  border-radius: 25px;
+  border: none;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+  border-collapse: collapse;
+}
+
+.main-section .content-section .subcategory-table thead {
+  position: sticky;
+  top: 0;
+  background-color: rgb(245, 245, 245);
+  z-index: 1;
+}
+
+.main-section .content-section .subcategory-table tbody {
+  display: block;
+  max-height: calc(100vh - 400px);
+  overflow-x: auto;
+  overflow-y: scroll;
+  padding-bottom: 5px;
+}
+
+.main-section .content-section .subcategory-table tbody::-webkit-scrollbar {
+  display: none;
+}
+
+.main-section .content-section .subcategory-table tbody tr,
+.main-section .content-section .subcategory-table thead tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border: 1px lightgrey solid;
+  transition: box-shadow 0.1s ease;
+}
+
+.main-section .content-section .subcategory-table th,
+.main-section .content-section .subcategory-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 3px;
+  border: 1px lightgrey solid;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

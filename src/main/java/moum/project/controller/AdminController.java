@@ -114,16 +114,10 @@ public class AdminController {
     return boardService.get(no);
   }
 
-  @GetMapping("/maincategory")
+  @GetMapping("/category")
   @ResponseBody
-  public List<Subcategory> getMaincategory(int no) throws Exception {
-    return categoryService.getMaincategory(no);
-  }
-
-  @GetMapping("/subcategory")
-  @ResponseBody
-  public Subcategory getSubcategory(int no) throws Exception {
-    return categoryService.getSubcategory(no);
+  public List<Subcategory> getCategory(int no) throws Exception {
+    return categoryService.listSubcategoryByMaincategory(no);
   }
 
   @GetMapping("/achievement")
