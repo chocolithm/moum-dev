@@ -7,4 +7,5 @@ import lombok.EqualsAndHashCode;
 public class Maincategory {
   @EqualsAndHashCode.Include private int no;
   private String name;
+  int count;
 }

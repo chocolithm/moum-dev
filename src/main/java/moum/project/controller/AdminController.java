@@ -8,6 +8,7 @@ import moum.project.service.CollectionCategoryService;
 import moum.project.service.UserService;
 import moum.project.vo.Achievement;
 import moum.project.vo.Board;
+import moum.project.vo.Maincategory;
 import moum.project.vo.Subcategory;
 import moum.project.vo.User;
 import org.springframework.stereotype.Controller;
@@ -67,8 +68,8 @@ public class AdminController {
 
   @GetMapping("/category/list")
   @ResponseBody
-  public List<Subcategory> listCategory(int pageNo, int pageCount) throws Exception {
-    return categoryService.listByPage((pageNo - 1) * pageCount, pageCount);
+  public List<Maincategory> listCategory(int pageNo, int pageCount) throws Exception {
+    return categoryService.listMaincategoryByPage((pageNo - 1) * pageCount, pageCount);
   }
 
   @GetMapping("/achievement/list")

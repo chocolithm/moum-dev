@@ -39,6 +39,11 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   }
 
   @Override
+  public List<Maincategory> listMaincategoryByPage(int pageNo, int pageCount) throws Exception {
+    return categoryDao.listMaincategoryByPage(pageNo, pageCount);
+  }
+
+  @Override
   public int count() throws Exception {
     return categoryDao.count();
   }

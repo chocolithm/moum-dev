@@ -98,7 +98,6 @@ function createAdminTableHead(menu) {
         <tr>
           <th>번호</th>
           <th>대분류</th>
-          <th>소분류</th>
           <th>보유자 수</th>
         </tr>
     `;
@@ -169,10 +168,9 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
       if (menu == "category") {
         data.forEach(category => {
           tbody.innerHTML += `
-            <tr onclick="fetchAdminDetail(${category.no == 0 ? '\'maincategory\', ' + category.maincategory.no : '\'subcategory\', ' + category.no})">
-              <td>${category.no == 0 ? "main-" + category.maincategory.no : "sub-" + category.no}</td>
-              <td>${category.maincategory.name}</td>
-              <td>${category.name == null ? "-" : category.name}</td>
+            <tr onclick="fetchAdminDetail('category', ${category.no})">
+              <td>${category.no}</td>
+              <td>${category.name}</td>
               <td>${category.count}</td>
             </tr>
           `;

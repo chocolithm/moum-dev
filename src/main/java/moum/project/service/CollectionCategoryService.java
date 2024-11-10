@@ -15,5 +15,7 @@ public interface CollectionCategoryService {
 
   List<Subcategory> listByPage(int pageNo, int pageCount) throws Exception;
 
+  List<Maincategory> listMaincategoryByPage(int pageNo, int pageCount) throws Exception;
+
   int count() throws Exception;
 }

@@ -20,5 +20,9 @@ public interface CollectionCategoryDao {
       @Param("pageNo") int pageNo,
       @Param("pageCount") int pageCount) throws Exception;
 
+  List<Maincategory> listMaincategoryByPage(
+      @Param("pageNo") int pageNo,
+      @Param("pageCount") int pageCount) throws Exception;
+
   int count() throws Exception;
 }

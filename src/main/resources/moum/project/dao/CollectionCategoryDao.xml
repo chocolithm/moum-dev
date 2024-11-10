@@ -19,6 +19,7 @@
   <resultMap id="MaincategoryMap" type="moum.project.vo.Maincategory">
     <id column="maincategory_id" property="no"/>
     <result column="category_name" property="name"/>
+    <result column="count" property="count"/>
   </resultMap>
 
   <select id="listSubcategory" resultMap="SubcategoryMap" parameterType="int">
@@ -114,6 +115,22 @@
 
     ORDER BY
       subcategory_id, maincategory_id
+    LIMIT #{pageNo}, #{pageCount}
+  </select>
+
+  <select id="listMaincategoryByPage" resultMap="MaincategoryMap" parameterType="map">
+    SELECT
+      m.maincategory_id,
+      m.category_name,
+      COALESCE(SUM(CASE WHEN c.subcategory_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS count
+    FROM
+      maincategory m
+      LEFT JOIN subcategory s ON m.maincategory_id = s.maincategory_id
+      LEFT JOIN collection c ON s.subcategory_id = c.subcategory_id
+    GROUP BY
+      m.maincategory_id, m.category_name
+    ORDER BY
+      maincategory_id
     LIMIT #{pageNo}, #{pageCount}
   </select>
 
