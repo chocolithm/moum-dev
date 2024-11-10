@@ -18,16 +18,15 @@
 <body>
 <div class="container mt-4">
   <h2>게시글 수정</h2>
-  <form id="postForm" enctype="multipart/form-data">
-    <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
+  <form id="updateForm" enctype="multipart/form-data">
+    <input type="hidden" data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" />
     <input type="hidden" id="boardNo" name="no" th:value="${board.no}" />
     <input type="hidden" id="existingBoardType" th:value="${board.boardType}" />
 
     <!-- 게시글 종류 표시 (수정 불가) -->
     <div class="form-group">
       <label for="boardType">게시글 종류</label>
-      <input type="text" class="form-control" id="boardType" name="boardType"
-             th:value="${board.boardType == 'trade' ? '거래 게시글' : '일반 게시글'}" readonly>
+      <input type="text" class="form-control" id="boardType" name="boardType" th:value="${board.boardType == 'trade' ? '거래 게시글' : '일반 게시글'}" readonly>
     </div>
 
     <!-- 공통 필드 -->
@@ -47,7 +46,6 @@
         <label for="price">가격</label>
         <input type="number" class="form-control" id="price" name="price" th:value="${board.price}">
       </div>
-
       <div class="form-group">
         <label for="tradeType">거래 방식</label>
         <select id="tradeType" name="tradeType" class="form-control">
@@ -55,25 +53,17 @@
           <option value="buy" th:selected="${board.tradeType == 'buy'}">구매</option>
         </select>
       </div>
-
       <div class="form-group">
         <label for="collectionNo">수집품 선택</label>
         <select id="collectionNo" name="collection.no" class="form-control">
           <option value="" disabled>수집품을 선택하세요</option>
-          <option th:each="collection : ${collections}"
-                  th:value="${collection.no}"
-                  th:selected="${board.collection != null && board.collection.no == collection.no}"
-                  th:data-filename="${collection.filename}"
-                  th:text="${collection.name}">
+          <option th:each="collection : ${collections}" th:value="${collection.no}" th:selected="${board.collection != null && board.collection.no == collection.no}" th:data-filename="${collection.filename}" th:text="${collection.name}">
           </option>
         </select>
       </div>
-
       <div class="form-group">
         <label>수집품 이미지</label>
-        <img id="collectionImage" th:if="${board.collection != null}"
-             th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.collection.filename}}"
-             alt="수집품 이미지" style="width: 50%; float: left;" class="note-float-left">
+        <img id="collectionImage" th:if="${board.collection != null}" th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.collection.filename}}" alt="수집품 이미지" style="width: 50%; float: left;" class="note-float-left">
       </div>
     </div>
 
@@ -85,8 +75,8 @@
   </form>
 </div>
 
-<script th:inline="javascript">
-  // Summernote 에디터 초기화
+<script>
+  // Summernote 에디터 초기화 및 이미지 업로드 함수
   $(document).ready(function() {
     $('#content').summernote({
       placeholder: '내용을 입력하세요 (최대 2048자)',
@@ -101,55 +91,106 @@
         ['insert', ['link', 'picture']],
         ['view', ['fullscreen', 'codeview', 'help']]
       ],
+      callbacks: {
+        onImageUpload: function (files) {
+          uploadImage(files[0]);
+        },
+        onPaste: function (e) {
+          var clipboardData = e.originalEvent.clipboardData;
+          if (clipboardData && clipboardData.items && clipboardData.items.length) {
+            var item = clipboardData.items[0];
+            if (item.kind === 'file') {
+              e.preventDefault();
+            }
+          }
+        }
+      }
     });
 
-    // 기존 이미지가 있는 경우 로드
-    var existingCollection = /*[[${board.collection}]]*/ null;
-    if (existingCollection && existingCollection.filename) {
-      var imageUrl = 'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + existingCollection.filename;
-      $('#collectionImage').attr('src', imageUrl);
-    }
+    // 수집품 목록 불러오기
+    loadCollections();
+
+    // 수집품 선택 시 이미지 업데이트
+    $('#collectionNo').change(function () {
+      var filename = $(this).find(':selected').data('filename');
+      if (filename) {
+        $('#collectionImage').attr('src', 'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + filename);
+      }
+    });
   });
 
-  // 수집품 이미지 변경 이벤트
-  document.getElementById('collectionNo').addEventListener('change', function() {
-    var selectedOption = this.options[this.selectedIndex];
-    var filename = selectedOption.getAttribute('data-filename');
-    if (filename) {
-      var imageUrl = 'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + filename;
-      document.getElementById('collectionImage').src = imageUrl;
-    }
-  });
+  // 이미지 업로드 함수
+  function uploadImage(file) {
+    var data = new FormData();
+    data.append("file", file);
+
+    $.ajax({
+      url: '/board/uploadImage',
+      type: 'POST',
+      data: data,
+      contentType: false,
+      processData: false,
+      headers: {
+        [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function (imageUrl) {
+        $('#content').summernote('insertImage', imageUrl);
+      },
+      error: function () {
+        alert('이미지 업로드에 실패했습니다.');
+      }
+    });
+  }
+
+  // 수집품 목록을 불러와 옵션에 추가
+  function loadCollections() {
+    $.ajax({
+      url: '/collection/list',
+      method: 'GET',
+      success: function (data) {
+        var collectionSelect = $('#collectionNo');
+        data.forEach(function (collection) {
+          collectionSelect.append('<option value="' + collection.no + '">' + collection.name + '</option>');
+        });
+      },
+      error: function () {
+        alert('수집품 목록을 불러오는 데 실패했습니다.');
+      }
+    });
+  }
 
   // 게시글 수정 함수
   function updatePost() {
-    var formData = new FormData($('#postForm')[0]);
-    var boardNo = $('#boardNo').val();
+    var formData = new FormData($('#updateForm')[0]);
+    var no = $('#boardNo').val();  // 숨겨진 input에서 no 값을 가져옴
 
-    if (formData.get("price") === "") {
+    if (!formData.get("price")) {
       formData.set("price", 0);
     }
 
     $.ajax({
-      url: '/board/update/' + boardNo,
+      url: `/board/update/${no}`,  // 가져온 no 값을 URL에 추가
       type: 'POST',
       data: formData,
       processData: false,
       contentType: false,
-      beforeSend: function(xhr) {
-        var token = $("meta[name='csrf-token']").attr("content");
-        var header = $("meta[name='csrf-header']").attr("content");
-        xhr.setRequestHeader(header, token);
+      headers: {
+        [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
       },
-      success: function(response) {
-        alert('게시글이 수정되었습니다.');
-        window.location.href = '/board/boardView/' + boardNo;
+      success: function (response) {
+        if (response === 'success') {
+          alert('게시글이 수정되었습니다.');
+          window.location.href = '/board/boardList';
+        } else {
+          alert('게시글 수정에 실패했습니다.');
+        }
       },
-      error: function(xhr, status, error) {
-        alert('게시글 수정에 실패했습니다: ' + error);
+      error: function () {
+        alert('서버 오류가 발생했습니다.');
       }
     });
   }
+
 </script>
 </body>
 </html>
