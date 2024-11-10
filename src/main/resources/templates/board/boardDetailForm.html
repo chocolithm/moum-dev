@@ -3,25 +3,19 @@
 <head>
   <meta name="csrf-token" th:content="${_csrf.token}"/>
   <meta name="csrf-header" th:content="${_csrf.headerName}"/>
-  <!-- 필요한 CSS 및 JS 파일들 -->
   <meta charset="UTF-8">
-  <title>게시글 작성 - Summernote 에디터</title>
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <!-- Bootstrap CSS for Summernote -->
+  <title>게시글 수정 - Summernote 에디터</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Summernote CSS & JS -->
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-  <!-- Bootstrap JavaScript -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
-  <h2>게시글 작성</h2>
+  <h2>게시글 수정</h2>
   <form id="postForm" enctype="multipart/form-data">
     <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
-    <!-- 게시글 종류 선택 -->
     <div class="form-group">
       <label for="boardType">게시글 종류</label>
       <select id="boardType" name="boardType" class="form-control" required>
@@ -30,7 +24,6 @@
       </select>
     </div>
 
-    <!-- 공통 필드 -->
     <div class="form-group">
       <label for="title">제목</label>
       <input type="text" class="form-control" id="title" name="title" required>
@@ -40,36 +33,33 @@
       <label for="content">내용</label>
       <textarea id="content" name="content" class="form-control"></textarea>
     </div>
+    <div class="form-group">
+      <label for="files">첨부 파일</label>
+      <input type="file" class="form-control" id="files" name="files" multiple>
+    </div>
 
-
-    <!-- 거래 게시글 전용 필드 -->
     <div id="tradeFields" style="display: none;">
-      <!-- 가격 -->
       <div class="form-group">
         <label for="price">가격</label>
         <input type="number" class="form-control" id="price" name="price">
       </div>
 
-      <!-- 거래 타입 -->
       <div class="form-group">
         <label for="tradeType">거래 방식</label>
         <select id="tradeType" name="tradeType" class="form-control">
           <option value="sell">판매</option>
           <option value="buy">구매</option>
         </select>
-      </div>
 
-      <!-- 기존 수집품 선택 -->
+      </div>
       <div class="form-group">
         <label for="collectionNo">수집품 선택</label>
         <select id="collectionNo" name="collection.no" class="form-control">
           <option value="" disabled selected>수집품을 선택하세요</option>
-          <!-- 수집품 목록을 동적으로 추가 -->
         </select>
       </div>
     </div>
 
-    <!-- 등록 버튼 -->
     <div>
       <button type="button" class="btn btn-primary" onclick="addDetailPost()">등록하기</button>
     </div>
@@ -77,7 +67,6 @@
 </div>
 
 <script>
-  // Summernote 에디터 초기화
   $(document).ready(function() {
     $('#content').summernote({
       placeholder: '내용을 입력하세요 (최대 2048자)',
@@ -92,31 +81,54 @@
         ['insert', ['link', 'picture']],
         ['view', ['fullscreen', 'codeview', 'help']]
       ],
-    });
-
-    // 게시글 종류에 따라 추가 필드 표시
-    $('#boardType').change(function() {
-      if ($(this).val() === 'trade') {
-        $('#tradeFields').show();
-      } else {
-        $('#tradeFields').hide();
+      callbacks: {
+        onImageUpload: function(files) {
+          uploadImage(files[0]);
+        },
+        onPaste: function(e) {
+          var clipboardData = e.originalEvent.clipboardData;
+          if (clipboardData && clipboardData.items && clipboardData.items.length) {
+            var item = clipboardData.items[0];
+            if (item.kind === 'file') {
+              e.preventDefault();
+            }
+          }
+        }
       }
     });
 
-    // 페이지 로드 시 게시글 종류에 따라 필드 표시 설정
-    if ($('#boardType').val() === 'trade') {
-      $('#tradeFields').show();
-    } else {
-      $('#tradeFields').hide();
-    }
+    $('#boardType').change(function() {
+      $('#tradeFields').toggle($(this).val() === 'trade');
+    });
 
-    // 수집품 목록 불러오기 (Ajax 사용)
     loadCollections();
   });
 
+  function uploadImage(file) {
+    var data = new FormData();
+    data.append("file", file);
+
+    $.ajax({
+      url: '/board/uploadImage',
+      type: 'POST',
+      data: data,
+      contentType: false,
+      processData: false,
+      headers: {
+        [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(imageUrl) {
+        $('#content').summernote('insertImage', imageUrl);
+      },
+      error: function() {
+        alert('이미지 업로드에 실패했습니다.');
+      }
+    });
+  }
+
   function loadCollections() {
     $.ajax({
-      url: '/collection/list', // 수집품 목록을 반환하는 API 엔드포인트
+      url: '/collection/list',
       method: 'GET',
       success: function(data) {
         var collectionSelect = $('#collectionNo');
@@ -129,21 +141,20 @@
       }
     });
   }
-</script>
-
-<script>
   function addDetailPost() {
     var formData = new FormData($('#postForm')[0]);
     if (formData.get("price") === "") {
       formData.set("price", 0);
     }
-
     $.ajax({
       url: '/board/addDetailPost',
       type: 'POST',
       data: formData,
       processData: false,
       contentType: false,
+      headers: {
+        [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
+      },
       success: function(response) {
         if (response === 'success') {
           alert('게시글이 등록되었습니다.');
@@ -158,5 +169,7 @@
     });
   }
 </script>
+
+
 </body>
 </html>

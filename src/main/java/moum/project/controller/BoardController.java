@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import moum.project.dao.BoardDao;
 import moum.project.service.*;
 import moum.project.vo.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -205,22 +206,19 @@ public class BoardController {
 
 
     @PostMapping("/update/{no}")
-    public String update(
+    public ResponseEntity<String> update(
         @PathVariable("no") int no,
         Board updatedBoard,
         @RequestParam("files") MultipartFile[] files,
         Model model) throws Exception {
 
-        // 기존 게시글을 가져옴
+        updatedBoard.setNo(no);
         Board existingBoard = boardService.get(no);
+
         if (existingBoard == null) {
-            throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + no);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글을 찾을 수 없습니다: " + no);
         }
 
-        // 기존 게시글의 번호 설정
-        existingBoard.setNo(no);
-
-        // 게시글 종류에 따라 다른 필드를 업데이트
         if ("trade".equals(existingBoard.getBoardType())) {
             existingBoard.setPrice(updatedBoard.getPrice());
             existingBoard.setTradeType(updatedBoard.getTradeType());
@@ -228,44 +226,68 @@ public class BoardController {
             if (updatedBoard.getCollectionStatus() != null) {
                 existingBoard.setCollectionStatus(updatedBoard.getCollectionStatus());
             }
-
             if (updatedBoard.getCollection() != null) {
                 existingBoard.setCollection(updatedBoard.getCollection());
             }
-
-            // trade_board 테이블 업데이트
             boardService.updateTrade(existingBoard);
         } else if ("general".equals(existingBoard.getBoardType())) {
             existingBoard.setTitle(updatedBoard.getTitle());
             existingBoard.setContent(updatedBoard.getContent());
         }
 
-        // 첨부 파일 처리
         if (files != null && files.length > 0 && !files[0].isEmpty()) {
-            // 1. 기존 파일 삭제
             boardService.deleteAttachedFiles(no);
-
-            // 2. 새 파일 업로드 및 DB 저장
             List<AttachedFile> newFiles = uploadFiles(files);
             for (AttachedFile file : newFiles) {
-                file.setBoardNo(no);  // 게시글 번호 설정
+                file.setBoardNo(no);
             }
             boardService.insertAttachedFiles(newFiles);
             existingBoard.setAttachedFiles(newFiles);
         }
 
-        // 게시글 기본 정보 업데이트
         boolean updateSuccessful = boardService.update(existingBoard);
 
         if (updateSuccessful) {
-            Board updatedDto = boardService.get(no);
-            model.addAttribute("board", updatedDto);
-            return "detail";
+            return ResponseEntity.ok("success");
         } else {
-            model.addAttribute("error", "게시글 업데이트에 실패했습니다.");
-            return "error";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 업데이트에 실패했습니다.");
         }
     }
+
+
+    @PostMapping("/uploadImage")
+    @ResponseBody
+    public String uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                throw new IllegalArgumentException("파일이 비어있습니다.");
+            }
+
+            // 파일 업로드 처리
+            String originalFilename = file.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+            String uuidFilename = UUID.randomUUID().toString() + extension;
+            String filePath = boardFolderName + uuidFilename;
+
+            // NCP 클라우드 스토리지에 업로드
+            storageService.upload(
+                filePath,
+                file.getInputStream(),
+                Map.of(StorageService.CONTENT_TYPE, file.getContentType())
+            );
+
+            // 이미지 URL 생성
+            String imageUrl = "https://kr.object.ncloudstorage.com/bitcamp-moum/" + filePath;
+            System.out.println("Generated Image URL: " + imageUrl); // 이미지 URL 콘솔 출력
+            return imageUrl;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("이미지 업로드 중 오류가 발생했습니다.");
+        }
+    }
+
+
+
 //        // 기존 게시글을 가져옴
 //        Board existingBoard = boardService.get(board.getNo());
 //        if (existingBoard == null) {
@@ -356,60 +378,6 @@ public class BoardController {
     }
 
 
-
-    @GetMapping("/boardPostForm")
-    public String postForm() {
-        return "board/boardPostForm"; // 템플릿 경로
-    }
-
-    @PostMapping("/addPost")
-    @ResponseBody
-    public String addPost(Board board,
-        Model model,
-        @RequestParam("files") MultipartFile[] files,
-        @RequestParam(value = "collection.no", required = false) Integer collectionNo,
-        @RequestParam(value = "price", required = false) Integer price,
-        @RequestParam(value = "status", required = false) Integer status,
-        @RequestParam(value = "tradeType", required = false) String tradeType,
-        @AuthenticationPrincipal UserDetails userDetails) throws Exception {
-
-        User loginUser = userService.getByEmail(userDetails.getUsername());
-        board.setUserNo(loginUser.getNo());
-        List<CollectionStatus> collectionStatusList = collectionStatusService.list();
-
-        try {
-            if ("trade".equals(board.getBoardType())) {
-                // 전체 CollectionStatus 리스트를 모델에 추가 (필요한 경우)
-                model.addAttribute("collectionStatusList", collectionStatusList);
-
-                if (collectionNo != null) {
-                    Collection collection = collectionService.get(collectionNo);
-                    board.setCollection(collection);
-                }
-
-                board.setPrice(price);
-                board.setTradeType(tradeType);
-
-                // 개별 CollectionStatus 객체를 ID로 조회하여 설정
-                if (status != null) {
-                    CollectionStatus collectionStatus = collectionStatusService.getById(status);
-                    board.setCollectionStatus(collectionStatus);
-                }
-            }
-
-            List<AttachedFile> attachedFiles = uploadFiles(files);
-            board.setAttachedFiles(attachedFiles);
-
-            boardService.add(board);
-
-            return "success";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "failure";
-        }
-    }
-
-
     @GetMapping("/boardDetailForm")
     public String boardDetailForm(Model model) throws Exception {
         // 수집품 목록 가져오기
@@ -442,6 +410,7 @@ public class BoardController {
         User loginUser = userService.getByEmail(userDetails.getUsername());
         board.setUserNo(loginUser.getNo());
 
+
         try {
             if ("trade".equals(board.getBoardType())) {
                 // 수집품 설정
@@ -465,14 +434,6 @@ public class BoardController {
             return "failure";
         }
     }
-
-
-
-
-
-
-
-
 
 
 }
