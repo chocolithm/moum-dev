@@ -129,7 +129,14 @@ header img {
     transition: transform 0.3s ease;
 }
 
+/* 로고 이미지에만 호버 효과 적용 */
+header img.logo:hover {
+    transform: scale(1.1); /* 이미지 크기 확대 */
+}
 
+header img:not(.logo):hover {
+    transform: none; /* 호버 시 변형 없애기 */
+}
 
 header > nav {
     display: inline;
