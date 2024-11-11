@@ -5,6 +5,7 @@ spring:
   config:
     import:
       - "file:${user.home}/config/ncp.properties"
+      - "file:${user.home}/config/mail.properties"
 
   datasource:
     url: jdbc:mysql://db-pfr3l-kr.vpc-pub-cdb.ntruss.com/moum
@@ -43,6 +44,16 @@ spring:
           writetimeout: 5000
     auth-code-expiration-millis: 180000
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${google.client-id}
+            client-secret: ${google.client-secret}
+            scope:
+              - email
+              - profile
 mybatis:
   mapper-locations:
   type-aliases-package:
