@@ -26,25 +26,8 @@ function openAchievementListByUser() {
     fetchAchievementByUser();
     openOverlay();
     fadeIn(document.querySelector(".achievement-user-progress"));
-
-
 }
 
-
-function filterAchievements() {
-    const checkedValues = Array.from(document.querySelectorAll('.filter:checked')).map(cb => cb.value);
-    const achievements = Array.from(document.querySelectorAll('.achievement-photo'));
-
-    achievements.forEach(achievement => {
-        const progress = parseInt(achievement.getAttribute('progress'));
-        const shouldShow = checkedValues.length === 0 ||
-            (checkedValues.includes('not-started') && progress === 0) ||
-            (checkedValues.includes('not-started') && progress > 0 && progress < 100) ||
-            (checkedValues.includes('completed') && progress === 100);
-
-        achievement.style.display = shouldShow ? 'block' : 'none';
-    });
-}
 
 // 정렬 함수 추가
 function sortAchievements() {
@@ -58,6 +41,43 @@ function sortAchievements() {
     });
 
     achievements.forEach(achievement => achievementsContainer.appendChild(achievement));
+}
+
+function filterAchievements() {
+    const checkedValues = Array.from(document.querySelectorAll('.filter:checked')).map(cb => cb.value);
+    const achievements = Array.from(document.querySelectorAll('.achievement-photo'));
+
+    achievements.forEach(achievement => {
+        const progress = parseInt(achievement.getAttribute('progress'));
+        const shouldShow = checkedValues.length === 0 ||
+            (checkedValues.includes('not-started') && progress === 0) ||
+            (checkedValues.includes('not-started') && progress > 0 && progress < 100) ||
+            (checkedValues.includes('completed') && progress === 100);
+
+        achievement.style.display = shouldShow ? 'block' : 'none';
+
+        // Bootstrap Progress Bar 색상 및 애니메이션 설정
+        const progressBar = achievement.querySelector('.progress-bar');
+        if (progressBar) {
+            let progressClass = 'bg-success'; // 기본 값은 초록색
+            if (progress <= 40) {
+                progressClass = 'bg-danger'; // 0% ~ 40% 빨간색
+            } else if (progress <= 60) {
+                progressClass = 'bg-warning'; // 41% ~ 60% 노란색
+            } else if (progress <= 99) {
+                progressClass = 'bg-info'; // 61% ~ 99% 하늘색
+            }
+
+            // 진행 상태에 따른 색상 클래스 추가
+            progressBar.classList.add(progressClass);
+
+            // 진행 바에 스트라이프와 애니메이션 클래스 추가
+            progressBar.classList.add('progress-bar-striped', 'progress-bar-animated');
+
+            // 진행 상태에 따른 너비 설정
+            progressBar.setAttribute('style', `width: ${progress}%`);
+        }
+    });
 }
 
 

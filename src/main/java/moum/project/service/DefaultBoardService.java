@@ -84,6 +84,21 @@ public class DefaultBoardService implements BoardService {
         return false;
     }
 
+    // BoardService.java
+    public void updateTrade(Board board) {
+        boardDao.updateTrade(board);
+    }
+
+    public void deleteAttachedFiles(int boardNo) {
+        boardDao.deleteAttachedFilesByBoardId(boardNo);
+    }
+
+    public void insertAttachedFiles(List<AttachedFile> files) {
+        if (!files.isEmpty()) {
+            boardDao.insertAttachedFiles(files);
+        }
+    }
+
 
 
     @Override

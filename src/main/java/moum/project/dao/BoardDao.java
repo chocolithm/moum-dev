@@ -38,6 +38,8 @@ public interface BoardDao {
     // 자랑하기 게시글 조회
     List<Board> listBraggingPosts();
 
+    void updateTrade(Board board);
+
     void insertAttachedFiles(List<AttachedFile> attachedFiles); // 첨부 파일 삽입
 
     void deleteAttachedFilesByBoardId(int boardId); // 첨부 파일 삭제

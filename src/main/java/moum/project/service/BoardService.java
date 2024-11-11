@@ -38,4 +38,8 @@ public interface BoardService {
     int count() throws Exception;
 
     void updateAttachedFiles(int no, List<AttachedFile> newFiles);
+
+   void updateTrade(Board board);
+   void deleteAttachedFiles(int boardNo);
+   void insertAttachedFiles(List<AttachedFile> files);
 }
