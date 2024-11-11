@@ -50,7 +50,9 @@
                     </li>
                     <li class="nav-item">
                         <a aria-disabled="true" class="nav-link" href="http://192.168.0.16:3000#"
-                           tabindex="-1">하비위키</a>
+                           tabindex="-1">
+                            <span class="fw-bold">하비위키</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -73,7 +75,7 @@
                     <img alt="채팅" class="chat-image" src="/images/common/chatting.png">
                     채팅
                 </a>
-                <a class="btn btn-light d-flex align-items-center gap-2"
+                <a class="btn d-flex align-items-center gap-2"
                    data-th-href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
                    data-th-utext="'<img alt=\'사용자정보\' class=\'profile-image\' src=\'/images/common/profile.png\'>' + ${session.nickname}">
                 </a>
