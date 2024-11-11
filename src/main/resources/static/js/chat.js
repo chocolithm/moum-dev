@@ -25,10 +25,7 @@ function connect(chatroomNo) {
 function disconnect() {
   if (stompChatClient && stompChatClient.connected) {
     stompChatClient.disconnect(() => {
-      console.log("Disconnected from the chatroom");
     });
-  } else {
-    console.log("No active STOMP connection to disconnect.");
   }
 }
 
