@@ -213,25 +213,111 @@ function createAdminPagination(menu, pageCount) {
       const totalItems = parseInt(length, 10);
       const totalPages = Math.ceil(totalItems / pageCount);
 
-      const paginationContainer = document.querySelector('.page-section');
-      paginationContainer.innerHTML = '';
+      const paginationContainer = document.querySelector('.pagination');
+      paginationContainer.innerHTML = '';  // 초기화
 
+      let currentPage = 1;
+
+      // "Previous" 버튼
+      const prevButton = document.createElement('li');
+      prevButton.classList.add('page-item', 'disabled');
+      const prevLink = document.createElement('a');
+      prevLink.classList.add('page-link');
+      prevLink.href = '#';
+      prevLink.textContent = 'Previous';
+      prevButton.appendChild(prevLink);
+      paginationContainer.appendChild(prevButton);
+
+      // 페이지 버튼들
       for (let i = 1; i <= totalPages; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.classList.add('page-button');
+        const pageItem = document.createElement('li');
+        pageItem.classList.add('page-item');
 
-        pageButton.addEventListener('click', () => {
+        const pageLink = document.createElement('a');
+        pageLink.classList.add('page-link');
+        pageLink.href = '#';
+        pageLink.textContent = i;
+
+        pageLink.addEventListener('click', (event) => {
+          event.preventDefault();  // 페이지 리로딩 방지
+          currentPage = i;
           fetchAdminData(menu, i, pageCount);
+          updateActivePage(i, totalPages);
         });
 
-        paginationContainer.appendChild(pageButton);
+        pageItem.appendChild(pageLink);
+        paginationContainer.appendChild(pageItem);
       }
+
+      // "Next" 버튼
+      const nextButton = document.createElement('li');
+      nextButton.classList.add('page-item', 'disabled');
+      const nextLink = document.createElement('a');
+      nextLink.classList.add('page-link');
+      nextLink.href = '#';
+      nextLink.textContent = 'Next';
+      nextButton.appendChild(nextLink);
+      paginationContainer.appendChild(nextButton);
+
+       // "Previous" 버튼 클릭 시
+            prevLink.addEventListener('click', (event) => {
+              if (currentPage > 1) {
+                currentPage--;
+                fetchAdminData(menu, currentPage, pageCount);
+                updateActivePage(currentPage, totalPages);
+              }
+            });
+
+            // "Next" 버튼 클릭 시
+            nextLink.addEventListener('click', (event) => {
+              if (currentPage < totalPages) {
+                currentPage++;
+                fetchAdminData(menu, currentPage, pageCount);
+                updateActivePage(currentPage, totalPages);
+              }
+            });
+
+      // 첫 페이지 활성화
+      updateActivePage(1, totalPages);
     })
     .catch(error => {
-      console.error('error creating pagination:', error);
+      console.error('Error creating pagination:', error);
     });
 }
+
+// 활성화된 페이지 업데이트
+function updateActivePage(currentPage, totalPages) {
+  const paginationContainer = document.querySelector('.pagination');
+  const pageItems = paginationContainer.querySelectorAll('.page-item');
+
+  pageItems.forEach(item => {
+    const link = item.querySelector('.page-link');
+    if (link) {
+      if (parseInt(link.textContent, 10) === currentPage) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    }
+  });
+
+  // "Previous" 버튼 및 "Next" 버튼의 활성화 상태 업데이트
+  const prevButton = paginationContainer.querySelector('.page-item:first-child');
+  const nextButton = paginationContainer.querySelector('.page-item:last-child');
+
+  if (currentPage === 1) {
+    prevButton.classList.add('disabled');
+  } else {
+    prevButton.classList.remove('disabled');
+  }
+
+  if (currentPage === totalPages) {
+    nextButton.classList.add('disabled');
+  } else {
+    nextButton.classList.remove('disabled');
+  }
+}
+
 
 // 상세조회 화면
 function fetchAdminDetail(menu, no, fromPopState = false) {
