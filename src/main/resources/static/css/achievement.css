@@ -1,0 +1,57 @@
+/* 게시글 개별 스타일 */
+.my-info-achievement-photo {
+    background-color: white;
+    border-radius: 8px;
+    width: calc(50% - 10px);
+    /* 두 개의 게시글이 한 줄에 표시되도록 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /* 내용이 넘치지 않게 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 게시글 이미지 영역 스타일 */
+.my-info-achievement-image {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.my-info-achievement-img {
+    width: 30%;
+    height: auto;
+    object-fit: cover;
+    /* 이미지 비율 유지 */
+}
+
+/* 게시글 상세 내용 영역 스타일 */
+.info-achievement-details {
+    padding: 15px;
+}
+
+/* 게시글 제목 스타일 */
+.my-info-achievement-name span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    /* 제목 중앙 정렬 */
+}
+
+/* hover 효과 */
+.my-info-achievement-photo:hover {
+    transform: translateY(-5px);
+    /* 마우스 올리면 살짝 올라오는 효과 */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    /* 그림자 강화 (더 부드럽고 넓게) */
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+    .my-info-achievement-photo {
+        width: 100%;
+        /* 작은 화면에서는 하나의 게시글이 한 줄에 표시되도록 */
+    }
+}

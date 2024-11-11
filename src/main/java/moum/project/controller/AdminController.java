@@ -8,8 +8,11 @@ import moum.project.service.CollectionCategoryService;
 import moum.project.service.UserService;
 import moum.project.vo.Achievement;
 import moum.project.vo.Board;
+import moum.project.vo.Maincategory;
 import moum.project.vo.Subcategory;
 import moum.project.vo.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,8 +70,8 @@ public class AdminController {
 
   @GetMapping("/category/list")
   @ResponseBody
-  public List<Subcategory> listCategory(int pageNo, int pageCount) throws Exception {
-    return categoryService.listByPage((pageNo - 1) * pageCount, pageCount);
+  public List<Maincategory> listCategory(int pageNo, int pageCount) throws Exception {
+    return categoryService.listMaincategoryByPage((pageNo - 1) * pageCount, pageCount);
   }
 
   @GetMapping("/achievement/list")
@@ -113,21 +116,34 @@ public class AdminController {
     return boardService.get(no);
   }
 
-  @GetMapping("/maincategory")
+  @GetMapping("/category")
   @ResponseBody
-  public List<Subcategory> getMaincategory(int no) throws Exception {
-    return categoryService.getMaincategory(no);
-  }
-
-  @GetMapping("/subcategory")
-  @ResponseBody
-  public Subcategory getSubcategory(int no) throws Exception {
-    return categoryService.getSubcategory(no);
+  public List<Subcategory> getCategory(int no) throws Exception {
+    return categoryService.listSubcategoryByMaincategory(no);
   }
 
   @GetMapping("/achievement")
   @ResponseBody
   public Achievement getAchievement(String no) throws Exception {
     return achievementService.get(no);
+  }
+
+  @GetMapping("/updateAdmin")
+  @ResponseBody
+  public String updateAdmin(
+      boolean admin,
+      int userNo,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    if (loginUser.getNo() == userNo) {
+      return "inhibited";
+    }
+
+    if (userService.updateAdmin(admin, userNo)) {
+      return "success";
+    } else {
+      return "failure";
+    }
   }
 }

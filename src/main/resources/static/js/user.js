@@ -398,5 +398,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 회원 탈퇴 경고
 function confirmWithdraw() {
-    return confirm('정말 탈퇴하시겠습니까?\n 탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.');
+    return swal({
+        title: "정말 탈퇴하시겠습니까?",
+        text: "탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.",
+        icon: "warning",
+        buttons: {
+            cancel: "취소",
+            confirm: {
+                text: "탈퇴",
+                value: true,
+                visible: true,
+                closeModal: true
+            }
+        },
+        dangerMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
+            document.getElementById("withdrawForm").submit(); // 사용자가 탈퇴를 확인했을 때만 폼 제출
+        }
+    });
 }

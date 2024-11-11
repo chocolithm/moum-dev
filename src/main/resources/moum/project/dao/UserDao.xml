@@ -162,4 +162,10 @@
         from user
         where end_date is null
     </select>
+
+    <update id="updateAdmin" parameterType="map">
+        update user
+        set admin = #{no}
+        where user_id = #{userNo}
+    </update>
 </mapper>

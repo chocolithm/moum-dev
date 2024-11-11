@@ -12,11 +12,22 @@ document.querySelector("#board-admin").click();
 // 뒤로가기 시 이전페이지 동작 추가
 window.addEventListener("popstate", function (event) {
   if (event.state) {
-    const menu = event.state.menu;
-    const pageNo = event.state.pageNo;
-    const pageCount = event.state.pageCount;
+    const type = event.state.type;
 
-    toggleAdminMenu(menu, pageNo, pageCount, true)
+    if (type == "list") {
+      const menu = event.state.menu;
+      const pageNo = event.state.pageNo;
+      const pageCount = event.state.pageCount;
+
+      toggleAdminMenu(menu, pageNo, pageCount, true);
+    }
+
+    if (type == "view") {
+      const menu = event.state.menu;
+      const no = event.state.no;
+      fetchAdminDetail(menu, no, true);
+    }
+
   }
 })
 
@@ -47,6 +58,7 @@ function createAdminTableHead(menu) {
   const title = document.querySelector("h1");
   const content_section = document.querySelector(".content-section");
   const table = document.createElement("table");
+  table.className = "list-table";
   const thead = document.createElement("thead");
 
   content_section.innerHTML = "";
@@ -86,7 +98,6 @@ function createAdminTableHead(menu) {
         <tr>
           <th>번호</th>
           <th>대분류</th>
-          <th>소분류</th>
           <th>보유자 수</th>
         </tr>
     `;
@@ -157,10 +168,9 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
       if (menu == "category") {
         data.forEach(category => {
           tbody.innerHTML += `
-            <tr onclick="fetchAdminDetail(${category.no == 0 ? '\'maincategory\', ' + category.maincategory.no : '\'subcategory\', ' + category.no})">
-              <td>${category.no == 0 ? "main-" + category.maincategory.no : "sub-" + category.no}</td>
-              <td>${category.maincategory.name}</td>
-              <td>${category.name == null ? "-" : category.name}</td>
+            <tr onclick="fetchAdminDetail('category', ${category.no})">
+              <td>${category.no}</td>
+              <td>${category.name}</td>
               <td>${category.count}</td>
             </tr>
           `;
@@ -186,7 +196,7 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
       // 조회 시마다 url 변경
       if (!fromPopState) {
         const newUrl = `/admin/management?menu=${menu}&pageNo=${pageNo}&pageCount=${pageCount}`;
-        history.pushState({ menu, pageNo, pageCount }, null, newUrl);
+        history.pushState({ menu, pageNo, pageCount, type: "list" }, null, newUrl);
       }
 
     })
@@ -224,39 +234,210 @@ function createAdminPagination(menu, pageCount) {
 }
 
 // 상세조회 화면
-function fetchAdminDetail(menu, no) {
+function fetchAdminDetail(menu, no, fromPopState = false) {
   const content_section = document.querySelector(".content-section");
   const paginationContainer = document.querySelector('.page-section');
-  const table = content_section.querySelector("table");
+  console.log("fetchAdminDetail");
 
   // 목록화면 삭제
-  table.remove();
+  content_section.innerHTML = "";
   paginationContainer.innerHTML = "";
 
   fetch(`/admin/${menu}?no=${no}`)
     .then(response => response.json())
     .then(data => {
-      if (data == "user") {
+      if (menu == "user") {
+        const user = data;
+        content_section.innerHTML = `
+          <div>
+            <img src="${user.photo != "" && user.photo != null
+            ? 'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + user.photo
+            : '/images/common2/profile.png'}" alt="프로필 사진" class="user-profile-img">
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>회원번호</td>
+                <td>${user.no}</td>
+              </tr>
+              <tr>
+                <td>이메일</td>
+                <td>${user.email}</td>
+              </tr>
+              <tr>
+                <td>닉네임</td>
+                <td>${user.nickname}</td>
+              </tr>
+              <tr>
+                <td>가입일자</td>
+                <td>${formatDate(user.startDate)}</td>
+              </tr>
+              <tr>
+                <td>최근접속</td>
+                <td>${formatDate(user.lastLogin)}</td>
+              </tr>
+              <tr>
+                <td>관리자권한</td>
+                <td>
+                  <select onchange="toggleAdminUser(this, ${user.no})">
+                    <option value="0" ${user.admin === false ? "selected" : ""}>미부여</option>
+                    <option value="1" ${user.admin === true ? "selected" : ""}>부여</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>SNS 연동</td>
+                <td>${user.snsId == null ? "미연동" : "연동"}</td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      }
+
+      if (menu == "board") {
 
       }
 
-      if (data == "board") {
+      if (menu == "category") {
+        const category = data;
 
+        let content = `
+          <table class="maincategory-table">
+            <tbody>
+              <tr>
+                <td>분류번호</td>
+                <td>${category[0].maincategory.no}</td>
+              </tr>
+              <tr>
+                <td>분류명</td>
+                <td>${category[0].maincategory.name}</td>
+              </tr>
+              <tr>
+                <td>보유자수</td>
+                <td>${category[0].count}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="subcategory-table">
+            <thead>
+              <tr>
+                <th>분류번호</th>
+                <th>소분류</th>
+                <th>취득자수</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        for (i = 1; i < category.length; i++) {
+          content += `
+            <tr>
+              <td>${category[i].no}</td>
+              <td>${category[i].name}</td>
+              <td>${category[i].count}</td>
+            </tr>
+          `;
+        }
+
+        content += `
+            </tbody>
+          </table>
+        `;
+
+        content_section.innerHTML = content;
       }
 
-      if (data == "maincategory") {
-
+      if (menu == "achievement") {
+        const achievement = data;
+        content_section.innerHTML = `
+          <div>
+            <img src="${achievement.photo != "" && achievement.photo != null
+            ? 'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/' + achievement.photo
+            : '/images/common2/profile.png'}" alt="업적 사진" class="achievement-img">
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>업적 ID</td>
+                <td>${achievement.id}</td>
+              </tr>
+              <tr>
+                <td>엄적명</td>
+                <td>
+                  <input name="name" type="text" value="${achievement.name}">
+                </td>
+              </tr>
+              <tr>
+                <td>설명</td>
+                <td>
+                  <input name="content" type="text" value="${achievement.content}">
+                </td>
+              </tr>
+              <tr>
+                <td>취득조건</td>
+                <td>
+                  <input name="content" type="text" value="${achievement.condition}">
+                </td>
+              </tr>
+              <tr>
+                <td>점수</td>
+                <td>
+                  <input name="content" type="text" value="${achievement.score}" onchange="formatNumber(this);">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
       }
 
-      if (data == "subcategory") {
-
-      }
-
-      if (data == "achievement") {
-
+      // 조회 시마다 url 변경
+      if (!fromPopState) {
+        const newUrl = `/admin/management?menu=${menu}&no=${no}`;
+        history.pushState({ menu, no, type: "view" }, null, newUrl);
       }
     })
     .catch(error => {
       console.error('error creating detail:', error);
     });
+}
+
+function toggleAdminUser(element, userNo) {
+  if (element.value == 0) {
+    if (confirm("관리자 권한을 해제하시겠습니까?")) {
+      fetch(`/admin/updateAdmin?admin=0&userNo=${userNo}`)
+        .then(response => response.text())
+        .then(response => {
+          if (response == "success") {
+            alert("관리자 권한 해제 완료");
+          } else if (response == "failure") {
+            element.value = 1;
+            alert("오류 발생");
+          } else if (response == "inhibited") {
+            alert("본인 권한 수정 불가");
+          }
+        })
+        .catch(error => {
+          console.error("error setting admin: ", error);
+        })
+    }
+  } else if (element.value == 1) {
+    if (confirm("관리자 권한을 부여하시겠습니까?")) {
+      fetch(`/admin/updateAdmin?admin=1&userNo=${userNo}`)
+        .then(response => response.text())
+        .then(response => {
+          if (response == "success") {
+            alert("관리자 권한 설정 완료");
+          } else if (response == "failure") {
+            element.value = 0;
+            alert("오류 발생");
+          } else if (response == "inhibited") {
+            alert("본인 권한 수정 불가");
+          }
+        })
+        .catch(error => {
+          console.error("error setting admin: ", error);
+        })
+    }
+  }
+
 }

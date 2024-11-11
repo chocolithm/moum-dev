@@ -115,16 +115,16 @@
 
     <select id="findBy" resultMap="AchievementMap" parameterType="String"> <!--조회!-->
         select
-        achievement_id
-        name,
-        content,
-        photo,
-        acquisition_condition,
-        location
+            achievement_id,
+            name,
+            content,
+            photo,
+            acquisition_condition,
+            score
         from
-        achievement
+            achievement
         where
-        achievement_id=#{id}
+            achievement_id=#{id}
     </select>
 
 
@@ -192,7 +192,7 @@
             a.content,
             a.photo,
             a.acquisition_condition,
-            a.location,
+            a.score,
             COALESCE(SUM(CASE WHEN ua.progress = 100 THEN 1 ELSE 0 END), 0) AS complete_count
         FROM
             achievement a

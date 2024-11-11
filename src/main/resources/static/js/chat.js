@@ -193,7 +193,7 @@ function fetchChatroomList() {
         message.innerHTML = chatroom.lastMessage;
 
         if (loginUser.no != chatroom.senderNo && chatroom.read == 0) {
-          message.innerHTML = "<span style='color: red'>●</span> " + message.innerHTML;
+          message.innerHTML = `<span class='unread-count'>${chatroom.count}</span> ` + message.innerHTML;
         }
 
         const date = document.createElement("div");

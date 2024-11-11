@@ -14,6 +14,7 @@ public class Chatroom {
   private String lastMessage;
   private LocalDateTime chatDate;
   private boolean read;
+  private int count;
 
   public Chatroom() {
 
