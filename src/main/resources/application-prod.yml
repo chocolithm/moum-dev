@@ -15,8 +15,8 @@ spring:
 
   thymeleaf:
     cache: false
-#    prefix: file:src/main/resources/templates/
-    # suffix: .html
+    prefix: classpath:/templates/
+    suffix: .html
 
   servlet:
     multipart:
