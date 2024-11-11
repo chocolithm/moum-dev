@@ -418,3 +418,29 @@ function confirmWithdraw() {
         }
     });
 }
+
+function validateAndPreviewImage(input) {
+    const errorMessage = document.getElementById('errorMessage');
+    const previewImage = document.getElementById('previewImage');
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+
+        // 파일 크기 검증
+        if (file.size > maxSize) {
+            errorMessage.textContent = '파일 크기는 10MB를 초과할 수 없습니다.';
+            errorMessage.style.display = 'block';
+            input.value = ''; // 파일 선택 초기화
+            return;
+        }
+
+        // 이미지 미리보기
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            errorMessage.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+}
