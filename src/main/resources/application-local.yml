@@ -2,6 +2,10 @@ spring:
   application:
     name: moum
 
+  config:
+    import:
+      - "classpath:/config/ncp.properties"
+
   datasource:
     url: jdbc:mysql://db-pfr3l-kr.vpc-pub-cdb.ntruss.com/moum
     username: moum
