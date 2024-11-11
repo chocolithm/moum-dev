@@ -41,11 +41,15 @@
         <!-- 인기글 섹션 -->
         <div class="boardHomePopular-middle-box">
             <h2>인기글</h2>
-            <!-- 글쓰기 버튼을 a 태그로 변환 -->
-            <a href="/board/boardDetailForm" class="write-button btn btn-outline-light" role="button">글쓰기</a>
+            <!-- 글쓰기 버튼을 button 태그로 변환 -->
+            <button type="button" class="write-button btn btn-info" onclick="location.href='/board/boardDetailForm'">
+                글쓰기
+            </button>
 
-            <!-- Light 버튼을 a 태그로 변환, 기존의 버튼 기능을 그대로 유지 -->
-            <a href="#" class="btn btn-outline-light" role="button" id="lightButton">Light</a>
+            <!-- Light 버튼을 button 태그로 변환, 기존의 버튼 기능을 그대로 유지 -->
+            <button type="button" class="btn btn-outline-light" id="lightButton">
+                Light
+            </button>
 
 
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
