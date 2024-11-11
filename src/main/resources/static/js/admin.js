@@ -27,7 +27,7 @@ window.addEventListener("popstate", function (event) {
       const no = event.state.no;
       fetchAdminDetail(menu, no, true);
     }
-    
+
   }
 })
 
@@ -196,7 +196,7 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
       // 조회 시마다 url 변경
       if (!fromPopState) {
         const newUrl = `/admin/management?menu=${menu}&pageNo=${pageNo}&pageCount=${pageCount}`;
-        history.pushState({ menu, pageNo, pageCount, type : "list" }, null, newUrl);
+        history.pushState({ menu, pageNo, pageCount, type: "list" }, null, newUrl);
       }
 
     })
@@ -393,7 +393,7 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
       // 조회 시마다 url 변경
       if (!fromPopState) {
         const newUrl = `/admin/management?menu=${menu}&no=${no}`;
-        history.pushState({ menu, no, type : "view" }, null, newUrl);
+        history.pushState({ menu, no, type: "view" }, null, newUrl);
       }
     })
     .catch(error => {
@@ -405,33 +405,39 @@ function toggleAdminUser(element, userNo) {
   if (element.value == 0) {
     if (confirm("관리자 권한을 해제하시겠습니까?")) {
       fetch(`/admin/updateAdmin?admin=0&userNo=${userNo}`)
+        .then(response => response.text())
         .then(response => {
-          if (response.ok) {
+          if (response == "success") {
             alert("관리자 권한 해제 완료");
-          } else {
+          } else if (response == "failure") {
             element.value = 1;
             alert("오류 발생");
+          } else if (response == "inhibited") {
+            alert("본인 권한 수정 불가");
           }
         })
-        .catch (error => {
+        .catch(error => {
           console.error("error setting admin: ", error);
         })
     }
   } else if (element.value == 1) {
     if (confirm("관리자 권한을 부여하시겠습니까?")) {
       fetch(`/admin/updateAdmin?admin=1&userNo=${userNo}`)
+        .then(response => response.text())
         .then(response => {
-          if (response.ok) {
+          if (response == "success") {
             alert("관리자 권한 설정 완료");
-          } else {
+          } else if (response == "failure") {
             element.value = 0;
             alert("오류 발생");
+          } else if (response == "inhibited") {
+            alert("본인 권한 수정 불가");
           }
         })
-        .catch (error => {
+        .catch(error => {
           console.error("error setting admin: ", error);
         })
     }
   }
-  
+
 }

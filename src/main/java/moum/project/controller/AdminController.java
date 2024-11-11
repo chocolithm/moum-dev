@@ -11,6 +11,8 @@ import moum.project.vo.Board;
 import moum.project.vo.Maincategory;
 import moum.project.vo.Subcategory;
 import moum.project.vo.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -128,7 +130,20 @@ public class AdminController {
 
   @GetMapping("/updateAdmin")
   @ResponseBody
-  public boolean updateAdmin(boolean admin, int userNo) throws Exception {
-    return userService.updateAdmin(admin, userNo);
+  public String updateAdmin(
+      boolean admin,
+      int userNo,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    if (loginUser.getNo() == userNo) {
+      return "inhibited";
+    }
+
+    if (userService.updateAdmin(admin, userNo)) {
+      return "success";
+    } else {
+      return "failure";
+    }
   }
 }
