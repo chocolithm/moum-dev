@@ -371,11 +371,19 @@ function createBoardInfo(board_info, chatroom) {
   board_title.className = "board-title";
   board_title.innerHTML = chatroom.board.title;
 
-  const exit_btn = document.createElement("img");
-  exit_btn.className = "x";
-  exit_btn.alt = "닫기";
-  exit_btn.src = "/images/common/x_bg_black.png";
-  exit_btn.setAttribute("onclick", "closeChat()");
+// 채팅 닫기 버튼
+const exit_btn = document.createElement("button");
+exit_btn.className = "btn-close";
+exit_btn.setAttribute("aria-label", "Close");
+
+exit_btn.addEventListener("click", function() {
+  closeChat();
+});
+
+document.body.appendChild(exit_btn);
+
+
+
 
   const transaction_type = document.createElement("span");
   transaction_type.className = "transaction-type";
@@ -506,17 +514,25 @@ function createChatInputbox(chatroomNo) {
   input.id = "new-message";
   input.className = "new-message";
 
-  const btn = document.createElement("button");
-  btn.innerHTML = "보내기";
-  btn.className = "chat-btn";
-  if (chatroomNo == 0) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const boardNo = urlParams.get('no');
+//채팅 보내기 버튼
+const btn = document.createElement("button");
+btn.innerHTML = "보내기";
+btn.className = "chat-btn btn btn-dark"; // 기존 클래스 'chat-btn'에 'btn'과 'btn-dark' 클래스 추가
 
-    btn.setAttribute("onclick", `createChatroom(${boardNo})`);
-  } else {
-    btn.setAttribute("onclick", `sendMessage(${chatroomNo});`);
-  }
+// chatroomNo가 0이면 URL에서 'no' 파라미터를 받아와서 createChatroom 함수 호출
+if (chatroomNo == 0) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const boardNo = urlParams.get('no');
+
+  btn.setAttribute("onclick", `createChatroom(${boardNo})`);
+} else {
+  // chatroomNo가 0이 아니면 sendMessage 함수 호출
+  btn.setAttribute("onclick", `sendMessage(${chatroomNo});`);
+}
+
+// 생성된 버튼을 DOM에 추가
+document.body.appendChild(btn);
+
 
   chat_inputbox.append(input, btn);
   chatroom_layer.appendChild(chat_inputbox);
