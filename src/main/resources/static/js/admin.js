@@ -39,7 +39,7 @@ function selectAdminMenu(element) {
     case "board-admin": toggleAdminMenu("board", 1, 20); break;
     case "category-admin": toggleAdminMenu("category", 1, 20); break;
     case "achievement-admin": toggleAdminMenu("achievement", 1, 20); break;
-    case "user-admin": toggleAdminMenu("user", 1, 20); break;
+    case "user-admin": toggleAdminMenu("user", 1, 5); break;
     case "report-admin": alert("신고/유해콘텐츠 관리"); break;
     case "statistics-admin": alert("통계 조회"); break;
     default: alert("잘못된 접근입니다.");
@@ -259,23 +259,23 @@ function createAdminPagination(menu, pageCount) {
       nextButton.appendChild(nextLink);
       paginationContainer.appendChild(nextButton);
 
-       // "Previous" 버튼 클릭 시
-            prevLink.addEventListener('click', (event) => {
-              if (currentPage > 1) {
-                currentPage--;
-                fetchAdminData(menu, currentPage, pageCount);
-                updateActivePage(currentPage, totalPages);
-              }
-            });
+      // "Previous" 버튼 클릭 시
+      prevLink.addEventListener('click', (event) => {
+        if (currentPage > 1) {
+          currentPage--;
+          fetchAdminData(menu, currentPage, pageCount);
+          updateActivePage(currentPage, totalPages);
+        }
+      });
 
-            // "Next" 버튼 클릭 시
-            nextLink.addEventListener('click', (event) => {
-              if (currentPage < totalPages) {
-                currentPage++;
-                fetchAdminData(menu, currentPage, pageCount);
-                updateActivePage(currentPage, totalPages);
-              }
-            });
+      // "Next" 버튼 클릭 시
+      nextLink.addEventListener('click', (event) => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          fetchAdminData(menu, currentPage, pageCount);
+          updateActivePage(currentPage, totalPages);
+        }
+      });
 
       // 첫 페이지 활성화
       updateActivePage(1, totalPages);
@@ -322,7 +322,7 @@ function updateActivePage(currentPage, totalPages) {
 // 상세조회 화면
 function fetchAdminDetail(menu, no, fromPopState = false) {
   const content_section = document.querySelector(".content-section");
-  const paginationContainer = document.querySelector('.page-section');
+  const paginationContainer = document.querySelector('.pagination');
   console.log("fetchAdminDetail");
 
   // 목록화면 삭제
