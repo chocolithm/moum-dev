@@ -398,5 +398,118 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 회원 탈퇴 경고
 function confirmWithdraw() {
-    return confirm('정말 탈퇴하시겠습니까?\n 탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.');
+    return swal({
+        title: "정말 탈퇴하시겠습니까?",
+        text: "탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.",
+        icon: "warning",
+        buttons: {
+            cancel: "취소",
+            confirm: {
+                text: "탈퇴",
+                value: true,
+                visible: true,
+                closeModal: true
+            }
+        },
+        dangerMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
+            document.getElementById("withdrawForm").submit(); // 사용자가 탈퇴를 확인했을 때만 폼 제출
+        }
+    });
+}
+
+function validateAndPreviewImage(input) {
+    const errorMessage = document.getElementById('errorMessage');
+    const previewImage = document.getElementById('previewImage');
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+
+        // 파일 크기 검증
+        if (file.size > maxSize) {
+            errorMessage.textContent = '파일 크기는 10MB를 초과할 수 없습니다.';
+            errorMessage.style.display = 'block';
+            input.value = ''; // 파일 선택 초기화
+            return;
+        }
+
+        // 이미지 미리보기
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            errorMessage.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// 폼 제출 전에 유효성 검사를 수행하는 함수
+function validateForm() {
+    const nickname = document.getElementById('nickname').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    let message = '';
+
+    // 닉네임 중복 확인 여부 검사
+    if (!nicknameChecked) {
+        message += '닉네임 중복 확인이 필요합니다.\n';
+    }
+
+    // 비밀번호와 비밀번호 확인란 검사
+    if (password || confirmPassword) {
+        // 비밀번호 확인 칸만 채워진 경우 에러 처리
+        if (!password && confirmPassword) {
+            message += '비밀번호 입력 칸을 채워주세요.\n';
+        } else if (password !== confirmPassword) {
+            message += '비밀번호가 일치하지 않습니다.\n';
+        } else if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
+            message += '비밀번호는 최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다.\n';
+        }
+    }
+
+    // 에러 메시지가 있으면 제출을 막음
+    if (message) {
+        alert(message);
+        return false;
+    }
+    return true;
+}
+
+// 비밀번호 입력 필드의 값에 따라 비밀번호 확인 필드 표시/숨기기
+function toggleConfirmPasswordField() {
+    const password = document.getElementById('password').value;
+    const confirmPasswordField = document.getElementById('confirmPasswordField');
+
+    if (password) {
+        confirmPasswordField.style.display = 'block';
+    } else {
+        confirmPasswordField.style.display = 'none';
+        document.getElementById('confirmPassword').value = ''; // 비밀번호 확인 필드 초기화
+        document.getElementById('confirmPasswordMessage').textContent = ''; // 메시지 초기화
+    }
+}
+
+// 비밀번호 확인 필드에 입력 이벤트 리스너 추가
+document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+
+
+//update.html 업적처리
+// 선택된 업적을 처리하는 함수
+function selectAchievement(element) {
+// 선택된 업적 텍스트와 ID 가져오기
+var achievementText = element.innerText;
+var achievementId = element.getAttribute('data-id');
+
+// 버튼에 선택된 업적 이름을 표시
+document.getElementById('achievement-selected').innerText = achievementText;
+
+// 선택된 업적 ID를 hidden input에 저장
+document.getElementById('user-achievement').value = achievementId;
+
+// 드롭다운을 자동으로 닫기
+var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
+dropdown.hide();
 }

@@ -113,22 +113,31 @@ public class BoardController {
     }
 
     @GetMapping("/boardList")
-    public String boardList(Model model) throws Exception {
-        // 모든 게시글 목록을 가져옴
-        List<Board> allBoards = boardService.list();
+    public String boardList(
+        @RequestParam(value = "page", defaultValue = "1") int page,
+        @RequestParam(value = "size", defaultValue = "10") int pageSize,
+        Model model) throws Exception {
 
-        if (allBoards.isEmpty()) {
+        // 페이지 계산
+        int pageNo = (page - 1) * pageSize;  // offset
+        List<Board> boards = boardService.listByPage(pageNo, pageSize);
+        int totalBoards = boardService.count();
+        int totalPages = (int) Math.ceil((double) totalBoards / pageSize);
+
+        if (boards.isEmpty()) {
             // 게시글이 없을 경우 빈 리스트를 모델에 추가
             model.addAttribute("recentBoards", Collections.emptyList());
-            return "board/boardList";
+        } else {
+            model.addAttribute("recentBoards", boards);
         }
 
-        // 최근 게시글 10개까지만 가져옴
-        List<Board> recentBoards = allBoards.subList(0, Math.min(50, allBoards.size()));
-        model.addAttribute("recentBoards", recentBoards);
+        // 페이징 관련 속성 추가
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
 
         return "board/boardList";
     }
+
 
     @PostMapping("/addGeneral")
     public String add(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
@@ -151,6 +160,9 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         return "board/boardList";
     }
+
+
+
 
     @GetMapping("/boardView")
     public String view(@RequestParam("no") int no, Model model) throws Exception {
@@ -191,6 +203,7 @@ public class BoardController {
             model.addAttribute("transactionType", board.getTradeType());
             model.addAttribute("collection", board.getCollection());
             model.addAttribute("collectionStatus", board.getCollectionStatus());
+            model.addAttribute("tradeType", board.getTradeType());
         } else if ("general".equals(board.getBoardType())) {
             // 일반 게시글의 경우 제목, 내용, 공개 여부만 설정
             model.addAttribute("title", board.getTitle());
@@ -403,6 +416,7 @@ public class BoardController {
                                 @RequestParam("files") MultipartFile[] files,
                                 @RequestParam(value = "collection.no", required = false) Integer collectionNo,
                                 @RequestParam(value = "price", required = false) Integer price,
+                                @RequestParam(value = "status", required = false) boolean status,
                                 @RequestParam(value = "tradeType", required = false) String tradeType,
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) throws Exception {
@@ -418,7 +432,8 @@ public class BoardController {
                     Collection collection = collectionService.get(collectionNo);
                     board.setCollection(collection);
                 }
-                // 가격, 연락처, 거래 타입 설정
+                // 가격, 연락처, 판매/구매 설정
+                board.setStatus(status);
                 board.setTradeType(tradeType);
                 board.setPrice(price);
             }

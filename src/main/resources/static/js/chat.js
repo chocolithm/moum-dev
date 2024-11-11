@@ -25,10 +25,7 @@ function connect(chatroomNo) {
 function disconnect() {
   if (stompChatClient && stompChatClient.connected) {
     stompChatClient.disconnect(() => {
-      console.log("Disconnected from the chatroom");
     });
-  } else {
-    console.log("No active STOMP connection to disconnect.");
   }
 }
 
@@ -165,9 +162,11 @@ function fetchChatroomList() {
       }
 
       data.forEach(chatroom => {
+        const participant = loginUser.no == chatroom.participant.no ? chatroom.owner : chatroom.participant;
+
         const div = document.createElement("div");
         div.className = "chatroom";
-        div.onclick = () => openChat(chatroom.no);
+        div.onclick = () => openChat(chatroom.no, participant);
 
         const userspan = document.createElement("span");
         userspan.className = "chatroom-user";
@@ -175,15 +174,13 @@ function fetchChatroomList() {
         const chatspan = document.createElement("span");
         chatspan.className = "chatroom-content";
 
-        const participant = loginUser.no == chatroom.participant.no ? chatroom.owner : chatroom.participant;
-
         const img = document.createElement("img");
         img.src = participant.photo == null ? "/images/user/default1.png" : "/images/user/default2.png";
         img.alt = "프로필";
         img.className = "profile";
 
         const nickname = document.createElement("div")
-        nickname.innerHTML = participant.nickname;
+        nickname.innerHTML = participant.endDate == "" ? participant.nickname : "탈퇴회원";
         nickname.className = "nickname";
 
         userspan.append(img, nickname);
@@ -193,7 +190,7 @@ function fetchChatroomList() {
         message.innerHTML = chatroom.lastMessage;
 
         if (loginUser.no != chatroom.senderNo && chatroom.read == 0) {
-          message.innerHTML = "<span style='color: red'>●</span> " + message.innerHTML;
+          message.innerHTML = `<span class='unread-count'>${chatroom.count}</span> ` + message.innerHTML;
         }
 
         const date = document.createElement("div");
@@ -213,7 +210,7 @@ function fetchChatroomList() {
 }
 
 // 채팅방 열기
-function openChat(chatroomNo) {
+function openChat(chatroomNo, participant) {
 
   if (chatroomNo == 0) {
     checkChatroom();
@@ -232,7 +229,7 @@ function openChat(chatroomNo) {
       try {
         await fetchChatroom(chatroomNo);
         await fetchChatContent(chatroomNo, 1);
-        createChatInputbox(chatroomNo);
+        createChatInputbox(chatroomNo, participant);
         connect(chatroomNo);
         countAlert();
       } catch (error) {
@@ -302,11 +299,11 @@ function checkChatroom() {
 
           chatroom_layer.append(board_info, chat_info);
 
-          createChatInputbox(chatroom.no);
+          createChatInputbox(chatroom.no, chatroom.participant);
         }, 500);
 
       } else {
-        openChat(chatroom.no);
+        openChat(chatroom.no, chatroom.participant);
       }
     })
     .catch(error => {
@@ -374,11 +371,16 @@ function createBoardInfo(board_info, chatroom) {
   board_title.className = "board-title";
   board_title.innerHTML = chatroom.board.title;
 
-  const exit_btn = document.createElement("img");
-  exit_btn.className = "x";
-  exit_btn.alt = "닫기";
-  exit_btn.src = "/images/common/x_bg_black.png";
-  exit_btn.setAttribute("onclick", "closeChat()");
+  // 채팅 닫기 버튼
+  const exit_btn = document.createElement("button");
+  exit_btn.className = "btn-close";
+  exit_btn.setAttribute("aria-label", "Close");
+
+  exit_btn.addEventListener("click", function () {
+    closeChat();
+  });
+
+  document.body.appendChild(exit_btn);
 
   const transaction_type = document.createElement("span");
   transaction_type.className = "transaction-type";
@@ -498,7 +500,7 @@ function createChatContent(message_box, loginUser, chat) {
 }
 
 // 채팅 입력창 생성
-function createChatInputbox(chatroomNo) {
+function createChatInputbox(chatroomNo, participant) {
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
   const chat_inputbox = document.createElement("div");
@@ -509,10 +511,14 @@ function createChatInputbox(chatroomNo) {
   input.id = "new-message";
   input.className = "new-message";
 
+  //채팅 보내기 버튼
   const btn = document.createElement("button");
   btn.innerHTML = "보내기";
-  btn.className = "chat-btn";
-  if (chatroomNo == 0) {
+  btn.className = "chat-btn btn btn-dark";
+
+  if (participant.endDate != "") {
+    btn.setAttribute("onclick", `alert("이미 탈퇴한 회원입니다.")`);
+  } else if (chatroomNo == 0) {
     const urlParams = new URLSearchParams(window.location.search);
     const boardNo = urlParams.get('no');
 

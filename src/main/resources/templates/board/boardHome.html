@@ -22,17 +22,35 @@
                 <div class="title" style="font-weight: bold" th:text="'주제별'">주제별</div>
             </div>
         </div>
-        <input class="search-input" placeholder="Search" type="text">
-        <button class="search-button" type="submit">
-            <i class="fas fa-search"></i>
-        </button>
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <form class="d-flex" role="search">
+                    <div class="search-container">
+                        <!-- 검색 입력창 -->
+                        <input class="search-input" type="text" placeholder="Search" aria-label="Search">
+
+                        <!-- 검색 버튼 -->
+                        <button class="search-button" type="submit">검색</button>
+                    </div>
+                </form>
+            </div>
+        </nav>
     </div>
 
     <div class="board">
         <!-- 인기글 섹션 -->
         <div class="boardHomePopular-middle-box">
             <h2>인기글</h2>
-            <a class="write-button" th:href="@{/board/boardDetailForm}">글쓰기</a>
+            <!-- 글쓰기 버튼을 button 태그로 변환 -->
+            <button type="button" class="write-button btn btn-info" onclick="location.href='/board/boardDetailForm'">
+                글쓰기
+            </button>
+
+            <!-- Light 버튼을 button 태그로 변환, 기존의 버튼 기능을 그대로 유지 -->
+            <button type="button" class="btn btn-outline-light" id="lightButton">
+                Light
+            </button>
+
 
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">

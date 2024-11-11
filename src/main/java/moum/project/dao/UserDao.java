@@ -108,4 +108,8 @@ public interface UserDao {
 
     int count() throws Exception;
 
+    boolean updateAdmin(
+        @Param("no") boolean admin,
+        @Param("userNo") int userNo) throws Exception;
+
 }

@@ -19,25 +19,32 @@
     <aside class="sidemenu clearfix">
         <ul>
             <li data-th-each="maincategory : ${maincategoryList}">
-                <input checked class="myhome-maincategory"
-                       data-th-id="'maincategory-' + ${maincategory.no}"
-                       data-th-value="'maincategory-' + ${maincategory.no}"
-                       onClick="filterCategories(this)"
-                       type="checkbox" value="maincategory">
-                <label data-th-for="'maincategory-' + ${maincategory.no}" data-th-text="${maincategory.name}"></label>
+                <div class="form-check form-switch">
+                    <input checked class="form-check-input myhome-maincategory"
+                           data-th-id="'maincategory-' + ${maincategory.no}"
+                           data-th-value="'maincategory-' + ${maincategory.no}"
+                           onClick="filterCategories(this)" type="checkbox"
+                           value="maincategory">
+                    <label class="form-check-label" data-th-for="'maincategory-' + ${maincategory.no}"
+                           data-th-text="${maincategory.name}"></label>
+                </div>
             </li>
             <li>
-                <input checked class="myhome-maincategory" id="maincategory-999"
-                       onClick="filterCategories(this)" type="checkbox"
-                       value="maincategory-999">
-                <label data-th-for="maincategory-999" data-th-text="기타"></label>
+                <div class="form-check form-switch">
+                    <input checked class="form-check-input myhome-maincategory"
+                           id="maincategory-999"
+                           onClick="filterCategories(this)" type="checkbox" value="maincategory-999">
+                    <label class="form-check-label" data-th-for="maincategory-999"
+                           data-th-text="기타"></label>
+                </div>
             </li>
         </ul>
+
     </aside>
     <section class="main-section">
         <div class="myhome-upper-buttons">
-            <button class="btn" onClick="openCollectionFormModal();">수집품 등록</button>
-            <button class="btn" onClick="openPostFormModal();">POST</button>
+            <button type="button" class="btn btn-outline-success" onClick="openCollectionFormModal();">수집품 등록</button>
+            <button type="button" class="btn btn-outline-primary" onClick="openPostFormModal();">POST</button>
         </div>
         <div class="myhome-collections">
             <div data-th-if="${#lists.isEmpty(collectionList)}">

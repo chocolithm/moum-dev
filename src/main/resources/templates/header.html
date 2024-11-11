@@ -2,42 +2,42 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<meta content="width=device-width, initial-scale=1" name="viewport">
-	<title></title>
-	<script src="/js/common.js"></script>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title></title>
+  <script src="/js/common.js"></script>
 </head>
 
 <body onload="populateEmailField()">
 
 <header class="bg-white border-bottom py-1 fixed-top" data-th-fragment="header">
-	
-	<div class="overlay" onClick="closeModal();"></div>
-	
-	<nav class="navbar navbar-expand-lg" style="background-color: #ffffff;">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="/home">
-				<img alt="홈" class="d-inline-block align-text-top" src="/images/logo.png">
-				<span class="fs-6">모음</span>
-			</a>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<a aria-current="page"
-						   class="nav-link"
-						   data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
+
+    <div class="overlay" onClick="closeModal();"></div>
+
+    <nav class="navbar navbar-expand-lg" style="background-color: #ffffff;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home">
+                <img alt="홈" class="logo d-inline-block align-text-top" src="/images/logo.png">
+                <span class="fs-6">모음</span>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a aria-current="page"
+                           class="nav-link"
+                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
                            swal(\'로그인이 필요합니다!!\', \'\',
                            {icon: \'warning\'
                            }).then((value) => {if(value) {
                            openLoginModal();
                            }
                            })'" href="#">
-							<span class="fw-bold">게시판</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link"
-						   data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHome\'' : '
+                            <span class="fw-bold">게시판</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHome\'' : '
                            swal(\'로그인이 필요합니다!!\',
                            \'\',
                            {icon: \'warning\'
@@ -45,108 +45,104 @@
                            openLoginModal();
                            }
                            })'" href="#">
-							<span class="fw-bold">수집품 거래</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a aria-disabled="true" class="nav-link disabled" href="http://192.168.0.16:3000#"
-						   tabindex="-1">하비위키</a>
-					</li>
-				</ul>
-			</div>
-			
-			<!-- 비로그인 상태 -->
-			<div class="login-state d-flex align-items-center gap-3"
-			     data-th-unless="${#authorization.expression('isAuthenticated()')}">
-				<button class="btn btn-outline-dark" onclick="openSignupModal();" type="button">회원 가입
-				</button>
-				<button class="btn btn-dark" onClick="openLoginModal();" type="button">로그인</button>
-			</div>
-			
-			<!-- 로그인 상태 -->
-			<div class="login-state d-flex align-items-center gap-3"
-			     data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<a class="btn alert-btn d-flex align-items-center gap-2" onClick="openAlertModal();">
-					<img alt="알림" class="alert-image" src="/images/common/alert.png">
-					<span class="alert-count"></span>
-					알림
-				</a>
-				<a class="btn chat-btn d-flex align-items-center gap-2" onClick="openChatroomModal();">
-					<img alt="채팅" class="chat-image" src="/images/common/chatting.png">
-					<span class="alert-count"></span>
-					채팅
-				</a>
-				<a class="btn btn-light d-flex align-items-center gap-2"
-				   data-th-href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
-				   data-th-utext="'<img alt=\'사용자정보\' class=\'profile-image\' src=\'/images/common/profile.png\'>' + ${session.nickname}">
-				</a>
-				<form class="d-inline" data-th-action="@{/logout}" method="post" name="logoutForm">
-					<input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}"
-					       type="hidden"/>
-					<a class="btn btn-logout d-flex align-items-center gap-2"
-					   onclick="document.logoutForm.submit();">
-						<img alt="로그아웃" class="logout-image" src="/images/common/logout.png">
-						로그아웃
-					</a>
-				</form>
-			</div>
-		</div>
-	</nav>
-	
-	<!-- 로그인 모달 -->
-	<div aria-hidden="true" class="modal" id="loginModal" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<span class="close" onclick="closeLoginModal()" style="float: right;">&times;</span>
-				<div id="loginFormContainer">
-					<!-- form.html의 내용이 여기 로드됩니다. -->
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!-- 회원가입 모달 -->
-	<div aria-hidden="true" class="modal" id="signupModal" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<span class="close" onclick="closeSignupModal()">&times;</span>
-				<div id="signupFormContainer">
-					<!-- signup.html의 내용이 여기 로드됩니다. -->
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!-- 비밀번호 재설정 모달 -->
-	<div aria-hidden="true" class="modal" id="resetPasswordModal" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<span class="close" onclick="closeResetPasswordModal()">&times;</span>
-				<div id="resetPasswordFormContainer">
-					<!-- signup.html의 내용이 여기 로드됩니다. -->
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="chatroom-layer header-layer"></div>
-	
-	<div class="alert-layer header-layer"></div>
-	
-	<!--sweet alert2 테스트!-->
-	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css"
-	      rel="stylesheet">
-	
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	
-	<script>
-		document.addEventListener("keydown", function (event) {
-				if (event.key === "Escape") {
-						closeSignupModal();
-						closeLoginModal();
-				}
-		});
-	</script>
-</header>
+                            <span class="fw-bold">수집품 거래</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a aria-disabled="true" class="nav-link" href="http://192.168.0.16:3000#"
+                           tabindex="-1">
+                            <span class="fw-bold">하비위키</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 비로그인 상태 -->
+            <div class="login-state d-flex align-items-center gap-3"
+                 data-th-unless="${#authorization.expression('isAuthenticated()')}">
+                <button class="btn btn-outline-dark" onClick="openLoginModal();" type="button">시작하기</button>
+            </div>
+
+            <!-- 로그인 상태 -->
+            <div class="login-state d-flex align-items-center gap-3"
+                 data-th-if="${#authorization.expression('isAuthenticated()')}">
+                <a class="btn alert-btn d-flex align-items-center gap-2" onClick="openAlertModal();">
+                    <img alt="알림" class="alert-image" src="/images/common/alert.png">
+                    <span class="alert-count"></span>
+                    알림
+                </a>
+                <a class="btn chat-btn d-flex align-items-center gap-2" onClick="openChatroomModal();">
+                    <img alt="채팅" class="chat-image" src="/images/common/chatting.png">
+                    채팅
+                </a>
+                <a class="btn d-flex align-items-center gap-2"
+                   data-th-href="${#authentication.authorities.?[toString() == 'ROLE_ADMIN'].size() > 0 ? '/admin/management' : '/user/myInfo'}"
+                   data-th-utext="'<img alt=\'사용자정보\' class=\'profile-image\' src=\'/images/common/profile.png\'>' + ${session.nickname}">
+                </a>
+                <form class="d-inline" data-th-action="@{/logout}" method="post" name="logoutForm">
+                    <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>
+                    <a class="btn btn-logout d-flex align-items-center gap-2" onclick="document.logoutForm.submit();">
+                        <img alt="로그아웃" class="logout-image" src="/images/common/logout.png">
+                        로그아웃
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 로그인 모달 -->
+    <div aria-hidden="true" class="modal" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <span class="close" onclick="closeLoginModal()" style="float: right;">&times;</span>
+                <div id="loginFormContainer">
+                    <!-- form.html의 내용이 여기 로드됩니다. -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 회원가입 모달 -->
+    <div aria-hidden="true" class="modal" id="signupModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <span class="close" onclick="closeSignupModal()">&times;</span>
+                <div id="signupFormContainer">
+                    <!-- signup.html의 내용이 여기 로드됩니다. -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 비밀번호 재설정 모달 -->
+    <div aria-hidden="true" class="modal" id="resetPasswordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <span class="close" onclick="closeResetPasswordModal()">&times;</span>
+                <div id="resetPasswordFormContainer">
+                    <!-- signup.html의 내용이 여기 로드됩니다. -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatroom-layer header-layer"></div>
+
+    <div class="alert-layer header-layer"></div>
+
+    <!--sweet alert2 테스트!-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeSignupModal();
+                closeLoginModal();
+            }
+        });
+    </script>
+    </header>
 </body>
 </html>

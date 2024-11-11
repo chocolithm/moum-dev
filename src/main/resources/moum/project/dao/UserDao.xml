@@ -14,7 +14,6 @@
         <result column="start_date" property="startDate"/>
         <result column="end_date" property="endDate"/>
         <result column="last_login" property="lastLogin"/>
-        <result column="sns_id" property="snsId"/>
     </resultMap>
 
     <select id="list" resultMap="UserMap">
@@ -26,8 +25,7 @@
         photo,
         start_date,
         end_date,
-        last_login,
-        sns_id
+        last_login
         from
         user
         order by
@@ -36,8 +34,8 @@
 
     <insert id="insert" parameterType="moum.project.vo.User"
             useGeneratedKeys="true" keyColumn="user_id" keyProperty="no">
-        insert into user(nickname, email, password, admin, photo, end_date, last_login, sns_id)
-        values (#{nickname}, #{email}, #{password}, #{admin}, #{photo}, #{endDate}, #{lastLogin}, #{snsId})
+        insert into user(nickname, email, password, admin, photo, end_date, last_login)
+        values (#{nickname}, #{email}, #{password}, #{admin}, #{photo}, #{endDate}, #{lastLogin})
     </insert>
 
     <select id="findBy" resultMap="UserMap" parameterType="int">
@@ -49,8 +47,7 @@
         photo,
         start_date,
         end_date,
-        last_login,
-        sns_id
+        last_login
         from
         user
         where
@@ -68,8 +65,7 @@
         photo,
         start_date,
         end_date,
-        last_login,
-        sns_id
+        last_login
         from
         user
         where
@@ -85,8 +81,7 @@
         photo,
         start_date,
         end_date,
-        last_login,
-        sns_id
+        last_login
         from
         user
         where
@@ -102,8 +97,7 @@
         photo,
         start_date,
         end_date,
-        last_login,
-        sns_id
+        last_login
         from
         user
         where
@@ -120,8 +114,7 @@
         photo=#{photo},
         start_date=#{startDate},
         end_date=#{endDate},
-        last_login=#{lastLogin},
-        sns_id=#{snsId}
+        last_login=#{lastLogin}
         where
         user_id=#{no}
     </update>
@@ -146,8 +139,7 @@
             photo,
             start_date,
             end_date,
-            last_login,
-            sns_id
+            last_login
         from
             user
         where
@@ -162,4 +154,10 @@
         from user
         where end_date is null
     </select>
+
+    <update id="updateAdmin" parameterType="map">
+        update user
+        set admin = #{no}
+        where user_id = #{userNo}
+    </update>
 </mapper>

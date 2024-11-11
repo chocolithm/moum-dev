@@ -95,62 +95,108 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px;
+    padding: 100px;
     gap: 20px;
 }
-     /* 글쓰기 버튼 스타일 */
- .write-button {
-     display: inline-block;
-     padding: 8px 16px;
-     font-weight: bold;
-     font-size: 16px;
-     color: #000000;
-     background-color: rgb(255, 255, 255);
-     border: none;
-     border-radius: 12px; /* 모서리를 둥글게 */
-     text-decoration: none;
-     position: absolute;
-     right: 20px;
-     top: 10px;
- }
 
-
+/* 글쓰기 버튼 스타일 */
+.write-button {
+    display: inline-block;
+    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #000000;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 12px;
+    text-decoration: none;
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
 
 .write-button:hover {
-    background-color: #ffffff; /* 호버 시 색상 변경 */
+    background-color: #e2e6ea;
+    border-color: #adb5bd;
 }
+
+.write-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);
+}
+
 .boardList-middle-box {
-    width: 85%;
-    min-width: 250px;
+    width: 130%;
+    max-width: 2000px;
     border: 1px solid black;
     border-radius: 15px;
-    text-align: left;
-    padding: 100px;
+    padding: 40px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column; /* 세로 정렬을 위해 추가 */
-    gap: 100px;
+    flex-direction: column;
+    gap: 30px;
     align-items: flex-start;
 }
 
+/* 가로 정렬 및 이미지와 텍스트 간격 조정 */
 .boardList-middle-image {
     display: flex;
-    gap: 50px;
-    align-items: flex-start;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
 }
 
+/* 이미지 설정 */
 .boardList-middle-image img {
-    width: 300px;
+    width: 50px;
     height: auto;
     flex-shrink: 0;
 }
 
-.boardList-middle-image div {
+/* 게시글 번호, 제목 정렬 */
+.boardList-middle-content {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
 }
 
+.boardList-middle-content .post-number {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.boardList-middle-content .post-title {
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+/* 페이징 스타일 */
+.pagination ul {
+    display: flex;
+    gap: 10px;
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.pagination li a {
+    display: block;
+    padding: 8px 12px;
+    color: #000;
+    text-decoration: none;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination li.active a,
+.pagination li a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
 
     /*-----------------------------------------------------------------------*/
 
@@ -239,45 +285,81 @@ div p3 {
 
 }
 
-/* 검색 UI 설정 */
+/* 검색 옵션 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 검색 컨테이너 */
 .search-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
+    margin-top: 20px;
 }
 
+/* 네비게이션 바 스타일 */
+.container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 타이틀 영역 */
+.title-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-left: 15px;
+}
+
+/* 검색 입력창 스타일 */
 .search-input {
-    width: 100%;
-    max-width: 600px;
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
+    padding: 8px 12px;
     font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 250px;
     outline: none;
     transition: border 0.3s ease;
 }
 
 .search-input:focus {
-    border-color: #888;
+    border-color: #007bff;
 }
 
+/* 검색 버튼 스타일 */
 .search-button {
-    background: none;
+    background-color: #007bff;
     border: none;
-    outline: none;
+    color: white;
+    padding: 8px 20px; /* 텍스트가 들어갈 공간을 넓힘 */
+    margin-left: 10px;
+    border-radius: 5px; /* 둥근 사각형 모양 (작은 값으로 설정) */
+    font-size: 16px; /* 텍스트 크기 */
     cursor: pointer;
-    position: relative;
-    right: 35px;
-    font-size: 16px;
-    color: #888;
+    transition: background-color 0.3s ease;
+    text-align: center; /* 텍스트 중앙 정렬 */
 }
 
+/* 검색 버튼 호버 스타일 */
 .search-button:hover {
-    color: #555;
+    background-color: #0056b3;
 }
 
+
+/* '주제별' 텍스트에 대한 스타일 */
+.navigation-pill {
+    margin-left: 20px;
+}
 
 .boardView {
     display: flex;

@@ -8,11 +8,11 @@
   border: 1px solid lightgrey;
   box-shadow: 3px 3px 2px;
   width: 400px;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 136px);
   max-height: calc(1000vh - 100px);
   overflow-y: auto;
   position: fixed;
-  top: 110px;
+  top: 136px;
   right: 0;
   z-index: 50;
   display: none;
@@ -57,12 +57,28 @@
   width: 230px;
   margin: 10px;
   font-size: 0.9rem;
+  overflow: visible;
+  position: relative;
 }
 
 .chatroom-layer .chatroom > .chatroom-content > .message {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: visible;
+  position: relative;
+}
+
+.chatroom-layer .chatroom > .chatroom-content > .message .unread-count {
+  background-color: red;
+  color: white;
+  padding: 3px 6px;
+  border-radius: 50px;
+  position: absolute;
+  top: 10px;
+  left: -30px;
+  z-index: 10;
+  white-space: nowrap;
 }
 
 .chatroom-layer .chatroom > .chatroom-content > .date {
@@ -106,8 +122,8 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: calc(100vh - 280px);
-  height: calc(100vh - 280px);
+  max-height: calc(100vh - 306px);
+  height: calc(100vh - 306px);
 }
 
 .chatroom-layer .chat-info::-webkit-scrollbar {

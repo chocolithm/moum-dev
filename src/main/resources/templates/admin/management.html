@@ -16,38 +16,55 @@
     <aside class="sidemenu clearfix">
       <ul>
         <li>
-          <input id="board-admin" name="admin-radio" type="radio">
-          <label for="board-admin">게시글 관리</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="radio" id="board-admin" name="admin-radio">
+            <label class="form-check-label" for="board-admin">게시글 관리</label>
+          </div>
         </li>
         <li>
-          <input id="category-admin" name="admin-radio" type="radio">
-          <label for="category-admin">수집품 분류 관리</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="radio" id="category-admin" name="admin-radio">
+            <label class="form-check-label" for="category-admin">수집품 분류 관리</label>
+          </div>
         </li>
         <li>
-          <input id="achievement-admin" name="admin-radio" type="radio">
-          <label for="achievement-admin">업적 관리</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="radio" id="achievement-admin" name="admin-radio">
+            <label class="form-check-label" for="achievement-admin">업적 관리</label>
+          </div>
         </li>
         <li>
-          <input id="user-admin" name="admin-radio" type="radio">
-          <label for="user-admin">회원 관리</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="radio" id="user-admin" name="admin-radio">
+            <label class="form-check-label" for="user-admin">회원 관리</label>
+          </div>
         </li>
         <li>
-          <input id="report-admin" name="admin-radio" type="radio">
-          <label for="report-admin">신고/유해콘텐츠 관리</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="radio" id="report-admin" name="admin-radio">
+            <label class="form-check-label" for="report-admin">신고/유해콘텐츠 관리</label>
+          </div>
         </li>
         <li>
-          <input id="statistics-admin" name="admin-radio" type="radio">
-          <label for="statistics-admin">통계 조회</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="radio" id="statistics-admin" name="admin-radio">
+            <label class="form-check-label" for="statistics-admin">통계 조회</label>
+          </div>
         </li>
       </ul>
     </aside>
+
     <section class="main-section">
       <h1>관리자</h1>
       <div class="content-section">
 
       </div>
       <div class="page-section">
-
+        <nav aria-label="Pagination">
+          <ul class="pagination">
+            <!-- Previous, Page Numbers, Next 버튼이 여기에 동적으로 생성됨 -->
+          </ul>
+        </nav>
       </div>
     </section>
   </main>

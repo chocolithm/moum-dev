@@ -20,6 +20,7 @@ public class Achievement implements Serializable {
     private int score;
     private User user;
     private int completeCount;
+    private int isPrimary;
 
     public Achievement(String id) {
         this.id = id;

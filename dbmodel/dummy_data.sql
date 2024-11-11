@@ -118,24 +118,25 @@ INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
 (999, 999, '기타');
 
 -- 회원 데이터
-INSERT INTO user (user_id, email, nickname, password, admin) VALUES
-(1, 'admin@test.com', '관리자', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', 1),
-(2, 'user1@test.com', 'user1', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', 0),
-(3, 'user2@test.com', 'user2', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', 0),
-(4, 'user3@test.com', 'user3', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', 0),
-(5, 'user4@test.com', 'user4', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', 0),
-(6, 'user5@test.com', 'user5', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', 0),
-(7, 'user6@test.com', 'user6', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', 0),
-(8, 'user7@test.com', 'user7', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', 0),
-(9, 'user8@test.com', 'user8', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', 0),
-(10, 'user9@test.com', 'user9', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', 0),
-(11, 'user10@test.com', 'user10', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', 0),
-(12, 'user11@test.com', 'user11', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', 0),
-(13, 'user12@test.com', 'user12', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', 0),
-(14, 'user13@test.com', 'user13', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', 0),
-(15, 'user14@test.com', 'user14', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', 0),
-(16, 'user15@test.com', 'user15', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', 0),
-(17, 'user16@test.com', 'user16', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', 0);
+INSERT INTO user (user_id, email, nickname, password, start_date, admin) VALUES
+(1, 'admin@test.com', '관리자', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', now(), 1),
+(2, 'user1@test.com', 'user1', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', now(), 0),
+(3, 'user2@test.com', 'user2', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', now(), 0),
+(4, 'user3@test.com', 'user3', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', now(), 0),
+(5, 'user4@test.com', 'user4', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', now(), 0),
+(6, 'user5@test.com', 'user5', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', now(), 0),
+(7, 'user6@test.com', 'user6', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', now(), 0),
+(8, 'user7@test.com', 'user7', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', now(), 0),
+(9, 'user8@test.com', 'user8', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', now(), 0),
+(10, 'user9@test.com', 'user9', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', now(), 0),
+(11, 'user10@test.com', 'user10', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', now(), 0),
+(12, 'user11@test.com', 'user11', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', now(), 0),
+(13, 'user12@test.com', 'user12', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', now(), 0),
+(14, 'user13@test.com', 'user13', '$2a$10$TjDP2VWyJmYx0s95Ygun4uMLBlihF6UEsLAMkCLsKZq9O3yoEmIpi', now(), 0),
+(15, 'user14@test.com', 'user14', '$2a$10$Eu9/f8FOw3baNpewg/WUJ.4Q5zA4lA.6ifWyAO9RYyUFM5oOHmkCe', '2024-11-07 18:33:09', 0),
+(16, 'user15@test.com', 'user15', '$2a$10$GoxpPtguwz9r/IY080heXegVKMxwQ0U8o8glCR53xXZmuUS35dia.', '2024-11-19 11:12:41', 0),
+(17, 'user16@test.com', 'user16', '$2a$10$q2uSg4rx6V7oLowxbJJTq.ntBfxTnqz9HO1GkwMZOgArnY0UN9VJy', '2024-11-09 12:21:53', 0),
+(18, 'beggar@moum.com', 'beggar', '$2a$10$PeLoELFuasj6CptIePDM1.ronel7U5QRv532tHxDmXw.0.3TA6k9O', '2024-11-11 16:23:44', 0);
 
 
 

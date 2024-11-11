@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="moum.project.dao.UserSnsDao">
+
+    <select id="selectUser_SNSByProviderAndUserId" resultType="moum.project.vo.User_SNS">
+        SELECT *
+        FROM User_SNS
+        WHERE provider = #{provider} AND provider_user_id = #{providerUserId}
+    </select>
+
+    <insert id="insertUser_SNS" parameterType="moum.project.vo.User_SNS" useGeneratedKeys="true" keyProperty="snsAccountId">
+        INSERT INTO User_SNS (provider, provider_user_id, user_id)
+        VALUES (#{provider}, #{providerUserId}, #{userId})
+    </insert>
+
+</mapper>
