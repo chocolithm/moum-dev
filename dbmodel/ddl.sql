@@ -342,20 +342,6 @@ ALTER TABLE forbidden_word
     word -- 단어
     );
 
--- 구글
-CREATE TABLE google (
-    google_id   INTEGER     NOT NULL COMMENT 'SNS 번호', -- SNS 번호
-    google_name VARCHAR(50) NOT NULL COMMENT 'SNS 이름' -- SNS 이름
-)
-COMMENT '구글';
-
--- 구글
-ALTER TABLE google
-    ADD CONSTRAINT PK_google -- 구글 기본키
-    PRIMARY KEY (
-    google_id -- SNS 번호
-    );
-
 -- 유형 대분류
 CREATE TABLE maincategory (
     maincategory_id INTEGER     NOT NULL COMMENT '대분류 번호', -- 대분류 번호
@@ -473,20 +459,6 @@ ALTER TABLE report_category
 
 ALTER TABLE report_category
     MODIFY COLUMN report_category_id INTEGER NOT NULL AUTO_INCREMENT COMMENT '신고항목번호';
-
--- 네이버
-CREATE TABLE naver (
-    naver_id   INTEGER     NOT NULL COMMENT 'SNS 번호', -- SNS 번호
-    naver_name VARCHAR(50) NOT NULL COMMENT 'SNS 이름' -- SNS 이름
-)
-COMMENT '네이버';
-
--- 네이버
-ALTER TABLE naver
-    ADD CONSTRAINT PK_naver -- 네이버 기본키
-    PRIMARY KEY (
-    naver_id -- SNS 번호
-    );
 
 -- 카카오
 CREATE TABLE kakao (
