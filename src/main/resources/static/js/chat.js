@@ -180,7 +180,7 @@ function fetchChatroomList() {
         img.className = "profile";
 
         const nickname = document.createElement("div")
-        nickname.innerHTML = participant.nickname;
+        nickname.innerHTML = participant.endDate == "" ? participant.nickname : "탈퇴회원";
         nickname.className = "nickname";
 
         userspan.append(img, nickname);
