@@ -371,11 +371,19 @@ function createBoardInfo(board_info, chatroom) {
   board_title.className = "board-title";
   board_title.innerHTML = chatroom.board.title;
 
-  const exit_btn = document.createElement("img");
-  exit_btn.className = "x";
-  exit_btn.alt = "닫기";
-  exit_btn.src = "/images/common/x_bg_black.png";
-  exit_btn.setAttribute("onclick", "closeChat()");
+// 채팅 닫기 버튼
+const exit_btn = document.createElement("button");
+exit_btn.className = "btn-close";
+exit_btn.setAttribute("aria-label", "Close");
+
+exit_btn.addEventListener("click", function() {
+  closeChat();
+});
+
+document.body.appendChild(exit_btn);
+
+
+
 
   const transaction_type = document.createElement("span");
   transaction_type.className = "transaction-type";
