@@ -36,12 +36,14 @@
       <id column="owner_id" property="no"/>
       <result column="owner_nickname" property="nickname"/>
       <result column="owner_photo" property="photo"/>
+      <result column="owner_end_date" property="endDate"/>
     </association>
 
     <association property="participant" javaType="moum.project.vo.User">
       <id column="participant_id" property="no"/>
       <result column="participant_nickname" property="nickname"/>
       <result column="participant_photo" property="photo"/>
+      <result column="participant_end_date" property="endDate"/>
     </association>
 
     <association property="board" javaType="moum.project.vo.Board">
@@ -97,10 +99,12 @@
       cr.user_id as participant_id,
       up.nickname as participant_nickname,
       up.photo as participant_photo,
+      up.end_date as participant_end_date,
       b.board_id,
       b.user_id as owner_id,
       uo.nickname as owner_nickname,
       uo.photo as owner_photo,
+      uo.end_date as owner_end_date,
       c1.message,
       c1.user_id as sender_id,
       c1.chat_date,
