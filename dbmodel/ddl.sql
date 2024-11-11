@@ -34,9 +34,6 @@ DROP TABLE IF EXISTS board_tag RESTRICT;
 -- 금지어
 DROP TABLE IF EXISTS forbidden_word RESTRICT;
 
--- 구글
-DROP TABLE IF EXISTS google RESTRICT;
-
 -- 유형 대분류
 DROP TABLE IF EXISTS maincategory RESTRICT;
 
@@ -55,12 +52,6 @@ DROP TABLE IF EXISTS report_result_category RESTRICT;
 -- 신고항목
 DROP TABLE IF EXISTS report_category RESTRICT;
 
--- 네이버
-DROP TABLE IF EXISTS naver RESTRICT;
-
--- 카카오
-DROP TABLE IF EXISTS kakao RESTRICT;
-
 -- 수집품 첨부파일
 DROP TABLE IF EXISTS collection_photo RESTRICT;
 
@@ -77,7 +68,7 @@ DROP TABLE IF EXISTS chatroom RESTRICT;
 DROP TABLE IF EXISTS user_restricted RESTRICT;
 
 -- 유저SNS
-DROP TABLE IF EXISTS TABLE RESTRICT;
+DROP TABLE IF EXISTS user_sns RESTRICT;
 
 -- 회원
 CREATE TABLE user (
@@ -89,8 +80,7 @@ CREATE TABLE user (
     start_date DATETIME     NOT NULL DEFAULT now() COMMENT '가입일자', -- 가입일자
     end_date   DATE         NULL     COMMENT '탈퇴일자', -- 탈퇴일자
     last_login DATETIME     NULL     COMMENT '마지막로그인', -- 마지막로그인
-    admin      TINYINT      NOT NULL DEFAULT 0 COMMENT '관리자 여부', -- 관리자 여부
-    sns_id     INTEGER      NULL     COMMENT 'SNS 번호' -- SNS 번호
+    admin      TINYINT      NOT NULL DEFAULT 0 COMMENT '관리자 여부' -- 관리자 여부
 )
 COMMENT '회원';
 
@@ -342,20 +332,6 @@ ALTER TABLE forbidden_word
     word -- 단어
     );
 
--- 구글
-CREATE TABLE google (
-    google_id   INTEGER     NOT NULL COMMENT 'SNS 번호', -- SNS 번호
-    google_name VARCHAR(50) NOT NULL COMMENT 'SNS 이름' -- SNS 이름
-)
-COMMENT '구글';
-
--- 구글
-ALTER TABLE google
-    ADD CONSTRAINT PK_google -- 구글 기본키
-    PRIMARY KEY (
-    google_id -- SNS 번호
-    );
-
 -- 유형 대분류
 CREATE TABLE maincategory (
     maincategory_id INTEGER     NOT NULL COMMENT '대분류 번호', -- 대분류 번호
@@ -474,34 +450,6 @@ ALTER TABLE report_category
 ALTER TABLE report_category
     MODIFY COLUMN report_category_id INTEGER NOT NULL AUTO_INCREMENT COMMENT '신고항목번호';
 
--- 네이버
-CREATE TABLE naver (
-    naver_id   INTEGER     NOT NULL COMMENT 'SNS 번호', -- SNS 번호
-    naver_name VARCHAR(50) NOT NULL COMMENT 'SNS 이름' -- SNS 이름
-)
-COMMENT '네이버';
-
--- 네이버
-ALTER TABLE naver
-    ADD CONSTRAINT PK_naver -- 네이버 기본키
-    PRIMARY KEY (
-    naver_id -- SNS 번호
-    );
-
--- 카카오
-CREATE TABLE kakao (
-    kakao_id   INTEGER     NOT NULL COMMENT 'SNS 번호', -- SNS 번호
-    kakao_name VARCHAR(50) NOT NULL COMMENT 'SNS 이름' -- SNS 이름
-)
-COMMENT '카카오';
-
--- 카카오
-ALTER TABLE kakao
-    ADD CONSTRAINT PK_kakao -- 카카오 기본키
-    PRIMARY KEY (
-    kakao_id -- SNS 번호
-    );
-
 -- 수집품 첨부파일
 CREATE TABLE collection_photo (
     photo_id        INTEGER      NOT NULL COMMENT '수집품 첨부파일 번호', -- 수집품 첨부파일 번호
@@ -591,7 +539,7 @@ CREATE TABLE user_restricted (
 COMMENT '정지회원';
 
 -- 유저SNS
-CREATE TABLE TABLE (
+CREATE TABLE user_sns (
     sns_account_id   INTEGER     NOT NULL COMMENT '회원 SNS 번호', -- 회원 SNS 번호
     provider         VARCHAR(50) NOT NULL COMMENT '연동된 SNS', -- 연동된 SNS
     provider_user_id VARCHAR(50) NOT NULL COMMENT '제공된 사용자ID', -- 제공된 사용자ID
@@ -600,51 +548,21 @@ CREATE TABLE TABLE (
 COMMENT '유저SNS';
 
 -- 유저SNS
-ALTER TABLE TABLE
-    ADD CONSTRAINT PK_TABLE -- 유저SNS 기본키
+ALTER TABLE user_sns
+    ADD CONSTRAINT PK_user_sns -- 유저SNS 기본키
     PRIMARY KEY (
     sns_account_id -- 회원 SNS 번호
     );
 
 -- 유저SNS 유니크 인덱스
-CREATE UNIQUE INDEX UIX_TABLE
-    ON TABLE ( -- 유저SNS
+CREATE UNIQUE INDEX UIX_user_sns
+    ON user_sns ( -- 유저SNS
         provider ASC,         -- 연동된 SNS
         provider_user_id ASC  -- 제공된 사용자ID
     );
 
-ALTER TABLE TABLE
+ALTER TABLE user_sns
     MODIFY COLUMN sns_account_id INTEGER NOT NULL AUTO_INCREMENT COMMENT '회원 SNS 번호';
-
--- 회원
-ALTER TABLE user
-    ADD CONSTRAINT FK_google_TO_user -- 구글 -> 회원
-    FOREIGN KEY (
-    sns_id -- SNS 번호
-    )
-    REFERENCES google ( -- 구글
-    google_id -- SNS 번호
-    );
-
--- 회원
-ALTER TABLE user
-    ADD CONSTRAINT FK_naver_TO_user -- 네이버 -> 회원
-    FOREIGN KEY (
-    sns_id -- SNS 번호
-    )
-    REFERENCES naver ( -- 네이버
-    naver_id -- SNS 번호
-    );
-
--- 회원
-ALTER TABLE user
-    ADD CONSTRAINT FK_kakao_TO_user -- 카카오 -> 회원
-    FOREIGN KEY (
-    sns_id -- SNS 번호
-    )
-    REFERENCES kakao ( -- 카카오
-    kakao_id -- SNS 번호
-    );
 
 -- 게시글
 ALTER TABLE board
@@ -917,8 +835,8 @@ ALTER TABLE user_restricted
     );
 
 -- 유저SNS
-ALTER TABLE TABLE
-    ADD CONSTRAINT FK_user_TO_TABLE -- 회원 -> 유저SNS
+ALTER TABLE user_sns
+    ADD CONSTRAINT FK_user_TO_user_sns -- 회원 -> 유저SNS
     FOREIGN KEY (
     user_id -- 회원 번호
     )
