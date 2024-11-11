@@ -119,11 +119,11 @@
         </div>
       </div>
     </form>
-    <form th:action="@{/user/delete}" method="post" onsubmit="return confirmWithdraw()">
+    <form id="withdrawForm" th:action="@{/user/delete}" method="post">
       <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
       <input type="hidden" name="no" th:value="${user.no}" />
       <div class="flex justify-between items-center">
-        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+        <button type="button" onclick="confirmWithdraw()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
           회원탈퇴
         </button>
       </div>
