@@ -146,8 +146,10 @@
     select
       cr.chatroom_id,
       cr.user_id as participant_id,
+      u1.end_date as participant_end_date,
       b.board_id,
       b.user_id as owner_id,
+      u2.end_date as owner_end_date,
       b.title,
       b.post_date,
       tb.collection_id,
@@ -158,18 +160,25 @@
       left join board b on cr.board_id = b.board_id
       left join trade_board tb on cr.board_id = tb.board_id
       left join collection cl on tb.collection_id = cl.collection_id
+      left join user u1 on cr.user_id = u1.user_id
+      left join user u2 on b.user_id = u2.user_id
     where
       cr.chatroom_id = #{no}
   </select>
 
   <select id="findRoomByBoard" resultMap="ChatroomMap" parameterType="int">
     select
-      chatroom_id
+      cr.chatroom_id,
+      u2.user_id as participant_id,
+      u2.end_date as participant_end_date
     from
-      chatroom
+      chatroom cr
+      left join board b on cr.board_id = b.board_id
+      left join user u1 on b.user_id = u1.user_id
+      left join user u2 on cr.user_id = u2.user_id
     where
-      board_id = #{boardNo}
-      and user_id = #{userNo}
+      cr.board_id = #{boardNo}
+      and cr.user_id = #{userNo}
   </select>
 
   <update id="updateRead" parameterType="map">
