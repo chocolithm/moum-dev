@@ -53,3 +53,6 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
     moum.project: DEBUG
+
+server:
+  port: 80
