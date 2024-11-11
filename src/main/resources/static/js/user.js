@@ -418,3 +418,79 @@ function confirmWithdraw() {
         }
     });
 }
+
+function validateAndPreviewImage(input) {
+    const errorMessage = document.getElementById('errorMessage');
+    const previewImage = document.getElementById('previewImage');
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+
+        // 파일 크기 검증
+        if (file.size > maxSize) {
+            errorMessage.textContent = '파일 크기는 10MB를 초과할 수 없습니다.';
+            errorMessage.style.display = 'block';
+            input.value = ''; // 파일 선택 초기화
+            return;
+        }
+
+        // 이미지 미리보기
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            errorMessage.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// 폼 제출 전에 유효성 검사를 수행하는 함수
+function validateForm() {
+    const nickname = document.getElementById('nickname').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    let message = '';
+
+    // 닉네임 중복 확인 여부 검사
+    if (!nicknameChecked) {
+        message += '닉네임 중복 확인이 필요합니다.\n';
+    }
+
+    // 비밀번호와 비밀번호 확인란 검사
+    if (password || confirmPassword) {
+        // 비밀번호 확인 칸만 채워진 경우 에러 처리
+        if (!password && confirmPassword) {
+            message += '비밀번호 입력 칸을 채워주세요.\n';
+        } else if (password !== confirmPassword) {
+            message += '비밀번호가 일치하지 않습니다.\n';
+        } else if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
+            message += '비밀번호는 최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다.\n';
+        }
+    }
+
+    // 에러 메시지가 있으면 제출을 막음
+    if (message) {
+        alert(message);
+        return false;
+    }
+    return true;
+}
+
+// 비밀번호 입력 필드의 값에 따라 비밀번호 확인 필드 표시/숨기기
+function toggleConfirmPasswordField() {
+    const password = document.getElementById('password').value;
+    const confirmPasswordField = document.getElementById('confirmPasswordField');
+
+    if (password) {
+        confirmPasswordField.style.display = 'block';
+    } else {
+        confirmPasswordField.style.display = 'none';
+        document.getElementById('confirmPassword').value = ''; // 비밀번호 확인 필드 초기화
+        document.getElementById('confirmPasswordMessage').textContent = ''; // 메시지 초기화
+    }
+}
+
+// 비밀번호 확인 필드에 입력 이벤트 리스너 추가
+document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);

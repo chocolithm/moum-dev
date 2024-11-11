@@ -27,24 +27,26 @@
     <form enctype="multipart/form-data"
           method="post"
           th:action="@{/user/update}"
-          class="profile-form">
+          class="profile-form"
+          onsubmit="return validateForm()">
 
       <!-- 프로필 이미지 -->
       <div class="input-field profile-image-container">
-        <a th:if="*{photo != null}"
-           th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">
-          <img th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}"
-               class="profile-img"
-               alt="프로필 이미지">
-        </a>
-        <a th:if="*{photo == null}"
-           href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
-          <img src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png"
-               class="profile-img"
-               alt="기본 프로필 이미지">
-        </a>
-        <input type="file" id="file" name="file" accept="image/*">
+      <div class="preview-container">
+        <img id="previewImage"
+             th:src="${user.photo != null} ?
+                   'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + ${user.photo} :
+                   'https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png'"
+             class="profile-img"
+             alt="프로필 이미지">
       </div>
+      <input type="file"
+             id="file"
+             name="file"
+             accept="image/*"
+             onchange="validateAndPreviewImage(this)">
+      <div id="errorMessage" class="error-message" style="color: red; display: none;"></div>
+  </div>
 
       <!-- 사용자 정보 -->
       <div class="user-info">
@@ -84,14 +86,14 @@
                  minlength="8"
                  name="password"
                  placeholder="변경하지 않으면 기존 비밀번호 유지"
-                 type="password">
-          <!--                   pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"-->
-          <!--                   title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다"-->
-
+                 type="password"
+                 pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+                 title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다"
+                 oninput="toggleConfirmPasswordField()">
           <span id="passwordMessage"></span>
         </div>
 
-        <div class="input-field">
+        <div class="input-field" id="confirmPasswordField" style="display: none;">
           <label for="confirmPassword">비밀번호 확인</label>
           <input id="confirmPassword"
                  placeholder="비밀번호 확인"
@@ -149,7 +151,6 @@
             dropdown.hide();
           }
         </script>
-
 
 
         <!-- 버튼 그룹 -->
