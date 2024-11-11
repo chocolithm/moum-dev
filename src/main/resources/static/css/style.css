@@ -129,10 +129,7 @@ header img {
     transition: transform 0.3s ease;
 }
 
-header img:hover {
-    transform: scale(1.1);
-    /* 이미지 크기 확대 */
-}
+
 
 header > nav {
     display: inline;
