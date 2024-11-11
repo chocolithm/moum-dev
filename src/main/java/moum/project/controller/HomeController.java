@@ -48,7 +48,7 @@ public class HomeController {
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
     if (userDetails == null) {
-      return "/home";
+      return "home";
 
     } else {
       String email = userDetails.getUsername();
@@ -60,7 +60,7 @@ public class HomeController {
       model.addAttribute("collectionList", collectionList);
       model.addAttribute("maincategoryList", maincategoryList);
 
-      return "/myhome";
+      return "myhome";
     }
   }
 
