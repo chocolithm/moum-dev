@@ -22,10 +22,13 @@
                 <div class="title" th:text="'주제별'" style="font-weight: bold">주제별</div>
             </div>
         </div>
-        <input type="text" class="search-input" placeholder="Search">
-        <button type="submit" class="search-button">
-            <i class="fas fa-search"></i>
-        </button>
+        <div class="search-container">
+            <!-- 검색 입력창 -->
+            <input class="search-input" type="text" placeholder="Search" aria-label="Search">
+
+            <!-- 검색 버튼 -->
+            <button class="search-button" type="submit">검색</button>
+        </div>
     </div>
 
     <div class="post-list">

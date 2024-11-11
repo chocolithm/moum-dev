@@ -239,45 +239,88 @@ div p3 {
 
 }
 
-/* 검색 UI 설정 */
+/* 검색 옵션 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 검색 컨테이너 */
 .search-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
+    margin-top: 20px;
 }
 
+/* 네비게이션 바 스타일 */
+.navbar {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 내비게이션 내 컨테이너 */
+.container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 타이틀 영역 */
+.title-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-left: 15px;
+}
+
+/* 검색 입력창 스타일 */
 .search-input {
-    width: 100%;
-    max-width: 600px;
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
+    padding: 8px 12px;
     font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 250px;
     outline: none;
     transition: border 0.3s ease;
 }
 
 .search-input:focus {
-    border-color: #888;
+    border-color: #007bff;
 }
 
+/* 검색 버튼 스타일 */
 .search-button {
-    background: none;
+    background-color: #007bff;
     border: none;
-    outline: none;
+    color: white;
+    padding: 8px 20px; /* 텍스트가 들어갈 공간을 넓힘 */
+    margin-left: 10px;
+    border-radius: 5px; /* 둥근 사각형 모양 (작은 값으로 설정) */
+    font-size: 16px; /* 텍스트 크기 */
     cursor: pointer;
-    position: relative;
-    right: 35px;
-    font-size: 16px;
-    color: #888;
+    transition: background-color 0.3s ease;
+    text-align: center; /* 텍스트 중앙 정렬 */
 }
 
+/* 검색 버튼 호버 스타일 */
 .search-button:hover {
-    color: #555;
+    background-color: #0056b3;
 }
 
+
+/* '주제별' 텍스트에 대한 스타일 */
+.navigation-pill {
+    margin-left: 20px;
+}
 
 .boardView {
     display: flex;
