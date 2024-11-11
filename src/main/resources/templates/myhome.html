@@ -36,8 +36,8 @@
     </aside>
     <section class="main-section">
         <div class="myhome-upper-buttons">
-            <button class="btn" onClick="openCollectionFormModal();">수집품 등록</button>
-            <button class="btn" onClick="openPostFormModal();">POST</button>
+            <button type="button" class="btn btn-outline-success" onClick="openCollectionFormModal();">수집품 등록</button>
+            <button type="button" class="btn btn-outline-primary" onClick="openPostFormModal();">POST</button>
         </div>
         <div class="myhome-collections">
             <div data-th-if="${#lists.isEmpty(collectionList)}">
