@@ -3,7 +3,7 @@ package moum.project.vo;
 import lombok.*;
 //댓글 요청(Request) 클래스
 import java.io.Serializable;
-@Getter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentRequest {
 

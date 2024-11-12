@@ -204,7 +204,9 @@ CREATE TABLE user_achievement (
     achievement_id VARCHAR(50) NOT NULL COMMENT '업적ID', -- 업적ID
     progress       INTEGER     NOT NULL DEFAULT 0 COMMENT '진행도', -- 진행도
     get_date       DATETIME    NULL     COMMENT '취득일자', -- 취득일자
-    is_primary     TINYINT     NULL     DEFAULT 0 COMMENT '대표업적' -- 대표업적
+    is_primary     TINYINT     NULL     DEFAULT 0 COMMENT '대표업적', -- 대표업적
+    max_count      INTEGER     NULL     COMMENT '총횟수', -- 총횟수
+    current_count  INTEGER     NULL     COMMENT '현재횟수' -- 현재횟수
 )
 COMMENT '회원 업적';
 
@@ -399,11 +401,11 @@ ALTER TABLE collection_board
 
 -- 수집품거래게시글
 CREATE TABLE trade_board (
-    board_id      INTEGER NOT NULL COMMENT '게시글 번호', -- 게시글 번호
-    collection_id INTEGER NULL     COMMENT '수집품 번호', -- 수집품 번호
-    price         INTEGER NOT NULL COMMENT '거래 가격', -- 거래 가격
-    status        TINYINT NOT NULL COMMENT '거래 상태', -- 거래 상태
-    trade_type    VARCHAR(50) NOT NULL COMMENT '거래 종류' -- 거래 종류 
+    board_id      INTEGER      NOT NULL COMMENT '게시글 번호', -- 게시글 번호
+    collection_id INTEGER      NULL     COMMENT '수집품 번호', -- 수집품 번호
+    price         INTEGER      NOT NULL COMMENT '거래 가격', -- 거래 가격
+    status        TINYINT      NOT NULL COMMENT '거래 상태', -- 거래 상태
+    trade_type    VARCHAR(255) NOT NULL COMMENT '거래 종류' -- 거래 종류
 )
 COMMENT '수집품거래게시글';
 
