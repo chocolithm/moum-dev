@@ -457,7 +457,7 @@ body {
 
 /* 게시판 업적 랭킹 설정 */
 .boardHomeAchievement-middle-box {
-    width: 30%; /* 박스 간격 줄이기 */
+    width: 40%; /* 박스 간격 줄이기 */
     margin-left: auto;
     margin-right: 0;
     padding: 20px;
@@ -475,13 +475,13 @@ h2 {
 .board-achievement-content {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px; /* 1~10등 영역과 로그인 유저 정보 사이의 공간 추가 */
+    margin-bottom: 35px; /* 1~10등 영역과 로그인 유저 정보 사이의 공간 추가 */
 }
 
 
 /* 업적 랭킹 열 설정 */
 .board-achievement-column {
-    width: 80%; /* 왼쪽과 오른쪽 열 각각 45% */
+    width: 45%; /* 왼쪽과 오른쪽 열 각각 45% */
     background-color: #fff;
     padding: 15px;
     border: 1px solid #ddd;
@@ -491,12 +491,12 @@ h2 {
 
 /* 왼쪽 열에 대한 스타일 */
 .board-achievement-column.left {
-    margin-right: 2%; /* 오른쪽 열과 간격 조정 */
+    margin-right: 5%; /* 오른쪽 열과 간격 조정 */
 }
 
 /* 오른쪽 열에 대한 스타일 */
 .board-achievement-column.right {
-    margin-left: 2%;
+    margin-left: 5%;
 }
 
 .board-achievement-list {
