@@ -8,42 +8,6 @@
 </head>
 <body>
 <div th:replace="~{header}"></div>
-<style>
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        margin-top: 300px;
-    }
-    .trade-button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 200px;
-        height: 100px;
-        font-size: 24px;
-        font-weight: bold;
-        color: #000000; /* 버튼 텍스트 색 */
-        border: 2px solid #ffffff; /* 버튼 테두리 색 */
-        border-radius: 30px;
-        text-decoration: none;
-        background-color: transparent; /* 배경을 투명하게 설정 */
-    }
-    .sell-button {
-        background-color: #acacac; /* 기존 배경 색 */
-        border-color: #ffffff; /* 테두리 색을 흰색으로 설정 */
-        color: #ffffff; /* 텍스트 색을 흰색으로 설정 */
-    }
-    .buy-button {
-        background-color: #9e9e9e; /* 기존 배경 색 */
-        border-color: #ffffff; /* 테두리 색을 흰색으로 설정 */
-        color: #ffffff; /* 텍스트 색을 흰색으로 설정 */
-    }
-    .arrow-icon {
-        margin-right: 10px;
-    }
-</style>
 
 <div class="button-container">
     <button type="button" class="btn btn-danger trade-button sell-button" onclick="window.location.href='/board/tradeHomeSell'">
@@ -54,11 +18,57 @@
         <span></span> 수집품 구매
     </button>
 
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .trade-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 250px;
+            height: 120px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #000000;
+            border: 2px solid #ffffff;
+            border-radius: 30px;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .sell-button {
+            background-color: #acacac;
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .buy-button {
+            background-color: #9e9e9e;
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .arrow-icon {
+            margin-right: 10px;
+        }
+    </style>
 
 
-<!--    <a th:href="@{/board/tradeHomeBuy}" class="trade-button buy-button">-->
-<!--        <span class=""></span> 수집품 구매-->
-<!--    </a>-->
+
 </div>
 
 </body>
