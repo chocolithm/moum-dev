@@ -134,6 +134,12 @@ public class SecurityConfig {
             .logoutUrl("/logout")
             .logoutSuccessUrl("/")
             .permitAll()
+        )
+        .headers(headers -> headers
+            .httpStrictTransportSecurity(hsts -> hsts
+                .includeSubDomains(false)
+                .maxAgeInSeconds(31530000)
+            )
         );
 
     return http.build();
