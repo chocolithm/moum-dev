@@ -54,6 +54,10 @@ public class HomeController {
       String email = userDetails.getUsername();
       User loginUser = userService.getByEmail(email);
 
+      if (loginUser.isAdmin()) {
+        return "redirect:/admin/management";
+      }
+
       List<Collection> collectionList = collectionService.list(loginUser.getNo());
       List<Maincategory> maincategoryList = categoryService.listMaincategory();
 
