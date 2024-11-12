@@ -1,4 +1,4 @@
-<!-- 게시글 상세보기 화면 (HTML) -->
+<!-- boardView.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -22,7 +22,7 @@
                 <div class="slides">
                     <img alt="게시글 이미지"
                          th:each="attachedFile : ${board.attachedFiles}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${attachedFile.filename}}">
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${attachedFile.filename}}" class="img-fluid rounded">
                 </div>
             </div>
         </div>
@@ -34,8 +34,6 @@
                 th:onclick="'toggleLike(' + ${board.no} + ');'">
             추천하기
         </button>
-
-
 
         <!-- 게시글 종류에 따라 조건부로 필드를 표시 -->
         <div th:if="${board.boardType == 'trade'}">
@@ -54,6 +52,22 @@
                 <button type="submit" class="delete-button">삭제하기</button>
             </form>
         </div>
+
+    <!-- 댓글 작성 영역 -->
+    <div class="comment-section">
+        <fieldset>
+            <legend class="skipinfo">댓글 입력</legend>
+            <div class="comment-input">
+                <textarea id="commentContent" name="content" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea>
+                <span>
+                <button type="button" class="btn btn-primary" th:onclick="'saveComment(' + ${board.no} + ')'">등록</button>
+                <i id="counter">0/300자</i>
+            </span>
+            </div>
+        </fieldset>
+    </div>
+    </div>
+
 </main>
 
 <script src="/js/board.js"></script>

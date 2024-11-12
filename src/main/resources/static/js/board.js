@@ -174,44 +174,81 @@ function addPost() {
 // }
 
 
-// 댓글 저장
+
+// 댓글 내용 길이 카운팅 함수
+function countingLength(element) {
+    const maxLength = 300;
+    const currentLength = element.value.length;
+    const counter = document.getElementById('counter');
+
+    if (currentLength > maxLength) {
+        element.value = element.value.substring(0, maxLength);
+        counter.textContent = `${maxLength}/${maxLength}자`;
+    } else {
+        counter.textContent = `${currentLength}/${maxLength}자`;
+    }
+}
+
+// 댓글 저장 함수
 function saveComment(boardNo, userNo) {
+    const content = document.getElementById('commentContent');
 
-    const content = document.getElementById('content');
-    // isValid(content, '댓글');
+    if (content.value.trim() === "") {
+        Swal.fire(
+            '오류!',
+            '댓글 내용을 입력해주세요.',
+            'error'
+        );
+        return;
+    }
 
-    // const boardNo = [[ `${board.no}` ]];
-    // const boardNo = [[ `${board.no}` ]];
     const params = {
         boardNo: boardNo,
-        content: content.value,
-        // writer : '홍길동',
-        userNo: userNo
-    }
+        content: content.value
+        // writer: '홍길동', // 백엔드에서 처리
+    };
 
     const header = $("meta[name='_csrf_header']").attr('content');
     const token = $("meta[name='_csrf']").attr('content');
+
     $.ajax({
         url: `/Comment/board/${boardNo}/comments`,
-        type: 'post',
+        type: 'POST',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         data: JSON.stringify(params),
-        async: false,
+        async: false, // 비동기 처리 권장 (default)
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
         success: function (response) {
-            alert('댓글 등록 완료.');
-            content.value = '';
-            document.getElementById('counter').innerText = '0/300자';
-            findAllComment(boardNo);
+            if (response === 'success') {
+                Swal.fire(
+                    '성공!',
+                    '댓글이 추가되었습니다.',
+                    'success'
+                ).then(() => {
+                    location.reload(); // 페이지 새로고침하여 댓글 목록 갱신
+                });
+            } else {
+                Swal.fire(
+                    '실패!',
+                    '댓글 추가에 실패했습니다.',
+                    'error'
+                );
+            }
         },
         error: function (request, status, error) {
-            console.log(error)
+            console.log(error);
+            Swal.fire(
+                '오류!',
+                '서버 오류가 발생했습니다.',
+                'error'
+            );
         }
-    })
+    });
 }
+
 
 // 전체 댓글 조회
 function findAllComment(boardNo) {
