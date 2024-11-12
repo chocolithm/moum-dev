@@ -27,6 +27,17 @@
 
     </resultMap>
 
+    <insert id="insert" parameterType="moum.project.vo.Achievement"> <!--추가!-->
+        insert into achievement(achievement_id, name, content, photo, acquisition_condition, score, max_count)
+        values (#{id}, #{name}, #{content}, #{photo}, #{condition}, #{score}, #{maxCount})
+    </insert>
+
+
+    <!--1,2번!--> <insert id="insertByUser" parameterType="moum.project.vo.Achievement">
+        insert into user_achievement(achievement_id, user_id)
+        values (#{id}, #{user.no})
+    </insert>
+
     <select id="list" resultMap="AchievementMap"> <!--목록!-->
         select
             achievement_id,
@@ -64,7 +75,6 @@
             progress desc
     </select>
 
-
     <select id="listUserGetAchievement" resultMap="AchievementMap"> <!--목록!-->
         select
             ua.achievement_id,
@@ -86,7 +96,6 @@
             ac.name desc;
     </select>
 
-
     <select id="listByUserRank" resultMap="AchievementMap"> <!--목록!-->
         select
             userrank,
@@ -100,17 +109,27 @@
         limit 0, 10;
     </select>
 
-    <insert id="insert" parameterType="moum.project.vo.Achievement"> <!--추가!-->
-        insert into achievement(achievement_id, name, content, photo, acquisition_condition, score, max_count)
-        values (#{id}, #{name}, #{content}, #{photo}, #{condition}, #{score}, #{maxCount})
-    </insert>
-
-
-    <!--1,2번!--> <insert id="insertByUser" parameterType="moum.project.vo.Achievement">
-        insert into user_achievement(achievement_id, user_id)
-        values (#{id}, #{user.no})
-    </insert>
-
+    <select id="listByPage" resultMap="AchievementMap" parameterType="map">
+        SELECT
+            a.achievement_id,
+            a.name,
+            a.content,
+            a.photo,
+            a.acquisition_condition,
+            a.score,
+            a.max_count,
+            COALESCE(SUM(CASE WHEN ua.progress = 100 THEN 1 ELSE 0 END), 0) AS complete_count
+        FROM
+            achievement a
+        LEFT JOIN
+            user_achievement ua ON a.achievement_id = ua.achievement_id
+        GROUP BY
+            a.achievement_id, a.name, a.content, a.photo, a.acquisition_condition, a.location
+        ORDER BY
+            a.achievement_id DESC
+        LIMIT
+            #{pageNo}, #{pageCount};
+    </select>
 
     <select id="findBy" resultMap="AchievementMap" parameterType="String"> <!--조회!-->
         select
@@ -127,6 +146,20 @@
             achievement_id=#{id}
     </select>
 
+    <select id="findMyAchievement">
+        select
+            ua.achievement_id,
+            ua.current_count,
+            ua.progress,
+            ua.user_id,
+            a.max_count
+        from
+            user_achievement ua
+            left join achievement a on ua.achievement_id = a.achievement_id
+        where
+            ua.achievement_id = #{id}
+            and ua.user_id = #{userNo}
+    </select>
 
     <select id="findRankByUser" resultMap="AchievementMap" parameterType="int"> <!--조회!-->
         select
@@ -163,52 +196,13 @@
             achievement_id=#{id}
     </update>
 
-    <update id="updateMyinfoAchievement" parameterType="moum.project.vo.Achievement"> <!--수정!-->
+    <update id="updatePrimaryAchievement" parameterType="moum.project.vo.Achievement"> <!--수정!-->
         update user_achievement set
             is_primary = 1
         where
             user_id=#{user.no}
             and achievement_id=#{id}
     </update>
-
-    <update id="deleteMyinfoAchievement" parameterType="moum.project.vo.User"> <!--수정!-->
-        update user_achievement set
-            is_primary = 0
-        where
-            user_id=#{no}
-    </update>
-
-    <delete id="delete" parameterType="String"> <!--삭제!-->
-        delete from achievement
-        where achievement_id=#{id}
-    </delete>
-
-    <select id="listByPage" resultMap="AchievementMap" parameterType="map">
-        SELECT
-            a.achievement_id,
-            a.name,
-            a.content,
-            a.photo,
-            a.acquisition_condition,
-            a.score,
-            a.max_count,
-            COALESCE(SUM(CASE WHEN ua.progress = 100 THEN 1 ELSE 0 END), 0) AS complete_count
-        FROM
-            achievement a
-        LEFT JOIN
-            user_achievement ua ON a.achievement_id = ua.achievement_id
-        GROUP BY
-            a.achievement_id, a.name, a.content, a.photo, a.acquisition_condition, a.location
-        ORDER BY
-            a.achievement_id DESC
-        LIMIT
-            #{pageNo}, #{pageCount};
-    </select>
-
-    <select id="count">
-        select count(*)
-        from achievement
-    </select>
 
     <update id="updateCount" parameterType="moum.project.vo.Achievement">
         update user_achievement set
@@ -218,6 +212,23 @@
             user_id = #{user.no}
             and achievement_id = #{id}
     </update>
+
+    <delete id="delete" parameterType="String"> <!--삭제!-->
+        delete from achievement
+        where achievement_id=#{id}
+    </delete>
+
+    <update id="deletePrimaryAchievement" parameterType="moum.project.vo.User"> <!--수정!-->
+        update user_achievement set
+            is_primary = 0
+        where
+            user_id=#{no}
+    </update>
+
+    <select id="count">
+        select count(*)
+        from achievement
+    </select>
 
     <update id="completeAchievement" parameterType="moum.project.vo.Achievement">
         update user_achievement set

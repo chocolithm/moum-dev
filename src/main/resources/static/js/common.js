@@ -77,6 +77,37 @@ function calcTime(dateValue) {
     }
 }
 
+// 업적 카운트 추가
+function updateAchievement(achievement_id) {
+    fetch(`/achievement/updateCount?id=${achievement_id}`)
+        .then(response => response.text())
+        .then(response => {
+            // 이미 취득한 업적
+            if (response == "ignored") {
+                console.log("ignored");
+                return;
+            }
+
+            // 업적 카운트 추가 성공
+            if (response == "success") {
+                console.log("success");
+            }
+
+            // 업적 취득
+            if (response == "acquired") {
+                console.log("acquired");
+            }
+
+            // 업적 카운트 추가 실패
+            if (response == "failure") {
+                console.log("failure");
+            }
+        })
+        .catch(error => {
+            console.error("error updating achievement count: ", error);
+        })
+}
+
 // 로그인
 
 const modal = document.getElementById("loginModal");

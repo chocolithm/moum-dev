@@ -1,20 +1,21 @@
 package moum.project.controller;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AchievementService;
 import moum.project.service.UserService;
-import moum.project.vo.*;
-import org.springframework.security.core.Authentication;
+import moum.project.vo.Achievement;
+import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/achievement")
@@ -74,5 +75,31 @@ public class AchievementController {
     return achievementService.get(achievement.getId());
   }
 
+  @GetMapping("updateCount")
+  @ResponseBody
+  public String updateCount(
+      String id,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    Achievement achievement = achievementService.findMyAchievement(id, loginUser.getNo());
+
+    if (achievement.getProgress() == 100) {
+      return "ignored";
+    }
+
+    achievement.setCurrentCount(achievement.getCurrentCount() + 1);
+    System.out.println(achievement);
+    achievement.setProgress(achievement.getCurrentCount() / achievement.getMaxCount());
+
+    if (achievementService.updateCount(achievement)) {
+      if (achievement.getProgress() == 100) {
+        achievementService.completeAchievement(achievement);
+        return "acquired";
+      }
+      return "success";
+    }
+    return "failure";
+  }
 
 }
