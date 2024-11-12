@@ -80,7 +80,7 @@
 
 				        <!-- Next Button -->
 				        <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=5)}">Next</a>
+					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=10)}">Next</a>
 				        </li>
 			        </ul>
 		        </nav>

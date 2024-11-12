@@ -70,26 +70,53 @@ public class BoardController {
   }
 
   @GetMapping("/tradeHomeSell")
-  public String tradeHomeSell(Model model) throws Exception {
-    List<Board> tradeSellPosts = boardService.listTradeSellPosts();
-    // 게시글을 10개로 제한
-    if (tradeSellPosts.size() > 10) {
-      tradeSellPosts = tradeSellPosts.subList(0, 10);
-    }
+  public String tradeHomeSell(
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value = "size", defaultValue = "10") int size,
+          Model model) throws Exception {
+
+    // 페이지 번호와 사이즈를 기반으로 offset 계산
+    int offset = (page - 1) * size;
+
+    // 판매 게시글 목록 조회
+    List<Board> tradeSellPosts = boardService.listTradeSellPostsByPage(offset, size);
     model.addAttribute("tradeSellPosts", tradeSellPosts);
-    return "board/tradeHomeSell";
-  }
 
+    // 총 게시글 수 조회
+    int totalTradeSellPosts = boardService.countTradeSellPosts();
+
+    // 총 페이지 수 계산
+    int totalPages = (int) Math.ceil((double) totalTradeSellPosts / size);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+
+    return "board/tradeHomeSell"; // Thymeleaf 템플릿 이름
+  }
+  // 구매 게시글 페이징 조회
   @GetMapping("/tradeHomeBuy")
-  public String tradeHomeBuy(Model model) throws Exception {
-    List<Board> tradeBuyPosts = boardService.listTradeBuyPosts();
-    if (tradeBuyPosts.size() > 10) {
-      tradeBuyPosts = tradeBuyPosts.subList(0, 10);
-    }
-    model.addAttribute("tradeBuyPosts", tradeBuyPosts);
-    return "board/tradeHomeBuy";
-  }
+  public String tradeHomeBuy(
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value = "size", defaultValue = "10") int size,
+          Model model) throws Exception {
 
+    // 페이지 번호와 사이즈를 기반으로 offset 계산
+    int offset = (page - 1) * size;
+
+    // 구매 게시글 목록 조회
+    List<Board> tradeBuyPosts = boardService.listTradeBuyPostsByPage(offset, size);
+    model.addAttribute("tradeBuyPosts", tradeBuyPosts);
+
+    // 총 게시글 수 조회
+    int totalTradeBuyPosts = boardService.countTradeBuyPosts();
+
+    // 총 페이지 수 계산
+    int totalPages = (int) Math.ceil((double) totalTradeBuyPosts / size);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+    model.addAttribute("size", size); // 템플릿에서 size를 사용하기 위해 추가
+
+    return "board/tradeHomeBuy"; // Thymeleaf 템플릿 이름
+  }
   @GetMapping("/tradeHomeButton")
   public String tradeHomeButton() {
     return "board/tradeHomeButton";

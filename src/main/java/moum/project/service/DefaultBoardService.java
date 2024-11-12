@@ -139,6 +139,28 @@ public class DefaultBoardService implements BoardService {
         return boardDao.count();
     }
 
+
+    @Override
+    public List<Board> listTradeSellPostsByPage(int offset, int limit) throws Exception {
+        return boardDao.listTradeSellPostsByPage(offset, limit);
+    }
+
+    @Override
+    public int countTradeSellPosts() throws Exception {
+        return boardDao.countTradeSellPosts();
+    }
+
+    @Override
+    public List<Board> listTradeBuyPostsByPage(int offset, int limit) throws Exception {
+        return boardDao.listTradeBuyPostsByPage(offset, limit);
+    }
+
+    @Override
+    public int countTradeBuyPosts() throws Exception {
+        return boardDao.countTradeBuyPosts();
+    }
+
+
     @Override
     public void updateAttachedFiles(int no, List<AttachedFile> newFiles) {
 
