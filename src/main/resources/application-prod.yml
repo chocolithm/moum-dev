@@ -64,7 +64,7 @@ server:
     key-store-type: PKCS12
     key-alias: moum
     key-password: ""
-  http:
-    port: 80
-    redirect:
-      enabled: true
+  hsts:
+    enabled: true
+    max-age: 31536000
+    includeSubDomains: false
