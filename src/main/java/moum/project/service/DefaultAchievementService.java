@@ -31,39 +31,8 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
-  public Achievement get(String id) throws Exception {
-    return achievementDao.findBy(id);
-  }
-
-  @Override
-  public boolean updateMyinfoAchievement(Achievement achievement) throws Exception {
-    return achievementDao.updateMyinfoAchievement(achievement);
-  }
-
-  @Override
-  public boolean deleteMyinfoAchievement(User user) throws Exception {
-    return achievementDao.deleteMyinfoAchievement(user);
-  }
-
-  @Override
-  public boolean update(Achievement achievement) throws Exception {
-    return achievementDao.update(achievement);
-  }
-
-
-  @Override
-  public void delete(String id) throws Exception {
-    achievementDao.delete(id);
-  }
-
-  @Override
   public List<Achievement> listByUserRank() throws Exception {
     return achievementDao.listByUserRank();
-  }
-
-  @Override
-  public Achievement findRankByUser(int no) throws Exception {
-    return achievementDao.findRankByUser(no);
   }
 
   @Override
@@ -72,23 +41,58 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
-  public Achievement findPrimary(int no) throws Exception {
-    return achievementDao.findPrimary(no);
-  }
-
-  @Override
   public List<Achievement> listByPage(int pageNo, int pageCount) throws Exception {
     return achievementDao.listByPage(pageNo, pageCount);
   }
 
   @Override
-  public int count() throws Exception {
-    return achievementDao.count();
+  public Achievement get(String id) throws Exception {
+    return achievementDao.findBy(id);
+  }
+
+  @Override
+  public Achievement findRankByUser(int no) throws Exception {
+    return achievementDao.findRankByUser(no);
+  }
+
+  @Override
+  public Achievement findPrimary(int no) throws Exception {
+    return achievementDao.findPrimary(no);
+  }
+
+  @Override
+  public Achievement findMyAchievement(String id, int userNo) throws Exception {
+    return achievementDao.findMyAchievement(id, userNo);
+  }
+
+  @Override
+  public boolean update(Achievement achievement) throws Exception {
+    return achievementDao.update(achievement);
+  }
+
+  @Override
+  public boolean updatePrimaryAchievement(Achievement achievement) throws Exception {
+    return achievementDao.updatePrimaryAchievement(achievement);
   }
 
   @Override
   public boolean updateCount(Achievement achievement) throws Exception {
     return achievementDao.updateCount(achievement);
+  }
+
+  @Override
+  public void delete(String id) throws Exception {
+    achievementDao.delete(id);
+  }
+
+  @Override
+  public boolean deletePrimaryAchievement(User user) throws Exception {
+    return achievementDao.deletePrimaryAchievement(user);
+  }
+
+  @Override
+  public int count() throws Exception {
+    return achievementDao.count();
   }
 
   @Override

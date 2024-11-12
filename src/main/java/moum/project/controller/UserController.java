@@ -156,10 +156,10 @@ public class UserController {
       }
 
       //업적 수정
-      achievementService.deleteMyinfoAchievement(user);
+      achievementService.deletePrimaryAchievement(user);
       Achievement achievement = new Achievement(userAchievementId);
       achievement.setUser(user);
-      achievementService.updateMyinfoAchievement(achievement);
+      achievementService.updatePrimaryAchievement(achievement);
 
     // 프로필 사진 처리 로직
     if (file != null && file.getSize() > 0) {
