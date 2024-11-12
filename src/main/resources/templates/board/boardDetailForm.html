@@ -38,12 +38,7 @@
       <label for="content">내용</label>
       <textarea id="content" name="content" class="form-control"></textarea>
     </div>
-
-    <!-- 첨부 파일 -->
-    <div class="form-group">
-      <label for="files">첨부 파일</label>
-      <input type="file" class="form-control" id="files" name="files" multiple>
-    </div>
+    
 
     <!-- 거래 게시글 전용 필드 -->
     <div id="tradeFields" style="display: none;">
@@ -57,6 +52,7 @@
       <div class="form-group">
         <label for="tradeType">거래 종류</label>
         <select id="tradeType" name="tradeType" class="form-control" required>
+          <option value="default">선택</option>
           <option value="sell">판매</option>
           <option value="buy">구매</option>
         </select>
@@ -190,12 +186,12 @@
         if (response === 'success') {
           alert('게시글이 등록되었습니다.');
           var tradeType = formData.get("tradeType");
-          if (tradeType === "sell") {
+          if (tradeType === "default") {
+            window.location.href = '/board/boardList';
+          } else if (tradeType === "sell") {
             window.location.href = '/board/tradeHomeSell';
           } else if (tradeType === "buy") {
-            window.location.href = '/board/tradeHomeBuy';
-          } else {
-            window.location.href = '/board/boardList'; // 일반 게시글 목록 페이지로 이동
+            window.location.href = '/board/tradeHomeBuy'; // 일반 게시글 목록 페이지로 이동
           }
         } else {
           alert('게시글 등록에 실패했습니다.');

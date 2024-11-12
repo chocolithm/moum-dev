@@ -24,7 +24,7 @@ public class Board implements Serializable {
     private String boardType; // 게시글 종류 ("general" 또는 "trade")
 
     private Collection collection; // 거래대상 수집품
-    private int price; // 가격
+    private Integer price; // 가격
     private CollectionStatus collectionStatus;
     private boolean status; // 거래중/거래완료 표시
     private int likeCount; // 추천수 추가

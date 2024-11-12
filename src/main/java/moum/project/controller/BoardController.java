@@ -140,29 +140,22 @@ public class BoardController {
     return "board/boardHome";
   }
 
+
   @GetMapping("/boardList")
-  public String boardList(
-      @RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "size", defaultValue = "10") int pageSize,
-      Model model) throws Exception {
+  public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
+                          @RequestParam(value = "size", defaultValue = "10") int size,
+                          Model model) throws Exception {
+    int offset = (page - 1) * size;
+    List<Board> recentBoards = boardService.listByPage(offset, size);
+    model.addAttribute("recentBoards", recentBoards);
 
-    // 페이지 계산
-    int pageNo = (page - 1) * pageSize;  // offset
-    List<Board> boards = boardService.listByPage(pageNo, pageSize);
-    int totalBoards = boardService.count(); // 전체 게시글 수
-    int totalPages = (int) Math.ceil((double) totalBoards / pageSize); // 총 페이지 수 계산
+    // 페이징 정보 추가
+    int totalBoards = boardService.count();
+    int totalPages = (int) Math.ceil((double) totalBoards / size);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
 
-    if (boards.isEmpty()) {
-      model.addAttribute("recentBoards", Collections.emptyList());
-    } else {
-      model.addAttribute("recentBoards", boards);
-    }
-
-    // 페이징 관련 속성 추가
-    model.addAttribute("totalPages", totalPages); // 총 페이지 수
-    model.addAttribute("currentPage", page); // 현재 페이지 번호
-
-    return "board/boardList";
+    return "board/boardList"; // Thymeleaf 템플릿 이름
   }
 
 
