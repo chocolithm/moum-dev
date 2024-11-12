@@ -53,17 +53,14 @@ logging:
     root: INFO
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
-    moum.project: DEBUG
-
-#server:
-#  port: 443
-#  ssl:
-#    enabled: true
-#    key-store: /etc/letsencrypt/live/moum.bangdpool.com/keystore.p12
-#    key-store-password: ""
-#    key-store-type: PKCS12
-#    key-alias: moum
-#    key-password: ""
+    moum.project: INFO
 
 server:
-  port: 80
+  port: 443
+  ssl:
+    enabled: true
+    key-store: /etc/letsencrypt/live/moum.bangdpool.com/keystore.p12
+    key-store-password: ""
+    key-store-type: PKCS12
+    key-alias: moum
+    key-password: ""
