@@ -210,12 +210,20 @@ public class BoardController {
 
 
   @GetMapping("/boardView")
-  public String view(@RequestParam("no") int no, Model model) throws Exception {
+  public String view(
+      @RequestParam("no") int no,
+      Model model,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
     // 게시글 상세 정보 가져오기
     Board board = boardService.get(no);
     if (board == null) {
       throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + no);
     }
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    
+    // 게시글 작성자 여부 추가
+    model.addAttribute("authenticated", board.getUserNo() == loginUser.getNo());
 
     // 추천수 가져오기
     int likeCount = likesService.countLikesByBoard(no);
@@ -223,6 +231,8 @@ public class BoardController {
 
     // 모델에 게시글 정보 추가
     model.addAttribute("board", board);
+    
+    
     return "board/boardView";
   }
 
