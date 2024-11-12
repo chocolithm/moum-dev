@@ -144,8 +144,18 @@ function updateAlertRead(alert) {
 // 알림 링크 실행
 function executeAlert(alert) {
   if (alert.category == "chatroom") {
-    openChatroomModal();
-    openChat(alert.categoryNo);
+    fetch(`/chat/getRoom?no=${alert.categoryNo}`)
+      .then(response => response.json())
+      .then(async chatroom => {
+        const loginUser = await getSender();
+        const participant = loginUser.no == chatroom.participant.no ? chatroom.owner : chatroom.participant;
+
+        openChatroomModal();
+        openChat(chatroom.no, participant);
+      })
+      .catch(error => {
+        console.error("error fetching chatroom: ", error);
+      })
   } else if (alert.category == "board") {
     location.href = `/board/boardView?no=${alert.categoryNo}`;
   }

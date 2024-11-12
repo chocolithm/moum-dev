@@ -180,7 +180,7 @@ function fetchChatroomList() {
         img.className = "profile";
 
         const nickname = document.createElement("div")
-        nickname.innerHTML = participant.endDate == "" ? participant.nickname : "탈퇴회원";
+        nickname.innerHTML = participant.endDate == null ? participant.nickname : "탈퇴회원";
         nickname.className = "nickname";
 
         userspan.append(img, nickname);
@@ -299,7 +299,7 @@ function checkChatroom() {
 
           chatroom_layer.append(board_info, chat_info);
 
-          createChatInputbox(chatroom.no, chatroom.participant);
+          createChatInputbox(chatroom.no, chatroom.board.user);
         }, 500);
 
       } else {
@@ -516,7 +516,9 @@ function createChatInputbox(chatroomNo, participant) {
   btn.innerHTML = "보내기";
   btn.className = "chat-btn btn btn-dark";
 
-  if (participant.endDate != "") {
+  console.log(participant);
+
+  if (participant.endDate != null) {
     btn.setAttribute("onclick", `alert("이미 탈퇴한 회원입니다.")`);
   } else if (chatroomNo == 0) {
     const urlParams = new URLSearchParams(window.location.search);

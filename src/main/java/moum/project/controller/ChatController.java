@@ -56,6 +56,12 @@ public class ChatController {
     return chatroom;
   }
 
+  @GetMapping("/getRoom")
+  @ResponseBody
+  public Chatroom getRoom(int no) throws Exception {
+    return chatService.getRoom(no);
+  }
+
   @GetMapping("/addRoom")
   @ResponseBody
   public Chatroom addRoom(

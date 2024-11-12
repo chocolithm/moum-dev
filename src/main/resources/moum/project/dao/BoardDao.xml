@@ -83,6 +83,9 @@
         b.title,
         b.content,
         b.user_id,
+        u.user_id as writer_id,
+        u.nickname,
+        u.end_date,
         b.post_date,
         b.view_count,
         b.is_public,
@@ -101,6 +104,7 @@
         LEFT JOIN trade_board tb ON b.board_id = tb.board_id
         LEFT JOIN collection c ON tb.collection_id = c.collection_id
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN user u ON b.user_id = u.user_id
         WHERE
         b.board_id = #{no} AND b.is_deleted = 0
     </select>
