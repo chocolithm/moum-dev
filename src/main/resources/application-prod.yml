@@ -64,7 +64,3 @@ server:
     key-store-type: PKCS12
     key-alias: moum
     key-password: ""
-  hsts:
-    enabled: true
-    max-age: 31000000
-    includeSubDomains: false

@@ -138,7 +138,7 @@ public class SecurityConfig {
         .headers(headers -> headers
             .httpStrictTransportSecurity(hsts -> hsts
                 .includeSubDomains(false)
-                .maxAgeInSeconds(31530000)
+                .maxAgeInSeconds(31536000)
             )
         );
 
