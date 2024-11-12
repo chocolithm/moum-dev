@@ -25,8 +25,12 @@ public class DefaultBoardService implements BoardService {
     }
 
     @Override
-    public List<Board> listTradePosts() throws Exception {
-        return boardDao.listTradePosts(3); // 최대 3개의 게시글만 가져옴
+    public List<Board> listTradeSellPosts() throws Exception {
+        return boardDao.listTradeSellPosts(10); // 최대 3개의 게시글만 가져옴
+    }
+
+    public List<Board> listTradeBuyPosts() throws Exception {
+        return boardDao.listTradeBuyPosts(10);
     }
 
     @Override

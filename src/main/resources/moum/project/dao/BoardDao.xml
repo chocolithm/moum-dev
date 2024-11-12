@@ -302,8 +302,8 @@
         b.view_count DESC
     </select>
 
-    <!-- 수집품 거래 게시글 조회 (listTradePosts) -->
-    <select id="listTradePosts" resultMap="BoardMap" parameterType="int">
+    <!-- 수집품 판매 게시글 조회 (listTradeSellPosts) -->
+    <select id="listTradeSellPosts" resultMap="BoardMap" parameterType="int">
         SELECT
         b.board_id,
         b.title,
@@ -312,14 +312,51 @@
         b.view_count,
         tb.price,
         tb.status,
+        tb.trade_type,
         c.collection_id,
-        c.name AS collection_name
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.board_id AS bp_board_id,
+        bp.filename,
+        bp.origin_filename
         FROM
         board b
         INNER JOIN trade_board tb ON b.board_id = tb.board_id
-        INNER JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
         WHERE
         b.is_deleted = 0
+        AND tb.trade_type = 'sell'
+        ORDER BY
+        b.post_date DESC
+        LIMIT #{no}
+    </select>
+
+    <!-- 수집품 구매 게시글 조회 (listTradeBuyPosts) -->
+    <select id="listTradeBuyPosts" resultMap="BoardMap" parameterType="int">
+        SELECT
+        b.board_id,
+        b.title,
+        b.user_id,
+        b.post_date,
+        b.view_count,
+        tb.price,
+        tb.status,
+        tb.trade_type,
+        c.collection_id,
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.board_id AS bp_board_id,
+        bp.filename,
+        bp.origin_filename
+        FROM
+        board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'buy'
         ORDER BY
         b.post_date DESC
         LIMIT #{no}

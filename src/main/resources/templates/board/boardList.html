@@ -69,18 +69,18 @@
 			        <ul class="pagination justify-content-center">
 				        <!-- Previous Button -->
 				        <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=5)}" tabindex="-1" aria-disabled="true">Previous</a>
+					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=10)}" tabindex="-1" aria-disabled="true">Previous</a>
 				        </li>
 				        
 				        <!-- Page Number Buttons -->
 				        <li th:each="i : ${#numbers.sequence(1, totalPages)}"
 				            th:classappend="${i == currentPage ? 'active' : ''}" class="page-item">
-					        <a class="page-link" th:href="@{/board/boardList(page=${i}, size=5)}" th:text="${i}"></a>
+					        <a class="page-link" th:href="@{/board/boardList(page=${i}, size=10)}" th:text="${i}"></a>
 				        </li>
 				        
 				        <!-- Next Button -->
 				        <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=5)}">Next</a>
+					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=10)}">Next</a>
 				        </li>
 			        </ul>
 		        </nav>

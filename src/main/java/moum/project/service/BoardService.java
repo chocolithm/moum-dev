@@ -29,7 +29,8 @@ public interface BoardService {
 
     List<Board> listPopular() throws Exception;
 
-    List<Board> listTradePosts() throws Exception;
+    List<Board> listTradeSellPosts() throws Exception;
+    List<Board> listTradeBuyPosts() throws Exception;
 
     List<Board> listBraggingPosts() throws Exception;
 

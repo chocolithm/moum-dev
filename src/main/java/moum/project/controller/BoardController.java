@@ -69,15 +69,30 @@ public class BoardController {
     return boardService.listBraggingPosts();
   }
 
-  @GetMapping("/tradeHome")
-  public String tradeHome(Model model) throws Exception {
-    List<Board> tradePosts = boardService.listTradePosts();
-    // 게시글을 3개로 제한
-    if (tradePosts.size() > 10) {
-      tradePosts = tradePosts.subList(0, 10);
+  @GetMapping("/tradeHomeSell")
+  public String tradeHomeSell(Model model) throws Exception {
+    List<Board> tradeSellPosts = boardService.listTradeSellPosts();
+    // 게시글을 10개로 제한
+    if (tradeSellPosts.size() > 10) {
+      tradeSellPosts = tradeSellPosts.subList(0, 10);
     }
-    model.addAttribute("tradePosts", tradePosts);
-    return "board/tradeHome";
+    model.addAttribute("tradePosts", tradeSellPosts);
+    return "board/tradeHomeSell";
+  }
+
+  @GetMapping("/tradeHomeBuy")
+  public String tradeHomeBuy(Model model) throws Exception {
+    List<Board> tradeBuyPosts = boardService.listTradeBuyPosts();
+    if (tradeBuyPosts.size() > 10) {
+      tradeBuyPosts = tradeBuyPosts.subList(0, 10);
+    }
+    model.addAttribute("tradePosts", tradeBuyPosts);
+    return "board/tradeHomeBuy";
+  }
+
+  @GetMapping("/tradeHomeButton")
+  public String tradeHomeButton() {
+    return "board/tradeHomeButton";
   }
 
   @GetMapping({"/", "/boardHome"})
@@ -128,7 +143,7 @@ public class BoardController {
   @GetMapping("/boardList")
   public String boardList(
       @RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "size", defaultValue = "5") int pageSize,
+      @RequestParam(value = "size", defaultValue = "10") int pageSize,
       Model model) throws Exception {
 
     // 페이지 계산
@@ -414,13 +429,12 @@ public class BoardController {
   @PostMapping("/addDetailPost")
   @ResponseBody
   public String addDetailPost(Board board,
-      @RequestParam("files") MultipartFile[] files,
-      @RequestParam(value = "collection.no", required = false) Integer collectionNo,
-      @RequestParam(value = "price", required = false) Integer price,
-      @RequestParam(value = "status", required = false) boolean status,
-      @RequestParam(value = "tradeType", required = false) String tradeType,
-      @AuthenticationPrincipal UserDetails userDetails,
-      Model model) throws Exception {
+                              @RequestParam("files") MultipartFile[] files,
+                              @RequestParam(value = "collection.no", required = false) Integer collectionNo,
+                              @RequestParam(value = "price", required = false) Integer price,
+                              @RequestParam(value = "tradeType", required = false) String tradeType,
+                              @AuthenticationPrincipal UserDetails userDetails,
+                              Model model) throws Exception {
 
     User loginUser = userService.getByEmail(userDetails.getUsername());
     board.setUserNo(loginUser.getNo());
@@ -432,10 +446,14 @@ public class BoardController {
           Collection collection = collectionService.get(collectionNo);
           board.setCollection(collection);
         }
-        // 가격, 연락처, 판매/구매 설정
-        board.setStatus(status);
-        board.setTradeType(tradeType);
+        // 가격 설정
         board.setPrice(price);
+
+        // 판매/구매 설정
+        board.setTradeType(tradeType); // 'sell' 또는 'buy' 값을 설정
+
+        // 거래 상태를 '거래중'으로 설정
+        board.setStatus(false); // 거래중은 false (0)로 설정
       }
 
       List<AttachedFile> attachedFiles = uploadFiles(files);
@@ -449,6 +467,9 @@ public class BoardController {
       return "failure";
     }
   }
+
+
+
 
 
 }

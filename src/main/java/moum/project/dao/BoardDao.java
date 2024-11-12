@@ -35,7 +35,9 @@ public interface BoardDao {
     List<Board> listPopular();
 
     // 수집품 거래 게시글 조회
-    List<Board> listTradePosts(int limit);
+    List<Board> listTradeSellPosts(int limit);
+    List<Board> listTradeBuyPosts(int limit);
+
 
     // 자랑하기 게시글 조회
     List<Board> listBraggingPosts();
