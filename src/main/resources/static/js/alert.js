@@ -6,6 +6,12 @@ function openAlertModal() {
   const alert_btn = document.querySelector(".alert-btn");
   const alert_layer = document.querySelector(".alert-layer");
 
+  const read_alert_btn = document.createElement("button");
+  read_alert_btn.className = "read_alert_btn btn";
+  read_alert_btn.innerHTML = "모두 읽음?";
+  read_alert_btn.setAttribute("onclick", "updateAlertReadAll()");
+  alert_layer.appendChild(read_alert_btn);
+
   fetchAlertContent(1);
 
   fadeIn(alert_layer);
@@ -134,9 +140,22 @@ function createAlertBoxContent(alert, box) {
 // 읽음 처리
 function updateAlertRead(alert) {
   fetch(`/alert/read?no=${alert.no}`)
-    .then((result) => {
-      if (result.ok) {
+    .then(response => response.json())
+    .then((response) => {
+      if (response) {
         executeAlert(alert);
+      }
+    });
+}
+
+function updateAlertReadAll() {
+  fetch(`/alert/readAll`)
+    .then(response => response.json())
+    .then((response) => {
+      if (response) {
+        document.querySelectorAll('.unread').forEach(element => {
+          element.classList.replace('unread', 'read');
+        });
       }
     });
 }
