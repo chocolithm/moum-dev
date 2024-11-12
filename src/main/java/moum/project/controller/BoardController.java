@@ -69,15 +69,57 @@ public class BoardController {
     return boardService.listBraggingPosts();
   }
 
-  @GetMapping("/tradeHome")
-  public String tradeHome(Model model) throws Exception {
-    List<Board> tradePosts = boardService.listTradePosts();
-    // 게시글을 3개로 제한
-    if (tradePosts.size() > 10) {
-      tradePosts = tradePosts.subList(0, 10);
-    }
-    model.addAttribute("tradePosts", tradePosts);
-    return "board/tradeHome";
+  @GetMapping("/tradeHomeSell")
+  public String tradeHomeSell(
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value = "size", defaultValue = "10") int size,
+          Model model) throws Exception {
+
+    // 페이지 번호와 사이즈를 기반으로 offset 계산
+    int offset = (page - 1) * size;
+
+    // 판매 게시글 목록 조회
+    List<Board> tradeSellPosts = boardService.listTradeSellPostsByPage(offset, size);
+    model.addAttribute("tradeSellPosts", tradeSellPosts);
+
+    // 총 게시글 수 조회
+    int totalTradeSellPosts = boardService.countTradeSellPosts();
+
+    // 총 페이지 수 계산
+    int totalPages = (int) Math.ceil((double) totalTradeSellPosts / size);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+
+    return "board/tradeHomeSell"; // Thymeleaf 템플릿 이름
+  }
+  // 구매 게시글 페이징 조회
+  @GetMapping("/tradeHomeBuy")
+  public String tradeHomeBuy(
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value = "size", defaultValue = "10") int size,
+          Model model) throws Exception {
+
+    // 페이지 번호와 사이즈를 기반으로 offset 계산
+    int offset = (page - 1) * size;
+
+    // 구매 게시글 목록 조회
+    List<Board> tradeBuyPosts = boardService.listTradeBuyPostsByPage(offset, size);
+    model.addAttribute("tradeBuyPosts", tradeBuyPosts);
+
+    // 총 게시글 수 조회
+    int totalTradeBuyPosts = boardService.countTradeBuyPosts();
+
+    // 총 페이지 수 계산
+    int totalPages = (int) Math.ceil((double) totalTradeBuyPosts / size);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+    model.addAttribute("size", size); // 템플릿에서 size를 사용하기 위해 추가
+
+    return "board/tradeHomeBuy"; // Thymeleaf 템플릿 이름
+  }
+  @GetMapping("/tradeHomeButton")
+  public String tradeHomeButton() {
+    return "board/tradeHomeButton";
   }
 
   @GetMapping({"/", "/boardHome"})
@@ -125,29 +167,22 @@ public class BoardController {
     return "board/boardHome";
   }
 
+
   @GetMapping("/boardList")
-  public String boardList(
-      @RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "size", defaultValue = "5") int pageSize,
-      Model model) throws Exception {
+  public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
+                          @RequestParam(value = "size", defaultValue = "10") int size,
+                          Model model) throws Exception {
+    int offset = (page - 1) * size;
+    List<Board> recentBoards = boardService.listByPage(offset, size);
+    model.addAttribute("recentBoards", recentBoards);
 
-    // 페이지 계산
-    int pageNo = (page - 1) * pageSize;  // offset
-    List<Board> boards = boardService.listByPage(pageNo, pageSize);
-    int totalBoards = boardService.count(); // 전체 게시글 수
-    int totalPages = (int) Math.ceil((double) totalBoards / pageSize); // 총 페이지 수 계산
+    // 페이징 정보 추가
+    int totalBoards = boardService.count();
+    int totalPages = (int) Math.ceil((double) totalBoards / size);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
 
-    if (boards.isEmpty()) {
-      model.addAttribute("recentBoards", Collections.emptyList());
-    } else {
-      model.addAttribute("recentBoards", boards);
-    }
-
-    // 페이징 관련 속성 추가
-    model.addAttribute("totalPages", totalPages); // 총 페이지 수
-    model.addAttribute("currentPage", page); // 현재 페이지 번호
-
-    return "board/boardList";
+    return "board/boardList"; // Thymeleaf 템플릿 이름
   }
 
 
@@ -414,14 +449,14 @@ public class BoardController {
   @PostMapping("/addDetailPost")
   @ResponseBody
   public String addDetailPost(Board board,
-      @RequestParam("files") MultipartFile[] files,
-      @RequestParam(value = "collection.no", required = false) Integer collectionNo,
-      @RequestParam(value = "price", required = false) Integer price,
-      @RequestParam(value = "status", required = false) boolean status,
-      @RequestParam(value = "tradeType", required = false) String tradeType,
-      @AuthenticationPrincipal UserDetails userDetails,
-      Model model) throws Exception {
+                              @RequestParam("files") MultipartFile[] files,
+                              @RequestParam(value = "collection.no", required = false) Integer collectionNo,
+                              @RequestParam(value = "price", required = false) Integer price,
+                              @RequestParam(value = "tradeType", required = false) String tradeType,
+                              @AuthenticationPrincipal UserDetails userDetails,
+                              Model model) throws Exception {
 
+    // 현재 로그인한 사용자 정보 가져오기
     User loginUser = userService.getByEmail(userDetails.getUsername());
     board.setUserNo(loginUser.getNo());
 
@@ -432,15 +467,21 @@ public class BoardController {
           Collection collection = collectionService.get(collectionNo);
           board.setCollection(collection);
         }
-        // 가격, 연락처, 판매/구매 설정
-        board.setStatus(status);
+        // 가격 설정 (null이면 0으로 기본값 설정)
+        board.setPrice(price != null ? price : 0);
+
+        // 판매/구매 설정 ('sell' 또는 'buy')
         board.setTradeType(tradeType);
-        board.setPrice(price);
+
+        // 거래 상태를 '거래중'으로 설정 (false가 거래중)
+        board.setStatus(false);
       }
 
+      // 첨부 파일 업로드 및 설정
       List<AttachedFile> attachedFiles = uploadFiles(files);
       board.setAttachedFiles(attachedFiles);
 
+      // 게시글 저장
       boardService.add(board);
 
       return "success";
@@ -449,6 +490,10 @@ public class BoardController {
       return "failure";
     }
   }
+
+
+
+
 
 
 }

@@ -25,8 +25,12 @@ public class DefaultBoardService implements BoardService {
     }
 
     @Override
-    public List<Board> listTradePosts() throws Exception {
-        return boardDao.listTradePosts(3); // 최대 3개의 게시글만 가져옴
+    public List<Board> listTradeSellPosts() throws Exception {
+        return boardDao.listTradeSellPosts(10); // 최대 3개의 게시글만 가져옴
+    }
+
+    public List<Board> listTradeBuyPosts() throws Exception {
+        return boardDao.listTradeBuyPosts(10);
     }
 
     @Override
@@ -134,6 +138,28 @@ public class DefaultBoardService implements BoardService {
     public int count() throws Exception {
         return boardDao.count();
     }
+
+
+    @Override
+    public List<Board> listTradeSellPostsByPage(int offset, int limit) throws Exception {
+        return boardDao.listTradeSellPostsByPage(offset, limit);
+    }
+
+    @Override
+    public int countTradeSellPosts() throws Exception {
+        return boardDao.countTradeSellPosts();
+    }
+
+    @Override
+    public List<Board> listTradeBuyPostsByPage(int offset, int limit) throws Exception {
+        return boardDao.listTradeBuyPostsByPage(offset, limit);
+    }
+
+    @Override
+    public int countTradeBuyPosts() throws Exception {
+        return boardDao.countTradeBuyPosts();
+    }
+
 
     @Override
     public void updateAttachedFiles(int no, List<AttachedFile> newFiles) {

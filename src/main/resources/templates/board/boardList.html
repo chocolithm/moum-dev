@@ -38,11 +38,11 @@
     <div class="boardList">
         <div class="boardList-middle-box" style="position: relative; padding-top: 40px;">
             <h2>전체 게시글</h2>
-	        
+
 	        <button type="button" class="write-button btn btn-info" onclick="location.href='/board/boardDetailForm'">
 		        글쓰기
 	        </button>
-	        
+
 	        <!-- Light 버튼을 button 태그로 변환, 기존의 버튼 기능을 그대로 유지 -->
 	        <button type="button" class="btn btn-outline-light" id="lightButton">
 		        Light
@@ -63,29 +63,30 @@
                     </a>
                 </div>
             </div>
-	        
+
 	        <div class="pagination-container mt-4">
 		        <nav aria-label="Page navigation">
 			        <ul class="pagination justify-content-center">
 				        <!-- Previous Button -->
 				        <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=5)}" tabindex="-1" aria-disabled="true">Previous</a>
+					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=10)}" tabindex="-1" aria-disabled="true">Previous</a>
 				        </li>
-				        
+
 				        <!-- Page Number Buttons -->
 				        <li th:each="i : ${#numbers.sequence(1, totalPages)}"
 				            th:classappend="${i == currentPage ? 'active' : ''}" class="page-item">
-					        <a class="page-link" th:href="@{/board/boardList(page=${i}, size=5)}" th:text="${i}"></a>
+					        <a class="page-link" th:href="@{/board/boardList(page=${i}, size=10)}" th:text="${i}"></a>
 				        </li>
-				        
+
 				        <!-- Next Button -->
 				        <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=5)}">Next</a>
+					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=10)}">Next</a>
 				        </li>
 			        </ul>
 		        </nav>
 	        </div>
-
+        </div>
+    </div>
 
 
 
