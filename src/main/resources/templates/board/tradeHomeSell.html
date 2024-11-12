@@ -34,7 +34,7 @@
     <div class="post-list">
         <h2>수집품 거래 게시글</h2>
         <div class="posts">
-            <div th:each="board : ${tradePosts}">
+            <div th:each="board : ${tradeSellPosts}">
                 <div class="post">
                     <div class="boardList-middle-image">
                         <a th:href="@{/board/boardView(no=${board.no})}">

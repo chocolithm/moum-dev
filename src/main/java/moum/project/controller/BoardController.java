@@ -76,7 +76,7 @@ public class BoardController {
     if (tradeSellPosts.size() > 10) {
       tradeSellPosts = tradeSellPosts.subList(0, 10);
     }
-    model.addAttribute("tradePosts", tradeSellPosts);
+    model.addAttribute("tradeSellPosts", tradeSellPosts);
     return "board/tradeHomeSell";
   }
 
@@ -86,7 +86,7 @@ public class BoardController {
     if (tradeBuyPosts.size() > 10) {
       tradeBuyPosts = tradeBuyPosts.subList(0, 10);
     }
-    model.addAttribute("tradePosts", tradeBuyPosts);
+    model.addAttribute("tradeBuyPosts", tradeBuyPosts);
     return "board/tradeHomeBuy";
   }
 
@@ -436,6 +436,7 @@ public class BoardController {
                               @AuthenticationPrincipal UserDetails userDetails,
                               Model model) throws Exception {
 
+    // 현재 로그인한 사용자 정보 가져오기
     User loginUser = userService.getByEmail(userDetails.getUsername());
     board.setUserNo(loginUser.getNo());
 
@@ -446,19 +447,21 @@ public class BoardController {
           Collection collection = collectionService.get(collectionNo);
           board.setCollection(collection);
         }
-        // 가격 설정
-        board.setPrice(price);
+        // 가격 설정 (null이면 0으로 기본값 설정)
+        board.setPrice(price != null ? price : 0);
 
-        // 판매/구매 설정
-        board.setTradeType(tradeType); // 'sell' 또는 'buy' 값을 설정
+        // 판매/구매 설정 ('sell' 또는 'buy')
+        board.setTradeType(tradeType);
 
-        // 거래 상태를 '거래중'으로 설정
-        board.setStatus(false); // 거래중은 false (0)로 설정
+        // 거래 상태를 '거래중'으로 설정 (false가 거래중)
+        board.setStatus(false);
       }
 
+      // 첨부 파일 업로드 및 설정
       List<AttachedFile> attachedFiles = uploadFiles(files);
       board.setAttachedFiles(attachedFiles);
 
+      // 게시글 저장
       boardService.add(board);
 
       return "success";
@@ -467,6 +470,7 @@ public class BoardController {
       return "failure";
     }
   }
+
 
 
 
