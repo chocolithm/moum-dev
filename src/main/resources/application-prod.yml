@@ -68,10 +68,3 @@ server:
     port: 80
     redirect:
       enabled: true
-  http2:
-    enabled: false
-  headers:
-    hsts:
-      enabled: true
-      max-age: 31536000
-      includeSubDomains: false
