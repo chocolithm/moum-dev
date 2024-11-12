@@ -17,6 +17,8 @@ public interface AlertService {
 
   boolean updateRead(int no) throws Exception;
 
+  boolean updateReadAll(int userNo) throws Exception;
+
   boolean updateReadByCategoryAndUser(Alert alert) throws Exception;
 
   boolean delete(int no) throws Exception;

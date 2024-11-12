@@ -19,6 +19,7 @@
         <result column="board_type" property="boardType"/>
         <result column="price" property="price"/>
         <result column="status" property="status"/>
+        <result column="trade_type" property="tradeType"/>
 
         <association property="collection" javaType="moum.project.vo.Collection">
             <id column="collection_id" property="no"/>
@@ -44,6 +45,7 @@
             <result column="origin_filename" property="originFilename"/>
         </collection>
     </resultMap>
+
 
     <!-- 게시글 목록 조회 -->
     <select id="list" resultMap="BoardMap">
@@ -81,6 +83,9 @@
         b.title,
         b.content,
         b.user_id,
+        u.user_id as writer_id,
+        u.nickname,
+        u.end_date,
         b.post_date,
         b.view_count,
         b.is_public,
@@ -99,6 +104,7 @@
         LEFT JOIN trade_board tb ON b.board_id = tb.board_id
         LEFT JOIN collection c ON tb.collection_id = c.collection_id
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN user u ON b.user_id = u.user_id
         WHERE
         b.board_id = #{no} AND b.is_deleted = 0
     </select>
@@ -142,17 +148,20 @@
         )
     </insert>
 
+    <!-- insertTrade 수정 -->
     <insert id="insertTrade" parameterType="moum.project.vo.Board">
         INSERT INTO trade_board (
         board_id,
         collection_id,
         price,
+        status,
         trade_type
         )
         VALUES (
         #{no},
         #{collection.no},
         #{price},
+        #{status},
         #{tradeType}
         )
     </insert>
@@ -189,7 +198,7 @@
         collection_id = #{collection.no},
         price = #{price},
         status = #{collectionStatus.no},
-        trade_type = #{tradeType}
+        status = #{status}
         WHERE
         board_id = #{no}
     </update>
@@ -258,7 +267,7 @@
     </select>
 
 
-    <!-- 모든 게시글 조회 (listAll) -->
+    <!-- 전체 게시글 조회 -->
     <select id="listAll" resultMap="BoardMap">
         SELECT
         b.board_id,
@@ -269,13 +278,16 @@
         b.view_count,
         b.is_public,
         b.is_deleted
+        tb.trade_type,
         FROM
         board b
         WHERE
         b.is_deleted = 0
+        AND tb.trade_type = 'default'
         ORDER BY
         b.post_date DESC
     </select>
+
 
     <!-- 인기 게시글 조회 (listPopular) -->
     <select id="listPopular" resultMap="BoardMap">
@@ -298,8 +310,8 @@
         b.view_count DESC
     </select>
 
-    <!-- 수집품 거래 게시글 조회 (listTradePosts) -->
-    <select id="listTradePosts" resultMap="BoardMap" parameterType="int">
+    <!-- 수집품 구매 게시글 조회 (listTradeBuyPosts) -->
+    <select id="listTradeBuyPosts" resultMap="BoardMap" parameterType="int">
         SELECT
         b.board_id,
         b.title,
@@ -308,14 +320,51 @@
         b.view_count,
         tb.price,
         tb.status,
+        tb.trade_type,
         c.collection_id,
-        c.name AS collection_name
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.board_id AS bp_board_id,
+        bp.filename,
+        bp.origin_filename
         FROM
         board b
         INNER JOIN trade_board tb ON b.board_id = tb.board_id
-        INNER JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
         WHERE
         b.is_deleted = 0
+        AND tb.trade_type = 'buy'
+        ORDER BY
+        b.post_date DESC
+        LIMIT #{no}
+    </select>
+
+    <!-- 수집품 판매 게시글 조회 (listTradeSellPosts) -->
+    <select id="listTradeSellPosts" resultMap="BoardMap" parameterType="int">
+        SELECT
+        b.board_id,
+        b.title,
+        b.user_id,
+        b.post_date,
+        b.view_count,
+        tb.price,
+        tb.status,
+        tb.trade_type,
+        c.collection_id,
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.board_id AS bp_board_id,
+        bp.filename,
+        bp.origin_filename
+        FROM
+        board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'sell'
         ORDER BY
         b.post_date DESC
         LIMIT #{no}
@@ -344,26 +393,33 @@
         b.post_date DESC
     </select>
 
+
+    <!-- 게시글 페이징 조회 (listByPage) - 일반 게시글만 조회 -->
     <select id="listByPage" resultMap="BoardMap" parameterType="map">
         SELECT
-            b.board_id,
-            b.title,
-            b.user_id,
-            u.user_id as writer_id,
-            u.nickname,
-            u.end_date,
-            b.post_date,
-            b.view_count,
-            b.is_public,
-            b.is_deleted,
-            b.board_type
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.nickname,
+        u.end_date,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        bp.photo_id,
+        bp.filename,
+        bp.origin_filename
         FROM
-            board b
-            left join user u on b.user_id = u.user_id
+        board b
+        LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
         WHERE
-            b.is_deleted = 0
+        b.is_deleted = 0
+        AND b.board_type = 'general' <!-- 일반 게시글만 조회 -->
         ORDER BY
-            b.board_id desc
+        b.board_id DESC
         LIMIT #{pageNo}, #{pageCount}
     </select>
 
@@ -371,6 +427,98 @@
         select count(*)
         from board
         where is_deleted = 0
+    </select>
+
+    <!-- 판매 게시글 페이징 조회 -->
+    <select id="listTradeSellPostsByPage" resultMap="BoardMap" parameterType="map">
+        SELECT
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.nickname,
+        u.end_date,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        tb.price,
+        tb.status,
+        tb.trade_type,
+        c.collection_id,
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.filename,
+        bp.origin_filename
+        FROM
+        board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN user u ON b.user_id = u.user_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'sell' <!-- 판매 게시글만 조회 -->
+        ORDER BY
+        b.post_date DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 판매 게시글 총 개수 조회 -->
+    <select id="countTradeSellPosts" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'sell'
+    </select>
+
+    <!-- 구매 게시글 페이징 조회 -->
+    <select id="listTradeBuyPostsByPage" resultMap="BoardMap" parameterType="map">
+        SELECT
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.nickname,
+        u.end_date,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        tb.price,
+        tb.status,
+        tb.trade_type,
+        c.collection_id,
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.filename,
+        bp.origin_filename
+        FROM
+        board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN user u ON b.user_id = u.user_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'buy' <!-- 구매 게시글만 조회 -->
+        ORDER BY
+        b.post_date DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 구매 게시글 총 개수 조회 -->
+    <select id="countTradeBuyPosts" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'buy'
     </select>
 
 </mapper>

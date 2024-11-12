@@ -95,72 +95,108 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px;
+    padding: 100px;
     gap: 20px;
 }
+
 /* 글쓰기 버튼 스타일 */
 .write-button {
     display: inline-block;
     padding: 8px 16px;
     font-weight: bold;
     font-size: 16px;
-    color: #000000; /* 글자 색상 */
-    background-color: #f8f9fa; /* btn-light 배경 색상 */
-    border: 1px solid #ced4da; /* btn-light 기본 경계 색상 */
-    border-radius: 12px; /* 모서리를 둥글게 */
+    color: #000000;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 12px;
     text-decoration: none;
     position: absolute;
     right: 20px;
     top: 50px;
-    cursor: pointer; /* 버튼 클릭 시 포인터 표시 */
-    transition: background-color 0.3s ease, border-color 0.3s ease; /* 호버 시 부드러운 색상 전환 */
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* 글쓰기 버튼 호버 효과 */
 .write-button:hover {
-    background-color: #e2e6ea; /* 호버 시 배경색 */
-    border-color: #adb5bd; /* 호버 시 경계 색상 */
+    background-color: #e2e6ea;
+    border-color: #adb5bd;
 }
 
-/* 글쓰기 버튼 포커스 효과 */
 .write-button:focus {
-    outline: none; /* 포커스 시 테두리 제거 */
-    box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5); /* 포커스 시 블루색 그림자 효과 */
+    outline: none;
+    box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);
 }
-
 
 .boardList-middle-box {
-    width: 85%;
-    min-width: 250px;
+    width: 130%;
+    max-width: 2000px;
     border: 1px solid black;
     border-radius: 15px;
-    text-align: left;
-    padding: 100px;
+    padding: 40px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column; /* 세로 정렬을 위해 추가 */
-    gap: 100px;
+    flex-direction: column;
+    gap: 30px;
     align-items: flex-start;
 }
 
+/* 가로 정렬 및 이미지와 텍스트 간격 조정 */
 .boardList-middle-image {
     display: flex;
-    gap: 50px;
-    align-items: flex-start;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
 }
 
+/* 이미지 설정 */
 .boardList-middle-image img {
-    width: 300px;
+    width: 50px;
     height: auto;
     flex-shrink: 0;
 }
 
-.boardList-middle-image div {
+/* 게시글 번호, 제목 정렬 */
+.boardList-middle-content {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
 }
 
+.boardList-middle-content .post-number {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.boardList-middle-content .post-title {
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+/* 페이징 스타일 */
+.pagination ul {
+    display: flex;
+    gap: 10px;
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.pagination li a {
+    display: block;
+    padding: 8px 12px;
+    color: #000;
+    text-decoration: none;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination li.active a,
+.pagination li a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
 
     /*-----------------------------------------------------------------------*/
 

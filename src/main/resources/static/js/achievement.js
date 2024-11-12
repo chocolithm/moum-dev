@@ -43,6 +43,67 @@ function sortAchievements() {
     achievements.forEach(achievement => achievementsContainer.appendChild(achievement));
 }
 
+/* myinfo 업적 최상단으로 가져오기*/
+// 선택된 업적을 처리하는 함수
+function selectAchievement(element) {
+    // 선택된 업적 텍스트와 ID 가져오기
+    var achievementText = element.innerText;
+    var achievementId = element.getAttribute('data-id');
+
+    // 버튼에 선택된 업적 이름을 표시
+    document.getElementById('achievement-selected').innerText = achievementText;
+
+    // 선택된 업적 ID를 hidden input에 저장
+    document.getElementById('user-achievement').value = achievementId;
+
+    // 드롭다운을 자동으로 닫기
+    var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
+    dropdown.hide();
+}
+
+// 페이지 로드시 선택된 업적이 있으면 드롭다운 최상단에 해당 업적을 표시
+window.addEventListener('load', function() {
+    var selectedAchievementId = document.getElementById('user-achievement').value; // 수정 후 저장된 업적 ID
+    if (selectedAchievementId) {
+        var items = document.querySelectorAll('.dropdown-item');
+        var selectedAchievement = null;
+        var selectedLi = null;
+
+        // 선택된 업적을 찾아서 드롭다운에서 최상단으로 이동
+        items.forEach(item => {
+            var itemId = item.getAttribute('data-id');
+            if (itemId === selectedAchievementId) {
+                selectedAchievement = item;
+                selectedLi = item.closest('li');
+            }
+        });
+
+        if (selectedAchievement) {
+            var ul = selectedAchievement.closest('ul');
+
+            // 현재 선택된 업적의 li 요소를 복제
+            var clonedLi = selectedLi.cloneNode(true);
+
+            // 원래 위치의 li 요소 제거
+            selectedLi.remove();
+
+            // 복제된 li 요소를 최상단에 삽입
+            ul.insertBefore(clonedLi, ul.firstElementChild);
+
+            // 복제된 요소에 대한 이벤트 리스너 재설정
+            clonedLi.querySelector('.dropdown-item').addEventListener('click', function(e) {
+                e.preventDefault();
+                selectAchievement(this);
+            });
+
+            // 드롭다운 버튼에 선택된 업적 이름 표시
+            document.getElementById('achievement-selected').innerText = selectedAchievement.innerText;
+        }
+    }
+});
+
+
+
 function filterAchievements() {
     const checkedValues = Array.from(document.querySelectorAll('.filter:checked')).map(cb => cb.value);
     const achievements = Array.from(document.querySelectorAll('.achievement-photo'));

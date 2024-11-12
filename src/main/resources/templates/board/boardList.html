@@ -15,58 +15,87 @@
             }
         };
     </script>
-
 </head>
 
 <body>
 
 <div th:replace="~{header}"></div>
 
-<main>
+<main class="container mt-4">
 
-    <div class="search-container">
+    <div class="search-container mb-4">
         <div class="navigation-pill">
             <div class="title-wrapper">
                 <div class="title" style="font-weight: bold" th:text="'주제별'">주제별</div>
             </div>
         </div>
-        <input class="search-input" placeholder="Search" type="text">
-        <button class="search-button" type="submit">
+        <input class="search-input form-control" placeholder="Search" type="text">
+        <button class="search-button btn btn-primary mt-2" type="submit">
             <i class="fas fa-search"></i>
         </button>
     </div>
 
     <div class="boardList">
-        <!-- 첫 번째 박스 (전체 게시글) -->
         <div class="boardList-middle-box" style="position: relative; padding-top: 40px;">
             <h2>전체 게시글</h2>
 
-            <!-- 글쓰기 버튼을 박스 내부 오른쪽 상단에 위치 -->
-            <a class="write-button" th:href="@{/board/boardDetailForm}">글쓰기</a>
+	        <button type="button" class="write-button btn btn-info" onclick="location.href='/board/boardDetailForm'">
+		        글쓰기
+	        </button>
+
+	        <!-- Light 버튼을 button 태그로 변환, 기존의 버튼 기능을 그대로 유지 -->
+	        <button type="button" class="btn btn-outline-light" id="lightButton">
+		        Light
+	        </button>
 
             <div class="boardList-middle-image" th:each="board : ${recentBoards}">
-                <a th:href="@{/board/boardView(no=${board.no})}">
-                    <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
-                    <img alt="게시글 이미지"
-                         th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
-                    <!-- 첨부 파일이 없을 경우 기본 이미지를 표시 -->
-                    <img alt="기본 이미지"
-                         th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-                         th:src="@{/images/default-image.png}">
-                </a>
-                <div>
+                <img alt="게시글 이미지"
+                     th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
+                <img alt="기본 이미지"
+                     th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                     th:src="@{/images/default-image.png}">
+
+                <div class="boardList-middle-content">
+                    <div class="post-number" th:text="${board.no}">1</div>
                     <a th:href="@{/board/boardView(no=${board.no})}">
-                        <p style="font-size: 25px; font-weight: bolder;" th:text="${board.title}">게시글 제목</p>
+                        <div class="post-title" th:text="${board.title}">게시글 제목</div>
                     </a>
-                    <p3 th:utext="${board.content != null ? board.content : '설명이 없습니다.'}">게시글 설명</p3>
                 </div>
             </div>
+
+	        <div class="pagination-container mt-4">
+		        <nav aria-label="Page navigation">
+			        <ul class="pagination justify-content-center">
+				        <!-- Previous Button -->
+				        <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=10)}" tabindex="-1" aria-disabled="true">Previous</a>
+				        </li>
+
+				        <!-- Page Number Buttons -->
+				        <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+				            th:classappend="${i == currentPage ? 'active' : ''}" class="page-item">
+					        <a class="page-link" th:href="@{/board/boardList(page=${i}, size=10)}" th:text="${i}"></a>
+				        </li>
+
+				        <!-- Next Button -->
+				        <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=10)}">Next</a>
+				        </li>
+			        </ul>
+		        </nav>
+	        </div>
         </div>
     </div>
+
+
+
+
+
+
 </main>
 
-<footer data-th-replace="~{footer :: footer}"></footer>
+<footer th:replace="~{footer :: footer}"></footer>
 
 </body>
 </html>

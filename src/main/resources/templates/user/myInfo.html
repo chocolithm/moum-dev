@@ -189,30 +189,5 @@
 
 <script src="/js/achievement.js"></script>
 
-<script>
-	// 다크 모드 토글
-	const toggleButton = document.getElementById('dark-mode-toggle');
-	
-	// 페이지 로드 시 다크 모드 상태 유지 (localStorage 사용)
-	if (localStorage.getItem('darkMode') === 'enabled') {
-			document.body.classList.add('dark-mode');
-			toggleButton.textContent = '라이트 모드';
-	}
-
-	// 다크 모드 버튼 클릭 이벤트
-	toggleButton.addEventListener('click', function () {
-			document.body.classList.toggle('dark-mode');
-			
-			// 버튼 텍스트 변경
-			if (document.body.classList.contains('dark-mode')) {
-					toggleButton.textContent = '라이트 모드';
-					localStorage.setItem('darkMode', 'enabled');  // 상태 저장
-			} else {
-					toggleButton.textContent = '다크 모드';
-					localStorage.removeItem('darkMode');  // 상태 삭제
-			}
-	});
-</script>
-
 </body>
 </html>

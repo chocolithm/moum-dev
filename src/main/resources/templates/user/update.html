@@ -8,6 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/achievement.js"></script>
 </head>
 
 <div th:replace="~{header :: header}"></div>
@@ -63,7 +64,6 @@
           <div id="nicknameEdit" style="display: none;">
             <div style="display: flex; align-items: center;">
               <input type="text" id="nickname" name="nickname" th:value="*{nickname}" />
-              <!-- 여기에 onclick 이벤트 추가 -->
               <button type="button" onclick="checkDuplicate('nickname', document.getElementById('nickname').value)" class="btn">중복확인</button>
               <button type="button" class="btn" onclick="hideNicknameEdit()">취소</button>
             </div>
@@ -121,8 +121,17 @@
                       <!-- 업적 이름 표시 -->
                     </a>
                   </li>
+                  <th:block th:if="${title.isPrimary == 1}">
+                    <script th:inline="javascript">
+                      const id = /*[[${title.id}]]*/ '[[${title.id}]]';
+                      // 동적으로 click 이벤트 트리거 (this가 해당 요소로 동작)
+                      document.querySelector(`[data-id='${id}']`).click();
+                    </script>
+                  </th:block>
                 </th:block>
               </th:block>
+
+
               <!-- 업적이 없는 경우 처리 -->
               <th:block th:if="${#lists.isEmpty(listGetUserAchievement)}">
                 <li><a class="dropdown-item" href="#">업적이 없습니다</a></li>
@@ -130,27 +139,10 @@
             </ul>
           </div>
           <!-- 선택된 업적 ID를 저장할 hidden input -->
-          <input type="hidden" id="user-achievement" name="user-achievement" value="">
+          <input type="hidden" id="user-achievement" name="user-achievement" value="*{userAchievementId}">
         </div>
 
-        <script>
-          // 선택된 업적을 처리하는 함수
-          function selectAchievement(element) {
-            // 선택된 업적 텍스트와 ID 가져오기
-            var achievementText = element.innerText;
-            var achievementId = element.getAttribute('data-id');
 
-            // 버튼에 선택된 업적 이름을 표시
-            document.getElementById('achievement-selected').innerText = achievementText;
-
-            // 선택된 업적 ID를 hidden input에 저장
-            document.getElementById('user-achievement').value = achievementId;
-
-            // 드롭다운을 자동으로 닫기
-            var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
-            dropdown.hide();
-          }
-        </script>
 
 
         <!-- 버튼 그룹 -->

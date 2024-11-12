@@ -24,11 +24,11 @@ public class Board implements Serializable {
     private String boardType; // 게시글 종류 ("general" 또는 "trade")
 
     private Collection collection; // 거래대상 수집품
-    private int price; // 가격
+    private Integer price; // 가격
     private CollectionStatus collectionStatus;
-    private boolean status;
+    private boolean status; // 거래중/거래완료 표시
     private int likeCount; // 추천수 추가
-    private String tradeType;
+    private String tradeType; // sell or buy 거래게시글 종류
 
     private User user; //작성자 정보를 받기 위한 User 객체
 

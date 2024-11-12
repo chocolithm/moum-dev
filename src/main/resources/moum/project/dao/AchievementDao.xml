@@ -16,6 +16,7 @@
         <result column="score" property="score"/>
         <result column="userrank" property="rank"/>
         <result column="complete_count" property="completeCount"/>
+        <result column="is_primary" property="isPrimary"/>
 
         <association property="user" javaType="moum.project.vo.User">
             <id column="user_id" property="no"/>
@@ -70,7 +71,8 @@
         ac.acquisition_condition,
         ac.location,
         ua.progress,
-        ua.get_date
+        ua.get_date,
+        ua.is_primary
         from
         user_achievement ua
         left join achievement ac

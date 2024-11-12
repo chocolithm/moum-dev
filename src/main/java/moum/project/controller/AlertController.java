@@ -32,11 +32,16 @@ public class AlertController {
 
   @GetMapping("/read")
   @ResponseBody
-  public String read(int no) throws Exception {
-    if (alertService.updateRead(no)) {
-      return "success";
-    }
-    return "failure";
+  public boolean read(int no) throws Exception {
+    return alertService.updateRead(no);
+  }
+
+  @GetMapping("/readAll")
+  @ResponseBody
+  public boolean read(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+
+    return alertService.updateReadAll(loginUser.getNo());
   }
 
   @GetMapping("delete")

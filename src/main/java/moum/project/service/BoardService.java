@@ -29,13 +29,24 @@ public interface BoardService {
 
     List<Board> listPopular() throws Exception;
 
-    List<Board> listTradePosts() throws Exception;
+    List<Board> listTradeSellPosts() throws Exception;
+    List<Board> listTradeBuyPosts() throws Exception;
 
     List<Board> listBraggingPosts() throws Exception;
 
     List<Board> listByPage(int pageNo, int pageCount) throws Exception;
 
     int count() throws Exception;
+
+    List<Board> listTradeSellPostsByPage(int offset, int limit) throws Exception;
+
+    int countTradeSellPosts() throws Exception;
+
+    // 구매 게시글 페이징 조회
+    List<Board> listTradeBuyPostsByPage(int offset, int limit) throws Exception;
+
+    // 구매 게시글 총 개수 조회
+    int countTradeBuyPosts() throws Exception;
 
     void updateAttachedFiles(int no, List<AttachedFile> newFiles);
 

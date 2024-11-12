@@ -54,6 +54,12 @@
     where alert_id = #{no}
   </update>
 
+  <update id="updateReadAll" parameterType="int">
+    update alert
+    set alert_read = 1
+    where user_id = #{userNo}
+  </update>
+
   <update id="updateReadByCategoryAndUser" parameterType="moum.project.vo.Alert">
     update alert
     set alert_read = 1

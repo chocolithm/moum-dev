@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface BoardDao {
+
+
     List<Board> list(); // 모든 게시글 조회
 
     Board selectById(int boardId); // 특정 게시글 조회
@@ -33,7 +35,9 @@ public interface BoardDao {
     List<Board> listPopular();
 
     // 수집품 거래 게시글 조회
-    List<Board> listTradePosts(int limit);
+    List<Board> listTradeSellPosts(int limit);
+    List<Board> listTradeBuyPosts(int limit);
+
 
     // 자랑하기 게시글 조회
     List<Board> listBraggingPosts();
@@ -47,6 +51,19 @@ public interface BoardDao {
     List<Board> listByPage(
         @Param("pageNo") int pageNo,
         @Param("pageCount") int pageCount) throws Exception;
+
+
+    // 판매 게시글 페이징 조회
+    List<Board> listTradeSellPostsByPage(@Param("offset") int offset, @Param("limit") int limit) throws Exception;
+
+    // 판매 게시글 총 개수 조회
+    int countTradeSellPosts() throws Exception;
+
+    // 구매 게시글 페이징 조회
+    List<Board> listTradeBuyPostsByPage(@Param("offset") int offset, @Param("limit") int limit) throws Exception;
+
+    // 구매 게시글 총 개수 조회
+    int countTradeBuyPosts() throws Exception;
 
     int count() throws Exception;
 }
