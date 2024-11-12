@@ -402,7 +402,8 @@ CREATE TABLE trade_board (
     board_id      INTEGER NOT NULL COMMENT '게시글 번호', -- 게시글 번호
     collection_id INTEGER NULL     COMMENT '수집품 번호', -- 수집품 번호
     price         INTEGER NOT NULL COMMENT '거래 가격', -- 거래 가격
-    status        TINYINT NOT NULL COMMENT '거래 상태' -- 거래 상태
+    status        TINYINT NOT NULL COMMENT '거래 상태', -- 거래 상태
+    trade_type    VARCHAR(50) NOT NULL COMMENT '거래 종류' -- 거래 종류 
 )
 COMMENT '수집품거래게시글';
 

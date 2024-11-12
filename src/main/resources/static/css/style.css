@@ -92,6 +92,29 @@ a {
 }
 
 
+/* 회원가입 모달 닫기 버튼 스타일 */
+.signup-close-btn {
+    background-color: transparent;
+    border: none;
+    color: red;
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+    top: 50px;  /* 예시: top 값 변경 */
+    right: 10px;
+}
+
+
+/* 회원가입 모달 닫기 버튼에 hover 효과 */
+.signup-close-btn:hover {
+  color: darkgreen;
+  transition: color 0.3s ease;
+}
+
+
 body {
     position: relative;
     margin: 0 auto;
