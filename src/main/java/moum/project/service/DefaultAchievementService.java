@@ -85,4 +85,14 @@ public class DefaultAchievementService implements AchievementService {
   public int count() throws Exception {
     return achievementDao.count();
   }
+
+  @Override
+  public boolean updateCount(Achievement achievement) throws Exception {
+    return achievementDao.updateCount(achievement);
+  }
+
+  @Override
+  public boolean completeAchievement(Achievement achievement) throws Exception {
+    return achievementDao.completeAchievement(achievement);
+  }
 }

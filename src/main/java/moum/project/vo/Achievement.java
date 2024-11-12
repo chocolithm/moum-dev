@@ -18,9 +18,11 @@ public class Achievement implements Serializable {
     private LocalDateTime getDate; // 취득일자
     private int rank;
     private int score;
+    private int maxCount; // 취득조건 수
+    private int currentCount; // 현재 취득 수
     private User user;
     private int completeCount;
-    private int isPrimary;
+    private int isPrimary; // 완료한 업적 수
 
     public Achievement(String id) {
         this.id = id;

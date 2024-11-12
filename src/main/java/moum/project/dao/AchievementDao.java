@@ -43,4 +43,8 @@ public interface AchievementDao {
         @Param("pageCount") int pageCount) throws Exception;
 
     int count() throws Exception;
+
+    boolean updateCount(Achievement achievement) throws Exception;
+
+    boolean completeAchievement(Achievement achievement) throws Exception;
 }

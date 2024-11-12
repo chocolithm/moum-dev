@@ -14,6 +14,8 @@
         <result column="progress" property="progress"/>
         <result column="get_date" property="getDate"/>
         <result column="score" property="score"/>
+        <result column="max_count" property="maxCount"/>
+        <result column="current_count" property="currentCount"/>
         <result column="userrank" property="rank"/>
         <result column="complete_count" property="completeCount"/>
         <result column="is_primary" property="isPrimary"/>
@@ -32,7 +34,9 @@
             content,
             photo,
             acquisition_condition
-            location
+            location,
+            score,
+            max_count
         from
             achievement
         order by
@@ -55,57 +59,50 @@
             on ua.achievement_id = ac.achievement_id
         where
             user_id = #{no}
-
         order by
-                ua.get_date desc,
-                progress desc
+            ua.get_date desc,
+            progress desc
     </select>
 
 
     <select id="listUserGetAchievement" resultMap="AchievementMap"> <!--목록!-->
         select
-        ua.achievement_id,
-        ac.name,
-        ac.content,
-        ac.photo,
-        ac.acquisition_condition,
-        ac.location,
-        ua.progress,
-        ua.get_date,
-        ua.is_primary
+            ua.achievement_id,
+            ac.name,
+            ac.content,
+            ac.photo,
+            ac.acquisition_condition,
+            ac.location,
+            ua.progress,
+            ua.get_date,
+            ua.is_primary
         from
-        user_achievement ua
-        left join achievement ac
-        on ua.achievement_id = ac.achievement_id
+            user_achievement ua
+            left join achievement ac on ua.achievement_id = ac.achievement_id
         where
-        user_id = #{no}
-        and
-        progress = 100
-
+            user_id = #{no}
+            and progress = 100
         order by
-        ac.name desc;
+            ac.name desc;
     </select>
 
 
     <select id="listByUserRank" resultMap="AchievementMap"> <!--목록!-->
         select
-        userrank,
-        user_id,
-        nickname,
-        score
+            userrank,
+            user_id,
+            nickname,
+            score
         from
-        user_achievement_rank
-
-        order by userrank
-
+            user_achievement_rank
+        order by
+            userrank
         limit 0, 10;
     </select>
 
-
-
     <insert id="insert" parameterType="moum.project.vo.Achievement"> <!--추가!-->
-    insert into achievement(achievement_id, name, content, photo, acquisition_condition, location)
-        values (#{id}, #{name}, #{content}, #{photo}, #{condition}, #{location})
+        insert into achievement(achievement_id, name, content, photo, acquisition_condition, score, max_count)
+        values (#{id}, #{name}, #{content}, #{photo}, #{condition}, #{score}, #{maxCount})
     </insert>
 
 
@@ -122,7 +119,8 @@
             content,
             photo,
             acquisition_condition,
-            score
+            score,
+            max_count
         from
             achievement
         where
@@ -132,54 +130,52 @@
 
     <select id="findRankByUser" resultMap="AchievementMap" parameterType="int"> <!--조회!-->
         select
-        userrank,
-        user_id,
-        nickname,
-        score
+            userrank,
+            user_id,
+            nickname,
+            score
         from
-        user_achievement_rank
-
+            user_achievement_rank
         where
-        user_id=#{no}
+            user_id=#{no}
         order by userrank
     </select>
 
     <select id="findPrimary" resultMap="AchievementMap" parameterType="int">
-    select
-        a.name
+        select
+            a.name
         from
-        achievement a
-        left join user_achievement ua on a.achievement_id=ua.achievement_id
-
+            achievement a
+            left join user_achievement ua on a.achievement_id=ua.achievement_id
         where
-        ua.user_id=#{no}
-        and
-        ua.is_primary = 1
+            ua.user_id=#{no}
+            and ua.is_primary = 1
     </select>
 
     <update id="update" parameterType="moum.project.vo.Achievement"> <!--수정!-->
-    update achievement set
-        name=#{name},
-        content=#{content},
-        photo=#{photo},
-        acquisition_condition=#{condition},
-        location=#{location}
+        update achievement set
+            name=#{name},
+            content=#{content},
+            photo=#{photo},
+            acquisition_condition=#{condition},
+            location=#{location}
         where
-        achievement_id=#{id}
+            achievement_id=#{id}
     </update>
 
     <update id="updateMyinfoAchievement" parameterType="moum.project.vo.Achievement"> <!--수정!-->
         update user_achievement set
-        is_primary = 1
+            is_primary = 1
         where
-        user_id=#{user.no} and achievement_id=#{id}
+            user_id=#{user.no}
+            and achievement_id=#{id}
     </update>
 
     <update id="deleteMyinfoAchievement" parameterType="moum.project.vo.User"> <!--수정!-->
         update user_achievement set
-        is_primary = 0
+            is_primary = 0
         where
-        user_id=#{no}
+            user_id=#{no}
     </update>
 
     <delete id="delete" parameterType="String"> <!--삭제!-->
@@ -195,6 +191,7 @@
             a.photo,
             a.acquisition_condition,
             a.score,
+            a.max_count,
             COALESCE(SUM(CASE WHEN ua.progress = 100 THEN 1 ELSE 0 END), 0) AS complete_count
         FROM
             achievement a
@@ -212,4 +209,22 @@
         select count(*)
         from achievement
     </select>
+
+    <update id="updateCount" parameterType="moum.project.vo.Achievement">
+        update user_achievement set
+            current_count = #{currentCount},
+            progress = #{progress}
+        where
+            user_id = #{user.no}
+            and achievement_id = #{id}
+    </update>
+
+    <update id="completeAchievement" parameterType="moum.project.vo.Achievement">
+        update user_achievement set
+            get_date = now()
+        where
+            user_id = #{user.no}
+            and achievement_id = #{id}
+    </update>
+
 </mapper>

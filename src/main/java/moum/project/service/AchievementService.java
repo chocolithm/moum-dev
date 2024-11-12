@@ -32,4 +32,8 @@ public interface AchievementService {
   List<Achievement> listByPage(int pageNo, int pageCount) throws Exception;
 
   int count() throws Exception;
+
+  boolean updateCount(Achievement achievement) throws Exception;
+
+  boolean completeAchievement(Achievement achievement) throws Exception;
 }

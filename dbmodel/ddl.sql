@@ -160,6 +160,7 @@ CREATE TABLE achievement (
     photo                 VARCHAR(255) NOT NULL COMMENT '업적 이미지', -- 업적 이미지
     acquisition_condition TEXT         NOT NULL COMMENT '취득 조건', -- 취득 조건
     location              TEXT         NOT NULL COMMENT '취득 장소', -- 취득 장소
+    max_count             INTEGER      NULL     COMMENT '총횟수', -- 총횟수
     score                 INTEGER      NOT NULL COMMENT '업적 점수' -- 업적 점수
 )
 COMMENT '업적';
@@ -205,8 +206,7 @@ CREATE TABLE user_achievement (
     progress       INTEGER     NOT NULL DEFAULT 0 COMMENT '진행도', -- 진행도
     get_date       DATETIME    NULL     COMMENT '취득일자', -- 취득일자
     is_primary     TINYINT     NULL     DEFAULT 0 COMMENT '대표업적', -- 대표업적
-    max_count      INTEGER     NULL     COMMENT '총횟수', -- 총횟수
-    current_count  INTEGER     NULL     COMMENT '현재횟수' -- 현재횟수
+    current_count  INTEGER     NOT NULL DEFAULT 0 COMMENT '현재횟수' -- 현재횟수
 )
 COMMENT '회원 업적';
 
