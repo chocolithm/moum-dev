@@ -137,7 +137,7 @@ public class SecurityConfig {
             .permitAll()
         )
         .headers(headers -> headers
-            .addHeaderWriter(new StaticHeadersWriter("Strict-Transport-Security", "max-age=31536000; includeSubDomains=false"))
+            .addHeaderWriter(new StaticHeadersWriter("Strict-Transport-Security", "max-age=30000000; includeSubDomains=false"))
         );
 
     return http.build();

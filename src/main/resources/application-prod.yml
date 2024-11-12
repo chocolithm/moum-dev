@@ -66,5 +66,5 @@ server:
     key-password: ""
   hsts:
     enabled: true
-    max-age: 31536000
+    max-age: 31000000
     includeSubDomains: false
