@@ -15,8 +15,8 @@
     min-width: 250px;
     border: 1px solid black;
     border-radius: 15px;
-    text-align: left;
-    padding: 80px;
+    text-align: right;
+    padding: 50px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     gap: 20px;
@@ -24,26 +24,25 @@
 
 /* 아래 왼쪽 박스 (게시글) 설정 */
 .board .boardHomeRecent-middle-box {
-    width: 40%;
+    width: 58%;
     min-width: 250px;
     border: 1px solid black;
     border-radius: 15px;
     text-align: left;
-    padding: 60px;
+    padding: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    gap: 20px;
+    height: 550px;
+    left: 0;
 }
-
 
 
 /* 이미지와 텍스트 정렬 */
 .board .boardHome-middle-image {
     display: flex;
-    gap: 50px;
-    align-items: flex-start;
+    gap: 100px;
+    align-items: flex-start; /* 세로 정렬을 위쪽으로 유지 */
+    justify-content: center; /* 모든 요소를 오른쪽으로 정렬 */
     padding: 10px;
-
 }
 
 /* 이미지 스타일 */
@@ -65,9 +64,9 @@
 .board .boardHomeRecent-middle-image {
     display: flex;
     gap: 50px;
-    align-items: flex-start;
+    align-items: flex-start; /* 세로 정렬을 위쪽으로 유지 */
+    justify-content: flex-end; /* 모든 요소를 오른쪽으로 정렬 */
     padding: 10px;
-
 }
 
 /* 이미지 스타일 */
@@ -111,7 +110,7 @@
     border-radius: 12px;
     text-decoration: none;
     position: absolute;
-    right: 20px;
+    right: 68px;
     top: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -459,7 +458,8 @@ body {
 /* 게시판 업적 랭킹 설정 */
 .boardHomeAchievement-middle-box {
     width: 40%;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: 0;
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid black;
