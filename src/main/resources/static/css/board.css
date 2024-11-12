@@ -325,20 +325,19 @@ body {
 .search-input {
     padding: 8px 12px;
     font-size: 16px;
-    border: 1px solid #ccc;
     border-radius: 20px;
     width: 250px;
-    outline: none;
     transition: border 0.3s ease;
+    background-color: transparent;
 }
 
 .search-input:focus {
-    border-color: #007bff;
+    background-color: transparent;
 }
 
 /* 검색 버튼 스타일 */
 .search-button {
-    background-color: #007bff;
+    background-color: #00ffaa;
     border: none;
     color: white;
     padding: 8px 20px; /* 텍스트가 들어갈 공간을 넓힘 */
@@ -352,7 +351,7 @@ body {
 
 /* 검색 버튼 호버 스타일 */
 .search-button:hover {
-    background-color: #0056b3;
+    background-color: #00ffaa;
 }
 
 

@@ -20,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 /**
  * packageName    : moum.project.config
@@ -134,6 +135,9 @@ public class SecurityConfig {
             .logoutUrl("/logout")
             .logoutSuccessUrl("/")
             .permitAll()
+        )
+        .headers(headers -> headers
+            .addHeaderWriter(new StaticHeadersWriter("Strict-Transport-Security", "max-age=31536000; includeSubDomains=false"))
         );
 
     return http.build();
