@@ -6,48 +6,12 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	      rel="stylesheet">
 	<link rel="stylesheet" th:href="@{/css/style.css}">
-	<!-- <style>
-		/* 다크 모드 스타일 */
-		body.dark-mode {
-				background-color: #121212;
-				color: white;
-		}
-
-		/* 다크 모드에 프로필 이미지에 필터 추가 */
-		.dark-mode .profile-img {
-				filter: brightness(0.8);
-		}
-
-		/* 다크 모드에서 버튼 색상 변경 */
-		.dark-mode .btn {
-				background-color: #444;
-				color: white;
-		}
-
-		/* 다크 모드에서 알림 배경 색상 */
-		.dark-mode .alert {
-				background-color: #333;
-				color: white;
-		}
-
-		/* 다크 모드에서 레이아웃 색상 */
-		.dark-mode .wrapper,
-		.dark-mode .my-info-wrapper,
-		.dark-mode .layout-container {
-				background-color: #1c1c1c;
-		}
-	</style>
-</head>!-->
 
 <div th:replace="~{header :: header}"></div>
 
 <body>
 <main>
 	<h1>내 정보</h1>
-	<!-- 다크/라이트 모드 버튼 추가
-	<div class="d-flex justify-content-end mb-3">
-		<button class="btn btn-secondary" id="dark-mode-toggle">다크 모드</button>
-	</div>-->
 
 	<div class="wrapper">
 		<div class="alert alert-success" th:if="${message}" th:text="${message}"></div>
@@ -58,39 +22,74 @@
 		</div>
 		
 		<div class="my-info-wrapper">
+<!--			<div class="profile-container" th:if="${user}" th:object="${user}">-->
+<!--				<div class="profile-image-container">-->
+<!--					<a th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}"-->
+<!--					   th:if="*{photo != null}">-->
+<!--						<img alt="프로필 이미지" class="profile-img"-->
+<!--						     th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">-->
+<!--					</a>-->
+<!--					<a href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png"-->
+<!--					   th:if="*{photo == null}">-->
+<!--						<img alt="기본 프로필 이미지" class="profile-img"-->
+<!--						     src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">-->
+<!--					</a>-->
+<!--				</div>-->
+
+<!--				<div class="user-info">-->
+<!--					<p>닉네임: <span th:text="*{nickname}"></span></p>-->
+<!--					<p>이메일: <span th:text="*{email}"></span></p>-->
+<!--				</div>-->
+
+<!--				<div class="user-info-dropdown">-->
+<!--					<div class="user-title-dropdown" data-th-if="${primaryAchievement}">-->
+<!--						<p data-th-text="'업적: ' + ${primaryAchievement.name}"></p>-->
+<!--					</div>-->
+
+<!--					<div class="user-title-dropdown" data-th-unless="${primaryAchievement}">-->
+<!--						<p>대표업적이 없습니다.</p>-->
+<!--					</div>-->
+
+<!--					<button class="edit-button" onclick="location.href='/user/update'">수정하기</button>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+		<!-- 프로필 이미지 섹션 -->
+		<div class="profile-image-container">
 			<div class="profile-container" th:if="${user}" th:object="${user}">
-				<div class="profile-image-container">
-					<a th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}"
-					   th:if="*{photo != null}">
-						<img alt="프로필 이미지" class="profile-img"
-						     th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">
-					</a>
-					<a href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png"
-					   th:if="*{photo == null}">
-						<img alt="기본 프로필 이미지" class="profile-img"
-						     src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
-					</a>
-				</div>
-				
-				<div class="user-info">
-					<p>닉네임: <span th:text="*{nickname}"></span></p>
-					<p>이메일: <span th:text="*{email}"></span></p>
-				</div>
-				
+			<a th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}" th:if="*{photo != null}">
+				<img alt="프로필 이미지" class="profile-img" th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">
+			</a>
+			<a href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png" th:if="*{photo == null}">
+				<img alt="기본 프로필 이미지" class="profile-img" src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
+			</a>
+				<!-- 수정 버튼 섹션 -->
 				<div class="user-info-dropdown">
-					<div class="user-title-dropdown" data-th-if="${primaryAchievement}">
-						<p data-th-text="'업적: ' + ${primaryAchievement.name}"></p>
-					</div>
-					
-					<div class="user-title-dropdown" data-th-unless="${primaryAchievement}">
-						<p>대표업적이 없습니다.</p>
-					</div>
-					
 					<button class="edit-button" onclick="location.href='/user/update'">수정하기</button>
 				</div>
 			</div>
+
+		<!-- 사용자 정보 섹션 -->
+		<div class="user-info">
+			<div class="User-container" th:if="${user}" th:object="${user}">
+			<p>닉네임: <span th:text="*{nickname}"></span></p>
+			<p>이메일: <span th:text="*{email}"></span></p>
 		</div>
-		
+
+		<!-- 대표업적 섹션 -->
+		<div class="user-info-dropdown">
+			<div class="user-title-dropdown" data-th-if="${primaryAchievement}">
+				<p data-th-text="'업적: ' + ${primaryAchievement.name}"></p>
+			</div>
+
+			<div class="user-title-dropdown" data-th-unless="${primaryAchievement}">
+				<p>대표업적이 없습니다.</p>
+			</div>
+		</div>
+
+
+
+
 		<!-- 내 게시글 섹션 시작 -->
 		<div class="layout-container">
 			<div class="my-info-board-container">
