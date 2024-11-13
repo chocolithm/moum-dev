@@ -338,7 +338,7 @@ body {
 .search-button {
     background-color: #00ffaa;
     border: none;
-    color: white;
+    color: black;
     padding: 8px 20px; /* 텍스트가 들어갈 공간을 넓힘 */
     margin-left: 10px;
     border-radius: 5px; /* 둥근 사각형 모양 (작은 값으로 설정) */
