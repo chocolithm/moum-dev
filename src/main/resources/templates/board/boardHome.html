@@ -9,6 +9,85 @@
     <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
     <meta data-th-content="${_csrf.token}" name="csrf-token"/>
     <meta data-th-content="${_csrf.headerName}" name="csrf-header">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .rank-badge {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+        }
+
+        .gold td {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .silver td {
+            background: rgba(192, 192, 192, 0.1);
+        }
+
+        .bronze td {
+            background: rgba(205, 127, 50, 0.1);
+        }
+
+        .current-gold {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .current-silver {
+            background: rgba(192, 192, 192, 0.1);
+        }
+
+        .current-bronze {
+            background: rgba(205, 127, 50, 0.1);
+        }
+
+        .rank-1 {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+        }
+
+        .rank-2 {
+            background: linear-gradient(45deg, #C0C0C0, #A9A9A9);
+        }
+
+        .rank-3 {
+            background: linear-gradient(45deg, #CD7F32, #8B4513);
+        }
+
+        .rank-other {
+            background: #6c757d;
+        }
+
+        .ranking-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .ranking-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .table-row {
+            transition: background-color 0.2s;
+        }
+
+        .table-row:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .score-badge {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+    </style>
 </head>
 
 <body>
@@ -83,72 +162,99 @@
         </div>
 
         <!-- 업적 랭킹 섹션 -->
-        <div class="container my-5 achievement-box">
-            <div class="achievement-title">
-                <h2 class="text-center mb-0">업적 랭킹</h2>
-            </div>
+        <div class="container py-5">
+            <h1 class="text-center mb-5 fw-bold">업적 랭킹</h1>
 
-            <div class="row">
-                <!-- 1~5등 -->
+            <div class="row g-4">
+                <!-- Top 1-5 Rankings -->
                 <div class="col-md-6">
-                    <div class="ranking-box">
-                        <div class="card-header">Top 1-5</div>
-                        <table class="table ranking-table">
-                            <thead>
-                            <tr>
-                                <th>등수</th>
-                                <th>닉네임</th>
-                                <th>점수</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="ranking, status : ${rankList}"
-                                th:if="${status.index < 5}"
-                                th:class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))}">
-                                <td><span th:text="${ranking.rank}"></span>등</td>
-                                <td><span th:text="${ranking.user.nickname}"></span></td>
-                                <td><span th:text="${ranking.score} + '점'"></span></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="ranking-card card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Top 1-5</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-borderless mb-0">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4">등수</th>
+                                        <th>닉네임</th>
+                                        <th class="text-end pe-4">점수</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ranking, status : ${rankList}"
+                                        th:if="${status.index < 5}"
+                                        th:class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">
+                                        <td class="ps-4">
+                                            <div th:class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">
+                                                <span th:text="${ranking.rank}"></span>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle fw-bold" th:text="${ranking.user.nickname}"></td>
+                                        <td class="align-middle text-end pe-4">
+                                            <span class="score-badge" th:text="${ranking.score} + '점'"></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 6~10등 -->
+                <!-- Top 6-10 Rankings -->
                 <div class="col-md-6">
-                    <div class="ranking-box">
-                        <div class="card-header">Top 6-10</div>
-                        <table class="table ranking-table">
-                            <thead>
-                            <tr>
-                                <th>등수</th>
-                                <th>닉네임</th>
-                                <th>점수</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="ranking, status : ${rankList}"
-                                th:if="${status.index >= 5 && status.index < 10}"
-                                th:class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))}">
-                                <td><span th:text="${ranking.rank}"></span>등</td>
-                                <td><span th:text="${ranking.user.nickname}"></span></td>
-                                <td><span th:text="${ranking.score} + '점'"></span></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="ranking-card card h-100">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="card-title mb-0">Top 6-10</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-borderless mb-0">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4">등수</th>
+                                        <th>닉네임</th>
+                                        <th class="text-end pe-4">점수</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ranking, status : ${rankList}"
+                                        th:if="${status.index >= 5 && status.index < 10}"
+                                        class="table-row">
+                                        <td class="ps-4">
+                                            <div class="rank-badge rank-other">
+                                                <span th:text="${ranking.rank}"></span>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle" th:text="${ranking.user.nickname}"></td>
+                                        <td class="align-middle text-end pe-4">
+                                            <span class="score-badge" th:text="${ranking.score} + '점'"></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-
-                <!-- 현재 내 순위 섹션 -->
-                <div class="current-user-section">
-                    <div class="card">
-                        <div class="card-header">현재 내 순위</div>
-                        <div th:class="'card-body ' + ${rankNowUserList != null ? (rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : ''))) : ''}">
-                            <span th:if="${rankNowUserList != null}">
-                                <p><span th:text="${rankNowUserList.rank}"></span>등 <span th:text="${rankNowUserList.user.nickname}"></span> - <span th:text="${rankNowUserList.score} + '점'"></span></p>
-                            </span>
-                            <div class="alert alert-info mb-0" th:if="${rankNowUserList == null}">
+                <!-- Current Ranking Status -->
+                <div class="col-12">
+                    <div class="ranking-card card">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">현재 내 순위</h5>
+                        </div>
+                        <div th:class="'card-body py-4 ' + ${rankNowUserList != null ? (rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : ''))) : ''}">
+                            <div th:if="${rankNowUserList != null}" class="text-center">
+                                <p class="mb-0">
+                                    <span class="fw-bold" th:text="${rankNowUserList.rank} + '등'"></span>
+                                    <span th:text="${rankNowUserList.user.nickname}"></span> -
+                                    <span class="score-badge" th:text="${rankNowUserList.score} + '점'"></span>
+                                </p>
+                            </div>
+                            <div th:if="${rankNowUserList == null}" class="alert alert-info mb-0 text-center">
                                 현재 업적 정보가 없습니다.
                             </div>
                         </div>
@@ -161,6 +267,7 @@
 
 <footer data-th-replace="~{footer :: footer}"></footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

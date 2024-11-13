@@ -514,7 +514,6 @@ body {
     background-color: rgba(205, 127, 50, 0.2); /* 동색 */
 }
 
-}
 /* 랭킹 박스 앞의 점을 제거 설정*/
 .list-group {
     list-style: none;
@@ -599,4 +598,3 @@ h2, p, span {
     background-color: transparent;
     font-weight: normal;
 }
-
