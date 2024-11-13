@@ -457,6 +457,75 @@ body {
 
 
 /* 전체 업적 랭킹 박스 테두리 설정 */
+.container.py-5 {
+    height: 35%;
+    width: 40%;
+    background-color: #f8f9fa; /* 배경 색상 설정 */
+    border-radius: 12px; /* 둥근 모서리 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    border: 1px solid #e0e0e0; /* 카드 테두리 색상 */
+    box-sizing: border-box; /* padding, border 포함된 크기 */
+}
+
+/* 자식 요소들의 크기가 변경되지 않도록 설정 */
+.container.py-5 .ranking-card {
+    width: 100%; /* 부모 크기에 맞게 늘어나도록 */
+    box-sizing: border-box; /* padding과 border를 포함시켜서 크기 조정 */
+}
+
+/* 카드 내부 테이블과 내용물의 크기도 고정 */
+.ranking-card .table-responsive {
+    width: 100%; /* 테이블도 부모 크기에 맞게 크기 조정 */
+    box-sizing: border-box; /* 테이블 크기에도 padding 포함되도록 */
+}
+
+/* 테이블 셀 */
+.ranking-card .table-borderless td,
+.ranking-card .table-borderless th {
+    box-sizing: border-box; /* 셀 크기도 padding 포함되도록 설정 */
+    padding: 12px; /* 셀 내부 여백 */
+}
+
+/* 카드 내부 콘텐츠가 크기를 초과하지 않도록 */
+.ranking-card .card-body {
+    box-sizing: border-box; /* 내부 여백을 포함한 크기 */
+    padding: 16px 20px; /* 패딩 조정 */
+    max-width: 100%; /* 너무 커지지 않도록 제한 */
+}
+
+/* 테이블에 overflow가 생기지 않도록 설정 */
+.ranking-card .table-responsive {
+    overflow-x: auto; /* 가로 스크롤 허용 */
+}
+
+.ranking-card .table-borderless th,
+.ranking-card .table-borderless td {
+    border: none; /* 테이블 테두리 없애기 */
+    padding: 12px; /* 셀 내부 여백 */
+}
+
+.ranking-card .table-light th {
+    background-color: #f7f7f7; /* 헤더 배경색 */
+}
+
+/* 랭킹 순위 및 닉네임 스타일 */
+.table-row td {
+    font-size: 1.125rem; /* 표 내용 크기 */
+}
+
+.table-row .rank-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.table-row .score-badge {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #007bff; /* 파란색 점수 */
+}
+
+
+
 .achievement-box {
     border: 2px solid #ddd;
     border-radius: 8px;
