@@ -80,6 +80,12 @@ function calcTime(dateValue) {
 // 업적 카운트 추가
 /*
 특정 action에서 추가로 실행시키고 싶은 부분이 있다면 아래와 같이 함수 정의
+
+ignored : 이미 취득한 업적
+success : 업적 횟수 추가
+acquired : 업적 획득
+failre : 업적 횟수 추가 오류
+
 updateAchievement(123, {
     onSuccess: () => console.log("Custom success logic"), // success에 사용자 정의 함수 적용
     onFailure: () => console.log("Custom failure logic")  // failure에 사용자 정의 함수 적용

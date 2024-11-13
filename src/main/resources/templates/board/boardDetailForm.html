@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta name="csrf-token" th:content="${_csrf.token}"/>
-  <meta name="csrf-header" th:content="${_csrf.headerName}"/>
+  <meta name="csrf-token" th:content="${_csrf.token}" />
+  <meta name="csrf-header" th:content="${_csrf.headerName}" />
   <meta charset="UTF-8">
   <title>게시글 등록</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -11,220 +12,226 @@
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body>
-<div class="container mt-4">
-  <h2>게시글 등록</h2>
-  <form id="postForm" enctype="multipart/form-data">
-    <!-- CSRF 토큰 -->
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+  <div class="container mt-4">
+    <h2>게시글 등록</h2>
+    <form id="postForm" enctype="multipart/form-data">
+      <!-- CSRF 토큰 -->
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-    <!-- 게시글 종류 선택 -->
-    <div class="form-group">
-      <label for="boardType">게시글 종류</label>
-      <select id="boardType" name="boardType" class="form-control" required>
-        <option value="general">일반 게시글</option>
-        <option value="trade">거래 게시글</option>
-      </select>
-    </div>
-
-    <!-- 제목 입력 -->
-    <div class="form-group">
-      <label for="title">제목</label>
-      <input type="text" class="form-control" id="title" name="title" required>
-    </div>
-
-    <!-- 내용 입력 -->
-    <div class="form-group">
-      <label for="content">내용</label>
-      <textarea id="content" name="content" class="form-control"></textarea>
-    </div>
-
-
-    <!-- 거래 게시글 전용 필드 -->
-    <div id="tradeFields" style="display: none;">
-      <!-- 가격 입력 -->
+      <!-- 게시글 종류 선택 -->
       <div class="form-group">
-        <label for="price">가격</label>
-        <input type="number" class="form-control" id="price" name="price" min="0">
-      </div>
-
-      <!-- 거래 종류 선택 (판매/구매) -->
-      <div class="form-group">
-        <label for="tradeType">거래 종류</label>
-        <select id="tradeType" name="tradeType" class="form-control" onchange="toggleFields(this)" required>
-          <option value="default">선택</option>
-          <option value="sell">판매</option>
-          <option value="buy">구매</option>
+        <label for="boardType">게시글 종류</label>
+        <select id="boardType" name="boardType" class="form-control" required>
+          <option value="general">일반 게시글</option>
+          <option value="trade">거래 게시글</option>
         </select>
       </div>
 
-      <!-- 수집품 선택 -->
-      <div class="form-group collection-select" style="display: none">
-        <label for="collectionNo">수집품 선택</label>
-        <select id="collectionNo" name="collection.no" class="form-control">
-          <option value="0" disabled selected>수집품을 선택하세요</option>
-          <!-- 수집품 옵션은 JavaScript로 로드 -->
-        </select>
+      <!-- 제목 입력 -->
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" class="form-control" id="title" name="title" required>
       </div>
-    </div>
 
-    <!-- 거래 상태를 '거래중'으로 설정하는 숨은 필드 (초기값은 0) -->
-    <input type="hidden" name="status" value="0" />
+      <!-- 내용 입력 -->
+      <div class="form-group">
+        <label for="content">내용</label>
+        <textarea id="content" name="content" class="form-control"></textarea>
+      </div>
 
-    <!-- 등록 버튼 -->
-    <div>
-      <button type="button" class="btn btn-primary" onclick="addDetailPost()">등록하기</button>
-    </div>
-  </form>
-</div>
 
-<script>
-  $(document).ready(function() {
-    // Summernote 초기화
-    $('#content').summernote({
-      placeholder: '내용을 입력하세요 (최대 2048자)',
-      height: 300,
-      toolbar: [
-        ['style', ['style']],
-        ['font', ['bold', 'italic', 'underline', 'strikethrough']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['table', ['table']],
-        ['insert', ['link', 'picture']],
-        ['view', ['fullscreen', 'codeview', 'help']]
-      ],
-      callbacks: {
-        onImageUpload: function(files) {
-          uploadImage(files[0]);
-        },
-        onPaste: function(e) {
-          var clipboardData = e.originalEvent.clipboardData;
-          if (clipboardData && clipboardData.items && clipboardData.items.length) {
-            var item = clipboardData.items[0];
-            if (item.kind === 'file') {
-              e.preventDefault();
+      <!-- 거래 게시글 전용 필드 -->
+      <div id="tradeFields" style="display: none;">
+        <!-- 가격 입력 -->
+        <div class="form-group">
+          <label for="price">가격</label>
+          <input type="number" class="form-control" id="price" name="price" min="0">
+        </div>
+
+        <!-- 거래 종류 선택 (판매/구매) -->
+        <div class="form-group">
+          <label for="tradeType">거래 종류</label>
+          <select id="tradeType" name="tradeType" class="form-control" onchange="toggleFields(this)" required>
+            <option value="default">선택</option>
+            <option value="sell">판매</option>
+            <option value="buy">구매</option>
+          </select>
+        </div>
+
+        <!-- 수집품 선택 -->
+        <div class="form-group collection-select" style="display: none">
+          <label for="collectionNo">수집품 선택</label>
+          <select id="collectionNo" name="collection.no" class="form-control">
+            <option value="0" disabled selected>수집품을 선택하세요</option>
+            <!-- 수집품 옵션은 JavaScript로 로드 -->
+          </select>
+        </div>
+      </div>
+
+      <!-- 거래 상태를 '거래중'으로 설정하는 숨은 필드 (초기값은 0) -->
+      <input type="hidden" name="status" value="0" />
+
+      <!-- 등록 버튼 -->
+      <div>
+        <button type="button" class="btn btn-primary" onclick="addDetailPost()">등록하기</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      // Summernote 초기화
+      $('#content').summernote({
+        placeholder: '내용을 입력하세요 (최대 2048자)',
+        height: 300,
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'italic', 'underline', 'strikethrough']],
+          ['fontsize', ['fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['insert', ['link', 'picture']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        callbacks: {
+          onImageUpload: function (files) {
+            // uploadImage(files[0]);
+            for (i = 0; i < files.length; i++) {
+              uploadImage(files[i]);
+            }
+          },
+          onPaste: function (e) {
+            var clipboardData = e.originalEvent.clipboardData;
+            if (clipboardData && clipboardData.items && clipboardData.items.length) {
+              var item = clipboardData.items[0];
+              if (item.kind === 'file') {
+                e.preventDefault();
+              }
             }
           }
         }
+      });
+
+      // 게시글 종류 변경 시 거래 필드 표시/숨기기
+      $('#boardType').change(function () {
+        $('#tradeFields').toggle($(this).val() === 'trade');
+      });
+
+      // 초기 로딩 시 거래 게시글이면 tradeFields 보이기
+      if ($('#boardType').val() === 'trade') {
+        $('#tradeFields').show();
       }
+
+      // 수집품 목록 로드
+      loadCollections();
     });
 
-    // 게시글 종류 변경 시 거래 필드 표시/숨기기
-    $('#boardType').change(function() {
-      $('#tradeFields').toggle($(this).val() === 'trade');
-    });
+    // 이미지 업로드 함수
+    function uploadImage(file) {
+      var data = new FormData();
+      data.append("file", file);
 
-    // 초기 로딩 시 거래 게시글이면 tradeFields 보이기
-    if ($('#boardType').val() === 'trade') {
-      $('#tradeFields').show();
-    }
-
-    // 수집품 목록 로드
-    loadCollections();
-  });
-
-  // 이미지 업로드 함수
-  function uploadImage(file) {
-    var data = new FormData();
-    data.append("file", file);
-
-    $.ajax({
-      url: '/board/uploadImage',
-      type: 'POST',
-      data: data,
-      contentType: false,
-      processData: false,
-      headers: {
-        [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
-      },
-      success: function(imageUrl) {
-        $('#content').summernote('insertImage', imageUrl);
-      },
-      error: function() {
-        alert('이미지 업로드에 실패했습니다.');
-      }
-    });
-  }
-
-  // 수집품 목록 로드 함수
-  function loadCollections() {
-    $.ajax({
-      url: '/collection/list',
-      method: 'GET',
-      success: function(data) {
-        var collectionSelect = $('#collectionNo');
-        data.forEach(function(collection) {
-          collectionSelect.append('<option value="' + collection.no + '">' + collection.name + '</option>');
-        });
-      },
-      error: function() {
-        alert('수집품 목록을 불러오는 데 실패했습니다.');
-      }
-    });
-  }
-
-  // 게시글 등록 함수
-  function addDetailPost() {
-    var formData = new FormData($('#postForm')[0]);
-
-    if (formData.get("title") === "") {
-      alert("제목을 입력하세요");
-      return;
-    }
-    if (formData.get("content") === "") {
-      alert("내용을 입력하세요");
-      return;
-    }
-
-    // 가격이 비어있을 경우 기본값 0 설정
-    if (formData.get("price") === "" && $('#boardType').val() === 'trade') {
-      formData.set("price", 0);
-    }
-    if (formData.get("boardType") === "trade") {
-      if (formData.get("tradeType") === 'default') {
-        alert("거래 종류를 선택하세요");
-        return;
-      }
-      if (formData.get("tradeType") === 'sell' && (!formData.get('collection.no') || formData.get('collection.no') === '0')) {
-        alert("수집품을 선택해주세요");
-        return;
-      }
-    }
-
-
-
-    $.ajax({
-      url: '/board/addDetailPost',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      headers: {
-        [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
-      },
-      success: function(response) {
-        if (response === 'success') {
-          alert('게시글이 등록되었습니다.');
-          var tradeType = formData.get("tradeType");
-          if (tradeType === "default") {
-            window.location.href = '/board/boardList';
-          } else if (tradeType === "sell") {
-            window.location.href = '/board/tradeHomeSell';
-          } else if (tradeType === "buy") {
-            window.location.href = '/board/tradeHomeBuy'; // 일반 게시글 목록 페이지로 이동
-          }
-        } else {
-          alert('게시글 등록에 실패했습니다.');
+      $.ajax({
+        url: '/board/uploadImage',
+        type: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+        headers: {
+          [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (imageUrl) {
+          $('#content').summernote('insertImage', imageUrl);
+        },
+        error: function () {
+          alert('이미지 업로드에 실패했습니다.');
         }
-      },
-      error: function() {
-        alert('서버 오류가 발생했습니다.');
+      });
+    }
+
+
+    // 수집품 목록 로드 함수
+    function loadCollections() {
+      $.ajax({
+        url: '/collection/list',
+        method: 'GET',
+        success: function (data) {
+          var collectionSelect = $('#collectionNo');
+          data.forEach(function (collection) {
+            collectionSelect.append('<option value="' + collection.no + '">' + collection.name + '</option>');
+          });
+        },
+        error: function () {
+          alert('수집품 목록을 불러오는 데 실패했습니다.');
+        }
+      });
+    }
+
+    // 게시글 등록 함수
+    function addDetailPost() {
+      var formData = new FormData($('#postForm')[0]);
+
+      if (formData.get("title") === "") {
+        alert("제목을 입력하세요");
+        return;
       }
-    });
-  }
-</script>
-<script src="/js/board.js"></script>
+      if (formData.get("content") === "") {
+        alert("내용을 입력하세요");
+        return;
+      }
+
+      // 가격이 비어있을 경우 기본값 0 설정
+      if (formData.get("price") === "" && $('#boardType').val() === 'trade') {
+        formData.set("price", 0);
+      }
+      if (formData.get("boardType") === "trade") {
+        if (formData.get("tradeType") === 'default') {
+          alert("거래 종류를 선택하세요");
+          return;
+        }
+        if (formData.get("tradeType") === 'sell' && (!formData.get('collection.no') || formData.get('collection.no') === '0')) {
+          alert("수집품을 선택해주세요");
+          return;
+        }
+      }
+
+
+
+      $.ajax({
+        url: '/board/addDetailPost',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+          [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+          if (response === 'success') {
+            alert('게시글이 등록되었습니다.');
+            var tradeType = formData.get("tradeType");
+            if (tradeType === "default") {
+              window.location.href = '/board/boardList';
+            } else if (tradeType === "sell") {
+              window.location.href = '/board/tradeHomeSell';
+            } else if (tradeType === "buy") {
+              window.location.href = '/board/tradeHomeBuy'; // 일반 게시글 목록 페이지로 이동
+            }
+          } else {
+            alert('게시글 등록에 실패했습니다.');
+          }
+        },
+        error: function () {
+          alert('서버 오류가 발생했습니다.');
+        }
+      });
+    }
+  </script>
+  <script src="/js/board.js"></script>
 
 </body>
+
 </html>

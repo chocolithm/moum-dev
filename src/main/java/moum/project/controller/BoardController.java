@@ -7,8 +7,21 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.BoardDao;
-import moum.project.service.*;
-import moum.project.vo.*;
+import moum.project.service.AchievementService;
+import moum.project.service.BoardService;
+import moum.project.service.CollectionService;
+import moum.project.service.CollectionStatusService;
+import moum.project.service.CommentService;
+import moum.project.service.LikesService;
+import moum.project.service.StorageService;
+import moum.project.service.UserService;
+import moum.project.vo.Achievement;
+import moum.project.vo.AttachedFile;
+import moum.project.vo.Board;
+import moum.project.vo.Collection;
+import moum.project.vo.CollectionStatus;
+import moum.project.vo.CommentResponse;
+import moum.project.vo.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -479,6 +492,8 @@ public class BoardController {
     // 현재 로그인한 사용자 정보 가져오기
     User loginUser = userService.getByEmail(userDetails.getUsername());
     board.setUserNo(loginUser.getNo());
+
+    System.out.println(files);
 
     try {
       if ("trade".equals(board.getBoardType())) {
