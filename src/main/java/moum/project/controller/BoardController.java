@@ -289,6 +289,7 @@ public class BoardController {
       @PathVariable("no") int no,
       Board updatedBoard,
       @RequestParam("files") MultipartFile[] files,
+      String[] oldFiles,
       Model model) throws Exception {
 
     updatedBoard.setNo(no);

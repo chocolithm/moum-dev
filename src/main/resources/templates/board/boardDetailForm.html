@@ -200,12 +200,6 @@
         }
       }
 
-      // if (imageFiles.length > 0) {
-      //   for (let i = 0; i < imageFiles.length; i++) {
-      //     formData.append("files", imageFiles[i]);
-      //   }
-      // }
-
       formData.delete("files");
       const base64Images = [];
       $('.card-block p img').each(function () {
@@ -217,16 +211,12 @@
 
       // base64 이미지를 파일 객체로 변환 후 formData에 추가
       base64Images.forEach((base64Image) => {
-        console.log(base64Image);
         const imageData = imageUrls.find(image => image.url === base64Image);
         const fileName = imageData.name;
-        // const fileName = imageData ? imageData.name : `image${base64Images.indexOf(base64Image)}.jpg`;
 
         const file = base64ToFile(base64Image, fileName);
         formData.append('files', file);
       });
-
-      console.log(formData);
 
       $.ajax({
         url: '/board/addDetailPost',

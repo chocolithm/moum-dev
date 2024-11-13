@@ -77,6 +77,8 @@
   </div>
 
   <script>
+    let imageUrls = [];
+
     // Summernote 에디터 초기화 및 이미지 업로드 함수
     $(document).ready(function () {
       $('#content').summernote({
@@ -94,8 +96,11 @@
         ],
         callbacks: {
           onImageUpload: function (files) {
+            // for (i = 0; i < files.length; i++) {
+            //   uploadImage(files[i]);
+            // }
             for (i = 0; i < files.length; i++) {
-              uploadImage(files[i]);
+              saveImages(files[i]);
             }
           },
           onPaste: function (e) {
@@ -122,28 +127,40 @@
       });
     });
 
-    // 이미지 업로드 함수
-    function uploadImage(file) {
-      var data = new FormData();
-      data.append("file", file);
+    function saveImages(file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imageUrl = e.target.result;
+        const fileName = file.name;
 
-      $.ajax({
-        url: '/board/uploadImage',
-        type: 'POST',
-        data: data,
-        contentType: false,
-        processData: false,
-        headers: {
-          [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function (imageUrl) {
-          $('#content').summernote('insertImage', imageUrl);
-        },
-        error: function () {
-          alert('이미지 업로드에 실패했습니다.');
-        }
-      });
+        imageUrls.push({ url: imageUrl, name: fileName });
+        $('#content').summernote('insertImage', imageUrl);
+      };
+      reader.readAsDataURL(file);
     }
+
+    // 이미지 업로드 함수
+    // function uploadImage(file) {
+    //   var data = new FormData();
+    //   data.append("file", file);
+
+    //   $.ajax({
+    //     url: '/board/uploadImage',
+    //     type: 'POST',
+    //     data: data,
+    //     contentType: false,
+    //     processData: false,
+    //     headers: {
+    //       [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
+    //     },
+    //     success: function (imageUrl) {
+    //       $('#content').summernote('insertImage', imageUrl);
+    //     },
+    //     error: function () {
+    //       alert('이미지 업로드에 실패했습니다.');
+    //     }
+    //   });
+    // }
 
     // 수집품 목록을 불러와 옵션에 추가
     function loadCollections() {
@@ -167,9 +184,41 @@
       var formData = new FormData($('#updateForm')[0]);
       var no = $('#boardNo').val();  // 숨겨진 input에서 no 값을 가져옴
 
-      if (!formData.get("price")) {
-        formData.set("price", 0);
+      if (formData.get("title") === "") { alert("제목을 입력하세요"); return; }
+      if (formData.get("content") === "") { alert("내용을 입력하세요"); return; }
+      if (formData.get("price") === "" && $('#boardType').val() === 'trade') { formData.set("price", 0); }
+      if (formData.get("boardType") === "trade") {
+        if (formData.get("tradeType") === 'default') { alert("거래 종류를 선택하세요"); return; }
+        if (formData.get("tradeType") === 'sell' && (!formData.get('collection.no') || formData.get('collection.no') === '0')) {
+          alert("수집품을 선택해주세요"); return;
+        }
       }
+
+      formData.delete("files");
+      const oldImages = [];
+      const base64Images = [];
+      $('.card-block p img').each(function () {
+        const imageUrl = $(this).attr('src');
+        if (imageUrl && imageUrl.startsWith('data:image')) {
+          base64Images.push(imageUrl);
+        } else if (imageUrl && imageUrl.startsWith('https://')) {
+          oldImages.push(imageUrl);
+        }
+      });
+
+      // base64 이미지를 파일 객체로 변환 후 formData에 추가
+      base64Images.forEach((base64Image) => {
+        const imageData = imageUrls.find(image => image.url === base64Image);
+        const fileName = imageData.name;
+
+        const file = base64ToFile(base64Image, fileName);
+        formData.append('files', file);
+      });
+
+      oldImages.forEach((ncpImage) => {
+        const fileName = ncpImage.match(/board\/([^/]+)$/)[1];
+        formData.append('oldFiles', fileName);
+      });
 
       $.ajax({
         url: `/board/update/${no}`,  // 가져온 no 값을 URL에 추가
@@ -192,6 +241,27 @@
           alert('서버 오류가 발생했습니다.');
         }
       });
+    }
+
+    function base64ToFile(base64Data, fileName) {
+      const [metadata, base64String] = base64Data.split(',');
+      const mimeType = metadata.match(/:(.*?);/)[1]; // MIME 타입 추출
+      const byteCharacters = atob(base64String); // base64 디코딩
+      const byteArrays = [];
+
+      for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+        const slice = byteCharacters.slice(offset, offset + 1024);
+        const byteNumbers = new Array(slice.length);
+
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        byteArrays.push(new Uint8Array(byteNumbers));
+      }
+
+      const blob = new Blob(byteArrays, { type: mimeType });
+      return new File([blob], fileName, { type: mimeType });
     }
 
     function validatePhoto() {
