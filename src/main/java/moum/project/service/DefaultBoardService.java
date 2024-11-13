@@ -103,6 +103,10 @@ public class DefaultBoardService implements BoardService {
         }
     }
 
+    @Override
+    public Board findBoardById(int boardId) {
+        return null;
+    }
 
 
     @Override

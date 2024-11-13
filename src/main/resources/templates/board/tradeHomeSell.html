@@ -54,7 +54,7 @@
                             <a th:href="@{/board/boardView(no=${board.no})}" th:text="${board.title}">게시글 제목</a>
                         </h3>
                         <p>가격: <span th:text="${board.price}">가격</span>원</p>
-                        <p>거래상태: <span th:text="${board.status ? '거래중' : '거래완료'}">거래상태</span></p>
+                        <p>거래상태: <span th:text="${board.sellOrSoldStatus ? '거래중' : '거래완료'}">거래상태</span></p>
                     </div>
                 </div>
             </div>

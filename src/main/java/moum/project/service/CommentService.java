@@ -52,9 +52,8 @@ public class CommentService {
      * @return PK
      */
     @Transactional
-    public int deleteComment(final int id) {
-        commentDao.deleteById(id);
-        return id;
+    public boolean deleteComment(final int id) {
+        return commentDao.deleteById(id);
     }
 
     /**

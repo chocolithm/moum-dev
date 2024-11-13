@@ -53,4 +53,6 @@ public interface BoardService {
    void updateTrade(Board board);
    void deleteAttachedFiles(int boardNo);
    void insertAttachedFiles(List<AttachedFile> files);
+
+    Board findBoardById(int boardId);
 }

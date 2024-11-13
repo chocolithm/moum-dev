@@ -7,19 +7,8 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.BoardDao;
-import moum.project.service.AchievementService;
-import moum.project.service.BoardService;
-import moum.project.service.CollectionService;
-import moum.project.service.CollectionStatusService;
-import moum.project.service.LikesService;
-import moum.project.service.StorageService;
-import moum.project.service.UserService;
-import moum.project.vo.Achievement;
-import moum.project.vo.AttachedFile;
-import moum.project.vo.Board;
-import moum.project.vo.Collection;
-import moum.project.vo.CollectionStatus;
-import moum.project.vo.User;
+import moum.project.service.*;
+import moum.project.vo.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,6 +35,7 @@ public class BoardController {
   private final AchievementService achievementService;
   private final UserService userService;
   private final CollectionStatusService collectionStatusService;
+  private final CommentService commentService;
 
   private final String boardFolderName = "board/";
   private final BoardDao boardDao;
@@ -211,28 +201,36 @@ public class BoardController {
 
   @GetMapping("/boardView")
   public String view(
-      @RequestParam("no") int no,
-      Model model,
-      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+          @RequestParam("no") int no,
+          Model model,
+          @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
     // 게시글 상세 정보 가져오기
     Board board = boardService.get(no);
     if (board == null) {
       throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + no);
     }
 
+    // 로그인한 사용자 정보 가져오기
     User loginUser = userService.getByEmail(userDetails.getUsername());
-    
+
     // 게시글 작성자 여부 추가
     model.addAttribute("authenticated", board.getUserNo() == loginUser.getNo());
+
+    model.addAttribute("authenticatedUser", loginUser);
+
 
     // 추천수 가져오기
     int likeCount = likesService.countLikesByBoard(no);
     board.setLikeCount(likeCount); // Board 객체에 추천수를 설정 (필드가 있다면)
 
-    // 모델에 게시글 정보 추가
+    // 댓글 목록 가져오기
+    List<CommentResponse> comments = commentService.findAllComment(no);
+
+    // 모델에 게시글과 댓글 정보 추가
     model.addAttribute("board", board);
-    
-    
+    model.addAttribute("comments", comments);
+
     return "board/boardView";
   }
 
@@ -313,7 +311,7 @@ public class BoardController {
       existingBoard.setAttachedFiles(newFiles);
     }
 
-    boolean updateSuccessful = boardService.update(existingBoard);
+    boolean updateSuccessful = boardService.update(updatedBoard);
 
     if (updateSuccessful) {
       return ResponseEntity.ok("success");
@@ -484,7 +482,7 @@ public class BoardController {
         board.setTradeType(tradeType);
 
         // 거래 상태를 '거래중'으로 설정 (false가 거래중)
-        board.setStatus(false);
+        board.setSellOrSoldStatus(false);
       }
 
       // 첨부 파일 업로드 및 설정

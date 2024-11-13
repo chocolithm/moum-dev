@@ -18,7 +18,7 @@
         <result column="is_deleted" property="isDeleted"/>
         <result column="board_type" property="boardType"/>
         <result column="price" property="price"/>
-        <result column="status" property="status"/>
+        <result column="status" property="sellOrSoldStatus"/>
         <result column="trade_type" property="tradeType"/>
 
         <association property="collection" javaType="moum.project.vo.Collection">
@@ -161,7 +161,7 @@
         #{no},
         #{collection.no},
         #{price},
-        #{status},
+        #{sellOrSoldStatus},
         #{tradeType}
         )
     </insert>
@@ -196,9 +196,7 @@
         UPDATE trade_board
         SET
         collection_id = #{collection.no},
-        price = #{price},
-        status = #{collectionStatus.no},
-        status = #{status}
+        price = #{price}
         WHERE
         board_id = #{no}
     </update>

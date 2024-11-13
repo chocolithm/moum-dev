@@ -46,13 +46,7 @@
         <label for="price">가격</label>
         <input type="number" class="form-control" id="price" name="price" th:value="${board.price}">
       </div>
-      <div class="form-group">
-        <label for="tradeType">거래 방식</label>
-        <select id="tradeType" name="tradeType" class="form-control">
-          <option value="sell" th:selected="${board.tradeType == 'sell'}">판매</option>
-          <option value="buy" th:selected="${board.tradeType == 'buy'}">구매</option>
-        </select>
-      </div>
+
       <div class="form-group">
         <label for="collectionNo">수집품 선택</label>
         <select id="collectionNo" name="collection.no" class="form-control">
@@ -187,7 +181,7 @@
       success: function (response) {
         if (response === 'success') {
           alert('게시글이 수정되었습니다.');
-          window.location.href = '/board/boardList';
+          window.location.href = `/board/boardView?no=${no}`;
         } else {
           alert('게시글 수정에 실패했습니다.');
         }

@@ -87,7 +87,7 @@ function addPost() {
         // 수집품 거래 글 전용 필드 추가
         if (document.querySelector("#postForm input[name='boardType']:checked").value === "trade") {
             formData.append("price", document.querySelector("#postForm #price").value);
-            formData.append("status", document.querySelector("#postForm #status").value);
+            formData.append("sellOrSoldStatus", document.querySelector("#postForm #status").value);
             formData.append("transactionType", document.querySelector("#postForm input[name='transactionType']:checked").value);
         }
 
@@ -189,110 +189,87 @@ function countingLength(element) {
     }
 }
 
-// 댓글 저장 함수
-function saveComment(boardNo, userNo) {
-    const content = document.getElementById('commentContent');
-
-    if (content.value.trim() === "") {
-        Swal.fire(
-            '오류!',
-            '댓글 내용을 입력해주세요.',
-            'error'
-        );
+// 댓글 추가
+function addComment() {
+    const content = document.getElementById("commentContent").value;
+    if (content.trim() === "") {
+        alert("댓글 내용을 입력해주세요.");
         return;
     }
 
-    const params = {
-        boardNo: boardNo,
-        content: content.value
-        // writer: '홍길동', // 백엔드에서 처리
-    };
+    const csrfHeaders = getCsrfTokenHeaders();
 
-    const header = $("meta[name='_csrf_header']").attr('content');
-    const token = $("meta[name='_csrf']").attr('content');
-
-    $.ajax({
-        url: `/Comment/board/${boardNo}/comments`,
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        data: JSON.stringify(params),
-        async: false, // 비동기 처리 권장 (default)
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
+    fetch(`/Comment/board/${boardId}/comments`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            [csrfHeaders.header]: csrfHeaders.token
         },
-        success: function (response) {
-            if (response === 'success') {
-                Swal.fire(
-                    '성공!',
-                    '댓글이 추가되었습니다.',
-                    'success'
-                ).then(() => {
-                    location.reload(); // 페이지 새로고침하여 댓글 목록 갱신
-                });
-            } else {
-                Swal.fire(
-                    '실패!',
-                    '댓글 추가에 실패했습니다.',
-                    'error'
-                );
-            }
-        },
-        error: function (request, status, error) {
-            console.log(error);
-            Swal.fire(
-                '오류!',
-                '서버 오류가 발생했습니다.',
-                'error'
-            );
-        }
-    });
+        body: JSON.stringify({ content: content })
+    })
+        .then(response => response.json())
+        .then(comment => {
+            // renderComment(comment);
+            document.getElementById("commentContent").value = "";
+            countingLength(document.getElementById("commentContent"));
+                location.href=`/board/boardView?no=${boardId}`;
+        })
+        .catch(error => {
+            console.error("댓글 등록 오류:", error);
+            alert("댓글 등록에 실패했습니다.");
+        });
 }
 
+// // 댓글 수정
+// function editComment(commentId) {
+//     const content = prompt("수정할 내용을 입력하세요.");
+//     if (content === null || content.trim() === "") return;
+//
+//     const csrfHeaders = getCsrfTokenHeaders();
+//
+//     fetch(`/Comment/comments/${commentId}`, {
+//         method: "PUT",
+//         headers: {
+//             "Content-Type": "application/json",
+//             [csrfHeaders.header]: csrfHeaders.token
+//         },
+//         body: JSON.stringify({ content: content })
+//     })
+//         .then(response => response.json())
+//         .then(updatedComment => {
+//             document.querySelector(`#comment-${commentId} .content`).textContent = updatedComment.content;
+//         })
+//         .catch(error => {
+//             console.error("댓글 수정 오류:", error);
+//             alert("댓글 수정에 실패했습니다.");
+//         });
+// }
 
-// 전체 댓글 조회
-function findAllComment(boardNo) {
-    // const postId = [[ ${board.no} ]];
-    $.ajax({
-        url: `/Comment/board/${boardNo}/comments`,
-        type: 'get',
-        dataType: 'json',
-        async: false,
-        success: function (response) {
-            console.log(response);
-            // 1. 조회된 데이터가 없는 경우
-            if (!response.length) {
-                document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
-                return false;
-            }
-            // 2. 렌더링 할 HTML을 저장할 변수
-            let commentHtml = '';
-            // 3. 댓글 HTML 추가
-            response.forEach(row => {
-                commentHtml += `
-                        <div>
-                            
-                            <div class="cont"><div class="txt_con">${row.content}</div></div>
-                            <p class="func_btns">
-                                <button type="button" class="btns"><span class="icons icon_modify">수정</span></button>
-                                <button type="button" class="btns"><span class="icons icon_del">삭제</span></button>
-                            </p>
-                        </div>
-                    `;
-            })
-            // <span class="writer_img"><img src="/images/default_profile.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
-            // <p class="writer">
-            //     <em>${row.writer}</em>
-            //     <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
-            // </p>
-            // 4. class가 "cm_list"인 요소를 찾아 HTML을 렌더링
-            document.querySelector('.cm_list').innerHTML = commentHtml;
-        },
-        error: function (request, status, error) {
-            console.log(error)
+// 댓글 삭제
+function deleteComment(commentId) {
+    if (!confirm("댓글을 삭제하시겠습니까?")) return;
+
+    const csrfHeaders = getCsrfTokenHeaders();
+
+    fetch(`/Comment/comments/${commentId}`, {
+        method: "DELETE",
+        headers: {
+            [csrfHeaders.header]: csrfHeaders.token
         }
     })
+        .then(response => response.text())
+        .then((response) => {
+            if (response === "success") {
+                document.getElementById(`comment-${commentId}`).remove();
+            }
+        })
+        .catch(error => {
+            console.error("댓글 삭제 오류:", error);
+            alert("댓글 삭제에 실패했습니다.");
+        });
 }
+
+
 
 function getCsrfTokenHeaders() {
     // CSRF 토큰을 메타 태그에서 가져옵니다.

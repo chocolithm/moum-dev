@@ -32,7 +32,7 @@ public interface CommentDao {
      * 댓글 삭제
      * @param id - PK
      */
-    void deleteById(int id);
+    boolean deleteById(int id);
 
     /**
      * 댓글 리스트 조회

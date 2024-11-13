@@ -38,7 +38,7 @@
         <!-- 게시글 종류에 따라 조건부로 필드를 표시 -->
         <div th:if="${board.boardType == 'trade'}">
             <p>가격: <span th:text="${board.price}">0</span>원</p>
-            <p>거래 상태: <span th:text="${board.collectionStatus?.status}">미설정</span></p>
+            <p>거래 상태: <span th:text="${board.sellOrSoldStatus}">미설정</span></p>
             <p>거래 방식: <span th:text="${board.tradeType}">거래 방식 없음</span></p>
         </div>
 
@@ -52,23 +52,44 @@
                 <button type="submit" class="delete-button">삭제하기</button>
             </form>
         </div>
+        <!-- 댓글 목록 -->
+        <div class="comments-section">
+            <h3>댓글</h3>
+            <ul id="commentList">
+                <li th:each="comment : ${comments}" th:id="'comment-' + ${comment.no}">
+                    <p><strong th:text="${comment.userNo}">작성자</strong>: <span th:text="${comment.content}">내용</span></p>
+                    <p>작성일: <span th:text="${#dates.format(comment.date, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                    <!-- 댓글 수정 및 삭제 버튼 -->
+<!--                    <button class="btn btn-primary" th:if="${comment.userNo == authenticatedUser.no}"-->
+<!--                            th:onclick="'editComment(' + ${comment.no} + ');'">수정</button>-->
+                    <button class="btn btn-danger" th:if="${comment.userNo == authenticatedUser.no}"
+                            th:onclick="'deleteComment(' + ${comment.no} + ');'">삭제</button>
+                </li>
+            </ul>
+        </div>
 
-    <!-- 댓글 작성 영역 -->
-    <div class="comment-section">
-        <fieldset>
-            <legend class="skipinfo">댓글 입력</legend>
-            <div class="comment-input">
-                <textarea id="commentContent" name="content" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea>
-                <span>
-                <button type="button" class="btn btn-primary" th:onclick="'saveComment(' + ${board.no} + ')'">등록</button>
-                <i id="counter">0/300자</i>
-            </span>
-            </div>
-        </fieldset>
-    </div>
-    </div>
+        <!-- 댓글 입력 폼 -->
+        <div class="comment-form">
+            <textarea id="commentContent" rows="3" maxlength="300" oninput="countingLength(this)"></textarea>
+            <p id="counter">0/300자</p>
+            <button type="button" class="btn btn-primary" onclick="addComment()">댓글 작성</button>
+        </div>
 
+
+    </div>
 </main>
+
+<script th:inline="javascript">
+    let boardId = /*[[${board.no}]]*/[];
+    let comments = /*[[${comments}]]*/[];
+
+    comments.forEach(renderComment);
+
+
+</script>
+
+
+
 
 <script src="/js/board.js"></script>
 <footer th:replace="~{footer :: footer}"></footer>

@@ -26,7 +26,7 @@ public class Board implements Serializable {
     private Collection collection; // 거래대상 수집품
     private Integer price; // 가격
     private CollectionStatus collectionStatus;
-    private boolean status; // 거래중/거래완료 표시
+    private boolean sellOrSoldStatus; // 거래중/거래완료 표시
     private int likeCount; // 추천수 추가
     private String tradeType; // sell or buy 거래게시글 종류
 

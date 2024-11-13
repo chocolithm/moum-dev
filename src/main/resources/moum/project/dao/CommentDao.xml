@@ -77,7 +77,7 @@
     </update>
 
     <!-- 댓글 삭제 (delete) -->
-    <delete id="delete" parameterType="int">
+    <delete id="deleteById" parameterType="int">
         DELETE FROM comment
         WHERE comment_id = #{no}
     </delete>
