@@ -209,6 +209,35 @@ main .main-image-text .btn {
     font-size: 16px;
 }
 
+/* 임시 */
+
+    .main-middle-box h2 {
+        font-weight: bold; /* 텍스트를 볼드체로 설정 */
+    }
+
+    main .main-middle {
+        margin-top: 80px;
+    }
+
+    .main-middle-image {
+
+        width: 300px; /* 원하는 너비 */
+        height: auto; /* 높이를 자동으로 조정 (비율 유지) */
+    }
+
+    .main-middle {
+        display: flex; /* Flexbox 레이아웃을 사용 */
+        gap: 20px; /* 박스 사이에 20px 간격 추가 */
+        justify-content: center; /* 가운데 정렬 */
+    }
+
+    .main-middle-box {
+        flex: 1; /* 각 박스를 동일한 너비로 설정 */
+        text-align: center; /* 텍스트와 이미지를 가운데 정렬 */
+    }
+
+
+/* 잠시 막아두겠습니다
 main .main-middle {
     margin-top: 160px;
 }
@@ -237,6 +266,8 @@ main .main-middle .main-middle-box .main-middle-image {
     position: relative;
     top: -50px;
 }
+*/
+
 
 main .main-bottom {
     margin-top: 80px;
