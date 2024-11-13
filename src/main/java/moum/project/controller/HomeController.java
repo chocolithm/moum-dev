@@ -3,6 +3,7 @@ package moum.project.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.config.CustomUserDetails;
 import moum.project.service.AuthenticationSupport;
 import moum.project.service.CollectionCategoryService;
 import moum.project.service.CollectionService;
@@ -49,13 +50,12 @@ public class HomeController {
    * @throws Exception 로그인 인증 오류시 발생
    */
   @GetMapping("/home")
-  public String home(Authentication authentication, Model model) throws Exception {
-    User loginUser = authSupport.getAuthenticatedUser(authentication);
-
-    if (loginUser == null) {
+  public String home(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) throws Exception {
+    if (userDetails == null) {
       return "home";
     }
 
+    User loginUser = userService.getByEmail(userDetails.getUsername());
     List<Collection> collectionList = collectionService.list(loginUser.getNo());
     List<Maincategory> maincategoryList = categoryService.listMaincategory();
 
@@ -63,7 +63,7 @@ public class HomeController {
     model.addAttribute("maincategoryList", maincategoryList);
 
     // OAuth2 로그인인 경우 myhome으로 리다이렉트
-    if (authSupport.isOAuth2Authentication(authentication)) {
+    if (userDetails.getAttributes() != null) {
       return "redirect:/myhome";
     }
 
@@ -79,13 +79,12 @@ public class HomeController {
    * @throws Exception 로그인 인증 오류시 발생
    */
   @GetMapping("/myhome")
-  public String myHome(Authentication authentication, Model model) throws Exception {
-    User loginUser = authSupport.getAuthenticatedUser(authentication);
-
-    if (loginUser == null) {
+  public String myHome(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) throws Exception {
+    if (userDetails == null) {
       return "redirect:/home?login=true";
     }
 
+    User loginUser = userService.getByEmail(userDetails.getUsername());
     List<Collection> collectionList = collectionService.list(loginUser.getNo());
     List<Maincategory> maincategoryList = categoryService.listMaincategory();
 

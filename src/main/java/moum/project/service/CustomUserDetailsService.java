@@ -1,6 +1,7 @@
 package moum.project.service;
 
 import lombok.RequiredArgsConstructor;
+import moum.project.config.CustomUserDetails;
 import moum.project.dao.UserDao;
 import moum.project.vo.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,38 +33,26 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
 
   private final UserDao userDao;
-  private String nickname;
 
-  /**
-   * 주어진 이메일로 사용자를 조회하여 이메일, 비밀번호, 권한 종류 UserDetails 객체를 생성합니다.
-   *
-   * @param email 조회할 사용자의 이메일
-   * @return 조회된 사용자 정보를 담은 UserDetails 객체
-   * @throws UsernameNotFoundException 해당 이메일로 등록된 사용자를 찾을 수 없는 경우
-   */
   @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-    // MyBatis를 이용해 이메일로 사용자 조회
+  public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     User user = userDao.findByEmail(email);
     if (user == null) {
-      throw new UsernameNotFoundException("이메일로 사용자를 찾을 수 없습니다. : " + email);
+      throw new UsernameNotFoundException("이메일로 사용자를 찾을 수 없습니다: " + email);
     }
 
-    List<GrantedAuthority> authorities = new ArrayList<>();
+    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
     if (user.isAdmin()) {
       authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
     } else {
       authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    nickname = user.getNickname();
-
-    // UserDetails 객체 생성
-    return new org.springframework.security.core.userdetails.User(
-        user.getEmail(), // 유저 이메일
-        user.getPassword(), // 유저 비밀번호
-        authorities // 권한 종류
+    return new CustomUserDetails(
+        user.getEmail(),
+        user.getPassword(),
+        user.getNickname(),
+        authorities
     );
   }
 }

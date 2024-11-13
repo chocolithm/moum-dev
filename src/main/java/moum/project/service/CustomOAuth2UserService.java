@@ -2,6 +2,7 @@ package moum.project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import moum.project.config.CustomUserDetails;
 import moum.project.dao.UserDao;
 import moum.project.dao.UserSnsDao;
 import moum.project.vo.User;
@@ -18,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * packageName    : moum.project.service
@@ -40,18 +38,9 @@ import java.util.UUID;
 @Log4j2
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-
   private final UserDao userDao;
   private final UserSnsDao userSnsDao;
 
-  /**
-   * OAuth2 인증 요청을 처리하고 사용자 정보를 로드합니다.
-   * 새로운 사용자인 경우 회원가입을 진행하고, 기존 사용자인 경우 정보를 업데이트합니다.
-   *
-   * @param userRequest OAuth2 사용자 인증 요청 객체
-   * @return OAuth2User 인증된 사용자 정보를 담고 있는 OAuth2User 객체
-   * @throws OAuth2AuthenticationException 인증에 문제가 생겼거나 유저가 없을 경우 발생
-   */
   @Override
   @Transactional
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -63,8 +52,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
     Map<String, Object> attributes = oAuth2User.getAttributes();
-    Map<String, Object> modifiedAttributes = new HashMap<>(attributes);
-
     String email = (String) attributes.get("email");
     String name = (String) attributes.get("name");
     String providerId = (String) attributes.get(userNameAttributeName);
@@ -93,20 +80,21 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         userSnsDao.insertUser_SNS(newUserSns);
       } else {
         user = userDao.findBy(userSns.getUserId());
-        if (user == null) {
-          throw new OAuth2AuthenticationException(
-              new OAuth2Error("user_not_found", "User not found for SNS account", null));
-        }
       }
 
-      // Add user information to attributes
-      modifiedAttributes.put("user_no", user.getNo());
-      modifiedAttributes.put("user_email", user.getEmail());
-      modifiedAttributes.put("user_nickname", user.getNickname());
+      List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+      if (user.isAdmin()) {
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+      } else {
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+      }
 
-      return new DefaultOAuth2User(
-          Collections.singleton(new SimpleGrantedAuthority(user.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER")),
-          modifiedAttributes,
+      return new CustomUserDetails(
+          user.getEmail(),
+          user.getPassword(),
+          user.getNickname(),
+          authorities,
+          attributes,
           userNameAttributeName
       );
 

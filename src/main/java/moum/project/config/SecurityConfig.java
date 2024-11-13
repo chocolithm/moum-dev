@@ -1,23 +1,18 @@
 package moum.project.config;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import moum.project.dao.UserDao;
 import moum.project.service.CustomOAuth2UserService;
+import moum.project.service.CustomUserDetailsService;
 import moum.project.vo.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -48,6 +43,7 @@ public class SecurityConfig {
 
   private final UserDao userDao;
   private final CustomOAuth2UserService customOAuth2UserService;
+  private final CustomUserDetailsService customUserDetailsService;
 
   /**
    * 사용자가 성공적으로 인증되면, 사용자의 이메일을 기반으로 DB에서 정보를 조회하여
@@ -57,39 +53,20 @@ public class SecurityConfig {
    */
   @Bean
   public AuthenticationSuccessHandler authenticationSuccessHandler() {
-    return new AuthenticationSuccessHandler() {
+    return (request, response, authentication) -> {
+      CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-      /**
-       * 사용자가 성공적으로 인증된 후 호출되는 메소드입니다.
-       * 인증된 사용자의 이메일을 통해 DB에서 사용자 정보를 가져오고,
-       * 로그인 성공 시 현재 시간으로 'last_login'을 업데이트합니다.
-       *
-       * @param request        HttpServletRequest 객체로 사용자의 요청 정보를 포함합니다.
-       * @param response       HttpServletResponse 객체로 응답을 처리합니다.
-       * @param authentication 인증된 사용자 정보가 포함된 Authentication 객체입니다.
-       * @throws IOException      입출력 예외가 발생할 경우 던집니다.
-       * @throws ServletException 서블릿 관련 예외가 발생할 경우 던집니다.
-       */
-      @Override
-      public void onAuthenticationSuccess(HttpServletRequest request,
-          HttpServletResponse response,
-          Authentication authentication) throws IOException, ServletException {
-
-        String username = authentication.getName();
-        LocalDateTime now = LocalDateTime.now();
-
-        try {
-          User user = userDao.findByEmail(username);
-          if (user != null) {
-            userDao.updateLastLogin(user.getNo(), now);
-            request.getSession().setAttribute("nickname", user.getNickname());
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
+      try {
+        User user = userDao.findByEmail(userDetails.getUsername());
+        if (user != null) {
+          userDao.updateLastLogin(user.getNo(), LocalDateTime.now());
+          request.getSession().setAttribute("nickname", userDetails.getNickname());
         }
-
-        response.sendRedirect("/home");
+      } catch (Exception e) {
+        log.error("Login success handler error", e);
       }
+
+      response.sendRedirect("/home");
     };
   }
 
@@ -116,53 +93,44 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**", "/error", "/user/**", "/auth/**", "/emailCheck").permitAll() // 모든 사용자 접근 가능
-            .requestMatchers("/login").permitAll() // 로그인 페이지 접근 허용
-            .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 권한만 접근 가능
+            .requestMatchers("/", "/home", "/css/**", "/js/**", "/images/**", "/error",
+                "/user/signup", "/user/check-duplicate", "/auth/**", "/emailCheck").permitAll()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
-        .formLogin((form) -> form
+        .formLogin(form -> form
             .loginPage("/home?login=true")
             .loginProcessingUrl("/auth/login")
             .usernameParameter("email")
             .passwordParameter("password")
-            .defaultSuccessUrl("/home", true)
-            .failureHandler(authenticationFailureHandler())
             .successHandler(authenticationSuccessHandler())
+            .failureHandler(authenticationFailureHandler())
             .permitAll()
         )
         .oauth2Login(oauth2 -> oauth2
             .loginPage("/home?login=true")
-            .defaultSuccessUrl("/home", true)
-            .failureUrl("/home?error=true")
             .userInfoEndpoint(userInfo -> userInfo
                 .userService(customOAuth2UserService)
             )
             .successHandler((request, response, authentication) -> {
-              // OAuth2 로그인 성공 후 처리
-              OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-              String email = (String) oauth2User.getAttribute("email");
+              CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
               try {
-                // 사용자 정보 조회
-                User user = userDao.findByEmail(email);
+                User user = userDao.findByEmail(userDetails.getUsername());
                 if (user != null) {
-                  // 세션에 필요한 정보 저장
-                  request.getSession().setAttribute("user", user);
-                  request.getSession().setAttribute("nickname", user.getNickname());
-
-                  // 마지막 로그인 시간 업데이트
                   userDao.updateLastLogin(user.getNo(), LocalDateTime.now());
+                  request.getSession().setAttribute("nickname", userDetails.getNickname());
                 }
+
+                // OAuth2 로그인은 myhome으로 리다이렉트
+                response.sendRedirect("/home");
               } catch (Exception e) {
                 log.error("OAuth2 login success handler error", e);
+                response.sendRedirect("/home?error=true");
               }
-
-              response.sendRedirect("/home");
             })
-        )
-        .csrf(csrf -> csrf
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            .failureUrl("/home?error=true")
+            .permitAll()
         )
         .logout(logout -> logout
             .logoutUrl("/logout")
@@ -170,6 +138,9 @@ public class SecurityConfig {
             .invalidateHttpSession(true)
             .deleteCookies("JSESSIONID")
             .permitAll()
+        )
+        .csrf(csrf -> csrf
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         )
         .headers(headers -> headers
             .httpStrictTransportSecurity(hsts -> hsts
