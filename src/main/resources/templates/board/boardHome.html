@@ -164,21 +164,20 @@
                 </div>
             </div>
 
-            <!-- 현재 내 순위 -->
+            <!-- 현재 내 순위 섹션 -->
             <div class="current-user-section">
                 <div class="card">
                     <div class="card-header">
                         현재 내 순위
                     </div>
-                    <div class="card-body">
+                    <div th:class="'card-body ' + ${rankNowUserList != null ? (rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : ''))) : ''}">
                         <ul class="list-group">
-                            <li th:if="${rankNowUserList != null}" th:class="${rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : 'current-not-top'))}"
-                                class="list-group-item">
-                        <span>
-                            <span th:text="${rankNowUserList.rank}"></span>등
-                            <span th:text="${rankNowUserList.user.nickname}"></span>
-                        </span>
-                                <span class="badge badge-info badge-pill" th:text="${rankNowUserList.score} + '점'"></span>
+                            <li th:if="${rankNowUserList != null}" class="list-group-item">
+                    <span>
+                        <span th:text="${rankNowUserList.rank}"></span>등
+                        <span th:text="${rankNowUserList.user.nickname}"></span>
+                    </span>
+                                <span class="badge badge-pill" th:text="${rankNowUserList.score} + '점'"></span>
                             </li>
                         </ul>
                         <div class="alert alert-info mb-0" th:if="${rankNowUserList == null}">

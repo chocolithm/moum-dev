@@ -454,115 +454,162 @@ body {
     height: auto;
 }
 
-
-/* 게시판 업적 랭킹 설정 */
-/* 전체 업적 랭킹 컨테이너 */
+/* 전체 업적 랭킹 박스 테두리 설정 */
 .achievement-box {
-    margin-top: 50px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
     padding: 20px;
     background-color: #f8f9fa;
-    border-radius: 10px;
+}
+
+/* 랭킹을 나누는 박스 (Top 1-5, Top 6-10) */
+.ranking-box {
     border: 1px solid #ddd;
-}
-
-/* 랭킹 제목 스타일 */
-.achievement-title h2 {
-    margin-bottom: 30px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* 랭킹 박스 공통 스타일 */
-.ranking-box, .current-user-section .card {
-    background-color: #fff;
     border-radius: 8px;
-    border: 2px solid #ddd;
     margin-bottom: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
-/* 카드 헤더 스타일 */
-.card-header {
-    font-weight: bold;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #ddd;
-    padding: 12px 15px;
-    text-align: center;
-}
-
-/* 모든 리스트의 마커 제거 */
+/* 랭킹 박스 앞의 점을 제거 설정*/
 .list-group {
     list-style: none;
     padding-left: 0;
 }
 
-/* 리스트 아이템 기본 스타일 */
+/* 랭킹 항목에 대한 박스 테두리 설정 */
 .list-group-item {
-    list-style: none;
-    padding-left: 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+/* 1등 호버 효과 */
+.gold:hover {
+    background-color: #FFE566;
+    transition: background-color 0.3s ease;
 }
 
-/* 순위 표시 스타일 */
-.list-group-item span:first-child {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+/* 2등 호버 효과 */
+.silver:hover {
+    background-color: #D8D8D8;
+    transition: background-color 0.3s ease;
 }
 
-/* 메달 색상 */
+/* 3등 호버 효과 */
+.bronze:hover {
+    background-color: #DFA878;
+    transition: background-color 0.3s ease;
+}
+
+/* 일반 순위 호버 효과 */
+.normal:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.3s ease;
+}
+
+/* 각 랭킹 색상 (1등, 2등, 3등) */
 .gold {
-    background-color: #fff7cc;
+    background-color: #FFD700;
+    color: #000;
 }
 
 .silver {
-    background-color: #f8f9fa;
+    background-color: #C0C0C0;
+    color: #000;
 }
 
 .bronze {
-    background-color: #fff1e6;
+    background-color: #CD7F32;
+    color: #000;
 }
 
+/* 기본적인 색상 (기타 등수) */
 .normal {
-    background-color: #ffffff;
-}
-
-/* 현재 사용자 순위 스타일 */
-.current-gold {
-    background-color: #fff7cc;
-}
-
-.current-silver {
     background-color: #f8f9fa;
+    color: #000;
 }
 
-.current-bronze {
-    background-color: #fff1e6;
+/* 1등, 2등, 3등의 랭킹 항목 색상 */
+.list-group-item.gold {
+    font-weight: bold;
+    color: #fff;
 }
 
-.current-not-top {
-    background-color: #ffffff;
+.list-group-item.silver {
+    font-weight: bold;
+    color: #fff;
 }
 
-/* 점수 배지 스타일 */
-.badge {
-    background-color: transparent !important;
-    color: #333 !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    padding: 0 !important;
-    margin-left: auto;
+.list-group-item.bronze {
+    font-weight: bold;
+    color: #fff;
 }
 
-/* 알림 메시지 스타일 */
-.alert-info {
+/* 현재 내 순위 카드 색상 */
+.current-user-section .card-body.current-gold {
+    background-color: #FFD700 !important;
+    transition: background-color 0.3s ease;
+}
+
+.current-user-section .card-body.current-silver {
+    background-color: #C0C0C0 !important;
+    transition: background-color 0.3s ease;
+}
+
+.current-user-section .card-body.current-bronze {
+    background-color: #CD7F32 !important;
+    transition: background-color 0.3s ease;
+}
+
+/* 현재 내 순위 카드 내부 리스트 아이템 스타일 */
+.current-user-section .card-body .list-group-item {
+    background-color: transparent;
+    border: none;
+}
+
+/* 현재 내 순위 알림 메시지 스타일 */
+.current-user-section .card-body .alert-info {
+    background-color: transparent;
+    border: none;
+}
+
+/* 텍스트 색상 통일 */
+h2, p, span {
+    color: #000; /* 모든 텍스트 색상을 검정색으로 통일 */
+}
+
+/* 카드 제목 스타일 */
+.card-header {
     background-color: #f8f9fa;
-    border-color: #ddd;
-    color: #666;
+    font-weight: bold;
+    color: #000;
 }
 
-/* 반응형 간격 조정 */
-@media (max-width: 768px) {
-    .col-md-6 {
-        margin-bottom: 20px;
-    }
+.badge-pill {
+    color: #000 !important;
 }
+
+/* 카드 내 랭킹 항목과 점수 */
+.card-body .badge-pill {
+    font-weight: bold;
+}
+
+/* 리스트 그룹 항목 스타일 (등수에 따른 스타일을 추가) */
+.list-group-item {
+    padding: 15px;
+    font-size: 16px;
+}
+
+/* 일반 랭킹의 점수 색상 */
+.list-group-item .badge-pill {
+    color: #000 !important; /* !important로 기존 스타일 덮어쓰기 */
+    font-weight: normal;
+    float: right;
+    background-color: transparent;
+}
+
+/* 현재 내 순위의 점수 색상 */
+.current-user-section .badge-info.badge-pill {
+    color: #000 !important;
+    background-color: transparent;
+    font-weight: normal;
+}
+
