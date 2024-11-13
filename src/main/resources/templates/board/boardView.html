@@ -48,6 +48,7 @@
         <div class="action-buttons" th:inline="javascript" data-th-if="${authenticated}">
             <button class="trade-complete"
                     th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ')'"
+                    th:if="${board.boardType == 'trade'}"
                     th:attr="disabled=${board.sellOrSoldStatus}">거래완료</button>
             <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
                     th:if="${board.sellOrSoldStatus == false}">수정하기</button>
