@@ -760,7 +760,7 @@ td {
 .wrapper {
     display: flex;
     flex-direction: row;
-}
+} 
 /* 일단 보류 */
 .profile-container {
     height: 40%;
