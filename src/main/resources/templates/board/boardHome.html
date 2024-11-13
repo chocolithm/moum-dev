@@ -91,6 +91,32 @@
             </div>
         </div>
 
+        <!-- 최근 게시글 섹션 -->
+        <div class="boardHomeRecent-middle-box">
+            <h2>
+                <button onclick="location.href='/board/boardList'" style="background: none; border: none; font-size: 24px; cursor: pointer; font-weight: bold;">
+                    게시글
+                </button>
+            </h2>
+            <div class="boardHomeRecent-middle-image" th:each="board : ${recentBoards}">
+                <a th:href="@{/board/boardView(no=${board.no})}">
+                    <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
+                    <img alt="게시글 이미지"
+                         th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
+                    <!-- 첨부 파일이 없을 경우 기본 이미지를 표시 -->
+                    <img alt="기본 이미지"
+                         th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                         th:src="@{/images/default-image.png}">
+                </a>
+                <div>
+                    <a th:href="@{/board/boardView(no=${board.no})}">
+                        <p style="font-size: 25px; font-weight: bold;" th:text="${board.title}">게시글 제목</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <div class="container my-5 achievement-box">
             <div class="achievement-title">
                 <h2 class="text-center mb-0">업적 랭킹</h2>
