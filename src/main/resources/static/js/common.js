@@ -78,29 +78,48 @@ function calcTime(dateValue) {
 }
 
 // 업적 카운트 추가
-function updateAchievement(achievement_id) {
+/*
+특정 action에서 추가로 실행시키고 싶은 부분이 있다면 아래와 같이 함수 정의
+updateAchievement(123, {
+    onSuccess: () => console.log("Custom success logic"), // success에 사용자 정의 함수 적용
+    onFailure: () => console.log("Custom failure logic")  // failure에 사용자 정의 함수 적용
+});
+*/
+
+function updateAchievement(
+    achievement_id,
+    { onIgnored, onSuccess, onAcquired, onFailure } = {}
+) {
     fetch(`/achievement/updateCount?id=${achievement_id}`)
         .then(response => response.text())
         .then(response => {
             // 이미 취득한 업적
             if (response == "ignored") {
-                console.log("ignored");
+                if (onIgnored) { onIgnored(); }
                 return;
             }
 
             // 업적 카운트 추가 성공
             if (response == "success") {
-                console.log("success");
+                if (onSuccess) { onSuccess(); }
+                return;
             }
 
             // 업적 취득
             if (response == "acquired") {
-                console.log("acquired");
+                fetch(`/alert/add?category=achievement&categoryNo=${achievement_id}`)
+                    .catch(error => {
+                        console.error("error adding alert: ", error);
+                    })
+
+                if (onAcquired) { onAcquired(); }
+                return;
             }
 
             // 업적 카운트 추가 실패
             if (response == "failure") {
-                console.log("failure");
+                if (onFailure) { onFailure(); }
+                return;
             }
         })
         .catch(error => {

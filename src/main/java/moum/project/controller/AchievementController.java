@@ -90,10 +90,10 @@ public class AchievementController {
 
     achievement.setCurrentCount(achievement.getCurrentCount() + 1);
     System.out.println(achievement);
-    achievement.setProgress(achievement.getCurrentCount() / achievement.getMaxCount());
+    achievement.setProgress(achievement.getCurrentCount() * 100 / achievement.getMaxCount());
 
     if (achievementService.updateCount(achievement)) {
-      if (achievement.getProgress() == 100) {
+      if (achievement.getProgress() >= 100) {
         achievementService.completeAchievement(achievement);
         return "acquired";
       }

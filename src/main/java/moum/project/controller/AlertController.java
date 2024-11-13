@@ -1,9 +1,12 @@
 package moum.project.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.AchievementService;
 import moum.project.service.AlertService;
 import moum.project.service.UserService;
+import moum.project.vo.Achievement;
 import moum.project.vo.Alert;
 import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +23,34 @@ public class AlertController {
 
   private final AlertService alertService;
   private final UserService userService;
+  private final AchievementService achievementService;
+
+  @GetMapping("/add")
+  @ResponseBody
+  public String add(
+      String category,
+      String categoryNo,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+
+    Alert alert = new Alert();
+    alert.setCategory(category);
+    alert.setCategoryNo(categoryNo);
+    alert.setUser(loginUser);
+    alert.setDate(LocalDateTime.now());
+    alert.setRead(false);
+
+    if (category.equals("achievement")) {
+      Achievement achievement = achievementService.get(categoryNo);
+      alert.setContent(String.format("[%s] 업적 달성!", achievement.getName()));
+    }
+
+    if (alertService.add(alert)) {
+      return "success";
+    }
+    return "failure";
+  }
 
   @GetMapping("/listByUser")
   @ResponseBody

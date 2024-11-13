@@ -48,7 +48,7 @@ public class SocketController {
 
         Alert alert = new Alert();
         alert.setCategory("chatroom");
-        alert.setCategoryNo(chatroom.getNo());
+        alert.setCategoryNo(String.valueOf(chatroom.getNo()));
 
         if (chatroom.getParticipant().getNo() == chat.getSender().getNo()) {
           alert.setUser(chatroom.getOwner());

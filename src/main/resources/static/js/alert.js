@@ -177,6 +177,8 @@ function executeAlert(alert) {
       })
   } else if (alert.category == "board") {
     location.href = `/board/boardView?no=${alert.categoryNo}`;
+  } else if (alert.category == "achievement") {
+    location.href = `/user/myInfo`;
   }
 }
 

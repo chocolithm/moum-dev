@@ -104,7 +104,7 @@ public class ChatController {
 
     Alert alert = new Alert();
     alert.setCategory("chatroom");
-    alert.setCategoryNo(no);
+    alert.setCategoryNo(String.valueOf(no));
     alert.setUser(loginUser);
     alertService.updateReadByCategoryAndUser(alert);
 

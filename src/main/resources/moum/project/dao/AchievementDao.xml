@@ -146,7 +146,7 @@
             achievement_id=#{id}
     </select>
 
-    <select id="findMyAchievement">
+    <select id="findMyAchievement" resultMap="AchievementMap" parameterType="map">
         select
             ua.achievement_id,
             ua.current_count,
