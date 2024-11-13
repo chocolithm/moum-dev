@@ -456,187 +456,113 @@ body {
 
 
 /* 게시판 업적 랭킹 설정 */
-.boardHomeAchievement-middle-box {
-    width: 40%; /* 박스 간격 줄이기 */
-    margin-left: auto;
-    margin-right: 0;
+/* 전체 업적 랭킹 컨테이너 */
+.achievement-box {
+    margin-top: 50px;
     padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid black;
-    border-radius: 15px;
-}
-
-h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.board-achievement-content {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 35px; /* 1~10등 영역과 로그인 유저 정보 사이의 공간 추가 */
-}
-
-
-/* 업적 랭킹 열 설정 */
-.board-achievement-column {
-    width: 45%; /* 왼쪽과 오른쪽 열 각각 45% */
-    background-color: #fff;
-    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+}
+
+/* 랭킹 제목 스타일 */
+.achievement-title h2 {
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 랭킹 박스 공통 스타일 */
+.ranking-box, .current-user-section .card {
+    background-color: #fff;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    margin-bottom: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 왼쪽 열에 대한 스타일 */
-.board-achievement-column.left {
-    margin-right: 5%; /* 오른쪽 열과 간격 조정 */
+/* 카드 헤더 스타일 */
+.card-header {
+    font-weight: bold;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
 }
 
-/* 오른쪽 열에 대한 스타일 */
-.board-achievement-column.right {
-    margin-left: 5%;
-}
-
-.board-achievement-list {
+/* 모든 리스트의 마커 제거 */
+.list-group {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding-left: 0;
 }
 
-/* 랭킹 항목 스타일 */
-.board-achievement-list li {
-    font-size: 18px;
-    line-height: 30px;
-    padding: 5px 0;
-    border-bottom: 1px solid #ddd;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* 부드러운 배경색 변화와 확대 효과 */
+/* 리스트 아이템 기본 스타일 */
+.list-group-item {
+    list-style: none;
+    padding-left: 0;
 }
 
-/* 등수별 색상 */
+/* 순위 표시 스타일 */
+.list-group-item span:first-child {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 메달 색상 */
 .gold {
-    background-color: #ffdf00; /* 골드 배경 */
-    border-radius: 5px;
-    padding: 5px;
+    background-color: #fff7cc;
 }
 
 .silver {
-    background-color: #c0c0c0; /* 실버 배경 */
-    border-radius: 5px;
-    padding: 5px;
+    background-color: #f8f9fa;
 }
 
 .bronze {
-    background-color: #cd7f32; /* 브론즈 배경 */
-    border-radius: 5px;
-    padding: 5px;
+    background-color: #fff1e6;
 }
 
-/* 1등, 2등, 3등 텍스트 스타일 */
-.gold span {
-    color: black;
+.normal {
+    background-color: #ffffff;
 }
 
-.silver span {
-    color: #333;
+/* 현재 사용자 순위 스타일 */
+.current-gold {
+    background-color: #fff7cc;
 }
 
-.bronze span {
-    color: #fff;
+.current-silver {
+    background-color: #f8f9fa;
 }
 
-/* 나머지 랭킹 항목 스타일 */
-.board-achievement-list li span {
-    display: inline-block;
-    padding-left: 10px;
+.current-bronze {
+    background-color: #fff1e6;
 }
 
-/* 우측, 좌측 칼럼 간격 */
-.board-achievement-column.left {
-    padding-right: 10px;
+.current-not-top {
+    background-color: #ffffff;
 }
 
-.board-achievement-column.right {
-    padding-left: 10px;
+/* 점수 배지 스타일 */
+.badge {
+    background-color: transparent !important;
+    color: #333 !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    padding: 0 !important;
+    margin-left: auto;
 }
 
-/* 랭킹 영역의 테두리와 여백 */
-.board-achievement-column ul {
-    padding: 0;
-    margin: 0;
+/* 알림 메시지 스타일 */
+.alert-info {
+    background-color: #f8f9fa;
+    border-color: #ddd;
+    color: #666;
 }
 
-/* '등' 뒤에 점수 및 이름 스타일 */
-.board-achievement-list li span {
-    font-weight: normal;
-    color: #333;
-}
-
-/* 1~5등의 상위 등수 배경색 */
-.board-achievement-list li:first-child {
-    background-color: #fffae5; /* 연한 골드 배경 */
-}
-
-/* 하위 랭킹 (6~10등) 리스트 배경 */
-.board-achievement-list li:nth-child(n+6) {
-    background-color: #f0f0f0; /* 연한 회색 */
-}
-
-/* 호버 기능 추가 */
-.board-achievement-list li:hover {
-    background-color: #e0e0e0; /* 호버시 배경색 변경 */
-    transform: scale(1.05); /* 항목이 약간 커지도록 */
-}
-
-/* 호버 시 1~3등 효과 */
-.board-achievement-list li.gold:hover {
-    background-color: #ffd700; /* 골드 항목 호버시 밝은 골드로 변경 */
-    transform: scale(1.05); /* 확대 */
-}
-
-.board-achievement-list li.silver:hover {
-    background-color: #d3d3d3; /* 실버 항목 호버시 밝은 실버로 변경 */
-    transform: scale(1.05); /* 확대 */
-}
-
-.board-achievement-list li.bronze:hover {
-    background-color: #e0a900; /* 브론즈 항목 호버시 약간 밝은 브론즈로 변경 */
-    transform: scale(1.05); /* 확대 */
-}
-
-
-
-/* 로그인된 유저 정보 영역 */
-.user-info {
-    text-align: center;
-    margin-top: 20px;
-}
-
-/* 구분선 스타일 */
-.separator {
-    display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    margin: 20px 0;
-}
-
-/* 현재 로그인 된 유저 정보 텍스트 효과*/
-.current-user-info {
-    display: block; /* 블록 요소로 변경하여 줄 바꿈 */
-    font-size: 18px; /* 텍스트 크기 */
-    font-weight: bold; /* 굵게 */
-    color: #333; /* 텍스트 색상 */
-    margin-top: 15px; /* 위쪽 여백 */
-    margin-bottom: 10px; /* 아래쪽 여백 */
-}
-
-/* 현재 유저 정보가 없을 때 */
-.board-achievement-list.noData {
-    color: #ff0000;
-}
-
-.board-achievement-content {
-    align-items: stretch; /* 아이템 정렬 */
+/* 반응형 간격 조정 */
+@media (max-width: 768px) {
+    .col-md-6 {
+        margin-bottom: 20px;
+    }
 }

@@ -91,90 +91,65 @@
             </div>
         </div>
 
-        <!-- 최근 게시글 섹션 -->
-        <div class="boardHomeRecent-middle-box">
-            <h2>
-                <button onclick="location.href='/board/boardList'" style="background: none; border: none; font-size: 24px; cursor: pointer; font-weight: bold;">
-                    게시글
-                </button>
-            </h2>
-            <div class="boardHomeRecent-middle-image" th:each="board : ${recentBoards}">
-                <a th:href="@{/board/boardView(no=${board.no})}">
-                    <!-- 첨부 파일이 있을 경우 첫 번째 이미지를 표시 -->
-                    <img alt="게시글 이미지"
-                         th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
-                    <!-- 첨부 파일이 없을 경우 기본 이미지를 표시 -->
-                    <img alt="기본 이미지"
-                         th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-                         th:src="@{/images/default-image.png}">
-                </a>
-                <div>
-                    <a th:href="@{/board/boardView(no=${board.no})}">
-                        <p style="font-size: 25px; font-weight: bold;" th:text="${board.title}">게시글 제목</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="container my-5">
+        <div class="container my-5 achievement-box">
             <div class="achievement-title">
                 <h2 class="text-center mb-0">업적 랭킹</h2>
             </div>
 
             <div class="row">
-                <!-- 1-5등 -->
+                <!-- 1~5등 -->
                 <div class="col-md-6">
-                    <div class="card mb-4">
+                    <div class="ranking-box">
                         <div class="card-header">
                             Top 1-5
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li th:each="ranking, status : ${rankList}"
-                                th:if="${status.index < 5}"
-                                class="list-group-item d-flex justify-content-between align-items-center">
-                        <span th:class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : ''))}">
-                            <span th:text="${ranking.rank}"></span>등.
+                            <li th:each="ranking, status : ${rankList}" th:if="${status.index < 5}"
+                                th:class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))}"
+                                class="list-group-item">
+                        <span>
+                            <span th:text="${ranking.rank}"></span>등
                             <span th:text="${ranking.user.nickname}"></span>
                         </span>
-                                <span class="badge badge-primary badge-pill" th:text="${ranking.score} + '점'"></span>
+                                <span class="badge badge-pill" th:text="${ranking.score} + '점'"></span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- 6-10등 -->
+                <!-- 6~10등 -->
                 <div class="col-md-6">
-                    <div class="card mb-4">
+                    <div class="ranking-box">
                         <div class="card-header">
                             Top 6-10
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li th:each="ranking, status : ${rankList}"
-                                th:if="${status.index >= 5 && status.index < 10}"
-                                class="list-group-item d-flex justify-content-between align-items-center">
-                        <span th:class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : ''))}">
-                            <span th:text="${ranking.rank}"></span>등.
+                            <li th:each="ranking, status : ${rankList}" th:if="${status.index >= 5 && status.index < 10}"
+                                th:class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))}"
+                                class="list-group-item">
+                        <span>
+                            <span th:text="${ranking.rank}"></span>등
                             <span th:text="${ranking.user.nickname}"></span>
                         </span>
-                                <span class="badge badge-secondary badge-pill" th:text="${ranking.score} + '점'"></span>
+                                <span class="badge badge-pill" th:text="${ranking.score} + '점'"></span>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- 현재 로그인된 유저 정보 -->
+            <!-- 현재 내 순위 -->
             <div class="current-user-section">
                 <div class="card">
                     <div class="card-header">
                         현재 내 순위
                     </div>
                     <div class="card-body">
-                        <ul class="list-group" th:if="${rankNowUserList != null}">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span th:class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : ''))}">
-                            <span th:text="${rankNowUserList.rank}"></span>등.
+                        <ul class="list-group">
+                            <li th:if="${rankNowUserList != null}" th:class="${rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : 'current-not-top'))}"
+                                class="list-group-item">
+                        <span>
+                            <span th:text="${rankNowUserList.rank}"></span>등
                             <span th:text="${rankNowUserList.user.nickname}"></span>
                         </span>
                                 <span class="badge badge-info badge-pill" th:text="${rankNowUserList.score} + '점'"></span>
@@ -187,8 +162,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </main>
 
