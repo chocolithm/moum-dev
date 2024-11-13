@@ -760,13 +760,12 @@ td {
 .wrapper {
     display: flex;
     flex-direction: row;
-}
-
+} 
+/* 일단 보류 */
 .profile-container {
-    width: 300px;
-    height: 100%;
+    height: 40%;
+    width: 40%;
     border: 1px solid #ccc;
-    border-radius: 8px;
     padding: 10px;
     background-color: #f9f9f9;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -782,11 +781,11 @@ td {
 }
 
 .profile-img {
-    width: 100px;
+    width: 100%;
     /* 이미지 너비 */
-    height: 100px;
+    height: 100%;
     /* 이미지 높이 */
-    border-radius: 50%;
+
     /* 원형으로 만들기 */
     object-fit: cover;
     /* 비율 유지 */
