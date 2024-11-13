@@ -586,15 +586,12 @@ body {
 
         .score-badge {
             background-color: #e9ecef;
-            color: #007bff;
+            color: #00ffaa;
             padding: 5px 10px;
             border-radius: 20px;
             font-weight: 500;
         }
 
-.alert-info {
---bs-alert-bg: #f0f8ff;
-}
 
 
 
