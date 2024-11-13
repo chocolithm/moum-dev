@@ -1,13 +1,11 @@
 package moum.project.config;
 
+import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import java.util.Properties;
 
 /**
  * packageName    : moum.project.config
@@ -21,7 +19,7 @@ import java.util.Properties;
  * 24. 11. 4.        narilee       최초 생성
  */
 @Configuration
-@PropertySource("classpath:config/mail.properties")
+//@PropertySource("classpath:config/mail.properties")
 public class MailConfig {
 
   /**
