@@ -4,15 +4,37 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="moum.project.dao.UserSnsDao">
 
-    <select id="selectUser_SNSByProviderAndUserId" resultType="moum.project.vo.User_SNS">
+    <!-- User_SNS 테이블과 객체 간의 매핑 정의 -->
+    <resultMap id="userSnsResultMap" type="moum.project.vo.User_SNS">
+        <id property="snsAccountId" column="sns_account_id"/>
+        <result property="provider" column="provider"/>
+        <result property="providerUserId" column="provider_user_id"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <!-- SNS 계정 조회 -->
+    <select id="selectUser_SNSByProviderAndUserId" resultMap="userSnsResultMap">
         SELECT *
-        FROM User_SNS
-        WHERE provider = #{provider} AND provider_user_id = #{providerUserId}
+        FROM user_sns
+        WHERE provider = #{provider}
+        AND provider_user_id = #{providerUserId}
     </select>
 
-    <insert id="insertUser_SNS" parameterType="moum.project.vo.User_SNS" useGeneratedKeys="true" keyProperty="snsAccountId">
-        INSERT INTO User_SNS (provider, provider_user_id, user_id)
-        VALUES (#{provider}, #{providerUserId}, #{userId})
+    <!-- SNS 계정 등록 -->
+    <insert id="insertUser_SNS" parameterType="moum.project.vo.User_SNS">
+        INSERT INTO user_sns (
+        provider,
+        provider_user_id,
+        user_id
+        ) VALUES (
+        #{provider},
+        #{providerUserId},
+        #{userId}
+        )
     </insert>
 
+    <delete id="deleteByUserId">
+        DELETE FROM user_sns
+        WHERE user_id = #{userId}
+    </delete>
 </mapper>

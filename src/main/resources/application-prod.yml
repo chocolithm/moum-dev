@@ -1,10 +1,23 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${google.client-id}
+            client-secret: ${google.client-secret}
+            scope:
+              - email
+              - profile
+            redirect-uri: https://prod.moum.bangdpool.com/login/oauth2/code/google
+
   application:
     name: moum
 
   config:
     import:
       - "file:${user.home}/config/ncp.properties"
+      - "file:${user.home}/config/mail.properties"
 
 # 운영DB로 변경 예정
   datasource:

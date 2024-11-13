@@ -1,10 +1,23 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${google.client-id}
+            client-secret: ${google.client-secret}
+            scope:
+              - email
+              - profile
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
   application:
     name: moum
 
   config:
     import:
       - "classpath:/config/ncp.properties"
+      - "classpath:/config/mail.properties"
+
 
   datasource:
     url: jdbc:mysql://db-pfr3l-kr.vpc-pub-cdb.ntruss.com/moum

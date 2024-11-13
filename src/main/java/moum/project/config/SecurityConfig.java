@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import moum.project.dao.UserDao;
+import moum.project.service.CustomOAuth2UserService;
 import moum.project.vo.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -36,6 +38,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
  * 24. 10. 22.        narilee       로그인 구현후 예외처리 변경
  * 24. 10. 24.        narilee       로그인, 로그아웃 이관, 로그인시 시간 저장 추가
  * 24. 10. 25.        narilee       로그인시 세션에 닉네임 저장
+ * 24. 11. 13.        narilee       구글 로그인 구현
  */
 @Configuration
 @EnableWebSecurity
@@ -44,6 +47,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 public class SecurityConfig {
 
   private final UserDao userDao;
+  private final CustomOAuth2UserService customOAuth2UserService;
 
   /**
    * 사용자가 성공적으로 인증되면, 사용자의 이메일을 기반으로 DB에서 정보를 조회하여
@@ -126,6 +130,36 @@ public class SecurityConfig {
             .failureHandler(authenticationFailureHandler())
             .successHandler(authenticationSuccessHandler())
             .permitAll()
+        )
+        .oauth2Login(oauth2 -> oauth2
+            .loginPage("/home?login=true")
+            .defaultSuccessUrl("/home", true)
+            .failureUrl("/home?error=true")
+            .userInfoEndpoint(userInfo -> userInfo
+                .userService(customOAuth2UserService)
+            )
+            .successHandler((request, response, authentication) -> {
+              // OAuth2 로그인 성공 후 처리
+              OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+              String email = (String) oauth2User.getAttribute("email");
+
+              try {
+                // 사용자 정보 조회
+                User user = userDao.findByEmail(email);
+                if (user != null) {
+                  // 세션에 필요한 정보 저장
+                  request.getSession().setAttribute("user", user);
+                  request.getSession().setAttribute("nickname", user.getNickname());
+
+                  // 마지막 로그인 시간 업데이트
+                  userDao.updateLastLogin(user.getNo(), LocalDateTime.now());
+                }
+              } catch (Exception e) {
+                log.error("OAuth2 login success handler error", e);
+              }
+
+              response.sendRedirect("/home");
+            })
         )
         .csrf(csrf -> csrf
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())

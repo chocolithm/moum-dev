@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import moum.project.dao.UserSnsDao;
 import moum.project.service.AchievementService;
 import moum.project.service.StorageService;
 import moum.project.service.UserService;
@@ -15,6 +16,7 @@ import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +44,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * 24. 10. 29.        narilee       닉네임, 비밀번호, 프로필 수정 기능 추가
  * 24. 10. 30.        narilee       회원 조회, 수정 페이지 분리
  * 24. 10. 31.        narilee       회원 삭제 기능 추가
+ * 24. 11. 13.        narilee       SNS연동 기능 추가
  */
 @Controller
 @RequestMapping("/user")
@@ -49,6 +52,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 
   private final UserService userService;
+  private final UserSnsDao userSnsDao;
   private final StorageService storageService;
   private final PasswordEncoder passwordEncoder;
   private final AchievementService achievementService;
@@ -62,32 +66,43 @@ public class UserController {
    * @return "myInfo" 뷰 이름을 반환합니다.
    */
   @GetMapping("/myInfo")
-  public String myInfo(@AuthenticationPrincipal UserDetails userDetails, Model model) throws Exception {
-    if (userDetails == null) {
-      throw new Exception("로그인이 필요합니다.");
+  public String myInfo(@AuthenticationPrincipal OAuth2User oauth2User,
+      @AuthenticationPrincipal UserDetails userDetails,
+      Model model) throws Exception {
+
+    String email = null;
+
+    // OAuth2 로그인인 경우
+    if (oauth2User != null) {
+      email = oauth2User.getAttribute("email");
+    }
+    // 일반 로그인인 경우
+    else if (userDetails != null) {
+      email = userDetails.getUsername();
     }
 
-    String email = userDetails.getUsername();
+    if (email == null) {
+      // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+      return "redirect:/home?login=true";
+    }
+
     User user = userService.getByEmail(email);
+    if (user == null) {
+      return "redirect:/home?login=true";
+    }
 
     List<Achievement> achievementlist = achievementService.listByUser(user.getNo());
-//    반복문 예시
-    for (int i = 0; i < achievementlist.size(); i++){
+    for (int i = 0; i < achievementlist.size(); i++) {
       Achievement achievement = achievementlist.get(i);
       if(achievement.getProgress() == 100){
         achievementlist.remove(i--);
       }
     }
-//    for (Achievement achievement: achievementlist){
-//      if(achievement.getProgress() == 100){
-//        achievementlist.remove(achievement);
-//      }
-//    }
 
     model.addAttribute("achievementlist", achievementlist);
-
     model.addAttribute("user", user);
     model.addAttribute("primaryAchievement", achievementService.findPrimary(user.getNo()));
+
     return "user/myInfo";
   }
 
@@ -97,13 +112,31 @@ public class UserController {
    * @return "update" 뷰 이름을 반환합니다.
    */
   @GetMapping("/update")
-  public String updateMyInfo(@AuthenticationPrincipal UserDetails userDetails, Model model) throws Exception {
-    if (userDetails == null) {
-      throw new Exception("로그인이 필요합니다.");
+  public String updateMyInfo(
+      @AuthenticationPrincipal OAuth2User oauth2User,
+      @AuthenticationPrincipal UserDetails userDetails,
+      Model model) throws Exception {
+
+    String email = null;
+
+    // OAuth2 로그인인 경우
+    if (oauth2User != null) {
+      email = oauth2User.getAttribute("email");
+    }
+    // 일반 로그인인 경우
+    else if (userDetails != null) {
+      email = userDetails.getUsername();
     }
 
-    String email = userDetails.getUsername();
+    if (email == null) {
+      // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+      return "redirect:/home?login=true";
+    }
+
     User user = userService.getByEmail(email);
+    if (user == null) {
+      return "redirect:/home?login=true";
+    }
 
     model.addAttribute("user", user);
     model.addAttribute("listGetUserAchievement", achievementService.listUserGetAchievement(user.getNo()));
@@ -129,42 +162,63 @@ public class UserController {
       @RequestParam("nickname") String nickname,
       @RequestParam(value = "password", required = false) String password,
       @RequestParam("user-achievement") String userAchievementId,
+      @AuthenticationPrincipal OAuth2User oauth2User,
       @AuthenticationPrincipal UserDetails userDetails,
       MultipartFile file,
-      RedirectAttributes redirectAttributes
-      ) throws Exception {
+      RedirectAttributes redirectAttributes,
+      HttpSession session) throws Exception {
 
-    User old = userService.get(no);
-
-    if (userDetails == null) {
-      throw new Exception("로그인이 필요합니다.");
+    // 인증된 사용자 확인
+    String email = null;
+    if (oauth2User != null) {
+      email = oauth2User.getAttribute("email");
+    } else if (userDetails != null) {
+      email = userDetails.getUsername();
     }
 
-    String email = userDetails.getUsername();
-    User user = userService.getByEmail(email);
+    if (email == null) {
+      redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
+      return "redirect:/home?login=true";
+    }
+
+    User loginUser = userService.getByEmail(email);
+    User old = userService.get(no);
+
+    // 권한 체크
+    if (loginUser == null || loginUser.getNo() != no) {
+      redirectAttributes.addFlashAttribute("error", "본인 정보만 수정할 수 있습니다.");
+      return "redirect:/user/myInfo";
+    }
 
     // 닉네임 수정
     if (nickname != null && !nickname.isEmpty()) {
-      user.setNickname(nickname);
+      loginUser.setNickname(nickname);
     } else {
-      user.setNickname(old.getNickname());
+      loginUser.setNickname(old.getNickname());
     }
 
-      // 비밀번호 수정 (암호화하여 저장)
-      if (password != null && !password.isEmpty()) {
-        user.setPassword(passwordEncoder.encode(password));
+    // 비밀번호 수정 - OAuth2 사용자도 가능하도록 변경
+    if (password != null && !password.isEmpty()) {
+      // 비밀번호 유효성 검사 (필요한 경우)
+      if (password.length() < 8) {
+        redirectAttributes.addFlashAttribute("error", "비밀번호는 8자 이상이어야 합니다.");
+        return "redirect:/user/update";
       }
+      loginUser.setPassword(passwordEncoder.encode(password));
+    }
 
-      //업적 수정
-      achievementService.deletePrimaryAchievement(user);
-      Achievement achievement = new Achievement(userAchievementId);
-      achievement.setUser(user);
-      achievementService.updatePrimaryAchievement(achievement);
+    // 업적 수정
+    achievementService.deletePrimaryAchievement(loginUser);
+    Achievement achievement = new Achievement(userAchievementId);
+    achievement.setUser(loginUser);
+    achievementService.updatePrimaryAchievement(achievement);
 
-    // 프로필 사진 처리 로직
+    // 프로필 사진 처리
     if (file != null && file.getSize() > 0) {
       // 기존 프로필 사진 삭제
-      storageService.delete(folderName + old.getPhoto());
+      if (old.getPhoto() != null) {
+        storageService.delete(folderName + old.getPhoto());
+      }
 
       // 새 파일 이름 생성
       String filename = UUID.randomUUID().toString();
@@ -177,18 +231,26 @@ public class UserController {
       storageService.upload(folderName + filename, file.getInputStream(), options);
 
       // 사용자 프로필에 새로운 파일명 설정
-      user.setPhoto(filename);
-
+      loginUser.setPhoto(filename);
     } else {
       // 파일이 없을 경우 기존 파일명 유지
-      user.setPhoto(old.getPhoto());
+      loginUser.setPhoto(old.getPhoto());
     }
 
-    if (userService.update(user)) {
-      redirectAttributes.addFlashAttribute("message", "정보가 성공적으로 수정되었습니다.");
+    if (userService.update(loginUser)) {
+      // 세션에 저장된 닉네임 업데이트
+      session.setAttribute("nickname", loginUser.getNickname());
+
+      String successMessage = "정보가 성공적으로 수정되었습니다.";
+      if (password != null && !password.isEmpty() && oauth2User != null) {
+        successMessage += " 이제 이메일과 비밀번호로도 로그인할 수 있습니다.";
+      }
+      redirectAttributes.addFlashAttribute("message", successMessage);
+
       return "redirect:/user/myInfo";
     } else {
-      throw new Exception("없는 회원입니다!");
+      redirectAttributes.addFlashAttribute("error", "정보 수정에 실패했습니다.");
+      return "redirect:/user/update";
     }
   }
 
@@ -233,19 +295,27 @@ public class UserController {
   @PostMapping("/delete")
   public String deleteUser(
       @RequestParam("no") int no,
+      @AuthenticationPrincipal OAuth2User oauth2User,
       @AuthenticationPrincipal UserDetails userDetails,
       RedirectAttributes redirectAttributes,
       HttpSession session) throws Exception {
 
     // 로그인 체크
-    if (userDetails == null) {
+    String email = null;
+    if (oauth2User != null) {
+      email = oauth2User.getAttribute("email");
+    } else if (userDetails != null) {
+      email = userDetails.getUsername();
+    }
+
+    if (email == null) {
       redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
-      return "redirect:/login";
+      return "redirect:/home?login=true";
     }
 
     try {
       // 현재 로그인한 사용자 정보 조회
-      User loginUser = userService.getByEmail(userDetails.getUsername());
+      User loginUser = userService.getByEmail(email);
 
       // 권한 체크
       if (loginUser == null || loginUser.getNo() != no) {
@@ -257,6 +327,9 @@ public class UserController {
       if (loginUser.getPhoto() != null && !loginUser.getPhoto().isEmpty()) {
         storageService.delete(folderName + loginUser.getPhoto());
       }
+
+      // SNS 연동 정보 삭제
+      userSnsDao.deleteByUserId(loginUser.getNo());
 
       // 회원 정보 익명화
       loginUser.setPhoto(null);
@@ -277,7 +350,7 @@ public class UserController {
 
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", "회원 탈퇴 처리 중 오류가 발생했습니다.");
-      return "redirect:/user/delete";
+      return "redirect:/user/myInfo";
     }
   }
 

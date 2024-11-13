@@ -1,4 +1,16 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${google.client-id}
+            client-secret: ${google.client-secret}
+            scope:
+              - email
+              - profile
+            redirect-uri: https://dev.moum.bangdpool.com/login/oauth2/code/google
+
   application:
     name: moum
 
@@ -44,16 +56,6 @@ spring:
           writetimeout: 5000
     auth-code-expiration-millis: 180000
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${google.client-id}
-            client-secret: ${google.client-secret}
-            scope:
-              - email
-              - profile
 mybatis:
   mapper-locations:
   type-aliases-package:
