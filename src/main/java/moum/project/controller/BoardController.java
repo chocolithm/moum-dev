@@ -431,6 +431,8 @@ public class BoardController {
         continue;
       }
 
+      System.out.println(file);
+
       // 파일 크기 제한 (10MB)
       if (file.getSize() > 10 * 1024 * 1024) {  // 10MB 초과 시 예외 처리
         throw new IllegalArgumentException("파일 크기는 10MB를 초과할 수 없습니다.");
@@ -482,7 +484,7 @@ public class BoardController {
   @PostMapping("/addDetailPost")
   @ResponseBody
   public String addDetailPost(Board board,
-                              @RequestParam("files") MultipartFile[] files,
+                              @RequestParam(value = "files") MultipartFile[] files,
                               @RequestParam(value = "collection.no", required = false) Integer collectionNo,
                               @RequestParam(value = "price", required = false) Integer price,
                               @RequestParam(value = "tradeType", required = false) String tradeType,
@@ -492,8 +494,6 @@ public class BoardController {
     // 현재 로그인한 사용자 정보 가져오기
     User loginUser = userService.getByEmail(userDetails.getUsername());
     board.setUserNo(loginUser.getNo());
-
-    System.out.println(files);
 
     try {
       if ("trade".equals(board.getBoardType())) {
@@ -513,8 +513,21 @@ public class BoardController {
       }
 
       // 첨부 파일 업로드 및 설정
-      List<AttachedFile> attachedFiles = uploadFiles(files);
-      board.setAttachedFiles(attachedFiles);
+      if (files != null && files.length > 0) {
+        List<AttachedFile> attachedFiles = uploadFiles(files);
+        board.setAttachedFiles(attachedFiles);
+
+        String content = board.getContent();
+
+        for (AttachedFile attachedFile : attachedFiles) {
+          String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s", attachedFile.getFilename());
+
+          // 정규식을 통해 첫 번째 data:image 형식의 base64 이미지를 newUrl로 교체
+          content = content.replaceFirst("src=\"data:image[^\"]+\"", "src=\"" + newUrl + "\"");
+        }
+
+        board.setContent(content);
+      }
 
       // 게시글 저장
       boardService.add(board);
@@ -525,10 +538,6 @@ public class BoardController {
       return "failure";
     }
   }
-
-
-
-
 
 
 }
