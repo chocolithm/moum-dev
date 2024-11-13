@@ -140,18 +140,9 @@ function openCollectionViewModal(no) {
 // 수집품 조회 화면 내용 가져오기
 function fetchCollectionView(no) {
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute("content");
-
     initCollectionSlideIndex();
 
-    fetch(`/collection/view?no=${no}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            [csrfHeader]: csrfToken
-        }
-    })
+    fetch(`/collection/view?no=${no}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

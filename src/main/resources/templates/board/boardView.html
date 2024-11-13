@@ -43,12 +43,14 @@
         </div>
 
         <div th:utext="${board.content}">게시글 내용</div>
+        <button class="collection-load-button" th:if="${board.collection}" th:onclick="'collectionLoadButton(' + ${board.collection.no} + ')'">수집품 보기</button>
 
         <div class="action-buttons" th:inline="javascript" data-th-if="${authenticated}">
             <button class="trade-complete"
                     th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ')'"
                     th:attr="disabled=${board.sellOrSoldStatus}">거래완료</button>
-            <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'">수정하기</button>
+            <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
+                    th:if="${board.sellOrSoldStatus == false}">수정하기</button>
             <form th:action="@{/board/delete}" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
                 <input type="hidden" name="no" th:value="${board.no}">
                 <input type="hidden" name="_method" value="DELETE">
@@ -92,9 +94,11 @@
 </script>
 
 
-
+<!--  수집품 상세 화면  -->
+<div class="layer collection-view-layer"></div>
 
 <script src="/js/board.js"></script>
+<script src="/js/collection.js"></script>
 <footer th:replace="~{footer :: footer}"></footer>
 </body>
 </html>

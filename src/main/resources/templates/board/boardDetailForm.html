@@ -38,7 +38,7 @@
       <label for="content">내용</label>
       <textarea id="content" name="content" class="form-control"></textarea>
     </div>
-    
+
 
     <!-- 거래 게시글 전용 필드 -->
     <div id="tradeFields" style="display: none;">
@@ -51,7 +51,7 @@
       <!-- 거래 종류 선택 (판매/구매) -->
       <div class="form-group">
         <label for="tradeType">거래 종류</label>
-        <select id="tradeType" name="tradeType" class="form-control" required>
+        <select id="tradeType" name="tradeType" class="form-control" onchange="toggleFields(this)" required>
           <option value="default">선택</option>
           <option value="sell">판매</option>
           <option value="buy">구매</option>
@@ -59,10 +59,10 @@
       </div>
 
       <!-- 수집품 선택 -->
-      <div class="form-group">
+      <div class="form-group collection-select" style="display: none">
         <label for="collectionNo">수집품 선택</label>
         <select id="collectionNo" name="collection.no" class="form-control">
-          <option value="" disabled selected>수집품을 선택하세요</option>
+          <option value="0" disabled selected>수집품을 선택하세요</option>
           <!-- 수집품 옵션은 JavaScript로 로드 -->
         </select>
       </div>
@@ -168,10 +168,31 @@
   function addDetailPost() {
     var formData = new FormData($('#postForm')[0]);
 
+    if (formData.get("title") === "") {
+      alert("제목을 입력하세요");
+      return;
+    }
+    if (formData.get("content") === "") {
+      alert("내용을 입력하세요");
+      return;
+    }
+
     // 가격이 비어있을 경우 기본값 0 설정
     if (formData.get("price") === "" && $('#boardType').val() === 'trade') {
       formData.set("price", 0);
     }
+    if (formData.get("boardType") === "trade") {
+      if (formData.get("tradeType") === 'default') {
+        alert("거래 종류를 선택하세요");
+        return;
+      }
+      if (formData.get("tradeType") === 'sell' && (!formData.get('collection.no') || formData.get('collection.no') === '0')) {
+        alert("수집품을 선택해주세요");
+        return;
+      }
+    }
+
+
 
     $.ajax({
       url: '/board/addDetailPost',
@@ -203,6 +224,7 @@
     });
   }
 </script>
+<script src="/js/board.js"></script>
 
 </body>
 </html>
