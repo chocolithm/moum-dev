@@ -88,6 +88,11 @@ public class DefaultBoardService implements BoardService {
         return false;
     }
 
+    @Override
+    public boolean completeTrade(int no) throws Exception {
+        return boardDao.completeTrade(no);
+    }
+
     // BoardService.java
     public void updateTrade(Board board) {
         boardDao.updateTrade(board);

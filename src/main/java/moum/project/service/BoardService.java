@@ -15,6 +15,8 @@ public interface BoardService {
 
     boolean update(Board board) throws Exception;
 
+    boolean completeTrade(int no) throws Exception;
+
     void delete(int no) throws Exception;
 
 

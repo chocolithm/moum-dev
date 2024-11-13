@@ -44,6 +44,8 @@ public interface BoardDao {
 
     void updateTrade(Board board);
 
+    boolean completeTrade(int no);
+
     void insertAttachedFiles(List<AttachedFile> attachedFiles); // 첨부 파일 삽입
 
     void deleteAttachedFilesByBoardId(int boardId); // 첨부 파일 삭제

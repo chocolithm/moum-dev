@@ -94,6 +94,7 @@
         tb.collection_id,
         tb.price,
         tb.status,
+        tb.trade_type,
         c.name AS collection_name,
         bp.photo_id,
         bp.board_id AS bp_board_id,
@@ -200,6 +201,16 @@
         WHERE
         board_id = #{no}
     </update>
+
+    <!-- trade_board 거래완료 수정 -->
+    <update id="completeTrade" parameterType="int">
+        UPDATE trade_board
+        SET
+        status = 1
+        WHERE
+        board_id = #{no}
+    </update>
+
 
     <!-- 기존 첨부파일 삭제 -->
     <delete id="deleteAttachedFilesByBoardId" parameterType="int">

@@ -320,6 +320,18 @@ public class BoardController {
     }
   }
 
+  @GetMapping("/complete/{no}")
+  public ResponseEntity<String> tradeComplete(
+          @PathVariable("no") int no) throws Exception {
+
+
+
+    if (boardService.completeTrade(no)) {
+      return ResponseEntity.ok("success");
+    } else {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("거래완료 실패");
+    }
+  }
 
   @PostMapping("/uploadImage")
   @ResponseBody

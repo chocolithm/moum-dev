@@ -38,13 +38,16 @@
         <!-- 게시글 종류에 따라 조건부로 필드를 표시 -->
         <div th:if="${board.boardType == 'trade'}">
             <p>가격: <span th:text="${board.price}">0</span>원</p>
-            <p>거래 상태: <span th:text="${board.sellOrSoldStatus}">미설정</span></p>
-            <p>거래 방식: <span th:text="${board.tradeType}">거래 방식 없음</span></p>
+            <p>거래 상태: <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span></p>
+            <p>거래 방식: <span th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></p>
         </div>
 
         <div th:utext="${board.content}">게시글 내용</div>
 
         <div class="action-buttons" th:inline="javascript" data-th-if="${authenticated}">
+            <button class="trade-complete"
+                    th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ')'"
+                    th:attr="disabled=${board.sellOrSoldStatus}">거래완료</button>
             <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'">수정하기</button>
             <form th:action="@{/board/delete}" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
                 <input type="hidden" name="no" th:value="${board.no}">

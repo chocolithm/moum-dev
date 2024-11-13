@@ -321,6 +321,24 @@ function deletePost(boardNo) {
     }
 }
 
+function tradeComplete(boardNo) {
+    $.ajax({
+        url: `/board/complete/${boardNo}`,  // 가져온 no 값을 URL에 추가
+        type: 'GET',
+        success: function (response) {
+            if (response === 'success') {
+                alert('거래 완료 되었습니다');
+                window.location.href = `/board/boardView?no=${boardNo}`;
+            } else {
+                alert('실패');
+            }
+        },
+        error: function () {
+            alert('서버 오류가 발생했습니다.');
+        }
+    });
+}
+
 /*-----------------------------------------------------------------------*/
 
 
