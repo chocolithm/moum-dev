@@ -424,11 +424,16 @@
         board b
         LEFT JOIN user u ON b.user_id = u.user_id
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+            AND bp.photo_id = (
+                SELECT MIN(photo_id)
+                FROM board_photo
+                WHERE board_id = b.board_id
+            )
         WHERE
-        b.is_deleted = 0
-        AND b.board_type = 'general' <!-- 일반 게시글만 조회 -->
+            b.is_deleted = 0
+            AND b.board_type = 'general'
         ORDER BY
-        b.board_id DESC
+            b.board_id DESC
         LIMIT #{pageNo}, #{pageCount}
     </select>
 
@@ -436,6 +441,7 @@
         select count(*)
         from board
         where is_deleted = 0
+        and board_type = 'general'
     </select>
 
     <!-- 판매 게시글 페이징 조회 -->
