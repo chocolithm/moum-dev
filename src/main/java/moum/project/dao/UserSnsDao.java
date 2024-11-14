@@ -4,6 +4,8 @@ import moum.project.vo.User_SNS;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * packageName    : moum.project.dao
  * fileName       : UserSnsDao
@@ -14,6 +16,7 @@ import org.apache.ibatis.annotations.Param;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 11. 13.        narilee       최초 생성
+ * 24. 11. 14.        narilee       user정보로 sns연동유무 확인 추가
  */
 @Mapper
 public interface UserSnsDao {
@@ -34,6 +37,14 @@ public interface UserSnsDao {
    * @param userSns 삽입할 User_SNS 객체
    */
   void insertUser_SNS(User_SNS userSns);
+
+  /**
+   * 특정 사용자의 모든 SNS 연동 정보를 조회합니다.
+   *
+   * @param userId 사용자 ID
+   * @return SNS 연동 정보 목록
+   */
+  List<User_SNS> findAllByUserId(int userId);
 
   /**
    * 특정 사용자의 SNS 연동 정보를 삭제합니다.
