@@ -299,7 +299,7 @@ public class BoardController {
   public ResponseEntity<String> update(
       @PathVariable("no") int no,
       Board updatedBoard,
-      @RequestParam("files") MultipartFile[] files,
+      @RequestParam(value = "files", required = false) MultipartFile[] files,
       String[] oldFiles,
       Model model) throws Exception {
 
@@ -326,15 +326,42 @@ public class BoardController {
       existingBoard.setContent(updatedBoard.getContent());
     }
 
-    if (files != null && files.length > 0 && !files[0].isEmpty()) {
-      boardService.deleteAttachedFiles(no);
-      List<AttachedFile> newFiles = uploadFiles(files);
-      for (AttachedFile file : newFiles) {
-        file.setBoardNo(no);
-      }
-      boardService.insertAttachedFiles(newFiles);
-      existingBoard.setAttachedFiles(newFiles);
+    List<AttachedFile> attachedFiles = new ArrayList<>();
+    for (String oldFile : oldFiles) {
+
     }
+
+    // existingBoard의 attachedFiles를 가져와서 oldFiles와 비교하며 없는 파일을 storage에서 삭제
+    // 있는 파일은 storage에서 유지 및 updatedBoard의 attachedFiles에 추가
+
+    //if (files != null && files.length > 0) {
+    //        List<AttachedFile> attachedFiles = uploadFiles(files);
+    //        board.setAttachedFiles(attachedFiles);
+    //
+    //        String content = board.getContent();
+    //
+    //        for (AttachedFile attachedFile : attachedFiles) {
+    //          String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s", attachedFile.getFilename());
+    //
+    //          // 정규식을 통해 첫 번째 data:image 형식의 base64 이미지를 newUrl로 교체
+    //          content = content.replaceFirst("src=\"data:image[^\"]+\"", "src=\"" + newUrl + "\"");
+    //        }
+    //
+    //        board.setContent(content);
+    //      }
+
+
+//    if (files != null && files.length > 0 && !files[0].isEmpty()) {
+//      boardService.deleteAttachedFiles(no);
+//      List<AttachedFile> newFiles = uploadFiles(files);
+//      for (AttachedFile file : newFiles) {
+//        file.setBoardNo(no);
+//      }
+//      boardService.insertAttachedFiles(newFiles);
+//      existingBoard.setAttachedFiles(newFiles);
+//    }
+
+
 
     boolean updateSuccessful = boardService.update(updatedBoard);
 
@@ -496,7 +523,7 @@ public class BoardController {
   @PostMapping("/addDetailPost")
   @ResponseBody
   public String addDetailPost(Board board,
-                              @RequestParam(value = "files") MultipartFile[] files,
+                              @RequestParam(value = "files", required = false) MultipartFile[] files,
                               @RequestParam(value = "collection.no", required = false) Integer collectionNo,
                               @RequestParam(value = "price", required = false) Integer price,
                               @RequestParam(value = "tradeType", required = false) String tradeType,

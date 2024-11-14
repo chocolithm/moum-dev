@@ -209,6 +209,11 @@
         }
       });
 
+      if (base64Images.length === 0) {
+        const dataTransfer = new DataTransfer();
+        formData.append('files', dataTransfer.files);
+      }
+
       // base64 이미지를 파일 객체로 변환 후 formData에 추가
       base64Images.forEach((base64Image) => {
         const imageData = imageUrls.find(image => image.url === base64Image);

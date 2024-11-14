@@ -69,23 +69,24 @@ public class DefaultBoardService implements BoardService {
 
     @Override
     public boolean update(Board board) throws Exception {
-        int count = boardDao.update(board);
+        return boardDao.update(board);
 
-        if (count > 0) {
-            // 기존 첨부 파일 삭제
-            boardDao.deleteAttachedFilesByBoardId(board.getNo());
-
-            // 새로운 첨부 파일 삽입
-            List<AttachedFile> attachedFiles = board.getAttachedFiles();
-            if (attachedFiles != null && !attachedFiles.isEmpty()) {
-                for (AttachedFile file : attachedFiles) {
-                    file.setBoardNo(board.getNo());
-                }
-                boardDao.insertAttachedFiles(attachedFiles);
-            }
-            return true;
-        }
-        return false;
+//        int count = boardDao.update(board);
+//        if (count > 0) {
+//            // 기존 첨부 파일 삭제
+//            boardDao.deleteAttachedFilesByBoardId(board.getNo());
+//
+//            // 새로운 첨부 파일 삽입
+//            List<AttachedFile> attachedFiles = board.getAttachedFiles();
+//            if (attachedFiles != null && !attachedFiles.isEmpty()) {
+//                for (AttachedFile file : attachedFiles) {
+//                    file.setBoardNo(board.getNo());
+//                }
+//                boardDao.insertAttachedFiles(attachedFiles);
+//            }
+//            return true;
+//        }
+//        return false;
     }
 
     @Override
