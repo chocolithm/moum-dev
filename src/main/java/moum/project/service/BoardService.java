@@ -20,7 +20,7 @@ public interface BoardService {
     void delete(int no) throws Exception;
 
 
-    void increaseViewCount(int id);
+    void increaseViewCount(int boardId) throws Exception;
 
     List<Board> selectByUserId(int userId);
 

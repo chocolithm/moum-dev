@@ -22,7 +22,7 @@ public interface BoardDao {
 
     int delete(int boardId); // 논리적 삭제
 
-    int increaseViewCount(int boardId); // 조회수 증가
+    void increaseViewCount(@Param("no") int boardNo, @Param("count") int count) throws Exception; // 조회수 증가
 
     List<Board> selectByUserId(int userId); // 특정 사용자의 게시글 조회
 

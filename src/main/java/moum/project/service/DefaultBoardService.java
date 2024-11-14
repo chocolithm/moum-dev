@@ -124,8 +124,11 @@ public class DefaultBoardService implements BoardService {
 
 
     @Override
-    public void increaseViewCount(int id) {
-        boardDao.increaseViewCount(id);
+    public void increaseViewCount(int boardId) throws Exception{
+        Board board =boardDao.selectById(boardId);
+        if (board != null) {
+            boardDao.increaseViewCount(board.getNo(), board.getViewCount() + 1);
+        }
     }
 
     @Override

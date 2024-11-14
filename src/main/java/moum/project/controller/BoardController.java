@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -189,19 +190,19 @@ public class BoardController {
   }
 
 
-  @PostMapping("/addGeneral")
-  public String add(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
-    // 새 게시글에 사용자 번호 설정 (임시로 1번 사용자 설정)
-    board.setUserNo(1);
-
-    // 파일 업로드 및 첨부 파일 정보 설정
-    List<AttachedFile> attachedFiles = uploadFiles(files);
-    board.setAttachedFiles(attachedFiles);
-
-    // 게시글 추가
-    boardService.add(board);
-    return "redirect:/board/boardList";
-  }
+//  @PostMapping("/addGeneral")
+//  public String add(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
+//    // 새 게시글에 사용자 번호 설정 (임시로 1번 사용자 설정)
+//    board.setUserNo(1);
+//
+//    // 파일 업로드 및 첨부 파일 정보 설정
+//    List<AttachedFile> attachedFiles = uploadFiles(files);
+//    board.setAttachedFiles(attachedFiles);
+//
+//    // 게시글 추가
+//    boardService.add(board);
+//    return "redirect:/board/boardList";
+//  }
 
   @GetMapping("/list")
   public String list(Model model) throws Exception {
@@ -216,7 +217,8 @@ public class BoardController {
   public String view(
           @RequestParam("no") int no,
           Model model,
-          @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+          @AuthenticationPrincipal UserDetails userDetails,
+          WebRequest webRequest) throws Exception {
 
     // 게시글 상세 정보 가져오기
     Board board = boardService.get(no);
@@ -237,6 +239,15 @@ public class BoardController {
     int likeCount = likesService.countLikesByBoard(no);
     board.setLikeCount(likeCount); // Board 객체에 추천수를 설정 (필드가 있다면)
 
+    // 세션에서 해당 게시글을 조회한 이력이 있는지 확인
+    String sessionAttributeKey = "viewedBoard_" + no;
+    Boolean hasViewed = (Boolean) webRequest.getAttribute(sessionAttributeKey, WebRequest.SCOPE_SESSION);
+
+    // 조회 이력이 없으면 조회수 증가 및 세션에 기록
+    if (hasViewed == null || !hasViewed) {
+      boardService.increaseViewCount(board.getNo());
+      webRequest.setAttribute(sessionAttributeKey, true, WebRequest.SCOPE_SESSION);
+    }
     // 댓글 목록 가져오기
     List<CommentResponse> comments = commentService.findAllComment(no);
 
