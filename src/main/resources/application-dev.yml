@@ -11,6 +11,23 @@ spring:
               - profile
             redirect-uri: https://dev.moum.bangdpool.com/login/oauth2/code/google
 
+          kakao:
+            client-id: ${kakao.client-id}
+            client-secret: ${kakao.client-id}
+            redirect-uri: https://dev.moum.bangdpool.com/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - account_email
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
   application:
     name: moum
 

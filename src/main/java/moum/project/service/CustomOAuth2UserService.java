@@ -48,13 +48,29 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
     String registrationId = userRequest.getClientRegistration().getRegistrationId();
-    String userNameAttributeName = userRequest.getClientRegistration()
-        .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+    String userNameAttributeName =
+        userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint()
+            .getUserNameAttributeName();
 
     Map<String, Object> attributes = oAuth2User.getAttributes();
-    String email = (String) attributes.get("email");
-    String name = (String) attributes.get("name");
-    String providerId = (String) attributes.get(userNameAttributeName);
+
+    // 제공자별 속성 추출
+    String email;
+    String name;
+    String providerId;
+
+    if ("kakao".equals(registrationId)) {
+      Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+      Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
+
+      email = (String) kakaoAccount.get("email");
+      name = (String) kakaoProfile.get("nickname");
+      providerId = String.valueOf(attributes.get("id"));
+    } else { // Google
+      email = (String) attributes.get("email");
+      name = (String) attributes.get("name");
+      providerId = (String) attributes.get(userNameAttributeName);
+    }
 
     try {
       User_SNS userSns = userSnsDao.selectUser_SNSByProviderAndUserId(registrationId, providerId);
@@ -64,6 +80,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         user = userDao.findByEmail(email);
 
         if (user == null) {
+          // 새 사용자 생성
           user = new User();
           user.setEmail(email);
           user.setNickname(name);
@@ -71,15 +88,24 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
           user.setAdmin(false);
           user.setStartDate(LocalDateTime.now());
           userDao.insert(user);
+
+          log.info("New user created - Email: {}, Provider: {}", email, registrationId);
         }
 
+        // SNS 연동 정보 저장
         User_SNS newUserSns = new User_SNS();
         newUserSns.setProvider(registrationId);
         newUserSns.setProviderUserId(providerId);
         newUserSns.setUserId(user.getNo());
         userSnsDao.insertUser_SNS(newUserSns);
+
+        log.info("SNS account linked - Provider: {}, User: {}", registrationId, email);
       } else {
         user = userDao.findBy(userSns.getUserId());
+        if (user == null) {
+          throw new OAuth2AuthenticationException(
+              new OAuth2Error("user_not_found", "User not found for SNS account", null));
+        }
       }
 
       List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -89,14 +115,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
       }
 
-      return new CustomUserDetails(
-          user.getEmail(),
-          user.getPassword(),
-          user.getNickname(),
-          authorities,
-          attributes,
-          userNameAttributeName
-      );
+      return new CustomUserDetails(user.getEmail(), user.getPassword(), user.getNickname(),
+          authorities, attributes, userNameAttributeName);
 
     } catch (Exception e) {
       log.error("OAuth2 authentication error", e);
