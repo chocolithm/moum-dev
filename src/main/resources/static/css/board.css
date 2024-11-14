@@ -559,7 +559,7 @@ body {
             color: white;
         }
 
-
+/*
         .current-gold {
             background: rgba(255, 215, 0, 0.1);
         }
@@ -571,6 +571,7 @@ body {
         .current-bronze {
             background: rgba(205, 127, 50, 0.1);
         }
+        */
 
         .rank-1 {
             background: linear-gradient(45deg, #FFD700, #FFA500);
