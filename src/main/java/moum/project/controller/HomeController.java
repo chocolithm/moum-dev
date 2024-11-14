@@ -1,19 +1,15 @@
 package moum.project.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.config.CustomUserDetails;
-import moum.project.service.AuthenticationSupport;
 import moum.project.service.CollectionCategoryService;
 import moum.project.service.CollectionService;
 import moum.project.service.UserService;
 import moum.project.vo.Collection;
 import moum.project.vo.Maincategory;
 import moum.project.vo.User;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,12 +35,10 @@ public class HomeController {
   private final UserService userService;
   private final CollectionService collectionService;
   private final CollectionCategoryService categoryService;
-  private final AuthenticationSupport authSupport;
 
   /**
    * 비로그인 유저면 /home, 로그인 유저면 /myhome으로 보내는 클래스입니다.
    *
-   * @param authentication 인증 요청 또는 인증된 주체에 대한 토큰
    * @param model 모델 객체
    * @return 로그인시 /myhome, 비로그인시 /home으로 이동
    * @throws Exception 로그인 인증 오류시 발생
