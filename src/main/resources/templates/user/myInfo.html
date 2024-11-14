@@ -6,10 +6,12 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	      rel="stylesheet">
 	<link rel="stylesheet" th:href="@{/css/style.css}">
-
-<div th:replace="~{header :: header}"></div>
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+</head>
 
 <body>
+<div th:replace="~{header :: header}"></div>
 <main>
 	<h1>회원 정보</h1>
 
@@ -19,6 +21,9 @@
 
 		<div th:unless="${user}">
 			<p>사용자 정보를 찾을 수 없습니다.</p>
+		</div>
+		<div class="alert alert-danger" th:if="${param.notExist}">
+			존재하지 않는 회원입니다.
 		</div>
 
 		<div class="my-info-wrapper">
@@ -31,9 +36,9 @@
 			<a href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png" th:if="*{photo == null}">
 				<img alt="기본 프로필 이미지" class="profile-img" src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
 			</a>
-				<!-- 수정 버튼 섹션 -->
-				<div class="user-info-dropdown">
-					<button class="edit-button" onclick="location.href='/user/update'">수정하기</button>
+				<!-- 수정 버튼 (본인 프로필일 때만 표시) -->
+				<div class="user-info-dropdown" th:if="${isOwnProfile}">
+					<a href="/user/update" class="btn btn-primary">수정하기</a>
 				</div>
 			</div>
 
@@ -53,9 +58,6 @@
 				<p>대표업적이 없습니다.</p>
 			</div>
 		</div>
-
-
-
 
 		<!-- 내 게시글 섹션 시작 -->
 		<div class="layout-container">
@@ -144,15 +146,15 @@
 				</div>
 			</div>
 
-
 			<div class="achievement-user-progress layer"></div>
 		</div>
 	</div>
-
+		</div>
+		</div>
+	</div>
 </main>
 
 <div th:replace="~{footer :: footer}"></div>
-
 <script src="/js/achievement.js"></script>
 
 </body>

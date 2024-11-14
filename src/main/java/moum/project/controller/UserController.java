@@ -18,12 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,7 +38,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * 24. 10. 29.        narilee       닉네임, 비밀번호, 프로필 수정 기능 추가
  * 24. 10. 30.        narilee       회원 조회, 수정 페이지 분리
  * 24. 10. 31.        narilee       회원 삭제 기능 추가
- * 24. 11. 13.        narilee       SNS연동 기능 추가
+ * 24. 11. 13.        narilee       SNS연동 기능 추가, 타유저 회원 정보 보기 기능 추가
  */
 @Controller
 @RequestMapping("/user")
@@ -58,25 +53,40 @@ public class UserController {
 
   private String folderName = "user/profile/";
 
-
   /**
    * 이 메서드는 "/user/myInfo" URL로 들어오는 GET 요청을 처리합니다.
    *
-   * @return "myInfo" 뷰 이름을 반환합니다.
+   * @param userNo 회원 번호
+   * @param userDetails 유저 정보를  보관한 userDetails 객체
+   * @param model 뷰에 전달할 모델 객체
+   * @return 본인이면 "myInfo", 타인이면 info/{userNo} 뷰 이름을 반환합니다.
+   * @throws Exception 로그인되지 않은 경우 또는 회원 정보가 존재하지 않는 경우
    */
-  @GetMapping("/myInfo")
-  public String myInfo(@AuthenticationPrincipal CustomUserDetails userDetails, Model model)
-      throws Exception {
-    if (userDetails == null) {
-      return "redirect:/home?login=true";
+  @GetMapping({"/myInfo", "/info/{userNo}"})
+  public String userInfo(@PathVariable(required = false) Integer userNo,
+      @AuthenticationPrincipal CustomUserDetails userDetails,
+      Model model) throws Exception {
+
+    User viewUser;
+    boolean isOwnProfile = false;
+
+    // 본인 프로필인지 다른 사용자 프로필인지 확인
+    if (userNo == null) {
+      if (userDetails == null) {
+        return "redirect:/home?login=true";
+      }
+      viewUser = userService.getByEmail(userDetails.getUsername());
+      isOwnProfile = true;
+    } else {
+      viewUser = userService.get(userNo);
     }
 
-    User user = userService.getByEmail(userDetails.getUsername());
-    if (user == null) {
-      return "redirect:/home?login=true";
+    if (viewUser == null || viewUser.getEndDate() != null) {
+      return "redirect:/home?notExist=true";
     }
 
-    List<Achievement> achievementlist = achievementService.listByUser(user.getNo());
+    // 업적 목록 가져오기
+    List<Achievement> achievementlist = achievementService.listByUser(viewUser.getNo());
     for (int i = 0; i < achievementlist.size(); i++) {
       Achievement achievement = achievementlist.get(i);
       if(achievement.getProgress() == 100) {
@@ -85,8 +95,9 @@ public class UserController {
     }
 
     model.addAttribute("achievementlist", achievementlist);
-    model.addAttribute("user", user);
-    model.addAttribute("primaryAchievement", achievementService.findPrimary(user.getNo()));
+    model.addAttribute("user", viewUser);
+    model.addAttribute("isOwnProfile", isOwnProfile);
+    model.addAttribute("primaryAchievement", achievementService.findPrimary(viewUser.getNo()));
 
     return "user/myInfo";
   }
@@ -94,7 +105,10 @@ public class UserController {
   /**
    * 이 메서드는 "/user/update" URL로 들어오는 GET 요청을 처리합니다.
    *
+   * @param userDetails 유저 정보를  보관한 userDetails 객체
+   * @param model 뷰에 전달할 모델 객체
    * @return "update" 뷰 이름을 반환합니다.
+   * @throws Exception 로그인되지 않은 경우 또는 회원 정보가 존재하지 않는 경우
    */
   @GetMapping("/update")
   public String updateMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails, Model model)
