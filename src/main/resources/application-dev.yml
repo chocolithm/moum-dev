@@ -10,7 +10,6 @@ spring:
               - email
               - profile
             redirect-uri: http://dev.moum.bangdpool.com/login/oauth2/code/google
-
           kakao:
             client-id: ${kakao.client-id}
             client-secret: ${kakao.client-id}
@@ -21,7 +20,6 @@ spring:
             scope:
               - profile_nickname
               - account_email
-
           naver:
             client-id: ${naver.client-id}
             client-secret: ${naver.client-secret}
@@ -30,7 +28,7 @@ spring:
               - email
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: https://dev.moum.bangdpool.com/login/oauth2/code/naver
+            redirect-uri: http://dev.moum.bangdpool.com/login/oauth2/code/naver
 
 
         provider:
