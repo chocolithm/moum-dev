@@ -25,13 +25,12 @@
 /* 아래 왼쪽 박스 (게시글) 설정 */
 .board .boardHomeRecent-middle-box {
     width: 58%;
-    min-width: 250px;
+    height: 785px;
     border: 1px solid black;
     border-radius: 15px;
     text-align: left;
     padding: 70px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    height: 815px;
     left: 0;
 }
 
@@ -458,40 +457,63 @@ body {
 
 /* 전체 업적 랭킹 박스 테두리 설정 */
 .container.py-5 {
-    height: 10%;
-    width: 40%;
-    background-color: #f8f9fa; /* 배경 색상 설정 */
-    border-radius: 12px; /* 둥근 모서리 */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
-    border: 1px solid #e0e0e0; /* 카드 테두리 색상 */
+    height: 785px; /* 원하는 높이 값으로 조절 가능 */
+    width: 720px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border: 1px solid black;
-
+    overflow: hidden;
+    flex: 0 0 auto;
+    float: right;
 }
+
 
 /* 자식 요소들의 크기가 변경되지 않도록 설정 */
 .container.py-5 .ranking-card {
     width: 100%; /* 부모 크기에 맞게 늘어나도록 */
+    flex: 0 0 auto;
     box-sizing: border-box; /* padding과 border를 포함시켜서 크기 조정 */
+}
+
+.col-12 {
+    flex: 0 0 auto; /* flex 자동 조절 방지 */
+    width: 100%;
+    height: auto;
+}
+
+.ranking-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 /* 카드 내부 테이블과 내용물의 크기도 고정 */
 .ranking-card .table-responsive {
-    width: 100%; /* 테이블도 부모 크기에 맞게 크기 조정 */
-    box-sizing: border-box; /* 테이블 크기에도 padding 포함되도록 */
+  width: 100%;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      overflow-x: hidden;
 }
 
 /* 테이블 셀 */
 .ranking-card .table-borderless td,
 .ranking-card .table-borderless th {
-    box-sizing: border-box; /* 셀 크기도 padding 포함되도록 설정 */
-    padding: 12px; /* 셀 내부 여백 */
+   box-sizing: border-box;
+       padding: 12px;
+       flex: 0 0 auto;
 }
 
 /* 카드 내부 콘텐츠가 크기를 초과하지 않도록 */
 .ranking-card .card-body {
-    box-sizing: border-box; /* 내부 여백을 포함한 크기 */
-    padding: 16px 20px; /* 패딩 조정 */
-    max-width: 100%; /* 너무 커지지 않도록 제한 */
+     box-sizing: border-box;
+        padding: 15px 10px;
+        width: 100%;
+        flex: 0 0 auto;
+        height: auto;
+        overflow: hidden;
 }
 
 /* 테이블에 overflow가 생기지 않도록 설정 */
@@ -528,6 +550,7 @@ body {
         .rank-badge {
             width: 40px;
             height: 40px;
+            flex: 0 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -535,7 +558,6 @@ body {
             font-weight: bold;
             color: white;
         }
-
 
 
         .current-gold {
@@ -592,7 +614,19 @@ body {
             font-weight: 500;
         }
 
+col-12 .card-body.py-4 {
+    padding: 15px 10px;  /* padding을 적당히 조정 */
+    height: auto;  /* height를 auto로 설정하여 내용에 맞게 늘어나도록 함 */
+    overflow: visible;  /* overflow를 visible로 설정하여 내용이 짤리지 않도록 함 */
+    box-sizing: border-box;  /* padding과 border를 포함한 크기 조정 */
+}
 
+/* "현재 업적 정보가 없습니다." 메시지가 있을 때, 텍스트가 잘리지 않도록 */
+.col-12 .alert-light {
+    padding: 20px;
+    font-size: 1rem;
+    text-align: center;
+}
 
 
 
