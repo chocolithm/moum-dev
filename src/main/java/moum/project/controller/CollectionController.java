@@ -130,6 +130,21 @@ public class CollectionController {
     return "collection/view";
   }
 
+  @GetMapping("/viewFromBoard")
+  public String viewFromBoard(int no, Model model) throws Exception {
+    Collection collection = collectionService.get(no);
+    List<Maincategory> maincategoryList = categoryService.listMaincategory();
+    List<Subcategory> subcategoryList = categoryService.listSubcategory(collection.getMaincategory().getNo());
+    List<CollectionStatus> collectionStatusList = statusService.list();
+
+    model.addAttribute("collection", collection);
+    model.addAttribute("maincategoryList", maincategoryList);
+    model.addAttribute("subcategoryList", subcategoryList);
+    model.addAttribute("collectionStatusList", collectionStatusList);
+
+    return "collection/viewFromBoard";
+  }
+
   @PutMapping("/update")
   @ResponseBody
   public String update(

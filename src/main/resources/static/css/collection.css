@@ -80,6 +80,8 @@
 
 .collection-form-layer {
   vertical-align: middle;
+  justify-content: center;
+  align-items: center;
 }
 
 .collection-form-layer .left-side,
@@ -87,13 +89,13 @@
   display: flex;
   flex-direction: column;
   width: 40%;
-  float: left;
+  margin: 1.25%;
+  justify-content: center;
 }
 
 .collection-form-layer .left-side .collection-image,
 .collection-view-layer .left-side .collection-image {
   width: 100%;
-  height: 80%;
   background-color: #f0f0f0;
   display: flex;
   justify-content: center;
@@ -106,7 +108,6 @@
   position: relative;
   max-width: 600px;
   height: 300px;
-  margin: auto;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -177,8 +178,11 @@
 
 .collection-form-layer .right-side,
 .collection-view-layer .right-side {
+  margin: 1.25%;
   width: 55%;
-  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .collection-form-layer .right-side table,
@@ -237,6 +241,18 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.collection-view-layer #viewFromBoard td {
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.collection-view-layer .left-side .from-board {
+  cursor: auto;
 }
 
 @media screen and (max-width: 767px) {

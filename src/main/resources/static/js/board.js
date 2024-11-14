@@ -339,7 +339,7 @@ function tradeComplete(boardNo) {
 
 
 function collectionLoadButton(no) {
-    openCollectionViewModal(no);
+    openCollectionViewModalFromBoard(no);
 }
 /*-----------------------------------------------------------------------*/
 

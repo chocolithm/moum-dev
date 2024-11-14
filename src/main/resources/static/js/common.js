@@ -35,6 +35,13 @@ function fadeIn(element) {
     }, 10);
 }
 
+function fadeInWithFlex(element) {
+    element.style.display = "flex";
+    setTimeout(function () {
+        element.style.opacity = 1;
+    }, 10);
+}
+
 function fadeOut(element) {
     element.style.opacity = 0;
     setTimeout(function () {

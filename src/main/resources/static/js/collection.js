@@ -2,7 +2,7 @@
 function openCollectionFormModal() {
     fetchCollectionForm();
     openOverlay();
-    fadeIn(document.querySelector(".collection-form-layer"));
+    fadeInWithFlex(document.querySelector(".collection-form-layer"));
 }
 
 
@@ -134,7 +134,14 @@ function addCollection() {
 function openCollectionViewModal(no) {
     fetchCollectionView(no);
     openOverlay();
-    fadeIn(document.getElementsByClassName("collection-view-layer")[0]);
+    fadeInWithFlex(document.getElementsByClassName("collection-view-layer")[0]);
+}
+
+// 거래게시글에서 수집품 조회 화면 열기
+function openCollectionViewModalFromBoard(no) {
+    fetchCollectionViewFromBoard(no);
+    openOverlay();
+    fadeInWithFlex(document.getElementsByClassName("collection-view-layer")[0]);
 }
 
 // 수집품 조회 화면 내용 가져오기
@@ -143,6 +150,36 @@ function fetchCollectionView(no) {
     initCollectionSlideIndex();
 
     fetch(`/collection/view?no=${no}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            document.querySelector('.collection-view-layer').innerHTML =
+                doc.querySelector('.collection-view-layer').innerHTML;
+
+            document.addEventListener("DOMContentLoaded", function () {
+                showSlides(collectionSlideIndex);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching collection view:", error);
+        });
+
+    console.log("collectionSlideIndex: " + collectionSlideIndex);
+}
+
+// 수집품 조회 화면 내용 가져오기
+function fetchCollectionViewFromBoard(no) {
+
+    initCollectionSlideIndex();
+
+    fetch(`/collection/viewFromBoard?no=${no}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

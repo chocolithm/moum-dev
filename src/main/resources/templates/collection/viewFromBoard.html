@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<div class="layer collection-view-layer">
+  <div class="left-side">
+    <img alt="수집품 이미지" class="collection-image empty-image"
+         data-th-style="${not (collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''"
+         onClick="triggerFileInput()" src="/images/collections/empty-collection.png">
+    <div class="slider"
+         data-th-style="${(collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''">
+      <div class="slides">
+        <img alt="수집품 이미지" class="collection-image slide current-image from-board" data-th-each="attachedFile : ${collection.attachedFiles}"
+             data-th-id="'collection-image-' + ${attachedFile.no}"
+             data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}">
+      </div>
+      <a class="prev" data-th-style="${#lists.size(collection.attachedFiles) <= 1 ? 'display:none;' : ''}" onClick="changeSlide(-1)">&#10094;</a>
+      <a class="next" data-th-style="${#lists.size(collection.attachedFiles) <= 1 ? 'display:none;' : ''}" onClick="changeSlide(1)">&#10095;</a>
+    </div>
+  </div>
+  <div class="right-side" id="viewFromBoard">
+    <table>
+      <tr>
+        <td>이름</td>
+        <td data-th-text="${collection.name}"></td>
+      </tr>
+      <tr>
+        <td>가격</td>
+        <td data-th-text="${collection.price}"></td>
+      </tr>
+      <tr>
+        <td>대분류</td>
+        <td data-th-each="maincategory : ${maincategoryList}"
+            data-th-if="${maincategory.no} == ${collection.maincategory.no}" data-th-text="${maincategory.name}">대분류명</td>
+        <td data-th-if="${collection.maincategory.no == 999}">기타</td>
+      </tr>
+      <tr data-th-style="${collection.subcategory.no != 999 ? 'display: table-row;' : 'display: none;'}">
+        <td>소분류</td>
+        <td data-th-each="subcategory : ${subcategoryList}"
+            data-th-if="${subcategory.no} == ${collection.subcategory.no}" data-th-text="${subcategory.name}">소분류명</td>
+      </tr>
+      <tr data-th-style="${collection.subcategory.no == 999 ? 'display: table-row;' : 'display: none;'}">
+        <td>분류명</td>
+        <td data-th-text="${collection.otherCategory}"></td>
+      </tr>
+      <tr>
+        <td>구매처</td>
+        <td data-th-text="${collection.purchasePlace}"></td>
+      </tr>
+      <tr>
+        <td>보관장소</td>
+        <td data-th-text="${collection.storageLocation}"></td>
+      </tr>
+      <tr>
+        <td>상태</td>
+            <td data-th-each="status : ${collectionStatusList}"
+                data-th-if="${status.no} == ${collection.status.no}" data-th-text="${status.name}">상태명</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
