@@ -162,7 +162,7 @@
                 <div class="col-12">
                     <div class="ranking-card card">
                         <div class="card-header bg-light">
-                            <h5 class="card-title mb-0">현재 내 순위</h5>
+                            <h5 class="card-title mb-0">현재 내 업적 순위</h5>
                         </div>
                         <div th:class="'card-body py-4 ' + ${rankNowUserList != null ? (rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : ''))) : ''}">
                             <div th:if="${rankNowUserList != null}" class="text-center">
@@ -172,8 +172,10 @@
                                     <span class="score-badge" th:text="${rankNowUserList.score} + '점'"></span>
                                 </p>
                             </div>
-                            <div th:if="${rankNowUserList == null}" class="alert alert-light text-center">
-                                현재 업적 정보가 없습니다.
+                            <div th:if="${rankNowUserList == null}" class="text-center">
+                                <p class="mb-0">
+                                    <span class="fw-bold">현재 업적 정보가 없습니다.</span>
+                                </p>
                             </div>
                         </div>
                     </div>

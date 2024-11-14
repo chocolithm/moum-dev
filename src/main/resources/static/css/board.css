@@ -539,6 +539,7 @@ body {
 .table-row .rank-badge {
     padding: 5px 10px;
     border-radius: 20px;
+    color: white;
 }
 
 .table-row .score-badge {
@@ -573,20 +574,59 @@ body {
         }
         */
 
-        .rank-1 {
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-        }
+       .rank-1 {
+           background: linear-gradient(45deg, #FFEC40, #FFD700); /* 밝은 금색 */
+           position: relative;
+           box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.7);
+           animation: sparkle1 1.5s infinite alternate;
+       }
 
-        .rank-2 {
-            background: linear-gradient(45deg, #C0C0C0, #A9A9A9);
-        }
+       .rank-2 {
+           background: linear-gradient(45deg, #D3D3D3, #C0C0C0); /* 밝은 은색 */
+           position: relative;
+           box-shadow: 0 0 10px 3px rgba(192, 192, 192, 0.7);
+           animation: sparkle2 1.5s infinite alternate;
+       }
 
-        .rank-3 {
-            background: linear-gradient(45deg, #CD7F32, #8B4513);
-        }
+       .rank-3 {
+           background: linear-gradient(45deg, #F4A261, #CD7F32); /* 밝은 동색 */
+           position: relative;
+           box-shadow: 0 0 10px 3px rgba(205, 127, 50, 0.7);
+           animation: sparkle3 1.5s infinite alternate;
+       }
+
+       /* 반짝이는 효과를 위한 애니메이션 */
+       @keyframes sparkle1 {
+           0% {
+               box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.7);
+           }
+           100% {
+               box-shadow: 0 0 20px 5px rgba(255, 215, 0, 1);
+           }
+       }
+
+       @keyframes sparkle2 {
+           0% {
+               box-shadow: 0 0 10px 3px rgba(192, 192, 192, 0.7);
+           }
+           100% {
+               box-shadow: 0 0 20px 5px rgba(192, 192, 192, 1);
+           }
+       }
+
+       @keyframes sparkle3 {
+           0% {
+               box-shadow: 0 0 10px 3px rgba(205, 127, 50, 0.7);
+           }
+           100% {
+               box-shadow: 0 0 20px 5px rgba(205, 127, 50, 1);
+           }
+       }
+
+
 
         .rank-other {
-            background: #6c757d;
+            background: ffffff;
         }
 
         .ranking-card {
