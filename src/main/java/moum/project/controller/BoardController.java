@@ -327,9 +327,26 @@ public class BoardController {
     }
 
     List<AttachedFile> attachedFiles = new ArrayList<>();
-    for (String oldFile : oldFiles) {
+    List<AttachedFile> existingFiles = existingBoard.getAttachedFiles();
 
+    // 기존 첨부파일 중 유지되는 파일은 attachedFiles로 담고 existingFiles에서 삭제
+    for (String oldFile : oldFiles) {
+      for (AttachedFile attachedFile : existingFiles) {
+        if (attachedFile.getFilename().equals(oldFile)) {
+          attachedFiles.add(attachedFile);
+          existingFiles.remove(attachedFile);
+          break;
+        }
+      }
     }
+
+    // existingFiles에 남아있는 파일은 삭제된 파일이므로 DB 및 Storage에서 삭제
+    for (AttachedFile attachedFile : existingFiles) {
+      storageService.delete(boardFolderName + attachedFile.getFilename());
+      boardDao.deleteAttachedFile(attachedFile.getFilename());
+    }
+
+
 
     // existingBoard의 attachedFiles를 가져와서 oldFiles와 비교하며 없는 파일을 storage에서 삭제
     // 있는 파일은 storage에서 유지 및 updatedBoard의 attachedFiles에 추가

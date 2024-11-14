@@ -218,6 +218,12 @@
         WHERE board_id = #{no}
     </delete>
 
+    <!--  첨부파일 하나 삭제  -->
+    <delete id="deleteAttachedFile" parameterType="String">
+        DELETE FROM board_photo
+        WHERE filename = #{filename}
+    </delete>
+
     <!-- 논리적 삭제 (delete) -->
     <update id="delete" parameterType="int">
         UPDATE board

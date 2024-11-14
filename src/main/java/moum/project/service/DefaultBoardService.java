@@ -103,6 +103,11 @@ public class DefaultBoardService implements BoardService {
         boardDao.deleteAttachedFilesByBoardId(boardNo);
     }
 
+    @Override
+    public void deleteAttachedFile(String filename) {
+        boardDao.deleteAttachedFile(filename);
+    }
+
     public void insertAttachedFiles(List<AttachedFile> files) {
         if (!files.isEmpty()) {
             boardDao.insertAttachedFiles(files);

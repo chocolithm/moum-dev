@@ -1,7 +1,6 @@
 package moum.project.service;
 
 import java.util.List;
-
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Board;
 
@@ -53,7 +52,11 @@ public interface BoardService {
     void updateAttachedFiles(int no, List<AttachedFile> newFiles);
 
    void updateTrade(Board board);
+
    void deleteAttachedFiles(int boardNo);
+
+   void deleteAttachedFile(String filename);
+
    void insertAttachedFiles(List<AttachedFile> files);
 
     Board findBoardById(int boardId);

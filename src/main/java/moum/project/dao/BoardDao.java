@@ -50,6 +50,8 @@ public interface BoardDao {
 
     void deleteAttachedFilesByBoardId(int boardId); // 첨부 파일 삭제
 
+    void deleteAttachedFile(String filename);
+
     List<Board> listByPage(
         @Param("pageNo") int pageNo,
         @Param("pageCount") int pageCount) throws Exception;
