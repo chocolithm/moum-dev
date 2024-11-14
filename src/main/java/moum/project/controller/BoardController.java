@@ -326,14 +326,12 @@ public class BoardController {
       existingBoard.setContent(updatedBoard.getContent());
     }
 
-    List<AttachedFile> attachedFiles = new ArrayList<>();
     List<AttachedFile> existingFiles = existingBoard.getAttachedFiles();
 
     // 기존 첨부파일 중 유지되는 파일은 attachedFiles로 담고 existingFiles에서 삭제
     for (String oldFile : oldFiles) {
       for (AttachedFile attachedFile : existingFiles) {
         if (attachedFile.getFilename().equals(oldFile)) {
-          attachedFiles.add(attachedFile);
           existingFiles.remove(attachedFile);
           break;
         }
@@ -346,6 +344,21 @@ public class BoardController {
       boardDao.deleteAttachedFile(attachedFile.getFilename());
     }
 
+    if (files != null && files.length > 0) {
+      List<AttachedFile> attachedFiles = uploadFiles(files);
+      updatedBoard.setAttachedFiles(attachedFiles);
+
+      String content = updatedBoard.getContent();
+
+      for (AttachedFile attachedFile : attachedFiles) {
+        String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s", attachedFile.getFilename());
+
+        // 정규식을 통해 첫 번째 data:image 형식의 base64 이미지를 newUrl로 교체
+        content = content.replaceFirst("src=\"data:image[^\"]+\"", "src=\"" + newUrl + "\"");
+      }
+
+      updatedBoard.setContent(content);
+    }
 
 
     // existingBoard의 attachedFiles를 가져와서 oldFiles와 비교하며 없는 파일을 storage에서 삭제
@@ -379,10 +392,7 @@ public class BoardController {
 //    }
 
 
-
-    boolean updateSuccessful = boardService.update(updatedBoard);
-
-    if (updateSuccessful) {
+    if (boardService.update(updatedBoard)) {
       return ResponseEntity.ok("success");
     } else {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시글 업데이트에 실패했습니다.");
