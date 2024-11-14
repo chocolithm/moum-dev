@@ -30,7 +30,6 @@ spring:
             authorization-grant-type: authorization_code
             redirect-uri: http://dev.moum.bangdpool.com/login/oauth2/code/naver
 
-
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
