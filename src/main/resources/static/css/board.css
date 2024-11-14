@@ -3,7 +3,7 @@
 /* board 클래스 설정 */
 .board {
     display: flex;
-    justify-content: space-between;
+
     flex-wrap: wrap;
     gap: 20px;
     padding: 40px;
@@ -24,12 +24,12 @@
 
 /* 아래 왼쪽 박스 (게시글) 설정 */
 .board .boardHomeRecent-middle-box {
-    width: 58%;
-    height: 785px;
+    width: 39%;
+    height: 745px;
     border: 1px solid black;
     border-radius: 15px;
     text-align: left;
-    padding: 70px;
+    padding: 1px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     left: 0;
 }
@@ -456,8 +456,8 @@ body {
 
 
 /* 전체 업적 랭킹 박스 테두리 설정 */
-.container.py-5 {
-    height: 785px; /* 원하는 높이 값으로 조절 가능 */
+.middle-box.abcd{
+    height: 745px; /* 원하는 높이 값으로 조절 가능 */
     width: 720px;
     background-color: #f8f9fa;
     border-radius: 12px;
@@ -470,7 +470,7 @@ body {
 
 
 /* 자식 요소들의 크기가 변경되지 않도록 설정 */
-.container.py-5 .ranking-card {
+.middle-box.abcd.ranking-card {
     width: 100%; /* 부모 크기에 맞게 늘어나도록 */
     flex: 0 0 auto;
     box-sizing: border-box; /* padding과 border를 포함시켜서 크기 조정 */
@@ -649,7 +649,7 @@ body {
 
         .score-badge {
             background-color: #e9ecef;
-            color: #00ffaa;
+            color: #007bff;
             padding: 5px 10px;
             border-radius: 20px;
             font-weight: 500;
@@ -669,7 +669,12 @@ col-12 .card-body.py-4 {
     text-align: center;
 }
 
-
+@media screen and (max-width: 745px) {
+    .middle-box.abcd {
+        width: 100%;
+        /* 작은 화면에서는 하나의 게시글이 한 줄에 표시되도록 */
+    }
+}
 
 
 
