@@ -33,6 +33,13 @@
         )
     </insert>
 
+    <!-- 사용자의 모든 SNS 연동 정보 조회 -->
+    <select id="findAllByUserId" resultMap="userSnsResultMap">
+        SELECT *
+        FROM user_sns
+        WHERE user_id = #{userId}
+    </select>
+
     <delete id="deleteByUserId">
         DELETE FROM user_sns
         WHERE user_id = #{userId}
