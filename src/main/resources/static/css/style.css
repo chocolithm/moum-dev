@@ -1024,3 +1024,16 @@ td {
     max-height: 200px;
   }
 }
+
+/* 전체 레이아웃을 가운데 정렬하고 폭을 1280px로 고정 */
+.container {
+    max-width: 1280px;
+    margin: 136px auto;
+}
+
+/* 기본 스타일 리셋 */
+body, html {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
