@@ -32,6 +32,7 @@ import java.util.*;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 11. 13.        narilee       최초 생성
+ * 24. 11. 14.        narilee       구글, 카카오, 네이버 간편로그인 설정
  */
 @Service
 @RequiredArgsConstructor
@@ -66,7 +67,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       email = (String) kakaoAccount.get("email");
       name = (String) kakaoProfile.get("nickname");
       providerId = String.valueOf(attributes.get("id"));
-    } else { // Google
+    }
+    else if ("naver".equals(registrationId)) {
+      Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+      email = (String) response.get("email");
+      name = (String) response.get("name");
+      providerId = (String) response.get("id");
+    }
+    else { // Google
       email = (String) attributes.get("email");
       name = (String) attributes.get("name");
       providerId = (String) attributes.get(userNameAttributeName);
