@@ -155,6 +155,16 @@ header img {
 /* 로고 이미지에만 호버 효과 적용 */
 header img.logo:hover {
     transform: scale(1.1); /* 이미지 크기 확대 */
+    animation: sparkle1 1.5s infinite alternate;
+}
+
+@keyframes sparkle1 {
+    0% {
+        box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 20px 5px rgba(255, 215, 0, 1);
+    }
 }
 
 header img:not(.logo):hover {
@@ -1057,15 +1067,7 @@ main > .slider-container .slider {
   }
 }
 
-/* 전체 레이아웃을 가운데 정렬하고 폭을 1280px로 고정 */
-.container {
-    max-width: 1280px;
-    margin: 136px auto;
-}
 
-/* 기본 스타일 리셋 */
-body, html {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
+
+
+
