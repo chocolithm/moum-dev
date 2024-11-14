@@ -11,49 +11,17 @@
 
 <body>
 <main>
-	<h1>내 정보</h1>
+	<h1>회원 정보</h1>
 
 	<div class="wrapper">
 		<div class="alert alert-success" th:if="${message}" th:text="${message}"></div>
 		<div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
-		
+
 		<div th:unless="${user}">
 			<p>사용자 정보를 찾을 수 없습니다.</p>
 		</div>
-		
+
 		<div class="my-info-wrapper">
-<!--			<div class="profile-container" th:if="${user}" th:object="${user}">-->
-<!--				<div class="profile-image-container">-->
-<!--					<a th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}"-->
-<!--					   th:if="*{photo != null}">-->
-<!--						<img alt="프로필 이미지" class="profile-img"-->
-<!--						     th:src="'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + *{photo}">-->
-<!--					</a>-->
-<!--					<a href="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png"-->
-<!--					   th:if="*{photo == null}">-->
-<!--						<img alt="기본 프로필 이미지" class="profile-img"-->
-<!--						     src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">-->
-<!--					</a>-->
-<!--				</div>-->
-
-<!--				<div class="user-info">-->
-<!--					<p>닉네임: <span th:text="*{nickname}"></span></p>-->
-<!--					<p>이메일: <span th:text="*{email}"></span></p>-->
-<!--				</div>-->
-
-<!--				<div class="user-info-dropdown">-->
-<!--					<div class="user-title-dropdown" data-th-if="${primaryAchievement}">-->
-<!--						<p data-th-text="'업적: ' + ${primaryAchievement.name}"></p>-->
-<!--					</div>-->
-
-<!--					<div class="user-title-dropdown" data-th-unless="${primaryAchievement}">-->
-<!--						<p>대표업적이 없습니다.</p>-->
-<!--					</div>-->
-
-<!--					<button class="edit-button" onclick="location.href='/user/update'">수정하기</button>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
 		<!-- 프로필 이미지 섹션 -->
 		<div class="profile-image-container">
 			<div class="profile-container" th:if="${user}" th:object="${user}">
@@ -89,10 +57,10 @@
 
 
 
-		<!-- 게시글 섹션 시작 -->
+		<!-- 내 게시글 섹션 시작 -->
 		<div class="layout-container">
 			<div class="my-info-board-container">
-				<h2>게시글</h2>
+				<h2>최근 게시글</h2>
 				<div class="my-info-board">
 					<div class="my-info-achievement-photo custom-achievement">
                         <span class="my-info-achievement-image">
@@ -105,7 +73,7 @@
                             </div>
                         </span>
 					</div>
-					
+
 					<div class="my-info-achievement-photo custom-achievement">
                         <span class="my-info-achievement-image">
                             <img alt="게시글 이미지" class="my-info-achievement-img"
@@ -119,37 +87,37 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="achievement-box">
 				<div class="title-section">
 					<h2>업적</h2>
 					<div class="achievement-header">
-						<img alt="업적 현황"
+						<img alt="내 업적 현황"
 						     class="achievement-list-btn"
 						     onclick="openAchievementListByUser()"
 						     src="/images/user/more/three-dots.png"
 						     style="">
 					</div>
 				</div>
-				
+
 				<div class="info-achievement-container">
 					<div class="info-achievement-photo custom-achievement"
 					     data-th-each="achievement, iterStat : ${achievementlist}"
 					     data-th-id="${achievement.id}"
 					     data-th-if="${iterStat.index < 3 and achievement.progress < 100}"
 					     data-th-progress="${achievement.progress}">
-            
+
             <span class="info-achievement-image">
                 <img alt="업적 이미지"
                      class="info-achievement-img"
                      data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}">
             </span>
-						
+
 						<span class="info-achievement-details">
                 <div class="info-achievement-name">
                     <span data-th-text="${achievement.name}">업적명</span>
                 </div>
-							
+
 							<!-- Bootstrap Progress Bar 적용 -->
                 <div class="info-achievement-photo-progressbar">
                     <div class="progress">
@@ -166,7 +134,7 @@
                         </div>
                     </div>
                 </div>
-							
+
 							<!-- Progress Text -->
                 <div class="info-progress-text">
                     <span data-th-text="${achievement.progress} + '%'">Progress: 75%</span>
@@ -175,8 +143,8 @@
 					</div>
 				</div>
 			</div>
-			
-			
+
+
 			<div class="achievement-user-progress layer"></div>
 		</div>
 	</div>
