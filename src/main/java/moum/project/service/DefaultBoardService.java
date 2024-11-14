@@ -69,7 +69,20 @@ public class DefaultBoardService implements BoardService {
 
     @Override
     public boolean update(Board board) throws Exception {
-        return boardDao.update(board);
+        if (boardDao.update(board)) {
+
+            // 추가된 첨부파일이 있으면 insert
+            List<AttachedFile> attachedFiles = board.getAttachedFiles();
+            if (attachedFiles != null && !attachedFiles.isEmpty()) {
+                for (AttachedFile file : attachedFiles) {
+                    file.setBoardNo(board.getNo()); // 게시글 번호 설정
+                }
+                boardDao.insertAttachedFiles(attachedFiles); // 첨부 파일 삽입
+
+            }
+            return true;
+        }
+        return false;
 
 //        int count = boardDao.update(board);
 //        if (count > 0) {
