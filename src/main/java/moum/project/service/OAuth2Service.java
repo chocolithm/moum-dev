@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import moum.project.dao.UserSnsDao;
 import moum.project.vo.User_SNS;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -34,6 +34,9 @@ public class OAuth2Service {
   private final UserService userService;
   private final RestTemplate restTemplate = new RestTemplate();
   private final UserSnsDao userSnsDao;
+
+  @Value("${kakao.client-admin}")
+  private String kakaoAdminId;
 
   /**
    * 사용자의 모든 SNS  연동을 해제합니다.
@@ -103,15 +106,35 @@ public class OAuth2Service {
   /**
    * 카카오 연동을 해제합니다.
    *
-   * @param providerUserId 연동된 sns 회원 번호
+   * @param accessToken
    */
   private void unlinkKakao(String providerUserId) {
     String url = "https://kapi.kakao.com/v1/user/unlink";
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-    headers.setBearerAuth(providerUserId);
+    headers.set("Authorization", "KakaoAK " + kakaoAdminId);  // Admin 키 사용
 
-    HttpEntity<String> request = new HttpEntity<>(headers);
-    restTemplate.postForObject(url, request, String.class);
+    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+    params.add("target_id_type", "user_id");
+    params.add("target_id", providerUserId);  // 카카오 사용자 ID
+
+    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+
+    try {
+      ResponseEntity<String> response = restTemplate.exchange(
+          url,
+          HttpMethod.POST,
+          request,
+          String.class
+      );
+
+      if (!response.getStatusCode().is2xxSuccessful()) {
+        log.error("카카오 연동해제 실패 이유: {}", response.getStatusCode());
+        throw new RuntimeException("카카오 연동해제 실패 이유: " + response.getStatusCode());
+      }
+    } catch (HttpClientErrorException e) {
+      log.error("카카오 연동해제 실패 이유: {}", e.getStatusCode());
+      throw e;
+    }
   }
 }
