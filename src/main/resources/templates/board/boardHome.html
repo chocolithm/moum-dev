@@ -42,7 +42,7 @@
     <div class="board">
         <!-- 인기글 섹션 -->
         <div class="boardHomePopular-middle-box">
-            <h2>인기글</h2>
+            <h2 class="text-center mb-4 fw-bold">인기글</h2>
             <button type="button" class="write-button btn" style="background-color: #000000; border-color: #000000; color: #ffffff;" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
@@ -63,9 +63,7 @@
 
         <!-- 최근 게시글 섹션 -->
         <div class="boardHomeRecent-middle-box">
-            <h2>
-                <button onclick="location.href='/board/boardList'" style="background: none; border: none; font-size: 24px; cursor: pointer; font-weight: bold;">게시글</button>
-            </h2>
+            <h2 class="text-center mb-4 fw-bold">게시글</h2>
             <div class="boardHomeRecent-middle-image" th:each="board : ${recentBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
                     <img alt="게시글 이미지"
