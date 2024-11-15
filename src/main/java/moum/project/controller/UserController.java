@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import moum.project.config.CustomUserDetails;
 import moum.project.dao.UserSnsDao;
 import moum.project.service.AchievementService;
+import moum.project.service.OAuth2Service;
 import moum.project.service.StorageService;
 import moum.project.service.UserService;
 import moum.project.vo.Achievement;
@@ -39,6 +40,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * 24. 10. 30.        narilee       회원 조회, 수정 페이지 분리
  * 24. 10. 31.        narilee       회원 삭제 기능 추가
  * 24. 11. 13.        narilee       SNS연동 기능 추가, 타유저 회원 정보 보기 기능 추가
+ * 24. 11. 15.        narilee       탈퇴시 모든 연동된 SNS 연동 해제
  */
 @Controller
 @RequestMapping("/user")
@@ -50,6 +52,7 @@ public class UserController {
   private final StorageService storageService;
   private final PasswordEncoder passwordEncoder;
   private final AchievementService achievementService;
+  private final OAuth2Service oAuth2Service;
 
   private String folderName = "user/profile/";
 
@@ -287,6 +290,9 @@ public class UserController {
       if (loginUser.getPhoto() != null && !loginUser.getPhoto().isEmpty()) {
         storageService.delete(folderName + loginUser.getPhoto());
       }
+
+      // SNS 연동 해제
+      oAuth2Service.unlinkAllSnsConnections(loginUser.getNo());
 
       // SNS 연동 정보 삭제
       userSnsDao.deleteByUserId(loginUser.getNo());

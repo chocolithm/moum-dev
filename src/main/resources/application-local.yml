@@ -13,6 +13,7 @@ spring:
           kakao:
             client-id: ${kakao.client-id}
             client-secret: ${kakao.client-secret}
+            admin-key: ${kakao.client-admin}
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
