@@ -97,29 +97,6 @@
     gap: 20px;
 }
 
-/* 글쓰기 버튼 스타일 */
-.write-button {
-    display: inline-block;
-    padding: 8px 16px;
-    font-weight: bold;
-    font-size: 16px;
-    color: #000000;
-    background-color: #f8f9fa;
-    border: 1px solid #ced4da;
-    border-radius: 12px;
-    text-decoration: none;
-    position: absolute;
-    right: 77px;
-    top: 70px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.write-button:hover {
-    background-color: #e2e6ea;
-    border-color: #adb5bd;
-}
-
 .write-button:focus {
     outline: none;
     box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);
@@ -333,24 +310,6 @@ body {
     background-color: transparent;
 }
 
-/* 검색 버튼 스타일 */
-.search-button {
-    background-color: #00ffaa;
-    border: none;
-    color: black;
-    padding: 8px 20px; /* 텍스트가 들어갈 공간을 넓힘 */
-    margin-left: 10px;
-    border-radius: 5px; /* 둥근 사각형 모양 (작은 값으로 설정) */
-    font-size: 16px; /* 텍스트 크기 */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-align: center; /* 텍스트 중앙 정렬 */
-}
-
-/* 검색 버튼 호버 스타일 */
-.search-button:hover {
-    background-color: #00ffaa;
-}
 
 
 /* '주제별' 텍스트에 대한 스타일 */
@@ -749,6 +708,7 @@ main {
     margin: 0;
 }
 
+
 /* 버튼 스타일 */
 button {
     cursor: pointer;
@@ -759,6 +719,7 @@ button {
     font-weight: 500;
     transition: background-color 0.3s ease;
 }
+
 
 /* 추천하기 버튼 */
 .like-button {
@@ -910,3 +871,42 @@ button {
     font-weight: bold; /* 항목 이름을 굵게 */
 }
 
+/* 전체 검색 및 버튼을 같은 줄에 배치 */
+.search-container {
+    display: flex;
+    justify-content: space-between; /* 검색창, 버튼들 간의 간격을 균등하게 분배 */
+    align-items: center; /* 수직 정렬 */
+    margin-top: 20px; /* 헤더와의 간격을 설정 */
+}
+
+/* 검색 입력창 스타일 */
+.search-input {
+    width: 250px; /* 입력창의 너비 */
+    padding: 10px;
+    margin-right: 10px; /* 검색 버튼과 간격을 설정 */
+}
+
+/* 검색 버튼 스타일 */
+.search-button {
+    background-color: #000000;
+    border-color: #000000;
+    border-radius: 5px; /* 둥근 사각형 모양 (작은 값으로 설정) */
+    font-size: 16px; /* 텍스트 크기 */
+    padding: 10px 15px;
+    color: #ffffff;
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 글쓰기 버튼 스타일 */
+.write-button {
+    display: inline-block;
+    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    position: absolute;
+    right: 77px;
+    top: 70px;
+    cursor: pointer;
+}

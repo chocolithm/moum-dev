@@ -22,7 +22,7 @@
                 <div class="title" style="font-weight: bold" th:text="'주제별'">주제별</div>
             </div>
         </div>
-        <nav class="navbar bg-white">
+        <nav class="navbar bg-white" style="flex-grow: 1;">
             <div class="container-fluid">
                 <form class="d-flex" role="search">
                     <div class="search-container">
@@ -35,12 +35,15 @@
             </div>
         </nav>
     </div>
+</main>
+
+
 
     <div class="board">
         <!-- 인기글 섹션 -->
         <div class="boardHomePopular-middle-box">
             <h2>인기글</h2>
-            <button type="button" class="write-button btn" style="background-color: #00ffaa; border-color: #00ffaa;" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
+            <button type="button" class="write-button btn" style="background-color: #000000; border-color: #000000; color: #ffffff;" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
             <div class="boardHome-middle-image" th:each="board : ${popularBoards}">
                 <a th:href="@{/board/boardView(no=${board.no})}">
                     <img alt="게시글 이미지"
@@ -87,7 +90,7 @@
                 <!-- Top 1-5 Rankings -->
                 <div class="col-md-6 mx-auto mb-2"> <!-- mb-1을 mb-2로 변경 -->
                     <div class="ranking-card card h-100 shadow-sm border">
-                        <div class="card-header" style="background-color: #00ffaa; color: black;">
+                        <div class="card-header" style="background-color: #000000; border-color: #000000; color: #ffffff;">
                             <h5 class="card-title mb-0">Top 1-5</h5>
                         </div>
                         <div class="card-body p-0">
@@ -124,7 +127,7 @@
                 <!-- Top 6-10 Rankings -->
                 <div class="col-md-6 mx-auto mb-2 TopRankWidth2"> <!-- mb-1을 mb-2로 변경 -->
                     <div class="ranking-card card h-100 shadow-sm border">
-                        <div class="card-header" style="background-color: #00ffaa; color: black;">
+                        <div class="card-header" style="background-color: #000000; border-color: #000000; color: #ffffff;">
                             <h5 class="card-title mb-0">Top 6-10</h5>
                         </div>
                         <div class="card-body p-0">
