@@ -106,7 +106,7 @@ public class OAuth2Service {
   /**
    * 카카오 연동을 해제합니다.
    *
-   * @param accessToken
+   * @param providerUserId 연동된 sns 회원 번호
    */
   private void unlinkKakao(String providerUserId) {
     String url = "https://kapi.kakao.com/v1/user/unlink";

@@ -12,7 +12,8 @@ spring:
             redirect-uri: http://dev.moum.bangdpool.com/login/oauth2/code/google
           kakao:
             client-id: ${kakao.client-id}
-            client-secret: ${kakao.client-id}
+            client-secret: ${kakao.client-secret}
+            admin-key: ${kakao.client-admin}
             redirect-uri: http://dev.moum.bangdpool.com/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
