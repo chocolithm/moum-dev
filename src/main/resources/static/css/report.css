@@ -1,0 +1,31 @@
+.layer.report-layer {
+    width: 400px;
+    height: 400px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.report-layer div {
+    width: 90%;
+}
+
+.report-layer select {
+    width: 60%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 15px;    
+}
+
+.report-layer textarea {
+    width: 90%;
+    height: 200px;
+    resize: none;
+}
+
+.report-layer .report-button {
+    width: 90%;
+    margin: 5px;
+}

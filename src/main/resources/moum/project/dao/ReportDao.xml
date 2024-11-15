@@ -29,12 +29,22 @@
       <result column="result_name" property="name"/>
     </association>
 
+  </resultMap>
 
+  <resultMap id="ReportCategoryMap" type="moum.project.vo.ReportCategory">
+    <id column="report_category_id" property="no"/>
+    <result column="category_name" property="name"/>
+  </resultMap>
+
+  <resultMap id="ResultCategoryMap" type="moum.project.vo.ReportResultCategory">
+    <id column="report_result_id" property="no"/>
+    <result column="result_name" property="name"/>
   </resultMap>
 
   <insert id="insert" parameterType="moum.project.vo.Report"
           useGeneratedKeys="true" keyColumn="report_id" keyProperty="no">
-
+    insert into report(user_id, report_category_id, report_content)
+    values(#{user.no}, #{reportCategory.no}, #{reportContent})
   </insert>
 
   <select id="findBy" resultMap="ReportMap" parameterType="int">
@@ -79,6 +89,16 @@
       left join user u on r.user_id = u.user_id
       left join report_category rc on r.report_category_id = rc.report_category_id
       left join report_result_category rrc on r.report_result_id = rrc.report_result_id
+  </select>
+
+  <select id="listReportCategories" resultMap="ReportCategoryMap">
+    select
+      report_category_id,
+      category_name
+    from
+      report_category
+    order by
+      category_name
   </select>
 
 </mapper>

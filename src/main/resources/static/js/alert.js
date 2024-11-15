@@ -220,5 +220,7 @@ function countAlert() {
 
 // 화면 로딩 시 알림 개수 카운트
 window.onload = async () => {
-  countAlert();
+  if (document.querySelector(".alert-btn")) {
+    countAlert();
+  }
 }

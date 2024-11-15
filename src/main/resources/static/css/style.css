@@ -2,6 +2,7 @@
 @import url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
 @import "alert.css";
 @import "chat.css";
+@import "report.css";
 
 * {
     font-family: "Noto Sans", sans-serif;

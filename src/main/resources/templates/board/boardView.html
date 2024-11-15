@@ -36,6 +36,9 @@
         <button class="btn btn-warning like-button" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">
             추천하기
         </button>
+        <button class="btn btn-warning like-button" onclick="openReport();" type="button">
+            신고하기
+        </button>
 
         <!-- 게시글 종류에 따라 조건부로 필드를 표시 -->
         <div th:if="${board.boardType == 'trade'}" class="trade-info">
