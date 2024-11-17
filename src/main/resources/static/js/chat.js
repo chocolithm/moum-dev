@@ -112,9 +112,7 @@ function openChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const boardNo = urlParams.get('no');
-  if (boardNo != null) {
+  if (isTrade) {
     const open_chat_btn = document.createElement("button");
     createOpenChatBtn(open_chat_btn);
     chatroom_layer.appendChild(open_chat_btn);
@@ -251,10 +249,8 @@ function closeChat() {
 
   setTimeout(function () {
     chatroom_layer.innerHTML = "";
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const boardNo = urlParams.get('no');
-    if (boardNo != null) {
+    
+    if (isTrade) {
       const open_chat_btn = document.createElement("button");
       createOpenChatBtn(open_chat_btn);
       chatroom_layer.appendChild(open_chat_btn);
