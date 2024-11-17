@@ -56,7 +56,8 @@
             <!-- 추천/신고 버튼 -->
             <div class="action-buttons">
                 <button class="btn btn-warning" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
-                <button class="btn btn-warning" onclick="openReport('board');" type="button">신고하기</button>
+                <button class="btn btn-warning" th:if="${board.userNo != authenticatedUser.no}"
+                        onclick="openReport('board');" type="button">신고하기</button>
             </div>
 
             <!-- 댓글 섹션 -->
