@@ -24,7 +24,7 @@
 
 /* 아래 왼쪽 박스 (게시글) 설정 */
 .board .boardHomeRecent-middle-box {
-    width: 39%;
+    width: 55%;
     height: 745px;
     border: 1px solid black;
     border-radius: 15px;
@@ -35,52 +35,107 @@
 }
 
 
-/* 이미지와 텍스트 정렬 */
-.board .boardHome-middle-image {
-    display: flex;
-    gap: 100px;
-    align-items: flex-start; /* 세로 정렬을 위쪽으로 유지 */
-    justify-content: center; /* 모든 요소를 오른쪽으로 정렬 */
-    padding: 10px;
-}
-
-/* 이미지 스타일 */
-.board .boardHome-middle-image img {
-    width: 250px;
-    height: auto;
-    flex-shrink: 0;
-}
-
-/* 텍스트 스타일 */
-.board .boardHome-middle-image div {
+.boardHomeRecent-middle-image {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-}
-
-/* 게시글 이미지 */
-/* 이미지와 텍스트 정렬 */
-.board .boardHomeRecent-middle-image {
-    display: flex;
-    gap: 50px;
-    align-items: flex-start; /* 세로 정렬을 위쪽으로 유지 */
-    justify-content: flex-end; /* 모든 요소를 오른쪽으로 정렬 */
     padding: 10px;
+    text-align: left;
 }
 
-/* 이미지 스타일 */
-.board .boardHomeRecent-middle-image img {
-    width: 150px;
-    height: auto;
-    flex-shrink: 0;
-}
-
-/* 텍스트 스타일 */
-.board .boardHomeRecent-middle-image div {
+.board-details {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    gap: 5px;
 }
+
+.board-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.board-meta {
+    display: flex;
+    gap: 20px; /* 날짜, 조회수, 추천수를 가로로 나열 */
+    font-size: 14px;
+    color: #555;
+    align-items: center; /* 요소를 수평으로 정렬 */
+}
+
+/*----------------------------------------------------------------*/
+.board-details-name {
+    display: flex;
+    gap: 200px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 1px;
+}
+
+.custom-text-title {
+    width: 100px; /* 원하는 가로 크기 */
+    height: 30px; /* 원하는 세로 크기 */
+    font-size: 16px; /* 텍스트 크기 */
+    padding-left: 90px;
+
+}
+
+.custom-text-date {
+    width: 100px; /* 원하는 가로 크기 */
+    height: 30px; /* 원하는 세로 크기 */
+    font-size: 16px; /* 텍스트 크기 */
+    padding: 10px;
+
+}
+
+.custom-text-viewCount {
+    width: 100px; /* 원하는 가로 크기 */
+    height: 30px; /* 원하는 세로 크기 */
+    font-size: 16px; /* 텍스트 크기 */
+    padding: 10px;
+
+}
+
+.custom-text-likeCount {
+    width: 100px; /* 원하는 가로 크기 */
+    height: 30px; /* 원하는 세로 크기 */
+    font-size: 16px; /* 텍스트 크기 */
+    padding: 10px;
+
+}
+
+/*----------------------------------------------------------------*/
+
+
+/*!* 텍스트 스타일 *!*/
+/*.board .boardHome-middle-image div {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: flex-start;*/
+/*}*/
+
+/*!* 게시글 이미지 *!*/
+/*!* 이미지와 텍스트 정렬 *!*/
+/*.board .boardHomeRecent-middle-image {*/
+/*    display: flex;*/
+/*    gap: 50px;*/
+/*    align-items: flex-start; !* 세로 정렬을 위쪽으로 유지 *!*/
+/*    justify-content: flex-end; !* 모든 요소를 오른쪽으로 정렬 *!*/
+/*    padding: 10px;*/
+/*}*/
+
+/*!* 이미지 스타일 *!*/
+/*.board .boardHomeRecent-middle-image img {*/
+/*    width: 150px;*/
+/*    height: auto;*/
+/*    flex-shrink: 0;*/
+/*}*/
+
+/*!* 텍스트 스타일 *!*/
+/*.board .boardHomeRecent-middle-image div {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: flex-start;*/
+/*}*/
 
 
 
@@ -97,10 +152,10 @@
     gap: 20px;
 }
 
-.write-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);
-}
+/*.write-button:focus {*/
+/*    outline: none;*/
+/*    box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);*/
+/*}*/
 
 .boardList-middle-box {
     width: 130%;
@@ -317,7 +372,7 @@ body {
     margin-left: 20px;
 }
 
-.boardView {
+.boardViews {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -897,16 +952,168 @@ button {
     text-align: center; /* 텍스트 중앙 정렬 */
 }
 
-/* 글쓰기 버튼 스타일 */
-.write-button {
-    display: inline-block;
-    padding: 8px 16px;
-    font-weight: bold;
-    font-size: 16px;
-    border-radius: 12px;
+/*!* 글쓰기 버튼 스타일 *!*/
+/*.write-button {*/
+/*    display: inline-block;*/
+/*    padding: 8px 16px;*/
+/*    font-weight: bold;*/
+/*    font-size: 16px;*/
+/*    border-radius: 12px;*/
+/*    text-decoration: none;*/
+/*    position: absolute;*/
+/*    right: 77px;*/
+/*    top: 70px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+
+
+/* ------------------------------- grid boardList*/
+
+a {
     text-decoration: none;
-    position: absolute;
-    right: 77px;
-    top: 70px;
+}
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.search-section {
+    width: 100%;
+    max-width: 840px;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-bar {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    gap: 10px;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.grid-container {
+    width: 1000px;
+    min-height: 1656px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.grid-item {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.grid-item:hover {
+    transform: translateY(-5px);
+}
+
+.item-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.item-content {
+    padding: 15px;
+}
+
+.item-title {
+    text-decoration: none;
+    color: black;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.item-number {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.navigation-pill {
+    width: 100%;
+    max-width: 840px;
+    margin-bottom: 20px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+@media (max-width: 880px) {
+    .grid-container {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+/*--------------------------------*/
+.grid-option {
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px 0;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between; /* 양쪽 정렬을 위해 변경 */
+}
+
+.grid-option .grid-item {
+    display: flex;
+    gap: 10px;
+    background: none;
+    box-shadow: none;
+    width: 100%;  /* 전체 너비 사용 */
+}
+.grid-option button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
     cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button-group-right {
+    margin-left: auto; /* 오른쪽 정렬 */
+}
+
+.grid-option .recent {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.grid-option .popular {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.grid-option .write-button {
+    background-color: #7a7a7a;
+    color: white;
+
+}
+
+.grid-option button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
 }

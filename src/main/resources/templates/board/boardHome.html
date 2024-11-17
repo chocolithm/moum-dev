@@ -61,25 +61,34 @@
             </div>
         </div>
 
-        <!-- 최근 게시글 섹션 -->
         <div class="boardHomeRecent-middle-box">
-            <h2 class="text-center mb-4 fw-bold">게시글</h2>
+            <h2 class="text-center mb-4 fw-bold">
+                <button onclick="location.href='/board/boardList'"
+                        style="background: none; border: none; font-size: 24px; cursor: pointer; font-weight: bold;">
+                    게시글
+                </button>
+            </h2>
+            <div class="board-details-name">
+            <p class="custom-text-title" th:text="제목">제목</p>
+            <p class="custom-text-date" th:text="날짜"></p>
+            <p class="custom-text-viewCount" th:text="조회수"></p>
+            <p class="custom-text-likeCount" th:text="추천수"></p>
+            </div>
+
             <div class="boardHomeRecent-middle-image" th:each="board : ${recentBoards}">
-                <a th:href="@{/board/boardView(no=${board.no})}">
-                    <img alt="게시글 이미지"
-                         th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
-                    <img alt="기본 이미지"
-                         th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-                         th:src="@{/images/default-image.png}">
-                </a>
-                <div>
+                <div class="board-details">
                     <a th:href="@{/board/boardView(no=${board.no})}">
-                        <p style="font-size: 25px; font-weight: bold;" th:text="${board.title}">게시글 제목</p>
+                        <p class="board-title" th:text="${board.title}">게시글 제목</p>
                     </a>
+                    <div class="board-meta">
+                        <span class="board-date" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd')}">2024-11-15</span>
+                        <span class="board-view-count" th:text="'조회수: ' + ${board.viewCount}">조회수: 100</span>
+                        <span class="board-like-count" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</span>
+                    </div>
                 </div>
             </div>
         </div>
+
         <!-- 업적 랭킹 섹션 -->
         <div class="middle-box abcd" style="padding: 15px;">
             <h1 class="text-center mb-4 fw-bold">업적 랭킹</h1>
@@ -185,6 +194,7 @@
         </div>
 
     </div>
+
 </main>
 
 <footer data-th-replace="~{footer :: footer}"></footer>

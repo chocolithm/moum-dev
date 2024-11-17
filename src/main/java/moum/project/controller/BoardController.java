@@ -174,7 +174,7 @@ public class BoardController {
 
   @GetMapping("/boardList")
   public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
-                          @RequestParam(value = "size", defaultValue = "10") int size,
+                          @RequestParam(value = "size", defaultValue = "12") int size,
                           Model model) throws Exception {
     int offset = (page - 1) * size;
     List<Board> recentBoards = boardService.listByPage(offset, size);

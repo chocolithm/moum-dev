@@ -1,0 +1,101 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>전체게시판</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">-->
+<!--    <script>-->
+<!--        // 페이지 로드 시 삭제 완료 메시지 표시-->
+<!--        window.onload = function() {-->
+<!--            const urlParams = new URLSearchParams(window.location.search);-->
+<!--            if (urlParams.get("deleted") === "true") {-->
+<!--                alert("삭제되었습니다.");-->
+<!--            }-->
+<!--        };-->
+<!--    </script>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<div th:replace="~{header}"></div>-->
+
+<!--<main class="container mt-4">-->
+
+<!--    <div class="search-container mb-4">-->
+<!--        <div class="navigation-pill">-->
+<!--            <div class="title-wrapper">-->
+<!--                <div class="title" style="font-weight: bold" th:text="'주제별'">주제별</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <input class="search-input form-control" placeholder="Search" type="text">-->
+<!--        <button class="search-button btn btn-primary mt-2" type="submit">-->
+<!--            <i class="fas fa-search"></i>-->
+<!--        </button>-->
+<!--    </div>-->
+
+<!--    <div class="boardList">-->
+<!--        <div class="boardList-middle-box" style="position: relative; padding-top: 40px;">-->
+<!--            <h2>전체 게시글</h2>-->
+
+<!--	        <button type="button" class="write-button btn btn-info" onclick="location.href='/board/boardDetailForm'">-->
+<!--		        글쓰기-->
+<!--	        </button>-->
+
+<!--	        &lt;!&ndash; Light 버튼을 button 태그로 변환, 기존의 버튼 기능을 그대로 유지 &ndash;&gt;-->
+<!--	        <button type="button" class="btn btn-outline-light" id="lightButton">-->
+<!--		        Light-->
+<!--	        </button>-->
+
+<!--            <div class="boardList-middle-image" th:each="board : ${recentBoards}">-->
+<!--                <img alt="게시글 이미지"-->
+<!--                     th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"-->
+<!--                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">-->
+<!--                <img alt="기본 이미지"-->
+<!--                     th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"-->
+<!--                     th:src="@{/images/default-image.png}">-->
+
+<!--                <div class="boardList-middle-content">-->
+<!--                    <div class="post-number" th:text="${board.no}">1</div>-->
+<!--                    <a th:href="@{/board/boardView(no=${board.no})}">-->
+<!--                        <div class="post-title" th:text="${board.title}">게시글 제목</div>-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--	        <div class="pagination-container mt-4">-->
+<!--		        <nav aria-label="Page navigation">-->
+<!--			        <ul class="pagination justify-content-center">-->
+<!--				        &lt;!&ndash; Previous Button &ndash;&gt;-->
+<!--				        <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">-->
+<!--					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=10)}" tabindex="-1" aria-disabled="true">Previous</a>-->
+<!--				        </li>-->
+
+<!--				        &lt;!&ndash; Page Number Buttons &ndash;&gt;-->
+<!--				        <li th:each="i : ${#numbers.sequence(1, totalPages)}"-->
+<!--				            th:classappend="${i == currentPage ? 'active' : ''}" class="page-item">-->
+<!--					        <a class="page-link" th:href="@{/board/boardList(page=${i}, size=10)}" th:text="${i}"></a>-->
+<!--				        </li>-->
+
+<!--				        &lt;!&ndash; Next Button &ndash;&gt;-->
+<!--				        <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">-->
+<!--					        <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=10)}">Next</a>-->
+<!--				        </li>-->
+<!--			        </ul>-->
+<!--		        </nav>-->
+<!--	        </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+
+
+
+
+<!--</main>-->
+
+<!--<footer th:replace="~{footer :: footer}"></footer>-->
+
+<!--</body>-->
+<!--</html>-->
