@@ -1,12 +1,19 @@
-function openReport() {
+function openReport(type, no) {
     const report_layer = document.querySelector(".report-layer");
     openOverlay();
-    fetchReportCategoriesAndContent();
+    fetchReportCategoriesAndContent(type, no);
     fadeInWithFlex(report_layer);
 }
 
-function fetchReportCategoriesAndContent() {
+function fetchReportCategoriesAndContent(type, no) {
     const report_layer = document.querySelector(".report-layer");
+    let url;
+
+    if (type == "board") {
+        url = location.pathname + location.search;
+    } else if (type == "comment") {
+        url = location.pathname + location.search + `#comment-${no}`;
+    }
 
     fetch(`/report/listReportCategories`)
         .then(response => response.json())
@@ -32,7 +39,7 @@ function fetchReportCategoriesAndContent() {
                     <textarea id="reportContent" placeholder="신고내용을 입력하세요."></textarea>
                 </div>
                 <div>
-                    <button class="btn btn-warning report-button" onclick="report();">신고하기</button>
+                    <button class="btn btn-warning report-button" onclick="report('${url}');">신고하기</button>
                 </div>
             `;
 
@@ -42,17 +49,17 @@ function fetchReportCategoriesAndContent() {
 }
 
 
-function report() {
+function report(url) {
     if (confirm("신고하시겠습니까?")) {
         const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
         const formData = new FormData();
         formData.append("reportCategory.no", document.querySelector("#report-category").value);
-        formData.append("reportContent", document.querySelector("#reportContent").value.trim());
+        formData.append("reportContent",
+            `<a href="${url}">${document.querySelector("#reportContent").value.trim()}</a>`);
 
         if (validateReport(formData)) {
-            formData.set("reportContent", `<a href="${location.pathname + location.search}">${formData.get("reportContent")}</a>`);
 
             fetch(`/report/add`, {
                 method: "POST",

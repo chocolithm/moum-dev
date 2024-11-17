@@ -56,7 +56,7 @@
             <!-- 추천/신고 버튼 -->
             <div class="action-buttons">
                 <button class="btn btn-warning" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
-                <button class="btn btn-warning" onclick="openReport();" type="button">신고하기</button>
+                <button class="btn btn-warning" onclick="openReport('board');" type="button">신고하기</button>
             </div>
 
             <!-- 댓글 섹션 -->
@@ -68,6 +68,8 @@
                         <p>작성일: <span th:text="${#dates.format(comment.date, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
                         <button class="btn btn-danger" th:if="${comment.userNo == authenticatedUser.no}"
                                 th:onclick="'deleteComment(' + ${comment.no} + ');'">삭제</button>
+                        <button class="btn btn-danger" th:if="${comment.userNo != authenticatedUser.no}"
+                                th:onclick="'openReport(`comment`, ' + ${comment.no} + ');'">신고</button>
                     </li>
                 </ul>
 
