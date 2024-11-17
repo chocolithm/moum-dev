@@ -1,7 +1,6 @@
-// 채팅 
-
-
+// 채팅
 let stompChatClient = null;
+let cachedSender = null;
 
 // 소켓 통신 연결
 function connect(chatroomNo) {
@@ -112,7 +111,7 @@ function openChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
-  if (isTrade) {
+  if (typeof isTrade !== "undefined" && isTrade) {
     const open_chat_btn = document.createElement("button");
     createOpenChatBtn(open_chat_btn);
     chatroom_layer.appendChild(open_chat_btn);
@@ -250,7 +249,7 @@ function closeChat() {
   setTimeout(function () {
     chatroom_layer.innerHTML = "";
     
-    if (isTrade) {
+    if (typeof isTrade !== "undefined" && isTrade) {
       const open_chat_btn = document.createElement("button");
       createOpenChatBtn(open_chat_btn);
       chatroom_layer.appendChild(open_chat_btn);
@@ -512,8 +511,6 @@ function createChatInputbox(chatroomNo, participant) {
   btn.innerHTML = "보내기";
   btn.className = "chat-btn btn btn-dark";
 
-  console.log(participant);
-
   if (participant.endDate != null) {
     btn.setAttribute("onclick", `alert("이미 탈퇴한 회원입니다.")`);
   } else if (chatroomNo == 0) {
@@ -538,11 +535,17 @@ function createChatInputbox(chatroomNo, participant) {
 
 // sender 로그인 정보 확인
 async function getSender() {
+  if (cachedSender) {
+    return cachedSender;
+  }
+
   try {
     const response = await fetch(`/chat/sender`);
     const user = await response.json();
+    cachedSender = user;
     return user;
   } catch (error) {
     console.error("Error fetching sender:", error);
-  };
+    return null;
+  }
 }

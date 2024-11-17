@@ -88,7 +88,7 @@
 <script th:inline="javascript">
     let boardId = /*[[${board.no}]]*/[];
     let comments = /*[[${comments}]]*/[];
-    let isTrade = /*[[${board.boardType == "trade" ? true : false}]]*/[];
+    const isTrade = /*[[${board.boardType == "trade" ? true : false}]]*/[];
 
     <!--  수집품 조회화면 사진 인덱스  -->
     let collectionSlideIndex = 0;
