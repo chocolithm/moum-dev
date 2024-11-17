@@ -16,80 +16,69 @@
 <body>
 <div th:replace="~{header}"></div>
 <main>
+    <div class="page-container">
+        <div class="post-grid">
+            <!-- 메인 이미지 섹션 -->
+            <div class="main-image-section">
+                <img th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
+                     alt="게시글 이미지">
+                <img th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                     th:src="@{/images/default-image.png}"
+                     alt="기본 이미지">
+            </div>
 
-    <div class="boardViews">
-        <div th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}">
-            <div class="slider">
-                <div class="slides">
-                    <img alt="게시글 이미지"
-                         class="img-fluid rounded"
-                         th:each="attachedFile : ${board.attachedFiles}" th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${attachedFile.filename}}">
+            <!-- 게시글 헤더 -->
+            <div class="post-header">
+                <h1 class="post-title" th:text="${board.title}">게시글 제목</h1>
+                <div class="post-meta">
+                    <span th:text="${board.userNo}">작성자</span>
+                    <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
+                    <span>조회수: <span th:text="${board.viewCount}">0</span></span>
+                    <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>
+                </div>
+            </div>
+
+            <!-- 거래 정보 (있는 경우) -->
+            <div th:if="${board.boardType == 'trade'}" class="trade-info">
+                <div class="trade-box">
+                    <div><strong>가격:</strong> <span th:text="${board.price}">0</span>원</div>
+                    <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span></div>
+                    <div><strong>거래 방식:</strong> <span th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>
+                </div>
+            </div>
+
+            <!-- 게시글 내용 -->
+            <div class="post-content" th:utext="${board.content}">
+                게시글 내용
+            </div>
+
+            <!-- 추천/신고 버튼 -->
+            <div class="action-buttons">
+                <button class="btn btn-warning" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
+                <button class="btn btn-warning" onclick="openReport();" type="button">신고하기</button>
+            </div>
+
+            <!-- 댓글 섹션 -->
+            <div class="comments-section">
+                <h3>댓글</h3>
+                <ul id="commentList">
+                    <li th:each="comment : ${comments}" th:id="'comment-' + ${comment.no}">
+                        <p><strong th:text="${comment.userNo}">작성자</strong>: <span th:text="${comment.content}">내용</span></p>
+                        <p>작성일: <span th:text="${#dates.format(comment.date, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
+                        <button class="btn btn-danger" th:if="${comment.userNo == authenticatedUser.no}"
+                                th:onclick="'deleteComment(' + ${comment.no} + ');'">삭제</button>
+                    </li>
+                </ul>
+
+                <!-- 댓글 입력 폼 -->
+                <div class="comment-form">
+                    <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" rows="3"></textarea>
+                    <p id="counter">0/300자</p>
+                    <button class="btn btn-primary" onclick="addComment()" type="button">댓글 작성</button>
                 </div>
             </div>
         </div>
-        <h2 th:text="${board.title}">게시글 제목</h2>
-        <div class="post-info">
-            <p>작성일: <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
-            <p>조회수: <span th:text="${board.viewCount}">0</span></p>
-            <p>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></p>
-        </div>
-        <button class="btn btn-warning like-button" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">
-            추천하기
-        </button>
-        <button class="btn btn-warning like-button" onclick="openReport();" type="button">
-            신고하기
-        </button>
-
-        <!-- 게시글 종류에 따라 조건부로 필드를 표시 -->
-        <div th:if="${board.boardType == 'trade'}" class="trade-info">
-            <div class="trade-box">
-                <div><strong>가격:</strong> <span th:text="${board.price}">0</span>원</div>
-                <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span></div>
-                <div><strong>거래 방식:</strong> <span th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>
-            </div>
-        </div>
-
-
-        <div th:utext="${board.content}">게시글 내용</div>
-        <button class="collection-load-button" th:if="${board.collection}" th:onclick="'collectionLoadButton(' + ${board.collection.no} + ')'">수집품 보기</button>
-
-        <div class="action-buttons" data-th-if="${authenticated}" th:inline="javascript">
-            <button class="trade-complete"
-                    th:attr="disabled=${board.sellOrSoldStatus}"
-                    th:if="${board.boardType == 'trade'}"
-                    th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ')'">거래완료</button>
-            <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
-                    th:if="${board.sellOrSoldStatus == false}">수정하기</button>
-            <form method="post" onsubmit="return confirm('삭제하시겠습니까?');" th:action="@{/board/delete}">
-                <input name="no" th:value="${board.no}" type="hidden">
-                <input name="_method" type="hidden" value="DELETE">
-                <button class="delete-button" type="submit">삭제하기</button>
-            </form>
-        </div>
-        <!-- 댓글 목록 -->
-        <div class="comments-section">
-            <h3>댓글</h3>
-            <ul id="commentList">
-                <li th:each="comment : ${comments}" th:id="'comment-' + ${comment.no}">
-                    <p><strong th:text="${comment.userNo}">작성자</strong>: <span th:text="${comment.content}">내용</span></p>
-                    <p>작성일: <span th:text="${#dates.format(comment.date, 'yyyy-MM-dd HH:mm')}">2024-10-22</span></p>
-                    <!-- 댓글 수정 및 삭제 버튼 -->
-<!--                    <button class="btn btn-primary" th:if="${comment.userNo == authenticatedUser.no}"-->
-<!--                            th:onclick="'editComment(' + ${comment.no} + ');'">수정</button>-->
-                    <button class="btn btn-danger" th:if="${comment.userNo == authenticatedUser.no}"
-                            th:onclick="'deleteComment(' + ${comment.no} + ');'">삭제</button>
-                </li>
-            </ul>
-        </div>
-
-        <!-- 댓글 입력 폼 -->
-        <div class="comment-form">
-            <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" rows="3"></textarea>
-            <p id="counter">0/300자</p>
-            <button class="btn btn-primary" onclick="addComment()" type="button">댓글 작성</button>
-        </div>
-
-
     </div>
 </main>
 

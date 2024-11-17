@@ -51,10 +51,12 @@
            th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
            th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
            alt="게시글 이미지">
+      <!--이부분 해결해야 함-->
       <img class="item-image"
            th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-           th:src="@{/images/default-image.png}"
+           th:src="@{/images/board/defaultBoardPicture.jpg}"
            alt="기본 이미지">
+
       <div class="item-content">
         <a th:href="@{/board/boardView(no=${board.no})}">
           <div class="item-title" th:text="${board.title}">게시글 제목</div>
