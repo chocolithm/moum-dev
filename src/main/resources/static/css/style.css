@@ -185,6 +185,7 @@ main {
 
 main h1 {
     margin: 20px 0;
+    margin-left: 5%;
 }
 
 main .main-image {
@@ -412,7 +413,7 @@ td {
     display: none;
 }
 
-.achievement-photo {
+.achievement-user-progress .achievement-photo {
     background: white;
     border: 1px solid black;
     border-radius: 8px;
@@ -424,27 +425,27 @@ td {
     /* 효과 적용 */
 }
 
-.achievement-photo:hover {
+.achievement-user-progress .achievement-photo:hover {
     transform: translateY(-5px);
     /* 마우스 올리면 살짝 위로 올라오는 효과 */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     /* 그림자 강화 */
 }
 
-.achievement-photo span {
+.achievement-user-progress .achievement-photo span {
     display: inline-block;
 }
 
-.achievement-image {
+.achievement-user-progress .achievement-image {
     flex-shrink: 0;
 }
 
-.achievement-img {
+.achievement-user-progress .achievement-img {
     width: 80px;
     height: 80px;
 }
 
-.achievement-details {
+.achievement-user-progress .achievement-details {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -453,92 +454,78 @@ td {
     width: calc(100% - 100px);
 }
 
-.achievement-details > div:first-child {
+.achievement-user-progress .achievement-details > div:first-child {
     font-weight: bold;
 }
 
-.achievement-details > div:nth-child(2) {
+.achievement-user-progress .achievement-details > div:nth-child(2) {
     font-size: 14px;
     color: #666;
 }
 
-.achievement-details > div:last-child {
+.achievement-user-progress .achievement-details > div:last-child {
     font-size: 14px;
     color: #666;
 }
 
-.progress-bar-container {
+.achievement-user-progress .progress-bar-container {
     width: 100%;
-    /* 바의 전체 너비 */
     height: 20px;
     background-color: #e0e0e0;
-    /* 배경색 */
     border-radius: 5px;
-    /* 모서리 둥글게 */
     overflow: hidden;
-    /* 바가 컨테이너를 넘지 않도록 */
     margin: 10px 0;
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.progress-bar-container:hover {
+.achievement-user-progress .progress-bar-container:hover {
     transform: translateY(-5px);
-    /* 마우스 올리면 살짝 위로 올라오는 효과 */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    /* 그림자 강화 */
 }
 
-.progress-bar {
+.achievement-user-progress .progress-bar {
     height: 20px;
-    /* 바의 높이 */
     border-radius: 5px;
-    /* 모서리 둥글게 */
     transition: width 0.5s;
-    /* 너비 변경 시 부드러운 전환 효과 */
 }
 
-/* 색상 정의 */
-.progress-bar.low {
+.achievement-user-progress .progress-bar.low {
     background-color: #ff4d4d;
     /* 0% ~ 49%: 빨간색 */
 }
 
-.progress-bar.medium {
+.achievement-user-progress .progress-bar.medium {
     background-color: #ffcc00;
     /* 50% ~ 79%: 노란색 */
 }
 
-.progress-bar.high {
+.achievement-user-progress .progress-bar.high {
     background-color: #76c7c0;
     /* 80% ~ 100%: 녹색 */
 }
 
-.progress-text {
+.achievement-user-progress .progress-text {
     font-size: 14px;
     color: #666;
     margin-top: 5px;
     font-weight: bold;
-    /* 강조 */
 }
 
-/* 체크박스 컨테이너 스타일 */
-.filter-container {
+.achievement-user-progress .filter-container {
     margin: 20px;
     display: flex;
     gap: 15px;
 }
 
 /* 체크박스 스타일 */
-.filter {
+.achievement-user-progress .filter {
     margin-right: 10px;
     cursor: pointer;
-    /* 포인터 커서로 변경 */
 }
 
-/* info achievement 스타일 */
-.achievement-box {
-    width: 400px;
+.achievement-user-progress .achievement-box {
+    width: 45%;
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 2px;
@@ -551,26 +538,9 @@ td {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.achievement-box:hover {
+.achievement-user-progress .achievement-box:hover {
     transform: translateY(-5px);
-    /* 마우스 올리면 살짝 위로 올라오는 효과 */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    /* 그림자 강화 */
-}
-
-
-.achievement-box h2 {
-    margin: 0;
-}
-
-.achievement-box .title-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    align: center;
-    font-weight: bold;
-    font-size: 25px;
 }
 
 
@@ -600,27 +570,6 @@ td {
     padding: 0 10px;
 }
 
-.info-achievement-photo {
-    height: auto;
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.info-achievement-photo:hover {
-    transform: translateY(-5px);
-    /* 마우스 올리면 살짝 위로 올라오는 효과 */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    /* 그림자 강화 */
-}
-
-/* 진행바 크기 조정 */
-.info-achievement-photo-progressbar {
-    height: 10px;
-    margin: 5px 0;
-}
-
 .info-progress-bar-container {
     background-color: #f0f0f0;
     /* 진행도 바 배경색 */
@@ -641,118 +590,76 @@ td {
 
 .info-progress-bar.low {
     background-color: #e74c3c;
-    /* 낮은 진행도 색상 (빨간색) */
     align: center;
 }
 
 .info-progress-bar.medium {
     background-color: #f1c40f;
-    /* 중간 진행도 색상 (노란색) */
     align: center;
 }
 
 .info-progress-bar.high {
     background-color: #2ecc71;
-    /* 높은 진행도 색상 (녹색) */
     align: center;
 }
 
-.info-progress-text {
-    font-weight: bold;
-    /* 텍스트 두께 */
-    color: #333;
-    /* 텍스트 색상 */
-    text-align: center;
-}
-
-.info-achievement-image {
-    display: flex;
-    /* 이미지와 관련된 내용을 수평으로 정렬 */
-    justify-content: center;
-    /* 중앙 정렬 */
-    align-items: center;
-    /* 수직 중앙 정렬 */
-    margin-bottom: 10px;
-    /* 아래쪽 여백 */
-}
-
-.info-achievement-img {
-    width: auto;
-    height: 40px;
-    object-fit: cover;
-    /* 이미지 비율 유지하며 잘리기 */
-    border-radius: 8px;
-    /* 이미지 모서리 둥글기 */
-    border: 2px solid #ddd;
-    /* 이미지 테두리 */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* 마우스 오버 시 애니메이션 효과 */
-}
-
-.info-achievement-img:hover {
-    transform: translateY(-5px);
-    /* 마우스 올리면 살짝 위로 올라오는 효과 */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    /* 그림자 강화 */
-}
-
-.info-achievement-name {
+.my-achievement-container .achievement-name {
     font-size: 18px;
-    /* 글자 크기 */
     font-weight: bold;
     color: #333;
-    /* 글자 색상 */
     margin-bottom: 8px;
-    /* 아래쪽 여백 */
     text-align: center;
-    /* 중앙 정렬 */
     text-transform: capitalize;
-    /* 첫 글자 대문자 */
 }
 
-.info-achievement-name span {
-    display: inline-block;
-    /* 블록 요소로 처리하여 여백 효과를 줄 수 있음 */
-    padding: 4px 8px;
-    /* 안쪽 여백 */
-    border-radius: 4px;
-    /* 모서리 둥글게 */
-    background-color: #f0f0f0;
-    /* 배경색 */
-    transition: background-color 0.3s;
-    /* 배경색 전환 효과 */
-}
-
-.info-achievement-name span:hover {
-    background-color: #e0e0e0;
-    /* 마우스 오버 시 배경색 변경 */
-}
-
-/* 내 업적 더보기 버튼 위치 조정 */
-.achievement-header {
+.my-achievement-container .achievement-img-container {
     display: flex;
-    /* 수평 정렬을 위한 Flexbox 사용 */
-    align-items: right;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 10px;
-    /* 아래쪽 여백 추가 */
-    width: 30px;
-    height: auto;
-    position: absolute;
-    right: 20px;
-    top: 10px;
 }
 
-.achievement-header img {
-    cursor: pointer;
-    width: 45px;
-    height: auto;
+.my-achievement-container .achievement-img-container .achievement-img {
+    width: auto;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.achievement-list-btn {
-    margin-left: 10px;
-    /* 제목과 버튼 사이의 여백 */
-    display: inline-block;
-    padding: 10px -120px;
+.my-achievement-container .achievement-img-container .achievement-img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.my-achievement-container .my-achievement-box {
+    height: auto;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    justify-content: space-around;
+}
+
+.my-achievement-container .my-achievement-box .achievement-details-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.my-achievement-container .my-achievement-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.my-achievement-container .achievement-progress {
+    height: 10px;
+    margin: 5px 0;
+}
+
+.my-achievement-container .progress-percent {
+    font-weight: bold;
+    color: #333;
+    text-align: center;
 }
 
 
@@ -761,12 +668,20 @@ td {
 .wrapper {
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
-/* 일단 보류 fdafadf*/
-.profile-container {
-    height: 40%;
-    width: 40%;
+.wrapper .my-info-container {
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+}
+
+.my-info-container .profile-img-container {
+    height: 100%;
+}
+
+.my-info-container .profile-img-container .profile-img-inner-container {
     border: 1px solid #ccc;
     padding: 10px;
     background-color: #f9f9f9;
@@ -777,160 +692,127 @@ td {
     justify-content: center;
 }
 
-.profile-image-container {
-    margin-bottom: 10px;
-    /* 이미지와 사용자 정보 사이 여백 */
-}
-
-.profile-img {
-    width: 100%;
-    /* 이미지 너비 */
-    height: 100%;
-    /* 이미지 높이 */
-
-    /* 원형으로 만들기 */
+.my-info-container .profile-img-container .profile-img-inner-container .profile-img {
+    height: 420px;
     object-fit: cover;
-    /* 비율 유지 */
     border: 2px solid #ddd;
-    /* 이미지 테두리 */
 }
 
-.user-info {
-    text-align: left;
-    /* 중앙 정렬 */
-    margin-bottom: 10px;
-    /* 정보와 버튼 사이 여백 */
+.my-info-container .edit-button {
+   padding: 8px 16px;
+   border: none;
+   border-radius: 4px;
+   background-color: #00ffaa;
+   color: black;
+   cursor: pointer;
+   transition: background-color 0.3s;
 }
 
-.edit-button {
-    padding: 8px 16px;
-    /* 버튼 안쪽 여백 */
-    border: none;
-    /* 테두리 없애기 */
-    border-radius: 4px;
-    /* 모서리 둥글기 */
+
+.my-info-container .edit-button:hover {
     background-color: #00ffaa;
-    /* 버튼 배경색 */
-    color: black;
-    /* 텍스트 색상 */
-    cursor: pointer;
-    /* 커서 모양 변경 */
-    transition: background-color 0.3s;
-    /* 배경색 전환 효과 */
 }
 
-.edit-button:hover {
-    background-color: #00ffaa;
-    /* 마우스 오버 시 배경색 변경 */
-}
-
-.my-info-wrapper {
+.my-info-container .my-info-right-container {
     display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-    height: inherit;
+    flex-direction: column;
+    width: 70%;
 }
 
-.layout-container {
+.my-info-right-container .my-info-right-container-body {
     display: flex;
-    flex-direction: row;
+    flex-direction: rows;
+    height: 100%;
 }
 
-/* my-info-board */
-.my-info-board-container {
-    width: 50%;
-    /* 너비를 80%로 줄임 (필요에 따라 값 조정 가능) */
-    max-width: 700px;
-    /* 최대 너비를 설정하여 너무 커지지 않도록 */
-    padding: 45px;
-    /* 패딩 줄임 */
+.my-info-right-container-body .my-board-container,
+.my-info-right-container-body .my-achievement-container {
+    width: 49%;
+    min-width: 380px;
+    padding: 35px;
     background-color: #f9f9f9;
-    /* 배경색 */
     border: 2px solid #ccc;
-    /* 테두리 추가 */
     border-radius: 10px;
-    /* 둥근 테두리 */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    /* 그림자 */
-    margin: 0 auto;
-    /* 가운데 정렬 */
+    position: relative;
+    height: 100%;
+    max-height: 390px;
+    overflow-y: auto;
 }
 
-.my-info-board-container h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
-    /* 제목 색상 */
+.my-info-right-container-body .my-board-container::-webkit-scrollbar,
+.my-info-right-container-body .my-achievement-container::-webkit-scrollbar {
+    display: none;
 }
 
-/* 게시글 박스 스타일 */
-.my-info-board {
+
+
+.my-info-right-container-body .my-board-container {
+    margin-right: 20px;
+    margin-left: 40px;
+}
+
+.my-board-container .recent-board {
+    height: auto;
+    color: black;
+    margin: 5px 0;
     display: flex;
-    flex-wrap: wrap;
-    /* 여러 게시글이 가로로 배치되도록 */
-    gap: 20px;
-    /* 게시글 사이 간격 */
-    height: 80%;
-}
-
-/* 게시글 개별 스타일 */
-.my-info-achievement-photo {
-    background-color: white;
-    border-radius: 8px;
-    width: calc(50% - 10px);
-    /* 두 개의 게시글이 한 줄에 표시되도록 */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    /* 내용이 넘치지 않게 */
+    align-items: l;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* 게시글 이미지 영역 스타일 */
-.my-info-achievement-image {
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-}
-
-.my-info-achievement-img {
-    width: 30%;
-    height: auto;
-    object-fit: cover;
-    /* 이미지 비율 유지 */
-}
-
-/* 게시글 상세 내용 영역 스타일 */
-.info-achievement-details {
-    padding: 15px;
-}
-
-/* 게시글 제목 스타일 */
-.my-info-achievement-name span {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    display: block;
-    margin-top: 10px;
-    text-align: center;
-    /* 제목 중앙 정렬 */
-}
-
-/* hover 효과 */
-.my-info-achievement-photo:hover {
+.my-board-container .recent-board:hover {
     transform: translateY(-5px);
-    /* 마우스 올리면 살짝 올라오는 효과 */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-    /* 그림자 강화 (더 부드럽고 넓게) */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 반응형 디자인 */
-@media screen and (max-width: 768px) {
-    .my-info-achievement-photo {
-        width: 100%;
-        /* 작은 화면에서는 하나의 게시글이 한 줄에 표시되도록 */
-    }
+.my-board-container .recent-board a {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 8px 0;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 2줄로 제한 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
 }
+
+.my-info-right-container-body .my-achievement-container {
+    margin-left: 20px;
+    margin-right: 40px;
+}
+
+.my-info-right-container-header {
+    margin-left: 40px;
+}
+
+.my-info-right-container-header .my-primary-achievement {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    font-weight: bold;
+}
+
+.my-info-right-container-header .my-primary-achievement .my-primary-achievement-img {
+    width: 40px;
+}
+
+.my-info-right-container .user-nickname {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+.my-info-right-container-body .my-achievement-container .achievement-list-btn {
+    width: 40px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
 
 /* myinfo 업적 정보 수정 */
 /* 전체적인 레이아웃을 깔끔하게 */
