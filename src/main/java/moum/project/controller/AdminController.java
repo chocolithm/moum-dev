@@ -136,8 +136,13 @@ public class AdminController {
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
     User loginUser = userService.getByEmail(userDetails.getUsername());
-    if (loginUser.getNo() == userNo) {
+
+    if (loginUser.getNo() != 1) {
       return "inhibited";
+    }
+    
+    if (loginUser.getNo() == userNo) {
+      return "self-inhibited";
     }
 
     if (userService.updateAdmin(admin, userNo)) {

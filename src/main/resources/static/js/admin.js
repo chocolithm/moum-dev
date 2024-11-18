@@ -39,7 +39,7 @@ function selectAdminMenu(element) {
     case "board-admin": toggleAdminMenu("board", 1, 20); break;
     case "category-admin": toggleAdminMenu("category", 1, 20); break;
     case "achievement-admin": toggleAdminMenu("achievement", 1, 20); break;
-    case "user-admin": toggleAdminMenu("user", 1, 5); break;
+    case "user-admin": toggleAdminMenu("user", 1, 20); break;
     case "report-admin": alert("신고/유해콘텐츠 관리"); break;
     case "statistics-admin": alert("통계 조회"); break;
     default: alert("잘못된 접근입니다.");
@@ -499,6 +499,8 @@ function toggleAdminUser(element, userNo) {
             element.value = 1;
             alert("오류 발생");
           } else if (response == "inhibited") {
+            alert("관리자 권한은 상위관리자만 설정 가능합니다.");
+          } else if (response == "self-inhibited") {
             alert("본인 권한 수정 불가");
           }
         })
@@ -517,6 +519,8 @@ function toggleAdminUser(element, userNo) {
             element.value = 0;
             alert("오류 발생");
           } else if (response == "inhibited") {
+            alert("관리자 권한은 상위관리자만 설정 가능합니다.");
+          } else if (response == "self-inhibited") {
             alert("본인 권한 수정 불가");
           }
         })
