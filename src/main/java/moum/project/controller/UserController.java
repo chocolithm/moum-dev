@@ -2,28 +2,37 @@ package moum.project.controller;
 
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import moum.project.config.CustomUserDetails;
 import moum.project.dao.UserSnsDao;
 import moum.project.service.AchievementService;
+import moum.project.service.BoardService;
 import moum.project.service.OAuth2Service;
 import moum.project.service.StorageService;
 import moum.project.service.UserService;
 import moum.project.vo.Achievement;
+import moum.project.vo.Board;
 import moum.project.vo.User;
 import moum.project.vo.User_SNS;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -59,6 +68,7 @@ public class UserController {
   private final PasswordEncoder passwordEncoder;
   private final AchievementService achievementService;
   private final OAuth2Service oAuth2Service;
+  private final BoardService boardService;
 
   private String folderName = "user/profile/";
 
@@ -79,6 +89,8 @@ public class UserController {
     User viewUser;
     boolean isOwnProfile = false;
 
+    List<Achievement> achievementList = new ArrayList<>();
+
     // 본인 프로필인지 다른 사용자 프로필인지 확인
     if (userNo == null) {
       if (userDetails == null) {
@@ -86,24 +98,40 @@ public class UserController {
       }
       viewUser = userService.getByEmail(userDetails.getUsername());
       isOwnProfile = true;
+
+      achievementList = achievementService.listByUser(viewUser.getNo());
+      for (int i = 0; i < achievementList.size(); i++) {
+        Achievement achievement = achievementList.get(i);
+        if (achievement.getProgress() == 100) {
+          achievementList.remove(i--);
+        }
+      }
     } else {
       viewUser = userService.get(userNo);
+
+      achievementList = achievementService.listByUser(viewUser.getNo());
+      achievementList.sort(new Comparator<Achievement>() {
+        @Override
+        public int compare(Achievement o1, Achievement o2) {
+          return Integer.compare(o2.getProgress(), o1.getProgress());
+        }
+      });
     }
 
     if (viewUser == null || viewUser.getEndDate() != null) {
       return "redirect:/home?notExist=true";
     }
 
-    // 업적 목록 가져오기
-    List<Achievement> achievementlist = achievementService.listByUser(viewUser.getNo());
-    for (int i = 0; i < achievementlist.size(); i++) {
-      Achievement achievement = achievementlist.get(i);
-      if(achievement.getProgress() == 100) {
-        achievementlist.remove(i--);
+    List<Board> boardList = boardService.selectByUserId(viewUser.getNo());
+    boardList.sort(new Comparator<Board>() {
+      @Override
+      public int compare(Board o1, Board o2) {
+        return o2.getPostDate().compareTo(o1.getPostDate());
       }
-    }
+    });
 
-    model.addAttribute("achievementlist", achievementlist);
+    model.addAttribute("boardList", boardList);
+    model.addAttribute("achievementlist", achievementList);
     model.addAttribute("user", viewUser);
     model.addAttribute("isOwnProfile", isOwnProfile);
     model.addAttribute("primaryAchievement", achievementService.findPrimary(viewUser.getNo()));

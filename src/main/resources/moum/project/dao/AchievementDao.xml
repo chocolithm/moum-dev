@@ -176,7 +176,8 @@
 
     <select id="findPrimary" resultMap="AchievementMap" parameterType="int">
         select
-            a.name
+            a.name,
+            a.photo
         from
             achievement a
             left join user_achievement ua on a.achievement_id=ua.achievement_id
