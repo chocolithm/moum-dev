@@ -51,6 +51,11 @@ public class DefaultReportService implements ReportService {
   }
 
   @Override
+  public boolean updateResult(Report report) throws Exception {
+    return reportDao.updateResult(report);
+  }
+
+  @Override
   public boolean delete(int no) throws Exception {
     return false;
   }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,5 +55,14 @@ public class ReportController {
   @ResponseBody
   public List<ReportResultCategory> listResultCategories() throws Exception {
     return reportService.listResultCategories();
+  }
+
+  @PutMapping("/updateResult")
+  @ResponseBody
+  public String updateResult(Report report) throws Exception {
+    if (reportService.updateResult(report)) {
+      return "success";
+    }
+    return "failure";
   }
 }

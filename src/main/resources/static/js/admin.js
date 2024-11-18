@@ -210,7 +210,7 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
               <td>${formatDate(report.reportDate)}</td>
               <td>${report.user.nickname}</td>
               <td>${report.reportCategory.name}</td>
-              <td>${report.resultContent == null ? "" : report.resultContent}</td>
+              <td>${report.resultCategory == null ? "" : report.resultCategory.name}</td>
             </tr>
           `;
         });
@@ -534,7 +534,7 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
                   <tr>
                     <td>처리결과</td>
                     <td>
-                      <select name="resultCategory.name" id="resultCategory.name">
+                      <select name="resultCategory.no" id="resultCategory.no">
                         <option value="0">미처리</option>
             `;
 
@@ -551,7 +551,7 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
                   <tr>
                     <td>처리사항</td>
                     <td>
-                      <input name="resultContent" type="text" value="${report.resultContent == null ? "" : report.resultContent}">
+                      <input name="resultContent" id="resultContent" type="text" value="${report.resultContent == null ? "" : report.resultContent}">
                     </td>
                   </tr>
             `;
@@ -559,7 +559,7 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
             if (report.resultCategory == null) {
               htmlContent += `
                 <tr>
-                  <td colspan="2"><button class="btn report-btn">처리</button></td>
+                  <td colspan="2"><button class="btn report-btn" onclick="handleReport(${report.no});">처리</button></td>
                 </tr>
               `;
             }
@@ -572,7 +572,7 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
             content_section.innerHTML = htmlContent;
 
             if (report.resultCategory != null) {
-              document.getElementById("resultCategory.name").value = report.resultCategory.no;
+              document.getElementById("resultCategory.no").value = report.resultCategory.no;
             }
           })
           .catch(error => {
@@ -635,3 +635,40 @@ function toggleAdminUser(element, userNo) {
   }
 
 }
+
+function handleReport(reportNo) {
+  if (confirm("처리하시겠습니까?")) {
+    const formData = new FormData();
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+    formData.set("no", reportNo);
+    formData.set("resultCategory.no", document.getElementById("resultCategory.no").value);
+    formData.set("resultContent", document.getElementById("resultContent").value.trim());
+
+    if (formData.get("resultCategory.name") == 0) { alert("처리결과를 선택하세요."); return; }
+    if (formData.get("resultContent") == "") { alert("처리사항을 입력하세요."); return; }
+
+    fetch(`/report/updateResult`, {
+      method: "PUT",
+      body: formData,
+      headers: {
+        [csrfHeader]: csrfToken
+      }
+    })
+      .then(response => response.text())
+      .then(response => {
+        switch (response) {
+          case "success":
+            alert("처리했습니다.");
+            break;
+          case "failure":
+            alert("처리 중 오류 발생");
+            break;
+        }
+      })
+      .catch(error => {
+        console.error("Error handling report result: ", error);
+      });
+  }
+} 

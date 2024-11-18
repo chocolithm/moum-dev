@@ -23,6 +23,8 @@ public interface ReportDao {
 
   boolean update(Report report) throws Exception;
 
+  boolean updateResult(Report report) throws Exception;
+
   boolean delete(int no) throws Exception;
 
   int count() throws Exception;
