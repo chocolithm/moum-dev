@@ -186,10 +186,10 @@
       });
     }
 
-    // 게시글 등록 함수
     function addDetailPost() {
       var formData = new FormData($('#postForm')[0]);
 
+      // 기존 유효성 검사
       if (formData.get("title") === "") { alert("제목을 입력하세요"); return; }
       if (formData.get("content") === "") { alert("내용을 입력하세요"); return; }
       if (formData.get("price") === "" && $('#boardType').val() === 'trade') { formData.set("price", 0); }
@@ -202,16 +202,17 @@
 
       formData.delete("files");
       const base64Images = [];
-      $('.card-block p img').each(function () {
+      $('.note-editing-area img').each(function () {
         const imageUrl = $(this).attr('src');
         if (imageUrl && imageUrl.startsWith('data:image')) {
           base64Images.push(imageUrl);
         }
       });
 
+      // 이미지 업로드 여부 확인
       if (base64Images.length === 0) {
-        const dataTransfer = new DataTransfer();
-        formData.append('files', dataTransfer.files);
+        alert("사진 업로드를 해주세요");
+        return;
       }
 
       // base64 이미지를 파일 객체로 변환 후 formData에 추가
@@ -241,7 +242,7 @@
             } else if (tradeType === "sell") {
               window.location.href = '/board/tradeHomeSell';
             } else if (tradeType === "buy") {
-              window.location.href = '/board/tradeHomeBuy'; // 일반 게시글 목록 페이지로 이동
+              window.location.href = '/board/tradeHomeBuy';
             }
           } else {
             alert('게시글 등록에 실패했습니다.');
