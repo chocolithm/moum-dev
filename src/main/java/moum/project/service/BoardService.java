@@ -28,7 +28,9 @@ public interface BoardService {
 
     List<Board> listAll() throws Exception;
 
-    List<Board> listPopular() throws Exception;
+    List<Board> listPopularByPage(int offset, int limit) throws Exception;
+
+    int countPopularPosts() throws Exception;
 
     List<Board> listTradeSellPosts() throws Exception;
     List<Board> listTradeBuyPosts() throws Exception;

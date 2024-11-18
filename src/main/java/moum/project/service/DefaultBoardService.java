@@ -20,9 +20,15 @@ public class DefaultBoardService implements BoardService {
     }
 
     @Override
-    public List<Board> listPopular() throws Exception {
-        return boardDao.listPopular();
+    public List<Board> listPopularByPage(int offset, int limit) throws Exception {
+        return boardDao.listPopularByPage(offset, limit);
     }
+
+    @Override
+    public int countPopularPosts() throws Exception {
+        return boardDao.countPopularPosts();
+    }
+
 
     @Override
     public List<Board> listTradeSellPosts() throws Exception {

@@ -32,7 +32,9 @@ public interface BoardDao {
     List<Board> listAll();
 
     // 인기 게시글 조회
-    List<Board> listPopular();
+    List<Board> listPopularByPage(@Param("offset") int offset, @Param("limit") int limit) throws Exception;
+
+    int countPopularPosts() throws Exception;
 
     // 수집품 거래 게시글 조회
     List<Board> listTradeSellPosts(int limit);

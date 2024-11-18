@@ -61,11 +61,23 @@ public class BoardController {
     return boardService.listAll();
   }
 
-  // 인기 게시글 조회
-  @GetMapping("/popular")
-  public List<Board> getPopularPosts() throws Exception {
-    return boardService.listPopular();
+  @GetMapping("/popularList")
+  public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
+                            @RequestParam(value = "limit", defaultValue = "12") int limit,  // size -> limit
+                            Model model) throws Exception {
+    int offset = (page - 1) * limit;
+    List<Board> popularBoards = boardService.listPopularByPage(offset, limit);
+    model.addAttribute("popularBoards", popularBoards);
+
+    int totalBoards = boardService.countPopularPosts();
+    int totalPages = (int) Math.ceil((double) totalBoards / limit);  // size -> limit
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+
+    return "board/popularList";
   }
+
+
 
   // 자랑하기 게시글 조회
   @GetMapping("/bragging")
