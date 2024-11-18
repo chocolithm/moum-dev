@@ -140,7 +140,7 @@ public class AdminController {
     if (loginUser.getNo() != 1) {
       return "inhibited";
     }
-    
+
     if (loginUser.getNo() == userNo) {
       return "self-inhibited";
     }

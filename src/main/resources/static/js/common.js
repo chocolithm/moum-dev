@@ -178,6 +178,7 @@ function openLoginModal() {
         .then(data => {
             document.getElementById('loginFormContainer').innerHTML = data;
             modal.style.display = "block";
+            modal.setAttribute('aria-hidden', false);
             populateEmailField();
             fadeIn(modal)
         });
@@ -191,6 +192,7 @@ function openSignupModal() {
         .then(data => {
             document.getElementById('signupFormContainer').innerHTML = data;
             modal.style.display = "block";
+            modal.setAttribute('aria-hidden', false);
 
             // 모달 내부의 스크립트 실행을 위한 코드 추가
             const scripts = document.querySelector('#signupFormContainer').querySelectorAll('script');
@@ -216,6 +218,7 @@ function openResetPasswordModal() {
         .then(data => {
             document.getElementById('resetPasswordFormContainer').innerHTML = data;
             modal.style.display = "block";
+            modal.setAttribute('aria-hidden', false);
 
             // 모달 내부 스크립트 실행을 위한 코드 추가
             const scripts = document.querySelector('#resetPasswordFormContainer').querySelectorAll('script');
@@ -237,6 +240,7 @@ function openResetPasswordModal() {
 function closeLoginModal() {
     const modal = document.getElementById("loginModal");
     modal.style.display = "none";
+    modal.setAttribute('aria-hidden', true);
     document.getElementById("loginFormContainer").innerHTML = "";
     fadeOut(modal);
 }
@@ -245,6 +249,7 @@ function closeLoginModal() {
 function closeSignupModal() {
     const modal = document.getElementById("signupModal");
     modal.style.display = "none";
+    modal.setAttribute('aria-hidden', true);
     document.getElementById("signupFormContainer").innerHTML = "";
     fadeOut(modal);
 }
@@ -253,6 +258,7 @@ function closeSignupModal() {
 function closeResetPasswordModal() {
     const modal = document.getElementById("resetPasswordModal");
     modal.style.display = "none";
+    modal.setAttribute('aria-hidden', true);
     document.getElementById("resetPasswordFormContainer").innerHTML = "";
     fadeOut(modal);
 }
