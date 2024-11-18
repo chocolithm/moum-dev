@@ -40,8 +40,7 @@ function selectAdminMenu(element) {
     case "category-admin": toggleAdminMenu("category", 1, 20); break;
     case "achievement-admin": toggleAdminMenu("achievement", 1, 20); break;
     case "user-admin": toggleAdminMenu("user", 1, 20); break;
-    case "report-admin": alert("신고/유해콘텐츠 관리"); break;
-    case "statistics-admin": alert("통계 조회"); break;
+    case "report-admin": toggleAdminMenu("report", 1, 20); break;
     default: alert("잘못된 접근입니다.");
   }
 }
@@ -116,6 +115,18 @@ function createAdminTableHead(menu) {
     `;
   }
 
+  if (menu == "report") {
+    title.innerHTML = "신고 관리";
+    thead.innerHTML = `
+        <tr>
+          <th>신고일시</th>
+          <th>신고자</th>
+          <th>신고항목</th>
+          <th>처리결과</th>
+        </tr>
+    `;
+  }
+
   table.append(thead);
   content_section.append(table);
 }
@@ -186,6 +197,19 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
               <td>${achievement.content}</td>
               <td>${achievement.score}</td>
               <td>${achievement.completeCount}</td>
+            </tr>
+          `;
+        });
+      }
+
+      if (menu == "report") {
+        data.forEach(report => {
+          tbody.innerHTML += `
+            <tr onclick="fetchAdminDetail('report', '${report.no}')">
+              <td>${formatDate(report.reportDate)}</td>
+              <td>${report.user.nickname}</td>
+              <td>${report.reportCategory.name}</td>
+              <td>${report.resultContent == null ? "" : report.resultContent}</td>
             </tr>
           `;
         });
@@ -474,6 +498,74 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
             </tbody>
           </table>
         `;
+      }
+
+      if (menu == "report") {
+        const report = data;
+
+        fetch(`/report/listResultCategories`)
+          .then(response => response.json())
+          .then(categories => {
+            let htmlContent = "";
+            htmlContent = `
+              <table>
+                <tbody>
+                  <tr>
+                    <td>번호</td>
+                    <td>${report.no}</td>
+                  </tr>
+                  <tr>
+                    <td>신고일시</td>
+                    <td>${formatDate(report.reportDate)}</td>
+                  </tr>
+                  <tr>
+                    <td>신고자</td>
+                    <td>${report.user.nickname}</td>
+                  </tr>
+                  <tr>
+                    <td>신고항목</td>
+                    <td>${report.reportCategory.name}</td>
+                  </tr>
+                  <tr>
+                    <td>내용</td>
+                    <td>${report.reportContent}</td>
+                  </tr>
+                  <tr>
+                    <td>처리결과</td>
+                    <td>
+                      <select name="resultCategory.name" id="resultCategory.name">
+                        <option value="0">미처리</option>
+            `;
+
+            categories.forEach(category => {
+              htmlContent += `
+                        <option value="${category.no}">${category.name}</option>
+              `;
+            })
+
+            htmlContent += `
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>처리사항</td>
+                    <td>
+                      <input name="resultContent" type="text" value="${report.resultContent == null ? "" : report.resultContent}">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            `;
+
+            content_section.innerHTML = htmlContent;
+
+            if (report.resultCategory != null) {
+              document.getElementById("resultCategory.name").value = report.resultCategory.no;
+            }
+          })
+          .catch(error => {
+            console.error("error fetching report categories: ", error);
+          })
       }
 
       // 조회 시마다 url 변경

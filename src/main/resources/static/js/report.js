@@ -44,8 +44,8 @@ function fetchReportCategoriesAndContent(type, no) {
             `;
 
             report_layer.innerHTML = htmlContent;
-            
-        }); 
+
+        });
 }
 
 
@@ -57,7 +57,7 @@ function report(url) {
         const formData = new FormData();
         formData.append("reportCategory.no", document.querySelector("#report-category").value);
         formData.append("reportContent",
-            `<a href="${url}">${document.querySelector("#reportContent").value.trim()}</a>`);
+            `<a href="${url}" target="_blank">${document.querySelector("#reportContent").value.trim()}</a>`);
 
         if (validateReport(formData)) {
 
@@ -88,7 +88,7 @@ function report(url) {
 }
 
 function validateReport(formData) {
-    if (formData.get("reportCategory.no") <= 0) {alert("신규유형을 다시 선택해주세요."); return false;}
-    if (formData.get("reportContent") == "") {alert("내용을 입력해주세요."); return false;}
+    if (formData.get("reportCategory.no") <= 0) { alert("신규유형을 다시 선택해주세요."); return false; }
+    if (formData.get("reportContent") == "") { alert("내용을 입력해주세요."); return false; }
     return true;
 }

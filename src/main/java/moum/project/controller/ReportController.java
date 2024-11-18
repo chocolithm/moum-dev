@@ -1,10 +1,12 @@
 package moum.project.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.ReportService;
 import moum.project.service.UserService;
 import moum.project.vo.Report;
 import moum.project.vo.ReportCategory;
+import moum.project.vo.ReportResultCategory;
 import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -48,5 +48,11 @@ public class ReportController {
   @ResponseBody
   public List<ReportCategory> listReportCategories() throws Exception {
     return reportService.listReportCategories();
+  }
+
+  @GetMapping("/listResultCategories")
+  @ResponseBody
+  public List<ReportResultCategory> listResultCategories() throws Exception {
+    return reportService.listResultCategories();
   }
 }

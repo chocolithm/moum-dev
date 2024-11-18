@@ -47,10 +47,6 @@
     values(#{user.no}, #{reportCategory.no}, #{reportContent})
   </insert>
 
-  <select id="findBy" resultMap="ReportMap" parameterType="int">
-
-  </select>
-
   <update id="update" parameterType="int">
 
   </update>
@@ -72,6 +68,26 @@
 <!--    FROM report-->
 <!--  </select>-->
 
+  <select id="findBy" resultMap="ReportMap" parameterType="int">
+    SELECT
+      r.report_id,
+      r.user_id,
+      u.nickname,
+      r.report_category_id,
+      rc.category_name,
+      r.report_content,
+      r.report_date,
+      r.report_result_id,
+      rrc.result_name,
+      r.result_content
+    FROM report r
+      left join user u on r.user_id = u.user_id
+      left join report_category rc on r.report_category_id = rc.report_category_id
+      left join report_result_category rrc on r.report_result_id = rrc.report_result_id
+    WHERE
+      r.report_id = #{no}
+  </select>
+
   <!-- 신고 리스트 + 조인 -->
   <select id="list" resultMap="ReportMap">
     SELECT
@@ -91,6 +107,32 @@
       left join report_result_category rrc on r.report_result_id = rrc.report_result_id
   </select>
 
+  <select id="listByPage" resultMap="ReportMap">
+    SELECT
+      r.report_id,
+      r.user_id,
+      u.nickname,
+      r.report_category_id,
+      rc.category_name,
+      r.report_content,
+      r.report_date,
+      r.report_result_id,
+      rrc.result_name,
+      r.result_content
+    FROM report r
+      left join user u on r.user_id = u.user_id
+      left join report_category rc on r.report_category_id = rc.report_category_id
+      left join report_result_category rrc on r.report_result_id = rrc.report_result_id
+    ORDER BY
+      r.report_date desc
+    LIMIT #{pageNo}, #{pageCount}
+  </select>
+
+  <select id="count">
+    select count(*)
+    from report
+  </select>
+
   <select id="listReportCategories" resultMap="ReportCategoryMap">
     select
       report_category_id,
@@ -99,6 +141,16 @@
       report_category
     order by
       category_name
+  </select>
+
+  <select id="listResultCategories" resultMap="ResultCategoryMap">
+    select
+      report_result_id,
+      result_name
+    from
+      report_result_category
+    order by
+      result_name
   </select>
 
 </mapper>

@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import moum.project.service.AchievementService;
 import moum.project.service.BoardService;
 import moum.project.service.CollectionCategoryService;
+import moum.project.service.ReportService;
 import moum.project.service.UserService;
 import moum.project.vo.Achievement;
 import moum.project.vo.Board;
 import moum.project.vo.Maincategory;
+import moum.project.vo.Report;
 import moum.project.vo.Subcategory;
 import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,6 +42,7 @@ public class AdminController {
   private final BoardService boardService;
   private final CollectionCategoryService categoryService;
   private final AchievementService achievementService;
+  private final ReportService reportService;
 
   /**
    * 이 메서드는 "/admin/management" URL로 들어오는 GET 요청을 처리합니다.
@@ -80,6 +83,12 @@ public class AdminController {
     return achievementService.listByPage((pageNo - 1) * pageCount, pageCount);
   }
 
+  @GetMapping("/report/list")
+  @ResponseBody
+  public List<Report> listReport(int pageNo, int pageCount) throws Exception {
+    return reportService.listByPage((pageNo - 1) * pageCount, pageCount);
+  }
+
   @GetMapping("/user/count")
   @ResponseBody
   public int countUser() throws Exception {
@@ -104,6 +113,12 @@ public class AdminController {
     return achievementService.count();
   }
 
+  @GetMapping("/report/count")
+  @ResponseBody
+  public int countReport() throws Exception {
+    return reportService.count();
+  }
+
   @GetMapping("/user")
   @ResponseBody
   public User getUser(int no) throws Exception {
@@ -126,6 +141,12 @@ public class AdminController {
   @ResponseBody
   public Achievement getAchievement(String no) throws Exception {
     return achievementService.get(no);
+  }
+
+  @GetMapping("/report")
+  @ResponseBody
+  public Report getReport(int no) throws Exception {
+    return reportService.get(no);
   }
 
   @GetMapping("/updateAdmin")
