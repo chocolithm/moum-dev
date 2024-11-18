@@ -19,6 +19,7 @@ window.addEventListener("popstate", function (event) {
       const pageNo = event.state.pageNo;
       const pageCount = event.state.pageCount;
 
+      this.document.getElementById(menu + "-admin").checked = true;
       toggleAdminMenu(menu, pageNo, pageCount, true);
     }
 
@@ -359,12 +360,12 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
       if (menu == "user") {
         const user = data;
         content_section.innerHTML = `
-          <div>
+          <div class="img-div">
             <img src="${user.photo != "" && user.photo != null
             ? 'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + user.photo
             : '/images/common2/profile.png'}" alt="프로필 사진" class="user-profile-img">
           </div>
-          <table>
+          <table class="view-table">
             <tbody>
               <tr>
                 <td>회원번호</td>
@@ -460,12 +461,12 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
       if (menu == "achievement") {
         const achievement = data;
         content_section.innerHTML = `
-          <div>
+          <div class="img-div">
             <img src="${achievement.photo != "" && achievement.photo != null
             ? 'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/' + achievement.photo
             : '/images/common2/profile.png'}" alt="업적 사진" class="achievement-img">
           </div>
-          <table>
+          <table class="view-table">
             <tbody>
               <tr>
                 <td>업적 ID</td>
@@ -508,7 +509,7 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
           .then(categories => {
             let htmlContent = "";
             htmlContent = `
-              <table>
+              <table class="view-table">
                 <tbody>
                   <tr>
                     <td>번호</td>
@@ -553,6 +554,17 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
                       <input name="resultContent" type="text" value="${report.resultContent == null ? "" : report.resultContent}">
                     </td>
                   </tr>
+            `;
+
+            if (report.resultCategory == null) {
+              htmlContent += `
+                <tr>
+                  <td colspan="2"><button class="btn report-btn">처리</button></td>
+                </tr>
+              `;
+            }
+
+            htmlContent += `
                 </tbody>
               </table>
             `;
