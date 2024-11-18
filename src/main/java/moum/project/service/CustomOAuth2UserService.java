@@ -7,7 +7,9 @@ import moum.project.dao.UserDao;
 import moum.project.dao.UserSnsDao;
 import moum.project.vo.User;
 import moum.project.vo.User_SNS;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -31,7 +33,7 @@ import java.util.*;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 24. 11. 13.        narilee       최초 생성
- * 24. 11. 14.        narilee       구글, 카카오, 네이버 간편로그인 설정
+ * 24. 11. 18.        narilee       로그인및 회원가입시 간편로그인 적용
  */
 @Service
 @RequiredArgsConstructor
@@ -66,53 +68,74 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       email = (String) kakaoAccount.get("email");
       name = (String) kakaoProfile.get("nickname");
       providerId = String.valueOf(attributes.get("id"));
-    }
-    else if ("naver".equals(registrationId)) {
+    } else if ("naver".equals(registrationId)) {
       Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
       email = (String) response.get("email");
       name = (String) response.get("name");
       providerId = (String) response.get("id");
-    }
-    else { // Google
+    } else { // Google
       email = (String) attributes.get("email");
       name = (String) attributes.get("name");
       providerId = (String) attributes.get(userNameAttributeName);
     }
 
     try {
-      User_SNS userSns = userSnsDao.selectUser_SNSByProviderAndUserId(registrationId, providerId);
+      // 현재 인증된 사용자 정보 가져오기
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
       User user;
 
-      if (userSns == null) {
-        user = userDao.findByEmail(email);
+      if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof CustomUserDetails) {
+        // 현재 로그인된 사용자가 있는 경우 - SNS 연동 시나리오
+        CustomUserDetails currentUser = (CustomUserDetails) authentication.getPrincipal();
+        user = userDao.findByEmail(currentUser.getUsername());
 
-        if (user == null) {
-          // 새 사용자 생성
-          user = new User();
-          user.setEmail(email);
-          user.setNickname(name);
-          user.setPassword(UUID.randomUUID().toString());
-          user.setAdmin(false);
-          user.setStartDate(LocalDateTime.now());
-          userDao.insert(user);
-
-          log.info("New user created - Email: {}, Provider: {}", email, registrationId);
+        // SNS 연동 정보 저장 (이미 연동되어 있지 않은 경우에만)
+        User_SNS existingSns =
+            userSnsDao.selectUser_SNSByProviderAndUserId(registrationId, providerId);
+        if (existingSns == null) {
+          User_SNS newUserSns = new User_SNS();
+          newUserSns.setProvider(registrationId);
+          newUserSns.setProviderUserId(providerId);
+          newUserSns.setUserId(user.getNo());
+          userSnsDao.insertUser_SNS(newUserSns);
+          log.info("SNS account linked - Provider: {}, User: {}", registrationId, email);
         }
-
-        // SNS 연동 정보 저장
-        User_SNS newUserSns = new User_SNS();
-        newUserSns.setProvider(registrationId);
-        newUserSns.setProviderUserId(providerId);
-        newUserSns.setUserId(user.getNo());
-        userSnsDao.insertUser_SNS(newUserSns);
-
-        log.info("SNS account linked - Provider: {}, User: {}", registrationId, email);
       } else {
-        user = userDao.findBy(userSns.getUserId());
-        if (user == null) {
-          throw new OAuth2AuthenticationException(
-              new OAuth2Error("user_not_found", "User not found for SNS account", null));
+        // SNS 로그인 시나리오
+        // 먼저 SNS 연동 정보로 사용자 찾기
+        User_SNS userSns = userSnsDao.selectUser_SNSByProviderAndUserId(registrationId, providerId);
+
+        if (userSns != null) {
+          // 연동된 계정이 있으면 해당 사용자 정보 가져오기
+          user = userDao.findBy(userSns.getUserId());
+          if (user == null) {
+            throw new OAuth2AuthenticationException(
+                new OAuth2Error("user_not_found", "User not found for SNS account", null));
+          }
+        } else {
+          // 연동된 계정이 없으면 이메일로 기존 사용자 찾기
+          user = userDao.findByEmail(email);
+
+          if (user == null) {
+            // 새 사용자 생성
+            user = new User();
+            user.setEmail(email);
+            user.setNickname(name);
+            user.setPassword(UUID.randomUUID().toString());
+            user.setAdmin(false);
+            user.setStartDate(LocalDateTime.now());
+            userDao.insert(user);
+            log.info("New user created - Email: {}, Provider: {}", email, registrationId);
+          }
+
+          // SNS 연동 정보 저장
+          User_SNS newUserSns = new User_SNS();
+          newUserSns.setProvider(registrationId);
+          newUserSns.setProviderUserId(providerId);
+          newUserSns.setUserId(user.getNo());
+          userSnsDao.insertUser_SNS(newUserSns);
+          log.info("SNS account linked - Provider: {}, User: {}", registrationId, email);
         }
       }
 

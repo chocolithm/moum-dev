@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import moum.project.config.CustomUserDetails;
 import moum.project.dao.UserSnsDao;
 import moum.project.service.AchievementService;
@@ -15,6 +18,7 @@ import moum.project.service.StorageService;
 import moum.project.service.UserService;
 import moum.project.vo.Achievement;
 import moum.project.vo.User;
+import moum.project.vo.User_SNS;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -29,7 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * author         : narilee
  * date           : 24. 10. 21.
  * description    : UserController는 사용자 관련 요청을 처리하는 컨트롤러입니다,
- *                  이 컨트롤러는 사용자 가입 폼과 가입 처리를 위한 기능을 제공합니다.
+ *                  이 컨트롤러는 사용자 가입 폼과 가입 처리, 회원정보 수정등을 위한 기능을 제공합니다.
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
@@ -41,10 +45,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * 24. 10. 31.        narilee       회원 삭제 기능 추가
  * 24. 11. 13.        narilee       SNS연동 기능 추가, 타유저 회원 정보 보기 기능 추가
  * 24. 11. 15.        narilee       탈퇴시 모든 연동된 SNS 연동 해제
+ * 24. 11. 18.        narilee       회원 수정 페이지에서 연동기능 추가
  */
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@Log4j2
 public class UserController {
 
   private final UserService userService;
@@ -125,7 +131,14 @@ public class UserController {
       return "redirect:/home?login=true";
     }
 
+    // 사용자의 SNS 연동 정보 조회
+    List<User_SNS> snsConnections = userSnsDao.findAllByUserId(user.getNo());
+    List<String> connectedProviders = snsConnections.stream()
+        .map(User_SNS::getProvider)
+        .collect(Collectors.toList());
+
     model.addAttribute("user", user);
+    model.addAttribute("connectedProviders", connectedProviders);
     model.addAttribute("listGetUserAchievement",
         achievementService.listUserGetAchievement(user.getNo()));
     return "user/update";
@@ -227,7 +240,6 @@ public class UserController {
       return "redirect:/user/update";
     }
   }
-
 
   /**
    * 회원가입 폼을 표시하는 메서드입니다.
