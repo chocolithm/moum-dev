@@ -36,6 +36,9 @@
                     <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
                     <span>조회수: <span th:text="${board.viewCount}">0</span></span>
                     <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>
+                    <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
+                            th:if="${board.sellOrSoldStatus == false}">수정하기</button>
+
                 </div>
             </div>
 
