@@ -31,6 +31,7 @@ public class Board implements Serializable {
     private String tradeType; // sell or buy 거래게시글 종류
 
     private User user; //작성자 정보를 받기 위한 User 객체
+    private String postDateString; // 관리자 검색 시 사용할 작성일자
 
 
 }

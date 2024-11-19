@@ -39,7 +39,11 @@ public interface BoardService {
 
     List<Board> listByPage(int pageNo, int pageCount) throws Exception;
 
+    List<Board> listByPageFromAdmin(Board board, int pageNo, int pageCount) throws Exception;
+
     int count() throws Exception;
+
+    int countFromAdmin(Board board) throws Exception;
 
     List<Board> listTradeSellPostsByPage(int offset, int limit) throws Exception;
 

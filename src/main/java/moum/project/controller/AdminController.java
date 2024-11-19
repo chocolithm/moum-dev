@@ -73,14 +73,19 @@ public class AdminController {
 
   @GetMapping("/board/list")
   @ResponseBody
-  public List<Board> listBoard(int pageNo, int pageCount) throws Exception {
-    return boardService.listByPage((pageNo - 1) * pageCount, pageCount);
+  public List<Board> listBoard(
+      Board board, int pageNo, int pageCount, String viewCountString, String likeString) throws Exception {
+
+    board.setViewCount(viewCountString == null ? -1 : Integer.parseInt(viewCountString));
+    board.setLikeCount(likeString == null ? -1 : Integer.parseInt(likeString));
+    return boardService.listByPageFromAdmin(board, (pageNo - 1) * pageCount, pageCount);
   }
 
   @GetMapping("/category/list")
   @ResponseBody
   public List<Maincategory> listCategory(
       Maincategory maincategory, int pageNo, int pageCount, String countString) throws Exception {
+
     maincategory.setCount(countString == null ? -1 : Integer.parseInt(countString));
     return categoryService.listMaincategoryByPage(maincategory, (pageNo - 1) * pageCount, pageCount);
   }
@@ -115,8 +120,12 @@ public class AdminController {
 
   @GetMapping("/board/count")
   @ResponseBody
-  public int countBoard() throws Exception {
-    return boardService.count();
+  public int countBoard(
+      Board board, String viewCountString, String likeString) throws Exception {
+
+    board.setViewCount(viewCountString == null ? -1 : Integer.parseInt(viewCountString));
+    board.setLikeCount(likeString == null ? -1 : Integer.parseInt(likeString));
+    return boardService.countFromAdmin(board);
   }
 
   @GetMapping("/category/count")

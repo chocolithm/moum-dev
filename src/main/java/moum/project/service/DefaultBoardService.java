@@ -172,8 +172,18 @@ public class DefaultBoardService implements BoardService {
     }
 
     @Override
+    public List<Board> listByPageFromAdmin(Board board, int pageNo, int pageCount) throws Exception {
+        return boardDao.listByPageFromAdmin(board, pageNo, pageCount);
+    }
+
+    @Override
     public int count() throws Exception {
         return boardDao.count();
+    }
+
+    @Override
+    public int countFromAdmin(Board board) throws Exception {
+        return boardDao.countFromAdmin(board);
     }
 
 

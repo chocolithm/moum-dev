@@ -59,6 +59,12 @@ public interface BoardDao {
         @Param("pageCount") int pageCount) throws Exception;
 
 
+    List<Board> listByPageFromAdmin(
+        @Param("board") Board board,
+        @Param("pageNo") int pageNo,
+        @Param("pageCount") int pageCount) throws Exception;
+
+
     // 판매 게시글 페이징 조회
     List<Board> listTradeSellPostsByPage(@Param("offset") int offset, @Param("limit") int limit) throws Exception;
 
@@ -72,4 +78,6 @@ public interface BoardDao {
     int countTradeBuyPosts() throws Exception;
 
     int count() throws Exception;
+
+    int countFromAdmin(Board board) throws Exception;
 }

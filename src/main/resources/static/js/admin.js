@@ -104,9 +104,9 @@ function createAdminTableHead(menu, pageNo, pageCount) {
           <th><input name="no" type="text"></th>
           <th><input name="title" type="text"></th>
           <th><input name="user.nickname" type="text"></th>
-          <th><input name="postDate" type="text"></th>
-          <th><input name="viewCount" type="text"></th>
-          <th><input name="like" type="text"></th>
+          <th><input name="postDateString" type="text"></th>
+          <th><input name="viewCountString" type="text"></th>
+          <th><input name="likeString" type="text"></th>
         </tr>
     `;
   }
