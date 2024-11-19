@@ -16,8 +16,8 @@
         };
     </script>
 </head>
-<div th:replace="~{header}"></div>
 <body>
+<div th:replace="~{header}"></div>
 
 <main>
 <div class="page-container">
@@ -27,10 +27,7 @@
         <div class="title" style="font-weight: bold">주제별</div>
       </div>
     </div>
-    <div class="search-bar">
-      <input type="text" class="search-input" placeholder="Search">
-      <button class="btn btn-primary">검색</button>
-    </div>
+
   </div>
 
   <div class="grid-option">
@@ -38,6 +35,10 @@
       <div class="button-group-left">
         <button class="recent" onclick="location.href='/board/boardList'">최근게시물</button>
         <button class="popular active" onclick="location.href='/board/popularList'">인기게시글</button>
+      </div>
+      <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Search">
+        <button class="btn btn-primary">검색</button>
       </div>
       <div class="button-group-right">
         <button class="write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
@@ -85,9 +86,10 @@
     </nav>
   </div>
 </div>
+</main>
+
 </body>
 
-</main>
 <footer th:replace="~{footer :: footer}"></footer>
 
 </html>
