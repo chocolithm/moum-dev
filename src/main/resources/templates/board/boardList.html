@@ -27,7 +27,6 @@
         <div class="title" style="font-weight: bold">주제별</div>
       </div>
     </div>
-
   </div>
 
   <div class="grid-option">
@@ -47,7 +46,7 @@
   </div>
 
   <div class="grid-container">
-    <div class="grid-item" th:each="board : ${recentBoards}">
+    <div class="grid-item-list" th:each="board : ${recentBoards}">
       <img class="item-image"
            th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
            th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
