@@ -248,7 +248,7 @@ function closeChat() {
 
   setTimeout(function () {
     chatroom_layer.innerHTML = "";
-    
+
     if (typeof isTrade !== "undefined" && isTrade) {
       const open_chat_btn = document.createElement("button");
       createOpenChatBtn(open_chat_btn);
@@ -385,7 +385,10 @@ function createBoardInfo(board_info, chatroom) {
   transaction_price.className = "transaction-price";
   transaction_price.innerHTML = chatroom.board.price != 0 ? chatroom.board.price + "원" : "가격 미정";
 
-  board_info.append(board_status, board_title, exit_btn, br, transaction_type, transaction_price);
+  const link = document.createElement("a");
+  link.href = `/board/boardView?no=${chatroom.board.no}`;
+  link.append(board_status, board_title, br, transaction_type, transaction_price);
+  board_info.append(link, exit_btn);
 }
 
 // 채팅 데이터 로딩
