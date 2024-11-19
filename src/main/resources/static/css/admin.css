@@ -68,6 +68,7 @@
 
 .main-section .content-section .list-table thead input {
   width: 100%;
+  text-align: center;
 }
 
 .main-section .content-section .list-table tbody {

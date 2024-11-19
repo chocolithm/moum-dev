@@ -122,7 +122,7 @@ function createAdminTableHead(menu, pageNo, pageCount) {
         <tr class="tr_search">
           <th><input name="no" type="text"></th>
           <th><input name="name" type="text"></th>
-          <th><input name="count" type="text"></th>
+          <th><input name="countString" type="text"></th>
         </tr>
     `;
   }

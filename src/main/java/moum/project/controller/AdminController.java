@@ -79,8 +79,10 @@ public class AdminController {
 
   @GetMapping("/category/list")
   @ResponseBody
-  public List<Maincategory> listCategory(int pageNo, int pageCount) throws Exception {
-    return categoryService.listMaincategoryByPage((pageNo - 1) * pageCount, pageCount);
+  public List<Maincategory> listCategory(
+      Maincategory maincategory, int pageNo, int pageCount, String countString) throws Exception {
+    maincategory.setCount(countString == null ? -1 : Integer.parseInt(countString));
+    return categoryService.listMaincategoryByPage(maincategory, (pageNo - 1) * pageCount, pageCount);
   }
 
   @GetMapping("/achievement/list")
