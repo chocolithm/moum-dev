@@ -119,7 +119,7 @@ INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
 
 -- 회원 데이터
 INSERT INTO user (user_id, email, nickname, password, start_date, admin) VALUES
-(1, 'admin@test.com', '관리자', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', '2024-11-10 14:22:16', 1),
+(1, 'admin@moum.com', '관리자', '$2a$10$12h5rg1z0Nkxy7qUx2tc4O3O27ko3nZUGbZ4owdAkTCv37xatN4CC', '2024-11-10 14:22:16', 1),
 (2, 'beggar@moum.com', 'beggar', '$2a$10$PeLoELFuasj6CptIePDM1.ronel7U5QRv532tHxDmXw.0.3TA6k9O', '2024-11-11 16:23:44', 0);
 
 
