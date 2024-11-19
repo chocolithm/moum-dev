@@ -103,10 +103,11 @@ public interface UserDao {
     LocalDateTime lastLoginTime);
 
     List<User> listByPage(
+        @Param("user") User user,
         @Param("pageNo") int pageNo,
         @Param("pageCount") int pageCount) throws Exception;
 
-    int count() throws Exception;
+    int count(User user) throws Exception;
 
     boolean updateAdmin(
         @Param("no") boolean admin,

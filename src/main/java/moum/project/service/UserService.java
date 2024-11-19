@@ -2,7 +2,6 @@ package moum.project.service;
 
 import java.util.List;
 import moum.project.vo.User;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * packageName    : moum.project.service
@@ -90,9 +89,9 @@ public interface UserService {
    */
   User getByEmail(String email) throws Exception;
 
-  List<User> listByPage(int pageNo, int pageCount) throws Exception;
+  List<User> listByPage(User user, int pageNo, int pageCount) throws Exception;
 
-  int count() throws Exception;
+  int count(User user) throws Exception;
 
   boolean updateAdmin(boolean admin, int userNo) throws Exception;
 }

@@ -37,7 +37,7 @@
 }
 
 .main-section .content-section {
-  height: calc(100vh - 330px);
+  height: calc(100vh - 310px);
   width: 100%;
   display: flex;
   justify-content: center;
@@ -66,9 +66,13 @@
   z-index: 1;
 }
 
+.main-section .content-section .list-table thead input {
+  width: 100%;
+}
+
 .main-section .content-section .list-table tbody {
   display: block;
-  max-height: calc(100vh - 400px);
+  max-height: calc(100vh - 420px);
   overflow-x: auto;
   overflow-y: scroll;
   padding-bottom: 5px;
@@ -104,7 +108,7 @@
   cursor: pointer;
 }
 
-.main-section .content-section .list-table thead tr:first-child:hover {
+.main-section .content-section .list-table thead tr:hover {
   box-shadow: none;
   transform: none;
   cursor: auto;

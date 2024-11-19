@@ -14,6 +14,12 @@
         <result column="start_date" property="startDate"/>
         <result column="end_date" property="endDate"/>
         <result column="last_login" property="lastLogin"/>
+
+        <association property="userSns" javaType="moum.project.vo.User_SNS">
+            <id column="sns_account_id" property="snsAccountId"/>
+            <result column="provider" property="provider"/>
+            <result column="provider_user_id" property="providerUserId"/>
+        </association>
     </resultMap>
 
     <select id="list" resultMap="UserMap">
@@ -132,27 +138,77 @@
 
     <select id="listByPage" resultMap="UserMap" parameterType="map">
         select
-            user_id,
-            nickname,
-            email,
-            admin,
-            photo,
-            start_date,
-            end_date,
-            last_login
+            u.user_id,
+            u.nickname,
+            u.email,
+            u.admin,
+            u.photo,
+            u.start_date,
+            u.end_date,
+            u.last_login,
+            us.sns_account_id,
+            us.provider
         from
-            user
+            user u
+            left join user_sns us on u.user_id = us.user_id
         where
-            end_date is null
+            1 = 1
+            <if test="user.no != 0">
+                AND u.user_id = #{user.no}
+            </if>
+            <if test="user.email != null">
+                AND u.email LIKE CONCAT('%', #{user.email}, '%')
+            </if>
+            <if test="user.nickname != null">
+                AND u.nickname LIKE CONCAT('%', #{user.nickname}, '%')
+            </if>
+            <if test="user.startDate != null">
+                AND u.start_date LIKE CONCAT('%', #{user.startDate}, '%')
+            </if>
+            <if test="user.lastLogin != null">
+                AND u.last_login LIKE CONCAT('%', #{user.lastLogin}, '%')
+            </if>
+            <if test="user.admin != false">
+                AND u.admin = #{user.admin}
+            </if>
+            <if test="user.userSns != null and user.userSns.provider != null">
+                AND us.provider LIKE CONCAT('%', #{user.userSns.provider}, '%')
+            </if>
+            AND u.end_date IS NULL
         order by
-            user_id desc
+            u.user_id desc
         limit #{pageNo}, #{pageCount}
     </select>
 
-    <select id="count">
+    <select id="count" parameterType="map">
         select count(*)
-        from user
-        where end_date is null
+        from
+            user u
+            left join user_sns us on u.user_id = us.user_id
+        where
+            1 = 1
+            <if test="no != 0">
+                AND u.user_id = #{no}
+            </if>
+            <if test="email != null">
+                AND u.email LIKE CONCAT('%', #{email}, '%')
+            </if>
+            <if test="nickname != null">
+                AND u.nickname LIKE CONCAT('%', #{nickname}, '%')
+            </if>
+            <if test="startDate != null">
+                AND u.start_date LIKE CONCAT('%', #{startDate}, '%')
+            </if>
+            <if test="lastLogin != null">
+                AND u.last_login LIKE CONCAT('%', #{lastLogin}, '%')
+            </if>
+            <if test="admin != false">
+                AND u.admin = #{admin}
+            </if>
+            <if test="userSns != null and userSns.provider != null">
+                AND us.provider LIKE CONCAT('%', #{userSns.provider}, '%')
+            </if>
+            AND u.end_date IS NULL
     </select>
 
     <update id="updateAdmin" parameterType="map">

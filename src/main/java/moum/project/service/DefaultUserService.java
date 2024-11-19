@@ -134,13 +134,13 @@ public class DefaultUserService implements UserService {
   }
 
   @Override
-  public List<User> listByPage(int pageNo, int pageCount) throws Exception {
-    return userDao.listByPage(pageNo, pageCount);
+  public List<User> listByPage(User user, int pageNo, int pageCount) throws Exception {
+    return userDao.listByPage(user, pageNo, pageCount);
   }
 
   @Override
-  public int count() throws Exception {
-    return userDao.count();
+  public int count(User user) throws Exception {
+    return userDao.count(user);
   }
 
   @Override

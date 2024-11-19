@@ -517,7 +517,7 @@ function createChatInputbox(chatroomNo, participant) {
   if (participant.endDate != null) {
     btn.setAttribute("onclick", `alert("이미 탈퇴한 회원입니다.")`);
   } else if (chatroomNo == 0) {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(location.search);
     const boardNo = urlParams.get('no');
 
     btn.setAttribute("onclick", `createChatroom(${boardNo})`);

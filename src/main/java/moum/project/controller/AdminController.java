@@ -1,6 +1,7 @@
 package moum.project.controller;
 
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AchievementService;
 import moum.project.service.BoardService;
@@ -44,6 +45,8 @@ public class AdminController {
   private final AchievementService achievementService;
   private final ReportService reportService;
 
+  private final Set<String> allowedOperators = Set.of("=", "!=", "<", "<=", ">", ">=", "LIKE");
+
   /**
    * 이 메서드는 "/admin/management" URL로 들어오는 GET 요청을 처리합니다.
    *
@@ -61,8 +64,8 @@ public class AdminController {
 
   @GetMapping("/user/list")
   @ResponseBody
-  public List<User> listUser(int pageNo, int pageCount) throws Exception {
-    return userService.listByPage((pageNo - 1) * pageCount, pageCount);
+  public List<User> listUser(User user, int pageNo, int pageCount) throws Exception {
+    return userService.listByPage(user, (pageNo - 1) * pageCount, pageCount);
   }
 
   @GetMapping("/board/list")
@@ -91,8 +94,8 @@ public class AdminController {
 
   @GetMapping("/user/count")
   @ResponseBody
-  public int countUser() throws Exception {
-    return userService.count();
+  public int countUser(User user) throws Exception {
+    return userService.count(user);
   }
 
   @GetMapping("/board/count")

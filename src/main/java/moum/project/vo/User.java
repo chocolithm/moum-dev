@@ -1,11 +1,10 @@
 package moum.project.vo;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : moum.project.vo
@@ -84,6 +83,9 @@ public class User implements Serializable {
      *
      * @param no 사용자의 고유 식별자
      */
+
+    private User_SNS userSns;
+
     public User(int no) {
         this.no = no;
     }

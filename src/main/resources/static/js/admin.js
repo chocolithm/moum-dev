@@ -35,26 +35,28 @@ window.addEventListener("popstate", function (event) {
 // 메뉴 선택 시 항목별 동작
 function selectAdminMenu(element) {
   const id = element.id;
+  const pageNo = 1;
+  const pageCount = 5;
 
   switch (id) {
-    case "board-admin": toggleAdminMenu("board", 1, 20); break;
-    case "category-admin": toggleAdminMenu("category", 1, 20); break;
-    case "achievement-admin": toggleAdminMenu("achievement", 1, 20); break;
-    case "user-admin": toggleAdminMenu("user", 1, 20); break;
-    case "report-admin": toggleAdminMenu("report", 1, 20); break;
+    case "board-admin": toggleAdminMenu("board", pageNo, pageCount); break;
+    case "category-admin": toggleAdminMenu("category", pageNo, pageCount); break;
+    case "achievement-admin": toggleAdminMenu("achievement", pageNo, pageCount); break;
+    case "user-admin": toggleAdminMenu("user", pageNo, pageCount); break;
+    case "report-admin": toggleAdminMenu("report", pageNo, pageCount); break;
     default: alert("잘못된 접근입니다.");
   }
 }
 
 // 메뉴별 화면 생성
 function toggleAdminMenu(menu, pageNo, pageCount, fromPopState = false) {
-  createAdminTableHead(menu);
+  createAdminTableHead(menu, pageNo, pageCount);
   fetchAdminData(menu, pageNo, pageCount, fromPopState);
   createAdminPagination(menu, pageCount);
 }
 
 // 목록 테이블 생성
-function createAdminTableHead(menu) {
+function createAdminTableHead(menu, pageNo, pageCount) {
   const title = document.querySelector("h1");
   const content_section = document.querySelector(".content-section");
   const table = document.createElement("table");
@@ -75,6 +77,15 @@ function createAdminTableHead(menu) {
         <th>관리자여부</th>
         <th>SNS연동</th>
       </tr>
+      <tr class="tr_search">
+        <th><input name="no" type="text"></th>
+        <th><input name="email" type="text"></th>
+        <th><input name="nickname" type="text"></th>
+        <th><input name="startDate" type="text"></th>
+        <th><input name="lastLogin" type="text"></th>
+        <th><input name="admin" type="text"></th>
+        <th><input name="userSns.provider" type="text"></th>
+      </tr>
     `;
   }
 
@@ -89,6 +100,14 @@ function createAdminTableHead(menu) {
           <th>조회수</th>
           <th>추천수</th>
         </tr>
+        <tr class="tr_search">
+          <th><input name="no" type="text"></th>
+          <th><input name="title" type="text"></th>
+          <th><input name="user.nickname" type="text"></th>
+          <th><input name="postDate" type="text"></th>
+          <th><input name="viewCount" type="text"></th>
+          <th><input name="like" type="text"></th>
+        </tr>
     `;
   }
 
@@ -99,6 +118,11 @@ function createAdminTableHead(menu) {
           <th>번호</th>
           <th>대분류</th>
           <th>보유자 수</th>
+        </tr>
+        <tr class="tr_search">
+          <th><input name="no" type="text"></th>
+          <th><input name="name" type="text"></th>
+          <th><input name="count" type="text"></th>
         </tr>
     `;
   }
@@ -113,6 +137,13 @@ function createAdminTableHead(menu) {
           <th>점수</th>
           <th>취득자수</th>
         </tr>
+        <tr class="tr_search">
+          <th><input name="id" type="text"></th>
+          <th><input name="name" type="text"></th>
+          <th><input name="content" type="text"></th>
+          <th><input name="score" type="text"></th>
+          <th><input name="count" type="text"></th>
+        </tr>
     `;
   }
 
@@ -125,11 +156,39 @@ function createAdminTableHead(menu) {
           <th>신고항목</th>
           <th>처리결과</th>
         </tr>
+        <tr class="tr_search">
+          <th><input name="reportDate" type="text"></th>
+          <th><input name="user" type="text"></th>
+          <th><input name="reportCategory.name" type="text"></th>
+          <th><input name="resultCategory.name" type="text"></th>
+        </tr>
     `;
   }
 
   table.append(thead);
   content_section.append(table);
+
+  const searchParams = document.querySelectorAll(".tr_search input");
+
+  for (let i = 0; i < searchParams.length; i++) {
+    searchParams[i].addEventListener('keydown', (event) => {
+      if (event.key === "Enter") {
+        filterAdminData(menu, pageNo, pageCount);
+      }
+    });
+  }
+}
+
+function filterAdminData(menu, pageNo, pageCount) {
+  const searchParams = document.querySelectorAll(".tr_search input");
+
+  for (let i = 0; i < searchParams.length; i++) {
+    if (searchParams[i].value.trim() != "") {
+      fetchAdminData(menu, pageNo, pageCount);
+      createAdminPagination(menu, pageCount);
+      break;
+    }
+  }
 }
 
 // 목록 데이터 조회
@@ -140,7 +199,17 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
     table.querySelector("tbody").remove();
   }
 
-  fetch(`/admin/${menu}/list?pageNo=${pageNo}&pageCount=${pageCount}`)
+  let url = `/admin/${menu}/list?pageNo=${pageNo}&pageCount=${pageCount}`;
+  const searchParams = document.querySelectorAll(".tr_search input");
+
+
+  for (let i = 0; i < searchParams.length; i++) {
+    if (searchParams[i].value !== "") {
+      url += `&${searchParams[i].name}=${searchParams[i].value}`;
+    }
+  }
+
+  fetch(url)
     .then(response => response.json())
     .then(data => {
 
@@ -156,7 +225,7 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
               <td>${formatDate(user.startDate).substring(0, 10)}</td>
               <td>${formatDate(user.lastLogin).substring(0, 10)}</td>
               <td>${user.admin === false ? "" : "관리자"}</td>
-              <td>${user.snsId == null ? "" : ""}</td>
+              <td>${user.provider == null ? "" : user.provider}</td>
             </tr>
           `;
         });
@@ -232,7 +301,24 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
 
 // 페이징 생성
 function createAdminPagination(menu, pageCount) {
-  fetch(`/admin/${menu}/count`)
+
+  let url = `/admin/${menu}/count`;
+  const searchParams = document.querySelectorAll(".tr_search input");
+  let count = 0;
+
+  for (let i = 0; i < searchParams.length; i++) {
+    if (searchParams[i].value !== "" && count == 0) {
+      url += `?${searchParams[i].name}=${searchParams[i].value}`;
+      count++;
+      continue;
+    }
+
+    if (searchParams[i].value !== "") {
+      url += `&${searchParams[i].name}=${searchParams[i].value}`;
+    }
+  }
+
+  fetch(url)
     .then(response => response.text())
     .then(length => {
       const totalItems = parseInt(length, 10);
