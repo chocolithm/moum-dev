@@ -8,7 +8,7 @@ function openAlertModal() {
 
   const read_alert_btn = document.createElement("button");
   read_alert_btn.className = "read_alert_btn btn";
-  read_alert_btn.innerHTML = "모두 읽음?";
+  read_alert_btn.innerHTML = "모두 읽기";
   read_alert_btn.setAttribute("onclick", "updateAlertReadAll()");
   alert_layer.appendChild(read_alert_btn);
 
