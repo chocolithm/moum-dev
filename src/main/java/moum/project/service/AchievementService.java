@@ -15,7 +15,7 @@ public interface AchievementService {
 
   List<Achievement> listUserGetAchievement(int userNo) throws Exception;
 
-  List<Achievement> listByPage(int pageNo, int pageCount) throws Exception;
+  List<Achievement> listByPage(Achievement achievement, int pageNo, int pageCount) throws Exception;
 
   Achievement get(String id) throws Exception;
 

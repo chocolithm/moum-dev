@@ -142,7 +142,7 @@ function createAdminTableHead(menu, pageNo, pageCount) {
           <th><input name="name" type="text"></th>
           <th><input name="content" type="text"></th>
           <th><input name="score" type="text"></th>
-          <th><input name="count" type="text"></th>
+          <th><input name="completeCountString" type="text"></th>
         </tr>
     `;
   }
@@ -180,15 +180,8 @@ function createAdminTableHead(menu, pageNo, pageCount) {
 }
 
 function searchAdminData(menu, pageNo, pageCount) {
-  const searchParams = document.querySelectorAll(".tr_search input");
-
-  for (let i = 0; i < searchParams.length; i++) {
-    if (searchParams[i].value.trim() != "") {
-      fetchAdminData(menu, pageNo, pageCount);
-      createAdminPagination(menu, pageCount);
-      break;
-    }
-  }
+  fetchAdminData(menu, pageNo, pageCount);
+  createAdminPagination(menu, pageCount);
 }
 
 // 목록 데이터 조회

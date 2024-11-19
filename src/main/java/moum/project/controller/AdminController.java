@@ -85,8 +85,15 @@ public class AdminController {
 
   @GetMapping("/achievement/list")
   @ResponseBody
-  public List<Achievement> listAchievement(int pageNo, int pageCount) throws Exception {
-    return achievementService.listByPage((pageNo - 1) * pageCount, pageCount);
+  public List<Achievement> listAchievement(
+      Achievement achievement, int pageNo, int pageCount, String completeCountString) throws Exception {
+
+    if (achievement.getId() != null) {
+      achievement.setId(achievement.getId().toUpperCase());
+    }
+    achievement.setCompleteCount(completeCountString == null ? -1 : Integer.parseInt(completeCountString));
+
+    return achievementService.listByPage(achievement, (pageNo - 1) * pageCount, pageCount);
   }
 
   @GetMapping("/report/list")

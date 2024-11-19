@@ -123,8 +123,25 @@
             achievement a
         LEFT JOIN
             user_achievement ua ON a.achievement_id = ua.achievement_id
+        WHERE
+            1 = 1
+            <if test="achievement.id != null">
+                AND a.achievement_id LIKE CONCAT('%', #{achievement.id}, '%')
+            </if>
+            <if test="achievement.name != null">
+                AND a.name LIKE CONCAT('%', #{achievement.name}, '%')
+            </if>
+            <if test="achievement.content != null">
+                AND a.content LIKE CONCAT('%', #{achievement.content}, '%')
+            </if>
+            <if test="achievement.score != 0">
+                AND a.score = #{achievement.score}
+            </if>
         GROUP BY
             a.achievement_id, a.name, a.content, a.photo, a.acquisition_condition, a.location
+        <if test="achievement.completeCount > -1">
+            HAVING COALESCE(SUM(CASE WHEN ua.progress = 100 THEN 1 ELSE 0 END), 0) = #{achievement.completeCount}
+        </if>
         ORDER BY
             a.achievement_id DESC
         LIMIT

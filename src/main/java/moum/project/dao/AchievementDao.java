@@ -23,6 +23,7 @@ public interface AchievementDao {
     List<Achievement> listUserGetAchievement(int userNo) throws Exception;
 
     List<Achievement> listByPage(
+        @Param("achievement") Achievement achievement,
         @Param("pageNo") int pageNo,
         @Param("pageCount") int pageCount) throws Exception;
 

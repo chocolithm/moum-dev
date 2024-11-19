@@ -41,8 +41,8 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
-  public List<Achievement> listByPage(int pageNo, int pageCount) throws Exception {
-    return achievementDao.listByPage(pageNo, pageCount);
+  public List<Achievement> listByPage(Achievement achievement,int pageNo, int pageCount) throws Exception {
+    return achievementDao.listByPage(achievement, pageNo, pageCount);
   }
 
   @Override
