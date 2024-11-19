@@ -52,9 +52,9 @@ spring:
       - "file:${user.home}/config/ncp.properties"
       - "file:${user.home}/config/mail.properties"
 
-# 운영DB로 변경 예정
   datasource:
-    url: jdbc:mysql://db-pfr3l-kr.vpc-pub-cdb.ntruss.com/moum
+    # url: jdbc:mysql://db-pfr3l-kr.vpc-pub-cdb.ntruss.com/moum
+    url: jdbc:mysql://db-2vo3q0-kr.vpc-pub-cdb.ntruss.com/moum
     username: moum
     password: bitcamp123!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
