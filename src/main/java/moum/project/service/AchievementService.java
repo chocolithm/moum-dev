@@ -37,5 +37,5 @@ public interface AchievementService {
 
   boolean completeAchievement(Achievement achievement) throws Exception;
 
-  int count() throws Exception;
+  int count(Achievement achievement) throws Exception;
 }

@@ -121,14 +121,19 @@ public class AdminController {
 
   @GetMapping("/category/count")
   @ResponseBody
-  public int countCategory() throws Exception {
-    return categoryService.count();
+  public int countCategory(Maincategory maincategory, String countString) throws Exception {
+    maincategory.setCount(countString == null ? -1 : Integer.parseInt(countString));
+    return categoryService.count(maincategory);
   }
 
   @GetMapping("/achievement/count")
   @ResponseBody
-  public int countAchievement() throws Exception {
-    return achievementService.count();
+  public int countAchievement(Achievement achievement, String completeCountString) throws Exception {
+    if (achievement.getId() != null) {
+      achievement.setId(achievement.getId().toUpperCase());
+    }
+    achievement.setCompleteCount(completeCountString == null ? -1 : Integer.parseInt(completeCountString));
+    return achievementService.count(achievement);
   }
 
   @GetMapping("/report/count")

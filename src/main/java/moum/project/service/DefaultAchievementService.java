@@ -91,8 +91,8 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
-  public int count() throws Exception {
-    return achievementDao.count();
+  public int count(Achievement achievement) throws Exception {
+    return achievementDao.count(achievement);
   }
 
   @Override

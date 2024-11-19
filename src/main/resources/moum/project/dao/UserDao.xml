@@ -180,7 +180,7 @@
         limit #{pageNo}, #{pageCount}
     </select>
 
-    <select id="count" parameterType="map">
+    <select id="count" parameterType="moum.project.vo.User">
         select count(*)
         from
             user u

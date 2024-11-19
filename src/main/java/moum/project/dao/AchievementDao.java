@@ -51,5 +51,5 @@ public interface AchievementDao {
 
     boolean completeAchievement(Achievement achievement) throws Exception;
 
-    int count() throws Exception;
+    int count(Achievement achievement) throws Exception;
 }

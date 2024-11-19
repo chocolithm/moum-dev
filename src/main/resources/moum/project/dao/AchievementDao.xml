@@ -243,9 +243,33 @@
             user_id=#{no}
     </update>
 
-    <select id="count">
-        select count(*)
-        from achievement
+    <select id="count" parameterType="moum.project.vo.Achievement">
+        SELECT count(*)
+        FROM
+            (SELECT count(*)
+            FROM
+                achievement a
+                LEFT JOIN user_achievement ua ON a.achievement_id = ua.achievement_id
+            WHERE
+                1 = 1
+                <if test="id != null">
+                    AND a.achievement_id LIKE CONCAT('%', #{id}, '%')
+                </if>
+                <if test="name != null">
+                    AND a.name LIKE CONCAT('%', #{name}, '%')
+                </if>
+                <if test="content != null">
+                    AND a.content LIKE CONCAT('%', #{content}, '%')
+                </if>
+                <if test="score != 0">
+                    AND a.score = #{score}
+                </if>
+            GROUP BY
+                a.achievement_id, a.name, a.content, a.photo, a.acquisition_condition, a.location
+            <if test="completeCount > -1">
+                HAVING COALESCE(SUM(CASE WHEN ua.progress = 100 THEN 1 ELSE 0 END), 0) = #{completeCount}
+            </if>
+        ) AS count_table
     </select>
 
     <update id="completeAchievement" parameterType="moum.project.vo.Achievement">

@@ -44,7 +44,7 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   }
 
   @Override
-  public int count() throws Exception {
-    return categoryDao.count();
+  public int count(Maincategory maincategory) throws Exception {
+    return categoryDao.count(maincategory);
   }
 }
