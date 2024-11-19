@@ -85,6 +85,8 @@ public class User implements Serializable {
      */
 
     private User_SNS userSns;
+    private String startDateString; // 가입일 기준으로 회원 검색 시 사용
+    private String lastLoginString; // 최근접속일자 기준으로 회원 검색 시 사용
 
     public User(int no) {
         this.no = no;

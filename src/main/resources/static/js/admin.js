@@ -36,7 +36,7 @@ window.addEventListener("popstate", function (event) {
 function selectAdminMenu(element) {
   const id = element.id;
   const pageNo = 1;
-  const pageCount = 5;
+  const pageCount = 20;
 
   switch (id) {
     case "board-admin": toggleAdminMenu("board", pageNo, pageCount); break;
@@ -81,9 +81,9 @@ function createAdminTableHead(menu, pageNo, pageCount) {
         <th><input name="no" type="text"></th>
         <th><input name="email" type="text"></th>
         <th><input name="nickname" type="text"></th>
-        <th><input name="startDate" type="text"></th>
-        <th><input name="lastLogin" type="text"></th>
-        <th><input name="admin" type="text"></th>
+        <th><input name="startDateString" type="text"></th>
+        <th><input name="lastLoginString" type="text"></th>
+        <th><input name="isAdmin" type="text"></th>
         <th><input name="userSns.provider" type="text"></th>
       </tr>
     `;

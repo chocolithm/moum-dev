@@ -162,11 +162,11 @@
             <if test="user.nickname != null">
                 AND u.nickname LIKE CONCAT('%', #{user.nickname}, '%')
             </if>
-            <if test="user.startDate != null">
-                AND u.start_date LIKE CONCAT('%', #{user.startDate}, '%')
+            <if test="user.startDateString != null">
+                AND u.start_date LIKE CONCAT(#{user.startDateString}, '%')
             </if>
-            <if test="user.lastLogin != null">
-                AND u.last_login LIKE CONCAT('%', #{user.lastLogin}, '%')
+            <if test="user.lastLoginString != null">
+                AND u.last_login LIKE CONCAT(#{user.lastLoginString}, '%')
             </if>
             <if test="user.admin != false">
                 AND u.admin = #{user.admin}
@@ -196,11 +196,11 @@
             <if test="nickname != null">
                 AND u.nickname LIKE CONCAT('%', #{nickname}, '%')
             </if>
-            <if test="startDate != null">
-                AND u.start_date LIKE CONCAT('%', #{startDate}, '%')
+            <if test="startDateString != null">
+                AND u.start_date LIKE CONCAT(#{startDateString}, '%')
             </if>
-            <if test="lastLogin != null">
-                AND u.last_login LIKE CONCAT('%', #{lastLogin}, '%')
+            <if test="lastLoginString != null">
+                AND u.last_login LIKE CONCAT(#{lastLoginString}, '%')
             </if>
             <if test="admin != false">
                 AND u.admin = #{admin}

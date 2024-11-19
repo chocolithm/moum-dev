@@ -64,7 +64,10 @@ public class AdminController {
 
   @GetMapping("/user/list")
   @ResponseBody
-  public List<User> listUser(User user, int pageNo, int pageCount) throws Exception {
+  public List<User> listUser(User user, int pageNo, int pageCount, String isAdmin) throws Exception {
+    if (isAdmin != null && isAdmin.equals("관리자")) {
+      user.setAdmin(true);
+    }
     return userService.listByPage(user, (pageNo - 1) * pageCount, pageCount);
   }
 
@@ -94,7 +97,10 @@ public class AdminController {
 
   @GetMapping("/user/count")
   @ResponseBody
-  public int countUser(User user) throws Exception {
+  public int countUser(User user, String isAdmin) throws Exception {
+    if (isAdmin != null && isAdmin.equals("관리자")) {
+      user.setAdmin(true);
+    }
     return userService.count(user);
   }
 
