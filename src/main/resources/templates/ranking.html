@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/ranking.css" type="text/css">
+    <title>Document</title>
+</head>
+<body>
+<!-- 업적 랭킹 섹션 -->
+<div class="middle-box abcd" style="padding: 15px;">
+    <h1 class="text-center mb-4 fw-bold">업적 랭킹</h1>
+
+    <div class="row g-3"> <!-- g-5를 g-3으로 변경하여 간격 좁히기 -->
+        <!-- Top 1-5 Rankings -->
+        <div class="col-md-6 mx-auto mb-2"> <!-- mb-1을 mb-2로 변경 -->
+            <div class="ranking-card card h-100 shadow-sm border">
+                <div class="card-header" style="background-color: #000000; border-color: #000000; color: #ffffff;">
+                    <h5 class="card-title mb-0">Top 1-5</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">등수</th>
+                                <th>닉네임</th>
+                                <th class="text-end pe-4">점수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-th-each="ranking, status : ${rankList}"
+                                data-th-if="${status.index < 5}"
+                                data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">
+                                <td class="ps-4">
+                                    <div data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">
+                                        <span data-th-text="${ranking.rank}"></span>
+                                    </div>
+                                </td>
+                                <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>
+                                <td class="align-middle text-end pe-4">
+                                    <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top 6-10 Rankings -->
+        <div class="col-md-6 mx-auto mb-2 TopRankWidth2"> <!-- mb-1을 mb-2로 변경 -->
+            <div class="ranking-card card h-100 shadow-sm border">
+                <div class="card-header" style="background-color: #000000; border-color: #000000; color: #ffffff;">
+                    <h5 class="card-title mb-0">Top 6-10</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">등수</th>
+                                <th>닉네임</th>
+                                <th class="text-end pe-4">점수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-th-each="ranking, status : ${rankList}"
+                                data-th-if="${status.index >= 5 && status.index < 10}"
+                                class="table-row">
+                                <td class="ps-4">
+                                    <div class="rank-badge rank-other">
+                                        <span data-th-text="${ranking.rank}"></span>
+                                    </div>
+                                </td>
+                                <td class="align-middle" data-th-text="${ranking.user.nickname}"></td>
+                                <td class="align-middle text-end pe-4">
+                                    <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Ranking Status -->
+        <div class="col-12 mx-auto mb-3">
+            <div class="ranking-card card shadow-sm border">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">현재 내 업적 순위</h5>
+                </div>
+                <div data-th-class="'card-body py-4 ' + ${rankNowUserList != null ? (rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : ''))) : ''}">
+                    <div data-th-if="${rankNowUserList != null}" class="text-center">
+                        <p class="mb-0">
+                            <span class="fw-bold" data-th-text="${rankNowUserList.rank} + '등'"></span>
+                            <span data-th-text="${rankNowUserList.user.nickname}"></span> -
+                            <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>
+                        </p>
+                    </div>
+                    <div data-th-if="${rankNowUserList == null}" class="text-center">
+                        <p class="mb-0">
+                            <span class="fw-bold">현재 업적 정보가 없습니다.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

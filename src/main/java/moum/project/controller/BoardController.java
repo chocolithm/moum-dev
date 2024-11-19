@@ -1,41 +1,21 @@
 package moum.project.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.BoardDao;
-import moum.project.service.AchievementService;
-import moum.project.service.BoardService;
-import moum.project.service.CollectionService;
-import moum.project.service.CollectionStatusService;
-import moum.project.service.CommentService;
-import moum.project.service.LikesService;
-import moum.project.service.StorageService;
-import moum.project.service.UserService;
-import moum.project.vo.Achievement;
-import moum.project.vo.AttachedFile;
-import moum.project.vo.Board;
+import moum.project.service.*;
 import moum.project.vo.Collection;
-import moum.project.vo.CollectionStatus;
-import moum.project.vo.CommentResponse;
-import moum.project.vo.User;
+import moum.project.vo.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.*;
 
 @Controller
 @RequestMapping("/board")
@@ -63,8 +43,8 @@ public class BoardController {
 
   @GetMapping("/popularList")
   public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
-                            @RequestParam(value = "limit", defaultValue = "12") int limit,  // size -> limit
-                            Model model) throws Exception {
+      @RequestParam(value = "limit", defaultValue = "12") int limit,  // size -> limit
+      Model model) throws Exception {
     int offset = (page - 1) * limit;
     List<Board> popularBoards = boardService.listPopularByPage(offset, limit);
     model.addAttribute("popularBoards", popularBoards);
@@ -86,10 +66,8 @@ public class BoardController {
   }
 
   @GetMapping("/tradeHomeSell")
-  public String tradeHomeSell(
-          @RequestParam(value = "page", defaultValue = "1") int page,
-          @RequestParam(value = "size", defaultValue = "10") int size,
-          Model model) throws Exception {
+  public String tradeHomeSell(@RequestParam(value = "page", defaultValue = "1") int page,
+      @RequestParam(value = "size", defaultValue = "10") int size, Model model) throws Exception {
 
     // 페이지 번호와 사이즈를 기반으로 offset 계산
     int offset = (page - 1) * size;
@@ -108,12 +86,11 @@ public class BoardController {
 
     return "board/tradeHomeSell"; // Thymeleaf 템플릿 이름
   }
+
   // 구매 게시글 페이징 조회
   @GetMapping("/tradeHomeBuy")
-  public String tradeHomeBuy(
-          @RequestParam(value = "page", defaultValue = "1") int page,
-          @RequestParam(value = "size", defaultValue = "10") int size,
-          Model model) throws Exception {
+  public String tradeHomeBuy(@RequestParam(value = "page", defaultValue = "1") int page,
+      @RequestParam(value = "size", defaultValue = "10") int size, Model model) throws Exception {
 
     // 페이지 번호와 사이즈를 기반으로 offset 계산
     int offset = (page - 1) * size;
@@ -133,6 +110,7 @@ public class BoardController {
 
     return "board/tradeHomeBuy"; // Thymeleaf 템플릿 이름
   }
+
   @GetMapping("/tradeHomeButton")
   public String tradeHomeButton() {
     return "board/tradeHomeButton";
@@ -160,11 +138,9 @@ public class BoardController {
     List<Board> recentBoards = allBoards.subList(0, Math.min(3, allBoards.size()));
 
     // 고정된 업적 데이터 추가
-    List<Map<String, Object>> achievements = List.of(
-        Map.of("rank", 1, "name", "레고 윈터랜드"),
-        Map.of("rank", 2, "name", "대디하디"),
-        Map.of("rank", 3, "name", "피규어 레이더")
-    );
+    List<Map<String, Object>> achievements =
+        List.of(Map.of("rank", 1, "name", "레고 윈터랜드"), Map.of("rank", 2, "name", "대디하디"),
+            Map.of("rank", 3, "name", "피규어 레이더"));
 
     // 모델에 데이터 추가
     model.addAttribute("popularBoards", popularBoards);
@@ -172,22 +148,34 @@ public class BoardController {
     model.addAttribute("achievements", achievements);
 
     List<Achievement> userRankList = achievementService.listByUserRank();
-    model.addAttribute("rankList",
-        userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+    model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
 
-    Achievement user_achievement_ranklist = achievementService.findRankByUser(
-        loginUser.getNo());
+    Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
     model.addAttribute("rankNowUserList",
         user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
 
     return "board/boardHome";
   }
 
+  @GetMapping("/ranking")
+  public String ranking(Model model, @AuthenticationPrincipal UserDetails userDetails)
+      throws Exception {
+    String email = userDetails.getUsername();
+    User loginUser = userService.getByEmail(email);
+
+    List<Achievement> userRankList = achievementService.listByUserRank();
+    model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+
+    Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
+    model.addAttribute("rankNowUserList",
+        user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+
+    return "ranking";
+  }
 
   @GetMapping("/boardList")
   public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
-                          @RequestParam(value = "size", defaultValue = "12") int size,
-                          Model model) throws Exception {
+      @RequestParam(value = "size", defaultValue = "12") int size, Model model) throws Exception {
     int offset = (page - 1) * size;
     List<Board> recentBoards = boardService.listByPage(offset, size);
     model.addAttribute("recentBoards", recentBoards);
@@ -202,19 +190,19 @@ public class BoardController {
   }
 
 
-//  @PostMapping("/addGeneral")
-//  public String add(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
-//    // 새 게시글에 사용자 번호 설정 (임시로 1번 사용자 설정)
-//    board.setUserNo(1);
-//
-//    // 파일 업로드 및 첨부 파일 정보 설정
-//    List<AttachedFile> attachedFiles = uploadFiles(files);
-//    board.setAttachedFiles(attachedFiles);
-//
-//    // 게시글 추가
-//    boardService.add(board);
-//    return "redirect:/board/boardList";
-//  }
+  //  @PostMapping("/addGeneral")
+  //  public String add(Board board, @RequestParam("files") MultipartFile[] files) throws Exception {
+  //    // 새 게시글에 사용자 번호 설정 (임시로 1번 사용자 설정)
+  //    board.setUserNo(1);
+  //
+  //    // 파일 업로드 및 첨부 파일 정보 설정
+  //    List<AttachedFile> attachedFiles = uploadFiles(files);
+  //    board.setAttachedFiles(attachedFiles);
+  //
+  //    // 게시글 추가
+  //    boardService.add(board);
+  //    return "redirect:/board/boardList";
+  //  }
 
   @GetMapping("/list")
   public String list(Model model) throws Exception {
@@ -226,11 +214,8 @@ public class BoardController {
 
 
   @GetMapping("/boardView")
-  public String view(
-          @RequestParam("no") int no,
-          Model model,
-          @AuthenticationPrincipal UserDetails userDetails,
-          WebRequest webRequest) throws Exception {
+  public String view(@RequestParam("no") int no, Model model,
+      @AuthenticationPrincipal UserDetails userDetails, WebRequest webRequest) throws Exception {
 
     // 게시글 상세 정보 가져오기
     Board board = boardService.get(no);
@@ -253,7 +238,8 @@ public class BoardController {
 
     // 세션에서 해당 게시글을 조회한 이력이 있는지 확인
     String sessionAttributeKey = "viewedBoard_" + no;
-    Boolean hasViewed = (Boolean) webRequest.getAttribute(sessionAttributeKey, WebRequest.SCOPE_SESSION);
+    Boolean hasViewed =
+        (Boolean) webRequest.getAttribute(sessionAttributeKey, WebRequest.SCOPE_SESSION);
 
     // 조회 이력이 없으면 조회수 증가 및 세션에 기록
     if (hasViewed == null || !hasViewed) {
@@ -308,11 +294,8 @@ public class BoardController {
 
 
   @PostMapping("/update/{no}")
-  public ResponseEntity<String> update(
-      @PathVariable("no") int no,
-      Board updatedBoard,
-      @RequestParam(value = "files", required = false) MultipartFile[] files,
-      String[] oldFiles,
+  public ResponseEntity<String> update(@PathVariable("no") int no, Board updatedBoard,
+      @RequestParam(value = "files", required = false) MultipartFile[] files, String[] oldFiles,
       Model model) throws Exception {
 
     updatedBoard.setNo(no);
@@ -363,7 +346,8 @@ public class BoardController {
       String content = updatedBoard.getContent();
 
       for (AttachedFile attachedFile : attachedFiles) {
-        String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s", attachedFile.getFilename());
+        String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s",
+            attachedFile.getFilename());
 
         // 정규식을 통해 첫 번째 data:image 형식의 base64 이미지를 newUrl로 교체
         content = content.replaceFirst("src=\"data:image[^\"]+\"", "src=\"" + newUrl + "\"");
@@ -393,15 +377,15 @@ public class BoardController {
     //      }
 
 
-//    if (files != null && files.length > 0 && !files[0].isEmpty()) {
-//      boardService.deleteAttachedFiles(no);
-//      List<AttachedFile> newFiles = uploadFiles(files);
-//      for (AttachedFile file : newFiles) {
-//        file.setBoardNo(no);
-//      }
-//      boardService.insertAttachedFiles(newFiles);
-//      existingBoard.setAttachedFiles(newFiles);
-//    }
+    //    if (files != null && files.length > 0 && !files[0].isEmpty()) {
+    //      boardService.deleteAttachedFiles(no);
+    //      List<AttachedFile> newFiles = uploadFiles(files);
+    //      for (AttachedFile file : newFiles) {
+    //        file.setBoardNo(no);
+    //      }
+    //      boardService.insertAttachedFiles(newFiles);
+    //      existingBoard.setAttachedFiles(newFiles);
+    //    }
 
 
     if (boardService.update(updatedBoard)) {
@@ -412,8 +396,7 @@ public class BoardController {
   }
 
   @GetMapping("/complete/{no}")
-  public ResponseEntity<String> tradeComplete(
-          @PathVariable("no") int no) throws Exception {
+  public ResponseEntity<String> tradeComplete(@PathVariable("no") int no) throws Exception {
 
 
 
@@ -439,11 +422,8 @@ public class BoardController {
       String filePath = boardFolderName + uuidFilename;
 
       // NCP 클라우드 스토리지에 업로드
-      storageService.upload(
-          filePath,
-          file.getInputStream(),
-          Map.of(StorageService.CONTENT_TYPE, file.getContentType())
-      );
+      storageService.upload(filePath, file.getInputStream(),
+          Map.of(StorageService.CONTENT_TYPE, file.getContentType()));
 
       // 이미지 URL 생성
       String imageUrl = "https://kr.object.ncloudstorage.com/bitcamp-moum/" + filePath;
@@ -455,43 +435,43 @@ public class BoardController {
     }
   }
 
-//        // 기존 게시글을 가져옴
-//        Board existingBoard = boardService.get(board.getNo());
-//        if (existingBoard == null) {
-//            // 게시글이 없을 경우 예외 발생
-//            throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + board.getNo());
-//        }
-//
-//        // 기존 게시글의 첨부 파일 목록 가져오기
-//        List<AttachedFile> existingFiles = existingBoard.getAttachedFiles();
-//        List<AttachedFile> newFiles = new ArrayList<>();
-//
-//        // 파일 업로드 처리 및 예외 처리
-//        try {
-//            newFiles = uploadFiles(files);
-//        } catch (Exception e) {
-//            throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
-//        }
-//
-//        // 새로운 파일이 비어 있지 않으면 기존 파일에 추가
-//        if (!newFiles.isEmpty()) {
-//            existingFiles.addAll(newFiles);
-//        }
-//        existingBoard.setAttachedFiles(existingFiles);
-//
-//        // 제목 및 내용 업데이트
-//        existingBoard.setTitle(board.getTitle());
-//        existingBoard.setContent(board.getContent());
-//
-//        // 게시글 업데이트 예외 처리
-//        try {
-//            boardService.update(existingBoard);
-//        } catch (Exception e) {
-//            throw new RuntimeException("게시글 업데이트 중 오류가 발생했습니다.", e);
-//        }
-//
-//        return "redirect:/board/boardView?no=" + existingBoard.getNo();
-//    }
+  //        // 기존 게시글을 가져옴
+  //        Board existingBoard = boardService.get(board.getNo());
+  //        if (existingBoard == null) {
+  //            // 게시글이 없을 경우 예외 발생
+  //            throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + board.getNo());
+  //        }
+  //
+  //        // 기존 게시글의 첨부 파일 목록 가져오기
+  //        List<AttachedFile> existingFiles = existingBoard.getAttachedFiles();
+  //        List<AttachedFile> newFiles = new ArrayList<>();
+  //
+  //        // 파일 업로드 처리 및 예외 처리
+  //        try {
+  //            newFiles = uploadFiles(files);
+  //        } catch (Exception e) {
+  //            throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
+  //        }
+  //
+  //        // 새로운 파일이 비어 있지 않으면 기존 파일에 추가
+  //        if (!newFiles.isEmpty()) {
+  //            existingFiles.addAll(newFiles);
+  //        }
+  //        existingBoard.setAttachedFiles(existingFiles);
+  //
+  //        // 제목 및 내용 업데이트
+  //        existingBoard.setTitle(board.getTitle());
+  //        existingBoard.setContent(board.getContent());
+  //
+  //        // 게시글 업데이트 예외 처리
+  //        try {
+  //            boardService.update(existingBoard);
+  //        } catch (Exception e) {
+  //            throw new RuntimeException("게시글 업데이트 중 오류가 발생했습니다.", e);
+  //        }
+  //
+  //        return "redirect:/board/boardView?no=" + existingBoard.getNo();
+  //    }
 
   @PostMapping("/delete")
   public String delete(@RequestParam("no") int no) throws Exception {
@@ -527,13 +507,8 @@ public class BoardController {
       attachedFile.setOriginFilename(originalFilename);
 
       // 파일 업로드 수행
-      storageService.upload(
-          boardFolderName + attachedFile.getFilename(),
-          file.getInputStream(),
-          Map.of(
-              StorageService.CONTENT_TYPE, file.getContentType()
-          )
-      );
+      storageService.upload(boardFolderName + attachedFile.getFilename(), file.getInputStream(),
+          Map.of(StorageService.CONTENT_TYPE, file.getContentType()));
 
       attachedFiles.add(attachedFile);
     }
@@ -562,12 +537,11 @@ public class BoardController {
   @PostMapping("/addDetailPost")
   @ResponseBody
   public String addDetailPost(Board board,
-                              @RequestParam(value = "files", required = false) MultipartFile[] files,
-                              @RequestParam(value = "collection.no", required = false) Integer collectionNo,
-                              @RequestParam(value = "price", required = false) Integer price,
-                              @RequestParam(value = "tradeType", required = false) String tradeType,
-                              @AuthenticationPrincipal UserDetails userDetails,
-                              Model model) throws Exception {
+      @RequestParam(value = "files", required = false) MultipartFile[] files,
+      @RequestParam(value = "collection.no", required = false) Integer collectionNo,
+      @RequestParam(value = "price", required = false) Integer price,
+      @RequestParam(value = "tradeType", required = false) String tradeType,
+      @AuthenticationPrincipal UserDetails userDetails, Model model) throws Exception {
 
     // 현재 로그인한 사용자 정보 가져오기
     User loginUser = userService.getByEmail(userDetails.getUsername());
@@ -598,7 +572,8 @@ public class BoardController {
         String content = board.getContent();
 
         for (AttachedFile attachedFile : attachedFiles) {
-          String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s", attachedFile.getFilename());
+          String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s",
+              attachedFile.getFilename());
 
           // 정규식을 통해 첫 번째 data:image 형식의 base64 이미지를 newUrl로 교체
           content = content.replaceFirst("src=\"data:image[^\"]+\"", "src=\"" + newUrl + "\"");
