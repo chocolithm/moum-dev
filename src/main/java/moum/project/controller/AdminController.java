@@ -105,8 +105,8 @@ public class AdminController {
 
   @GetMapping("/report/list")
   @ResponseBody
-  public List<Report> listReport(int pageNo, int pageCount) throws Exception {
-    return reportService.listByPage((pageNo - 1) * pageCount, pageCount);
+  public List<Report> listReport(Report report, int pageNo, int pageCount) throws Exception {
+    return reportService.listByPage(report, (pageNo - 1) * pageCount, pageCount);
   }
 
   @GetMapping("/user/count")
@@ -147,8 +147,8 @@ public class AdminController {
 
   @GetMapping("/report/count")
   @ResponseBody
-  public int countReport() throws Exception {
-    return reportService.count();
+  public int countReport(Report report) throws Exception {
+    return reportService.count(report);
   }
 
   @GetMapping("/user")

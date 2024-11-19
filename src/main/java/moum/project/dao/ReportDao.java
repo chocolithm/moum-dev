@@ -13,7 +13,10 @@ public interface ReportDao {
 
   List<Report> list() throws Exception;
 
-  List<Report> listByPage(@Param("pageNo") int pageNo, @Param("pageCount") int pageCount) throws Exception;
+  List<Report> listByPage(
+      @Param("report") Report report,
+      @Param("pageNo") int pageNo,
+      @Param("pageCount") int pageCount) throws Exception;
 
   List<ReportCategory> listReportCategories() throws Exception;
 
@@ -27,5 +30,5 @@ public interface ReportDao {
 
   boolean delete(int no) throws Exception;
 
-  int count() throws Exception;
+  int count(Report report) throws Exception;
 }

@@ -26,8 +26,8 @@ public class DefaultReportService implements ReportService {
   }
 
   @Override
-  public List<Report> listByPage(int pageNo, int pageCount) throws Exception {
-    return reportDao.listByPage(pageNo, pageCount);
+  public List<Report> listByPage(Report report, int pageNo, int pageCount) throws Exception {
+    return reportDao.listByPage(report, pageNo, pageCount);
   }
 
   @Override
@@ -61,7 +61,7 @@ public class DefaultReportService implements ReportService {
   }
 
   @Override
-  public int count() throws Exception {
-    return reportDao.count();
+  public int count(Report report) throws Exception {
+    return reportDao.count(report);
   }
 }

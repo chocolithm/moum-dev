@@ -158,7 +158,7 @@ function createAdminTableHead(menu, pageNo, pageCount) {
         </tr>
         <tr class="tr_search">
           <th><input name="reportDate" type="text"></th>
-          <th><input name="user" type="text"></th>
+          <th><input name="user.nickname" type="text"></th>
           <th><input name="reportCategory.name" type="text"></th>
           <th><input name="resultCategory.name" type="text"></th>
         </tr>
@@ -272,7 +272,7 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
               <td>${formatDate(report.reportDate)}</td>
               <td>${report.user.nickname}</td>
               <td>${report.reportCategory.name}</td>
-              <td>${report.resultCategory == null ? "" : report.resultCategory.name}</td>
+              <td>${report.resultCategory == null ? "-" : report.resultCategory.name}</td>
             </tr>
           `;
         });

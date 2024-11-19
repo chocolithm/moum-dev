@@ -16,4 +16,6 @@ public class Report {
   private ReportResultCategory resultCategory; // 처리결과유형
   private String resultContent; // 처리결과내용
 
+  private String reportDateString; // 관리자페이지 검색용
+
 }

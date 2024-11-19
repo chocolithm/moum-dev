@@ -99,7 +99,7 @@
       left join report_result_category rrc on r.report_result_id = rrc.report_result_id
   </select>
 
-  <select id="listByPage" resultMap="ReportMap">
+  <select id="listByPage" resultMap="ReportMap" parameterType="map">
     SELECT
       r.report_id,
       r.user_id,
@@ -115,14 +115,45 @@
       left join user u on r.user_id = u.user_id
       left join report_category rc on r.report_category_id = rc.report_category_id
       left join report_result_category rrc on r.report_result_id = rrc.report_result_id
+    WHERE
+      1 = 1
+      <if test="report.reportDateString != null">
+        AND r.report_date LIKE CONCAT(#{report.reportDateString}, '%')
+      </if>
+      <if test="report.user != null and report.user.nickname != null">
+        AND u.nickname LIKE CONCAT('%', #{report.user.nickname}, '%')
+      </if>
+      <if test="report.reportCategory != null and report.reportCategory.name != null">
+        AND rc.category_name LIKE CONCAT('%', #{report.reportCategory.name}, '%')
+      </if>
+      <if test="report.resultCategory != null and report.resultCategory.name != null">
+        AND rrc.result_name LIKE CONCAT('%', #{report.resultCategory.name}, '%')
+      </if>
     ORDER BY
       r.report_date desc
     LIMIT #{pageNo}, #{pageCount}
   </select>
 
-  <select id="count">
-    select count(*)
-    from report
+  <select id="count" parameterType="moum.project.vo.Report">
+    SELECT count(*)
+    FROM report r
+      left join user u on r.user_id = u.user_id
+      left join report_category rc on r.report_category_id = rc.report_category_id
+      left join report_result_category rrc on r.report_result_id = rrc.report_result_id
+    WHERE
+      1 = 1
+      <if test="reportDateString != null">
+        AND r.report_date LIKE CONCAT(#{reportDateString}, '%')
+      </if>
+      <if test="user != null and user.nickname != null">
+        AND u.nickname LIKE CONCAT('%', #{user.nickname}, '%')
+      </if>
+      <if test="reportCategory != null and reportCategory.name != null">
+        AND rc.category_name LIKE CONCAT('%', #{reportCategory.name}, '%')
+      </if>
+      <if test="resultCategory != null and resultCategory.name != null">
+        AND rrc.result_name LIKE CONCAT('%', #{resultCategory.name}, '%')
+      </if>
   </select>
 
   <select id="listReportCategories" resultMap="ReportCategoryMap">
