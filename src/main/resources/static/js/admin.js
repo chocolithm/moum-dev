@@ -173,13 +173,13 @@ function createAdminTableHead(menu, pageNo, pageCount) {
   for (let i = 0; i < searchParams.length; i++) {
     searchParams[i].addEventListener('keydown', (event) => {
       if (event.key === "Enter") {
-        filterAdminData(menu, pageNo, pageCount);
+        searchAdminData(menu, pageNo, pageCount);
       }
     });
   }
 }
 
-function filterAdminData(menu, pageNo, pageCount) {
+function searchAdminData(menu, pageNo, pageCount) {
   const searchParams = document.querySelectorAll(".tr_search input");
 
   for (let i = 0; i < searchParams.length; i++) {
