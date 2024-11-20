@@ -546,19 +546,3 @@ document.getElementById('user-achievement').value = achievementId;
 var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
 dropdown.hide();
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    // 회원탈퇴 성공 메시지 체크
-    const withdrawalSuccess = document.querySelector('meta[name="withdrawalSuccess"]');
-    if (withdrawalSuccess && withdrawalSuccess.content === 'true') {
-        swal({
-            title: "회원탈퇴 완료",
-            text: "탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.",
-            icon: "success",
-            button: "확인"
-        }).then((value) => {
-            // meta 태그 제거 (페이지 새로고침 시 중복 표시 방지)
-            withdrawalSuccess.remove();
-        });
-    }
-});
