@@ -3,6 +3,7 @@ let nicknameChecked = false;
 let emailChecked = false;
 let passwordMatch = false;
 
+getWikiLink();
 
 function openOverlay() {
     fadeIn(document.getElementsByClassName("overlay")[0]);
@@ -120,6 +121,8 @@ function updateAchievement(
 
             // 업적 취득
             if (response == "acquired") {
+
+                // 업적취득 알림 처리
                 fetch(`/alert/add?category=achievement&categoryNo=${achievement_id}`)
                     .catch(error => {
                         console.error("error adding alert: ", error);
@@ -138,6 +141,17 @@ function updateAchievement(
         .catch(error => {
             console.error("error updating achievement count: ", error);
         })
+}
+
+// 위키 링크
+function getWikiLink() {
+    const hostname = location.hostname;
+    const wikilink = document.getElementById("wiki-link");
+    if (hostname.startsWith("localhost") || hostname.startsWith("dev")) {
+        wikilink.href = "http://dev.moum.bangdpool.com:3000/w/Moum";
+    } else if (hostname.startsWith("moum")) {
+        wikilink.href = "https://wiki.moum.bangdpool.com/w/Moum";
+    }
 }
 
 // 로그인
@@ -322,7 +336,17 @@ function populateEmailField() {
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('error') === 'true') {
-        alert("이메일 또는 암호가 맞지 않습니다.");
+        swal({
+            title: "로그인 실패",
+            text: "이메일 또는 비밀번호가 맞지 않습니다.",
+            icon: "error",
+            button: "확인"
+        }).then(() => {
+            // error 파라미터 제거하고 로그인 모달 다시 열기
+            const newUrl = window.location.pathname + window.location.search.replace(/[?&]error=true/, '');
+            window.history.replaceState({}, document.title, newUrl);
+            openLoginModal();
+        });
     }
 });
 
@@ -340,5 +364,3 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("회원가입 중 오류가 발생했습니다.");
     }
 });
-
-

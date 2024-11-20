@@ -12,6 +12,7 @@ from
 where
     ua.progress = 100
     and u.admin = 0
+		and u.end_date is null
 group by ua.user_id
 order by score desc;
 

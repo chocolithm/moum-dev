@@ -6,6 +6,7 @@
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <title></title>
   <script src="/js/common.js"></script>
+  <meta name="withdrawalSuccess" th:if="${withdrawalSuccess}" content="true">
 </head>
 
 <body onload="populateEmailField()">
@@ -48,8 +49,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a aria-disabled="true" class="nav-link" href="http://192.168.0.16:3000#"
-                           tabindex="-1">
+                        <a aria-disabled="true" class="nav-link" href="#" id="wiki-link" tabindex="-1"
+                           target="_blank">
                             <span class="fw-bold">하비위키</span>
                         </a>
                     </li>

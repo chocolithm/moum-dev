@@ -17,55 +17,55 @@
 <main>
   <h1>내 정보</h1>
 
-  <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
-  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+  <div class="alert alert-success" th:if="${message}" th:text="${message}"></div>
+  <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
 
   <div th:unless="${user}">
     <p>사용자 정보를 찾을 수 없습니다.</p>
   </div>
 
   <div th:if="${user}" th:object="${user}">
-    <form enctype="multipart/form-data"
+    <form class="profile-form"
+          enctype="multipart/form-data"
           method="post"
-          th:action="@{/user/update}"
-          class="profile-form"
-          onsubmit="return validateForm()">
+          onsubmit="return validateForm()"
+          th:action="@{/user/update}">
 
       <!-- 프로필 이미지 -->
       <div class="input-field profile-image-container">
       <div class="preview-container">
-        <img id="previewImage"
+        <img alt="프로필 이미지"
+             class="profile-img"
+             id="previewImage"
              th:src="${user.photo != null} ?
                    'https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/' + ${user.photo} :
-                   'https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png'"
-             class="profile-img"
-             alt="프로필 이미지">
+                   'https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png'">
       </div>
-      <input type="file"
+      <input accept="image/*"
              id="file"
              name="file"
-             accept="image/*"
-             onchange="validateAndPreviewImage(this)">
-      <div id="errorMessage" class="error-message" style="color: red; display: none;"></div>
+             onchange="validateAndPreviewImage(this)"
+             type="file">
+      <div class="error-message" id="errorMessage" style="color: red; display: none;"></div>
   </div>
 
       <!-- 사용자 정보 -->
       <div class="user-info">
-        <input type="hidden" name="no" th:value="*{no}">
+        <input name="no" th:value="*{no}" type="hidden">
 
         <!-- 닉네임 표시 및 수정 필드 -->
         <div class="input-field">
           <label for="nickname">닉네임</label>
           <div id="nicknameDisplay" style="display: flex; align-items: center;">
             <span th:text="*{nickname}"></span>
-            <button type="button" class="btn" onclick="showNicknameEdit()">수정</button>
+            <button class="btn" onclick="showNicknameEdit()" type="button">수정</button>
           </div>
 
           <div id="nicknameEdit" style="display: none;">
             <div style="display: flex; align-items: center;">
-              <input type="text" id="nickname" name="nickname" th:value="*{nickname}" />
-              <button type="button" onclick="checkDuplicate('nickname', document.getElementById('nickname').value)" class="btn">중복확인</button>
-              <button type="button" class="btn" onclick="hideNicknameEdit()">취소</button>
+              <input id="nickname" name="nickname" th:value="*{nickname}" type="text" />
+              <button class="btn" onclick="checkDuplicate('nickname', document.getElementById('nickname').value)" type="button">중복확인</button>
+              <button class="btn" onclick="hideNicknameEdit()" type="button">취소</button>
             </div>
           </div>
           <span id="nicknameMessage"></span>
@@ -75,9 +75,9 @@
           <label for="email">이메일</label>
           <input id="email"
                  name="email"
-                 type="text"
+                 readonly
                  th:value="*{email}"
-                 readonly>
+                 type="text">
         </div>
 
         <div class="input-field">
@@ -85,11 +85,11 @@
           <input id="password"
                  minlength="8"
                  name="password"
-                 placeholder="변경하지 않으면 기존 비밀번호 유지"
-                 type="password"
+                 oninput="toggleConfirmPasswordField()"
                  pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+                 placeholder="변경하지 않으면 기존 비밀번호 유지"
                  title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다"
-                 oninput="toggleConfirmPasswordField()">
+                 type="password">
           <span id="passwordMessage"></span>
         </div>
 
@@ -109,54 +109,54 @@
 
           <!-- Google 연동 -->
           <div class="sns-connection-item">
-            <button th:if="${connectedProviders != null && connectedProviders.contains('google')}"
-                    class="btn btn-light w-100 py-2 border"
+            <button class="btn btn-light w-100 py-2 border"
+                    disabled
                     style="background-color: #f2f2f2; color: gray;"
-                    disabled>
-              <img src="/images/user/Google.png" alt="Google Icon" class="me-2" style="width: 20px; height: 20px;">
+                    th:if="${connectedProviders != null && connectedProviders.contains('google')}">
+              <img alt="Google Icon" class="me-2" src="/images/user/Google.png" style="width: 20px; height: 20px;">
               Google 연동완료
             </button>
-            <a th:unless="${connectedProviders != null && connectedProviders.contains('google')}"
+            <a class="btn btn-light w-100 py-2 border"
                href="/oauth2/authorization/google"
-               class="btn btn-light w-100 py-2 border"
-               style="background-color: #f2f2f2;">
-              <img src="/images/user/Google.png" alt="Google Icon" class="me-2" style="width: 20px; height: 20px;">
+               style="background-color: #f2f2f2;"
+               th:unless="${connectedProviders != null && connectedProviders.contains('google')}">
+              <img alt="Google Icon" class="me-2" src="/images/user/Google.png" style="width: 20px; height: 20px;">
               Google 연동하기
             </a>
           </div>
 
           <!-- Naver 연동 -->
           <div class="sns-connection-item">
-            <button th:if="${connectedProviders != null && connectedProviders.contains('naver')}"
-                    class="btn w-100 py-2 text-white"
+            <button class="btn w-100 py-2 text-white"
+                    disabled
                     style="background-color: #03c75a; color: gray;"
-                    disabled>
-              <img src="/images/user/Naver.png" alt="Naver Icon" class="me-2" style="width: 20px; height: 20px;">
+                    th:if="${connectedProviders != null && connectedProviders.contains('naver')}">
+              <img alt="Naver Icon" class="me-2" src="/images/user/Naver.png" style="width: 20px; height: 20px;">
               Naver 연동완료
             </button>
-            <a th:unless="${connectedProviders != null && connectedProviders.contains('naver')}"
+            <a class="btn w-100 py-2 text-white"
                href="/oauth2/authorization/naver"
-               class="btn w-100 py-2 text-white"
-               style="background-color: #03c75a;">
-              <img src="/images/user/Naver.png" alt="Naver Icon" class="me-2" style="width: 20px; height: 20px;">
+               style="background-color: #03c75a;"
+               th:unless="${connectedProviders != null && connectedProviders.contains('naver')}">
+              <img alt="Naver Icon" class="me-2" src="/images/user/Naver.png" style="width: 20px; height: 20px;">
               Naver 연동하기
             </a>
           </div>
 
           <!-- Kakao 연동 -->
           <div class="sns-connection-item">
-            <button th:if="${connectedProviders != null && connectedProviders.contains('kakao')}"
-                    class="btn w-100 py-2"
+            <button class="btn w-100 py-2"
+                    disabled
                     style="background-color: #FEE500; color: gray;"
-                    disabled>
-              <img src="/images/user/KakaoTalk.png" alt="Kakao Icon" class="me-2" style="width: 20px; height: 20px;">
+                    th:if="${connectedProviders != null && connectedProviders.contains('kakao')}">
+              <img alt="Kakao Icon" class="me-2" src="/images/user/KakaoTalk.png" style="width: 20px; height: 20px;">
               Kakao 연동완료
             </button>
-            <a th:unless="${connectedProviders != null && connectedProviders.contains('kakao')}"
+            <a class="btn w-100 py-2"
                href="/oauth2/authorization/kakao"
-               class="btn w-100 py-2"
-               style="background-color: #FEE500;">
-              <img src="/images/user/KakaoTalk.png" alt="Kakao Icon" class="me-2" style="width: 20px; height: 20px;">
+               style="background-color: #FEE500;"
+               th:unless="${connectedProviders != null && connectedProviders.contains('kakao')}">
+              <img alt="Kakao Icon" class="me-2" src="/images/user/KakaoTalk.png" style="width: 20px; height: 20px;">
               Kakao 연동하기
             </a>
           </div>
@@ -168,8 +168,8 @@
           <!-- btn-group을 사용하여 드롭다운 버튼 형식으로 바꾸기 -->
           <div class="btn-group w-100">
             <!-- 버튼: 사용자가 선택한 업적이 여기 표시됨 -->
-            <button type="button" class="btn btn-outline-secondary dropdown-toggle w-100"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+            <button aria-expanded="false" class="btn btn-outline-secondary dropdown-toggle w-100"
+                    data-bs-toggle="dropdown" type="button">
               <span id="achievement-selected">업적을 선택하세요</span> <!-- 기본 텍스트 -->
             </button>
             <ul class="dropdown-menu w-100">
@@ -178,7 +178,7 @@
                 <th:block th:each="title : ${listGetUserAchievement}">
                   <li>
                     <a class="dropdown-item" href="#"
-                       th:data-id="${title.id}" th:text="${title.name}" onclick="selectAchievement(this)">
+                       onclick="selectAchievement(this)" th:data-id="${title.id}" th:text="${title.name}">
                       <!-- 업적 이름 표시 -->
                     </a>
                   </li>
@@ -200,31 +200,26 @@
             </ul>
           </div>
           <!-- 선택된 업적 ID를 저장할 hidden input -->
-          <input type="hidden" id="user-achievement" name="user-achievement" value="*{userAchievementId}">
+          <input id="user-achievement" name="user-achievement" type="hidden" value="*{userAchievementId}">
         </div>
-
-
-
 
         <!-- 버튼 그룹 -->
         <div class="button-group">
-          <button class="submit-button" type="submit">완료</button>
-          <button class="cancel-button" type="button" onclick="window.location.href='/user/myInfo'">취소</button>
+          <button class="submit-button" type="submit">변경하기</button>
+          <button class="cancel-button" onclick="window.location.href='/user/myInfo'" type="button">취소</button>
         </div>
       </div>
     </form>
-    <form id="withdrawForm" th:action="@{/user/delete}" method="post">
-      <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-      <input type="hidden" name="no" th:value="${user.no}" />
-      <div class="flex justify-between items-center">
-        <button type="button" onclick="confirmWithdraw()" class="bg-red-500 hover:bg-red-600 text-black font-bold py-2 px-4 rounded">
-          회원탈퇴
-        </button>
-      </div>
+    <form id="withdrawForm" th:action="@{/user/delete}" method="post" onsubmit="return confirmWithdraw()">
+      <input type="hidden" name="no" th:value="${user.no}">
+      <button type="submit" class="btn btn-danger">
+        회원탈퇴
+      </button>
     </form>
   </div>
 
   <script th:src="@{/js/user.js}"></script>
+  <div th:replace="~{footer :: footer}"></div>
 </main>
 </body>
 </html>

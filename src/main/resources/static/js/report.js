@@ -51,15 +51,16 @@ function fetchReportCategoriesAndContent(type, no) {
 
 function report(url) {
     if (confirm("신고하시겠습니까?")) {
-        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
-        const formData = new FormData();
-        formData.append("reportCategory.no", document.querySelector("#report-category").value);
-        formData.append("reportContent",
-            `<a href="${url}" target="_blank">${document.querySelector("#reportContent").value.trim()}</a>`);
+        if (validateReport()) {
 
-        if (validateReport(formData)) {
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+            const formData = new FormData();
+
+            formData.append("reportCategory.no", document.querySelector("#report-category").value);
+            formData.append("reportContent",
+                `<a href="${url}" target="_blank">${document.querySelector("#reportContent").value.trim()}</a>`);
 
             fetch(`/report/add`, {
                 method: "POST",
@@ -87,8 +88,19 @@ function report(url) {
     }
 }
 
-function validateReport(formData) {
-    if (formData.get("reportCategory.no") <= 0) { alert("신규유형을 다시 선택해주세요."); return false; }
-    if (formData.get("reportContent") == "") { alert("내용을 입력해주세요."); return false; }
+function validateReport() {
+    const report_category = document.querySelector("#report-category");
+    const reportContent = document.querySelector("#reportContent");
+    report_category.style = "border-color: #ccc";
+    reportContent.style = "border-color: #ccc";
+
+    if (report_category.value <= 0) {
+        report_category.style = "border-color: red";
+        return false;
+    }
+    if (reportContent.value.trim() == "") {
+        reportContent.style = "border-color: red";
+        return false;
+    }
     return true;
 }
