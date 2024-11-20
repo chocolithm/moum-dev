@@ -3,9 +3,15 @@ let countdownTimer = null;
 
 // 닉네임 입력 필드 변경 감지
 document.getElementById('nickname').addEventListener('input', function() {
-    nicknameChecked = false;
-    document.getElementById('nicknameMessage').textContent = '닉네임 중복 확인이 필요합니다.';
-    document.getElementById('nicknameMessage').style.color = 'red';
+    const originalNickname = this.getAttribute('value'); // 원래 저장된 값 가져오기
+    if (this.value !== originalNickname) {
+        nicknameChecked = false;
+        document.getElementById('nicknameMessage').textContent = '닉네임 중복 확인이 필요합니다.';
+        document.getElementById('nicknameMessage').style.color = 'red';
+    } else {
+        nicknameChecked = true;
+        document.getElementById('nicknameMessage').textContent = '';
+    }
 });
 
 // 이메일 입력 필드 변경 감지
@@ -481,13 +487,14 @@ function validateAndPreviewImage(input) {
 // 폼 제출 전에 유효성 검사를 수행하는 함수
 function validateForm() {
     const nickname = document.getElementById('nickname').value;
+    const originalNickname = document.getElementById('nickname').getAttribute('value');
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
     let message = '';
 
-    // 닉네임 중복 확인 여부 검사
-    if (!nicknameChecked) {
+    // 닉네임이 변경된 경우에만 중복 확인 요구
+    if (nickname !== originalNickname && !nicknameChecked) {
         message += '닉네임 중복 확인이 필요합니다.\n';
     }
 
