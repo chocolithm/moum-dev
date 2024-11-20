@@ -44,7 +44,11 @@ function selectAdminMenu(element) {
     case "achievement-admin": toggleAdminMenu("achievement", pageNo, pageCount); break;
     case "user-admin": toggleAdminMenu("user", pageNo, pageCount); break;
     case "report-admin": toggleAdminMenu("report", pageNo, pageCount); break;
-    default: alert("잘못된 접근입니다.");
+    default:
+      Swal.fire({
+        title: "잘못된 접근입니다.",
+        icon: "error"
+      });;
   }
 }
 
@@ -78,7 +82,7 @@ function createAdminTableHead(menu, pageNo, pageCount) {
         <th>SNS연동</th>
       </tr>
       <tr class="tr_search">
-        <th><input name="no" type="text"></th>
+        <th><input name="no" type="text" placeholder="search"></th>
         <th><input name="email" type="text"></th>
         <th><input name="nickname" type="text"></th>
         <th><input name="startDateString" type="text"></th>
@@ -672,82 +676,157 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
 
 function toggleAdminUser(element, userNo) {
   if (element.value == 0) {
-    if (confirm("관리자 권한을 해제하시겠습니까?")) {
-      fetch(`/admin/updateAdmin?admin=0&userNo=${userNo}`)
-        .then(response => response.text())
-        .then(response => {
-          if (response == "success") {
-            alert("관리자 권한 해제 완료");
-          } else if (response == "failure") {
-            element.value = 1;
-            alert("오류 발생");
-          } else if (response == "inhibited") {
-            alert("관리자 권한은 상위관리자만 설정 가능합니다.");
-          } else if (response == "self-inhibited") {
-            alert("본인 권한 수정 불가");
-          }
-        })
-        .catch(error => {
-          console.error("error setting admin: ", error);
-        })
-    }
+    Swal.fire({
+      title: "관리자 권한을 해제하시겠습니까?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`/admin/updateAdmin?admin=0&userNo=${userNo}`)
+          .then(response => response.text())
+          .then(response => {
+            if (response == "success") {
+              Swal.fire({
+                title: "관리자 권한 해제 완료",
+                icon: "success"
+              });
+            } else if (response == "failure") {
+              element.value = 1;
+              Swal.fire({
+                title: "오류 발생",
+                icon: "error"
+              });
+            } else if (response == "inhibited") {
+              element.value = 1;
+              Swal.fire({
+                title: "관리자 권한은 상위관리자만 설정 가능합니다.",
+                icon: "error"
+              });
+            } else if (response == "self-inhibited") {
+              element.value = 1;
+              Swal.fire({
+                title: "본인 권한 수정 불가",
+                icon: "error"
+              });
+            }
+          })
+          .catch(error => {
+            console.error("error setting admin: ", error);
+          })
+      } else {
+        element.value = 1;
+      }
+    })
+
   } else if (element.value == 1) {
-    if (confirm("관리자 권한을 부여하시겠습니까?")) {
-      fetch(`/admin/updateAdmin?admin=1&userNo=${userNo}`)
-        .then(response => response.text())
-        .then(response => {
-          if (response == "success") {
-            alert("관리자 권한 설정 완료");
-          } else if (response == "failure") {
-            element.value = 0;
-            alert("오류 발생");
-          } else if (response == "inhibited") {
-            alert("관리자 권한은 상위관리자만 설정 가능합니다.");
-          } else if (response == "self-inhibited") {
-            alert("본인 권한 수정 불가");
-          }
-        })
-        .catch(error => {
-          console.error("error setting admin: ", error);
-        })
-    }
+    Swal.fire({
+      title: "관리자 권한을 부여하시겠습니까?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`/admin/updateAdmin?admin=1&userNo=${userNo}`)
+          .then(response => response.text())
+          .then(response => {
+            if (response == "success") {
+              Swal.fire({
+                title: "관리자 권한 설정 완료",
+                icon: "success"
+              });
+            } else if (response == "failure") {
+              element.value = 0;
+              Swal.fire({
+                title: "오류 발생",
+                icon: "error"
+              });
+            } else if (response == "inhibited") {
+              element.value = 0;
+              Swal.fire({
+                title: "관리자 권한은 상위관리자만 설정 가능합니다.",
+                icon: "error"
+              });
+            } else if (response == "self-inhibited") {
+              element.value = 0;
+              Swal.fire({
+                title: "본인 권한 수정 불가",
+                icon: "error"
+              });
+            }
+          })
+          .catch(error => {
+            console.error("error setting admin: ", error);
+          })
+      } else {
+        element.value = 0;
+      }
+    })
   }
 
 }
 
 function handleReport(reportNo) {
-  if (confirm("처리하시겠습니까?")) {
-    const formData = new FormData();
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+  Swal.fire({
+    title: "처리하시겠습니까?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "확인",
+    cancelButtonText: "취소"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const formData = new FormData();
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-    formData.set("no", reportNo);
-    formData.set("resultCategory.no", document.getElementById("resultCategory.no").value);
-    formData.set("resultContent", document.getElementById("resultContent").value.trim());
+      formData.set("no", reportNo);
+      formData.set("resultCategory.no", document.getElementById("resultCategory.no").value);
+      formData.set("resultContent", document.getElementById("resultContent").value.trim());
 
-    if (formData.get("resultCategory.name") == 0) { alert("처리결과를 선택하세요."); return; }
-    if (formData.get("resultContent") == "") { alert("처리사항을 입력하세요."); return; }
-
-    fetch(`/report/updateResult`, {
-      method: "PUT",
-      body: formData,
-      headers: {
-        [csrfHeader]: csrfToken
+      if (formData.get("resultCategory.no") == 0) {
+        Swal.fire({
+          title: "처리결과를 선택하세요.",
+          icon: "warning"
+        });
+        return;
       }
-    })
-      .then(response => response.text())
-      .then(response => {
-        switch (response) {
-          case "success":
-            alert("처리했습니다.");
-            break;
-          case "failure":
-            alert("처리 중 오류 발생");
-            break;
+      if (formData.get("resultContent") == "") {
+        Swal.fire({
+          title: "처리사항을 입력하세요.",
+          icon: "warning"
+        });
+        return;
+      }
+
+      fetch(`/report/updateResult`, {
+        method: "PUT",
+        body: formData,
+        headers: {
+          [csrfHeader]: csrfToken
         }
       })
-      .catch(error => {
-        console.error("Error handling report result: ", error);
-      });
-  }
+        .then(response => response.text())
+        .then(response => {
+          switch (response) {
+            case "success":
+              Swal.fire({
+                title: "처리했습니다.",
+                icon: "success"
+              });
+              break;
+            case "failure":
+              Swal.fire({
+                title: "처리 중 오류 발생",
+                icon: "error"
+              });
+              break;
+          }
+        })
+        .catch(error => {
+          console.error("Error handling report result: ", error);
+        });
+    }
+  })
 } 
