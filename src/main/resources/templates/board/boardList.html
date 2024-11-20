@@ -78,16 +78,19 @@
         <div class="grid-option">
             <div class="grid-item">
                 <div class="button-group-left">
-                    <button class="recent" onclick="location.href='/board/boardList'">최근게시물</button>
-                    <button class="popular active" onclick="location.href='/board/popularList'">인기게시글</button>
+                    <button class="btn btn-dark active" onclick="location.href='/board/boardList'">최근게시물</button>
+                    <button class="btn btn-dark active" onclick="location.href='/board/popularList'">인기게시글</button>
                 </div>
+
                 <div class="search-bar">
                     <input class="search-input" placeholder="Search" type="text">
                     <button class="btn btn-primary">검색</button>
                 </div>
                 <div class="button-group-right">
-                    <button class="write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
+                    <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
                 </div>
+
+
             </div>
         </div>
 
@@ -119,22 +122,31 @@
         <div class="pagination-container mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
+                    <!-- Previous Button -->
                     <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link"
+                        <a class="page-link bg-dark text-white"
                            th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12)}">Previous</a>
                     </li>
+
+                    <!-- Page Numbers -->
                     <li class="page-item"
                         th:classappend="${i == currentPage ? 'active' : ''}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                        <a class="page-link" th:href="@{/board/boardList(page=${i}, size=12)}" th:text="${i}"></a>
+                        <a class="page-link bg-dark text-white"
+                           th:href="@{/board/boardList(page=${i}, size=12)}"
+                           th:text="${i}"></a>
                     </li>
+
+                    <!-- Next Button -->
                     <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link"
+                        <a class="page-link bg-dark text-white"
                            th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12)}">Next</a>
                     </li>
                 </ul>
             </nav>
         </div>
+
+
     </div>
 </main>
 

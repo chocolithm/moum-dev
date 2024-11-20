@@ -35,11 +35,11 @@
         <div class="grid-option">
             <div class="grid-item">
                 <div class="button-group-left">
-                    <button class="recent">구매</button>
-                    <button class="popular active">판매</button>
+                    <button class="btn btn-danger" onclick="location.href='/board/tradeHomeBuy'">구매</button>
+                    <button class="btn btn-success active" onclick="location.href='/board/tradeHomeSell'">판매</button>
                 </div>
                 <div class="button-group-right">
-                    <button class="write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
+                    <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
                 </div>
             </div>
         </div>
@@ -59,8 +59,12 @@
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <div class="item-title" th:text="${board.title}">게시글 제목</div>
                         <div class="item-number" th:text="'가격: ' + ${board.price} + '원'">가격: 10000원</div>
-                        <div class="item-number" th:text="'거래상태: ' + ${board.sellOrSoldStatus ? '거래완료' : '거래중'}">거래상태: 거래중</div>
-                        <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-11-15 12:34</div>
+                        <div class="item-number" th:text="'거래상태: ' + ${board.sellOrSoldStatus ? '거래완료' : '거래중'}">거래상태:
+                            거래중
+                        </div>
+                        <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">
+                            2024-11-15 12:34
+                        </div>
                     </a>
                 </div>
             </div>
@@ -75,8 +79,9 @@
                     </li>
                     <li class="page-item"
                         th:classappend="${i == currentPage ? 'active' : ''}"
-                        th:each="i : ${#numbers.sequence(1, totalPages)}" th:if="${i == 1 or i == totalPages or (i >= currentPage - 2 and i <= currentPage + 2)}">
-                        <a class="page-link"
+                        th:each="i : ${#numbers.sequence(1, totalPages)}"
+                        th:if="${i == 1 or i == totalPages or (i >= currentPage - 2 and i <= currentPage + 2)}">
+                        <a class="page-link bg-dark text-white"
                            th:href="@{/board/tradeHomeSell(page=${i}, size=${size})}"
                            th:text="${i}">1</a>
                     </li>
@@ -93,6 +98,7 @@
                 </ul>
             </nav>
         </div>
+
     </div>
 </main>
 

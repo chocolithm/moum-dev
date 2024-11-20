@@ -322,11 +322,11 @@ function createAdminPagination(menu, pageCount) {
 
       let currentPage = 1;
 
-      // "Previous" 버튼
+      // "Previous" 버튼 (하얀 배경, 검정 글씨)
       const prevButton = document.createElement('li');
       prevButton.classList.add('page-item', 'disabled');
       const prevLink = document.createElement('a');
-      prevLink.classList.add('page-link');
+      prevLink.classList.add('page-link', 'bg-white', 'text-dark');
       prevLink.href = '#';
       prevLink.textContent = 'Previous';
       prevButton.appendChild(prevLink);
@@ -338,7 +338,7 @@ function createAdminPagination(menu, pageCount) {
         pageItem.classList.add('page-item');
 
         const pageLink = document.createElement('a');
-        pageLink.classList.add('page-link');
+        pageLink.classList.add('page-link', 'bg-dark', 'text-white');
         pageLink.href = '#';
         pageLink.textContent = i;
 
@@ -353,11 +353,11 @@ function createAdminPagination(menu, pageCount) {
         paginationContainer.appendChild(pageItem);
       }
 
-      // "Next" 버튼
+      // "Next" 버튼 (하얀 배경, 검정 글씨)
       const nextButton = document.createElement('li');
       nextButton.classList.add('page-item', 'disabled');
       const nextLink = document.createElement('a');
-      nextLink.classList.add('page-link');
+      nextLink.classList.add('page-link', 'bg-white', 'text-dark');
       nextLink.href = '#';
       nextLink.textContent = 'Next';
       nextButton.appendChild(nextLink);
@@ -763,4 +763,4 @@ function handleReport(reportNo) {
         console.error("Error handling report result: ", error);
       });
   }
-} 
+}
