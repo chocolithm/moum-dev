@@ -6,7 +6,7 @@
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <title></title>
   <script src="/js/common.js"></script>
-  <meta name="withdrawalSuccess" th:if="${withdrawalSuccess}" content="true">
+  <meta content="true" name="withdrawalSuccess" th:if="${withdrawalSuccess}">
 </head>
 
 <body onload="populateEmailField()">
@@ -25,7 +25,7 @@
                     <li class="nav-item">
                         <a aria-current="page"
                            class="nav-link"
-                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardHome\'' : '
+                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardList\'' : '
                            swal(\'로그인이 필요합니다!!\', \'\',
                            {icon: \'warning\'
                            }).then((value) => {if(value) {
