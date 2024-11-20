@@ -3,6 +3,7 @@ let nicknameChecked = false;
 let emailChecked = false;
 let passwordMatch = false;
 
+getWikiLink();
 
 function openOverlay() {
     fadeIn(document.getElementsByClassName("overlay")[0]);
@@ -138,6 +139,16 @@ function updateAchievement(
         .catch(error => {
             console.error("error updating achievement count: ", error);
         })
+}
+
+function getWikiLink() {
+    const hostname = location.hostname;
+    const wikilink = document.getElementById("wiki-link");
+    if (hostname.startsWith("localhost") || hostname.startsWith("dev")) {
+        wikilink.href = "http://dev.moum.bangdpool.com:3000/w/Moum";
+    } else if (hostname.startsWith("moum")) {
+        wikilink.href = "https://wiki.moum.bangdpool.com/w/Moum";
+    }
 }
 
 // 로그인
@@ -340,5 +351,3 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("회원가입 중 오류가 발생했습니다.");
     }
 });
-
-
