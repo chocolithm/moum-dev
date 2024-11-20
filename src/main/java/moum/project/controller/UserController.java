@@ -22,6 +22,8 @@ import moum.project.vo.Achievement;
 import moum.project.vo.Board;
 import moum.project.vo.User;
 import moum.project.vo.User_SNS;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -308,22 +310,21 @@ public class UserController {
    * @throws Exception 권한이 없거나 처리 중 오류 발생시
    */
   @PostMapping("/delete")
-  public String deleteUser(
+  public ResponseEntity<?> deleteUser(
       @RequestParam("no") int no,
       @AuthenticationPrincipal CustomUserDetails userDetails,
-      RedirectAttributes redirectAttributes,
       HttpSession session) throws Exception {
 
     if (userDetails == null) {
-      redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
-      return "redirect:/home?login=true";
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body("로그인이 필요합니다.");
     }
 
     try {
       User loginUser = userService.getByEmail(userDetails.getUsername());
       if (loginUser == null || loginUser.getNo() != no) {
-        redirectAttributes.addFlashAttribute("error", "본인 계정만 탈퇴할 수 있습니다.");
-        return "redirect:/user/myInfo";
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body("본인 계정만 탈퇴할 수 있습니다.");
       }
 
       // 프로필 사진 삭제
@@ -351,11 +352,10 @@ public class UserController {
       // 세션 무효화
       session.invalidate();
 
-      redirectAttributes.addFlashAttribute("message", "회원 탈퇴가 완료되었습니다.");
-      return "redirect:/home";
+      return ResponseEntity.ok().build();
     } catch (Exception e) {
-      redirectAttributes.addFlashAttribute("error", "회원 탈퇴 처리 중 오류가 발생했습니다.");
-      return "redirect:/user/myInfo";
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("회원 탈퇴 처리 중 오류가 발생했습니다.");
     }
   }
 

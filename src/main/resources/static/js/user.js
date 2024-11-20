@@ -398,12 +398,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 회원 탈퇴 경고
 function confirmWithdraw() {
-    return swal({
+    swal({
         title: "정말 탈퇴하시겠습니까?",
         text: "탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.",
         icon: "warning",
         buttons: {
-            cancel: "취소",
+            cancel: {
+                text: "취소",
+                value: false,
+                visible: true,
+                closeModal: true,
+            },
             confirm: {
                 text: "탈퇴",
                 value: true,
@@ -414,9 +419,37 @@ function confirmWithdraw() {
         dangerMode: true
     }).then((willDelete) => {
         if (willDelete) {
-            document.getElementById("withdrawForm").submit(); // 사용자가 탈퇴를 확인했을 때만 폼 제출
+            // AJAX를 사용하여 서버에 탈퇴 요청
+            const form = document.getElementById("withdrawForm");
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    [document.querySelector("meta[name='_csrf_header']").content]: document.querySelector("meta[name='_csrf']").content
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        swal({
+                            title: "회원탈퇴 완료",
+                            text: "탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.",
+                            icon: "success",
+                            button: "확인"
+                        }).then(() => {
+                            window.location.href = "/home";
+                        });
+                    } else {
+                        throw new Error('탈퇴 처리 중 오류가 발생했습니다.');
+                    }
+                })
+                .catch(error => {
+                    swal("오류", error.message, "error");
+                });
         }
     });
+    return false; // 폼 기본 제출 방지
 }
 
 function validateAndPreviewImage(input) {
@@ -513,3 +546,19 @@ document.getElementById('user-achievement').value = achievementId;
 var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
 dropdown.hide();
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 회원탈퇴 성공 메시지 체크
+    const withdrawalSuccess = document.querySelector('meta[name="withdrawalSuccess"]');
+    if (withdrawalSuccess && withdrawalSuccess.content === 'true') {
+        swal({
+            title: "회원탈퇴 완료",
+            text: "탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.",
+            icon: "success",
+            button: "확인"
+        }).then((value) => {
+            // meta 태그 제거 (페이지 새로고침 시 중복 표시 방지)
+            withdrawalSuccess.remove();
+        });
+    }
+});

@@ -213,14 +213,11 @@
         </div>
       </div>
     </form>
-    <form id="withdrawForm" method="post" th:action="@{/user/delete}">
-      <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
-      <input name="no" th:value="${user.no}" type="hidden" />
-      <div class="flex justify-between items-center">
-        <button class="bg-red-500 hover:bg-red-600 text-black font-bold py-2 px-4 rounded" onclick="confirmWithdraw()" type="button">
-          회원탈퇴
-        </button>
-      </div>
+    <form id="withdrawForm" th:action="@{/user/delete}" method="post" onsubmit="return confirmWithdraw()">
+      <input type="hidden" name="no" th:value="${user.no}">
+      <button type="submit" class="btn btn-danger">
+        회원탈퇴
+      </button>
     </form>
   </div>
 
