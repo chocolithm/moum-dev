@@ -1,0 +1,50 @@
+# moum.bangdpool.com.conf
+server {
+    server_name moum.bangdpool.com;
+
+    location / {
+        proxy_pass https://127.0.0.1:8080; # 8080번 포트로 전달
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/moum.bangdpool.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/moum.bangdpool.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+    listen 80;
+    server_name moum.bangdpool.com;
+    return 301 https://$host:443$request_uri; # HTTP -> HTTPS 리다이렉트
+}
+
+# wiki.moum.bangdpool.com.conf
+server {
+    server_name wiki.moum.bangdpool.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000; # 3000번 포트로 전달
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/wiki.moum.bangdpool.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/wiki.moum.bangdpool.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+    listen 80;
+    server_name wiki.moum.bangdpool.com;
+    return 301 https://$host:443$request_uri; # HTTP -> HTTPS 리다이렉트
+}
+
