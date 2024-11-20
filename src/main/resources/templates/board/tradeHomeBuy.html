@@ -6,6 +6,7 @@
     <title>수집품 구매</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 </head>
 
 <body>
@@ -20,7 +21,7 @@
                 </div>
             </div>
             <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Search">
+                <input class="search-input" placeholder="Search" type="text">
                 <button class="btn btn-primary">검색</button>
             </div>
         </div>
@@ -39,14 +40,14 @@
 
         <div class="grid-container">
             <div class="grid-item" th:each="board : ${tradeBuyPosts}">
-                <img class="item-image"
+                <img alt="게시글 이미지"
+                     class="item-image"
                      th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
-                     alt="게시글 이미지">
-                <img class="item-image"
+                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
+                <img alt="기본 이미지"
+                     class="item-image"
                      th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-                     th:src="@{/images/default-image.png}"
-                     alt="기본 이미지">
+                     th:src="@{/images/default-image.png}">
 
                 <div class="item-content">
                     <a th:href="@{/board/boardView(no=${board.no})}">
@@ -63,30 +64,30 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link"
-                           th:href="@{/board/tradeHomeBuy(page=${currentPage == 1 ? 1 : currentPage - 1}, size=${size})}"
-                           tabindex="-1" aria-disabled="${currentPage == 1}">Previous</a>
+                        <a aria-disabled="${currentPage == 1}"
+                           class="page-link"
+                           tabindex="-1" th:href="@{/board/tradeHomeBuy(page=${currentPage == 1 ? 1 : currentPage - 1}, size=${size})}">Previous</a>
                     </li>
 
-                    <li th:each="i : ${#numbers.sequence(1, totalPages)}"
-                        th:if="${i == 1 or i == totalPages or (i >= currentPage - 2 and i <= currentPage + 2)}"
-                        th:classappend="${i == currentPage ? 'active' : ''}" class="page-item">
+                    <li class="page-item"
+                        th:classappend="${i == currentPage ? 'active' : ''}"
+                        th:each="i : ${#numbers.sequence(1, totalPages)}" th:if="${i == 1 or i == totalPages or (i >= currentPage - 2 and i <= currentPage + 2)}">
                         <a class="page-link"
                            th:href="@{/board/tradeHomeBuy(page=${i}, size=${size})}"
                            th:text="${i}">1</a>
                     </li>
 
-                    <li th:if="${currentPage > 3}" class="page-item disabled">
+                    <li class="page-item disabled" th:if="${currentPage > 3}">
                         <span class="page-link">...</span>
                     </li>
-                    <li th:if="${currentPage < totalPages - 2}" class="page-item disabled">
+                    <li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
                         <span class="page-link">...</span>
                     </li>
 
                     <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link"
-                           th:href="@{/board/tradeHomeBuy(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=${size})}"
-                           aria-disabled="${currentPage == totalPages}">Next</a>
+                        <a aria-disabled="${currentPage == totalPages}"
+                           class="page-link"
+                           th:href="@{/board/tradeHomeBuy(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=${size})}">Next</a>
                     </li>
                 </ul>
             </nav>
