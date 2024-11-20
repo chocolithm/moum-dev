@@ -406,32 +406,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 회원 탈퇴 경고
 function confirmWithdraw() {
-    Swal.fire({
+    swal({
         title: "정말 탈퇴하시겠습니까?",
         text: "탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.",
         icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: '탈퇴',
-        cancelButtonText: '취소'
-        // buttons: {
-        //     cancel: {
-        //         text: "취소",
-        //         value: false,
-        //         visible: true,
-        //         closeModal: true,
-        //     },
-        //     confirm: {
-        //         text: "탈퇴",
-        //         value: true,
-        //         visible: true,
-        //         closeModal: true
-        //     }
-        // },
-        // dangerMode: true
-    }).then((result) => {
-        if (result.isConfirmed) {
+        buttons: {
+            cancel: {
+                text: "취소",
+                value: false,
+                visible: true,
+                closeModal: true,
+            },
+            confirm: {
+                text: "탈퇴",
+                value: true,
+                visible: true,
+                closeModal: true
+            }
+        },
+        dangerMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
             // AJAX를 사용하여 서버에 탈퇴 요청
             const form = document.getElementById("withdrawForm");
             const formData = new FormData(form);
