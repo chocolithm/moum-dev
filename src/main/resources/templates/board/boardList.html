@@ -22,47 +22,47 @@
 <div th:replace="~{header}"></div>
 
 <main>
-    <!-- 성취도 순위 섹션 -->
-    <div class="achievement-ranking-container">
-        <div class="ranking-card card h-92 shadow-sm border">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-borderless mb-0">
-                        <tbody>
-                        <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"
-                            data-th-each="ranking, status : ${rankList}" data-th-if="${status.index < 10}">
-                            <td class="ps-4">
-                                <div
-                                        data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">
-                                    <span data-th-text="${ranking.rank + '등'}"></span>
-                                </div>
-                            </td>
-                            <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>
-                            <td class="align-middle pe-4">
-                                <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>
-                            </td>
-                        </tr>
+    <!--    &lt;!&ndash; 업적 랭킹 임의로 설정 &ndash;&gt;-->
+    <!--    <div class="achievement-ranking-container">-->
+    <!--        <div class="ranking-card card h-92 shadow-sm border">-->
+    <!--            <div class="card-body">-->
+    <!--                <div class="table-responsive">-->
+    <!--                    <table class="table table-borderless mb-0">-->
+    <!--                        <tbody>-->
+    <!--                        <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"-->
+    <!--                            data-th-each="ranking, status : ${rankList}" data-th-if="${status.index < 10}">-->
+    <!--                            <td class="ps-4">-->
+    <!--                                <div-->
+    <!--                                        data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
+    <!--                                    <span data-th-text="${ranking.rank + '등'}"></span>-->
+    <!--                                </div>-->
+    <!--                            </td>-->
+    <!--                            <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>-->
+    <!--                            <td class="align-middle pe-4">-->
+    <!--                                <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>-->
+    <!--                            </td>-->
+    <!--                        </tr>-->
 
-                        <!-- 내 등수 -->
-                        <tr
-                                data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">
-                            <td class="ps-4">
-                                <div
-                                        data-th-class="'rank-badge ' + ${rankNowUserList.rank == 1 ? 'rank-1' : (rankNowUserList.rank == 2 ? 'rank-2' : (rankNowUserList.rank == 3 ? 'rank-3' : 'rank-other'))}">
-                                    <span data-th-text="${rankNowUserList.rank + '등'}"></span>
-                                </div>
-                            </td>
-                            <td class="align-middle fw-bold" data-th-text="${rankNowUserList.user.nickname}"></td>
-                            <td class="align-middle pe-4">
-                                <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!--                        &lt;!&ndash; 내 등수 &ndash;&gt;-->
+    <!--                        <tr-->
+    <!--                                data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">-->
+    <!--                            <td class="ps-4">-->
+    <!--                                <div-->
+    <!--                                        data-th-class="'rank-badge ' + ${rankNowUserList.rank == 1 ? 'rank-1' : (rankNowUserList.rank == 2 ? 'rank-2' : (rankNowUserList.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
+    <!--                                    <span data-th-text="${rankNowUserList.rank + '등'}"></span>-->
+    <!--                                </div>-->
+    <!--                            </td>-->
+    <!--                            <td class="align-middle fw-bold" data-th-text="${rankNowUserList.user.nickname}"></td>-->
+    <!--                            <td class="align-middle pe-4">-->
+    <!--                                <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>-->
+    <!--                            </td>-->
+    <!--                        </tr>-->
+    <!--                        </tbody>-->
+    <!--                    </table>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
 
 
     <div class="page-container">
@@ -75,62 +75,67 @@
             </div>
         </div>
 
-  <div class="grid-option">
-    <div class="grid-item">
-      <div class="button-group-left">
-        <button class="recent" onclick="location.href='/board/boardList'">최근게시물</button>
-        <button class="popular active" onclick="location.href='/board/popularList'">인기게시글</button>
-      </div>
-      <div class="search-bar">
-        <input class="search-input" placeholder="Search" type="text">
-        <button class="btn btn-primary">검색</button>
-      </div>
-      <div class="button-group-right">
-        <button class="write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
-      </div>
+        <div class="grid-option">
+            <div class="grid-item">
+                <div class="button-group-left">
+                    <button class="recent" onclick="location.href='/board/boardList'">최근게시물</button>
+                    <button class="popular active" onclick="location.href='/board/popularList'">인기게시글</button>
+                </div>
+                <div class="search-bar">
+                    <input class="search-input" placeholder="Search" type="text">
+                    <button class="btn btn-primary">검색</button>
+                </div>
+                <div class="button-group-right">
+                    <button class="write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="grid-item-list" th:each="board : ${recentBoards}">
+                <img alt="게시글 이미지"
+                     class="item-image"
+                     th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
+                <!--이부분 해결해야 함-->
+                <img alt="기본 이미지"
+                     class="item-image"
+                     th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                     th:src="@{/images/board/defaultBoardPicture.jpg}">
+
+                <div class="item-content">
+                    <a th:href="@{/board/boardView(no=${board.no})}">
+                        <div class="item-title" th:text="${board.title}">게시글 제목</div>
+                        <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100"></div>
+                        <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50"></div>
+                        <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">
+                            2024-11-15 12:34
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination-container mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                        <a class="page-link"
+                           th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12)}">Previous</a>
+                    </li>
+                    <li class="page-item"
+                        th:classappend="${i == currentPage ? 'active' : ''}"
+                        th:each="i : ${#numbers.sequence(1, totalPages)}">
+                        <a class="page-link" th:href="@{/board/boardList(page=${i}, size=12)}" th:text="${i}"></a>
+                    </li>
+                    <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+                        <a class="page-link"
+                           th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12)}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
-  </div>
-
-  <div class="grid-container">
-    <div class="grid-item-list" th:each="board : ${recentBoards}">
-      <img class="item-image"
-           th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-           th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}"
-           alt="게시글 이미지">
-      <!--이부분 해결해야 함-->
-      <img class="item-image"
-           th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-           th:src="@{/images/board/defaultBoardPicture.jpg}"
-           alt="기본 이미지">
-
-      <div class="item-content">
-        <a th:href="@{/board/boardView(no=${board.no})}">
-          <div class="item-title" th:text="${board.title}">게시글 제목</div>
-          <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100"></div>
-          <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50"></div>
-          <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-11-15 12:34</div>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="pagination-container mt-4">
-    <nav aria-label="Page navigation">
-      <ul class="pagination justify-content-center">
-        <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-          <a class="page-link" th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12)}">Previous</a>
-        </li>
-        <li class="page-item"
-            th:classappend="${i == currentPage ? 'active' : ''}" th:each="i : ${#numbers.sequence(1, totalPages)}">
-          <a class="page-link" th:href="@{/board/boardList(page=${i}, size=12)}" th:text="${i}"></a>
-        </li>
-        <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-          <a class="page-link" th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12)}">Next</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</div>
 </main>
 
 <footer th:replace="~{footer :: footer}"></footer>
