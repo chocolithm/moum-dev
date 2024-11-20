@@ -264,38 +264,40 @@ window.addEventListener('beforeunload', () => {
 });
 
 // 폼 제출 전 유효성 검사 강화
-document.getElementById('signupForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // 우선 제출을 막습니다
+if (document.getElementById('signupForm')) {
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // 우선 제출을 막습니다
 
-    let isValid = true;
-    let message = '';
+        let isValid = true;
+        let message = '';
 
-    // 닉네임 체크
-    if (!nicknameChecked) {
-        message += '닉네임 중복 확인이 필요합니다.\n';
-        isValid = false;
-    }
+        // 닉네임 체크
+        if (!nicknameChecked) {
+            message += '닉네임 중복 확인이 필요합니다.\n';
+            isValid = false;
+        }
 
-    // 이메일 체크
-    if (!emailChecked) {
-        message += '이메일 중복 확인이 필요합니다.\n';
-        isValid = false;
-    }
+        // 이메일 체크
+        if (!emailChecked) {
+            message += '이메일 중복 확인이 필요합니다.\n';
+            isValid = false;
+        }
 
-    // 비밀번호 체크
-    if (!passwordMatch) {
-        message += '비밀번호가 일치하지 않습니다.\n';
-        isValid = false;
-    }
+        // 비밀번호 체크
+        if (!passwordMatch) {
+            message += '비밀번호가 일치하지 않습니다.\n';
+            isValid = false;
+        }
 
-    if (!isValid) {
-        alert(message);
-        return false;
-    }
+        if (!isValid) {
+            alert(message);
+            return false;
+        }
 
-    // 모든 검증을 통과하면 폼을 제출합니다
-    this.submit();
-});
+        // 모든 검증을 통과하면 폼을 제출합니다
+        this.submit();
+    });
+}
 
 // 프로필 관련 기능 추가
 document.addEventListener('DOMContentLoaded', function() {
@@ -404,27 +406,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 회원 탈퇴 경고
 function confirmWithdraw() {
-    swal({
+    Swal.fire({
         title: "정말 탈퇴하시겠습니까?",
         text: "탈퇴 버튼 선택 시, 계정은 삭제되며 복구되지 않습니다.",
         icon: "warning",
-        buttons: {
-            cancel: {
-                text: "취소",
-                value: false,
-                visible: true,
-                closeModal: true,
-            },
-            confirm: {
-                text: "탈퇴",
-                value: true,
-                visible: true,
-                closeModal: true
-            }
-        },
-        dangerMode: true
-    }).then((willDelete) => {
-        if (willDelete) {
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: '탈퇴',
+        cancelButtonText: '취소'
+        // buttons: {
+        //     cancel: {
+        //         text: "취소",
+        //         value: false,
+        //         visible: true,
+        //         closeModal: true,
+        //     },
+        //     confirm: {
+        //         text: "탈퇴",
+        //         value: true,
+        //         visible: true,
+        //         closeModal: true
+        //     }
+        // },
+        // dangerMode: true
+    }).then((result) => {
+        if (result.isConfirmed) {
             // AJAX를 사용하여 서버에 탈퇴 요청
             const form = document.getElementById("withdrawForm");
             const formData = new FormData(form);

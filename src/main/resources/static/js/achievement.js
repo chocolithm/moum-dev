@@ -63,8 +63,8 @@ function selectAchievement(element) {
 
 // 페이지 로드시 선택된 업적이 있으면 드롭다운 최상단에 해당 업적을 표시
 window.addEventListener('load', function() {
-    var selectedAchievementId = document.getElementById('user-achievement').value; // 수정 후 저장된 업적 ID
-    if (selectedAchievementId) {
+    if (document.getElementById('user-achievement')) {
+        var selectedAchievementId = document.getElementById('user-achievement').value; // 수정 후 저장된 업적 ID
         var items = document.querySelectorAll('.dropdown-item');
         var selectedAchievement = null;
         var selectedLi = null;
