@@ -121,6 +121,8 @@ function updateAchievement(
 
             // 업적 취득
             if (response == "acquired") {
+
+                // 업적취득 알림 처리
                 fetch(`/alert/add?category=achievement&categoryNo=${achievement_id}`)
                     .catch(error => {
                         console.error("error adding alert: ", error);
@@ -141,6 +143,7 @@ function updateAchievement(
         })
 }
 
+// 위키 링크
 function getWikiLink() {
     const hostname = location.hostname;
     const wikilink = document.getElementById("wiki-link");

@@ -81,24 +81,36 @@ public class AchievementController {
       String id,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
+    // 현재 로그인 유저
     User loginUser = userService.getByEmail(userDetails.getUsername());
+    // Achievement 객체에 업적 ID와 로그인 유저 설정
     Achievement achievement = achievementService.findMyAchievement(id, loginUser.getNo());
 
+    // 이미 취득한 업적이면 ignored 반환
     if (achievement.getProgress() == 100) {
       return "ignored";
     }
-
+    
+    // Achievement 객체에 현재 횟수(currentCount) 1증가
     achievement.setCurrentCount(achievement.getCurrentCount() + 1);
-    System.out.println(achievement);
+    // 현재 횟수(currentCount)와 총 횟수(maxCount) 비교하여 진행도(progress) 산출
     achievement.setProgress(achievement.getCurrentCount() * 100 / achievement.getMaxCount());
 
+    // updateCount() 실행
     if (achievementService.updateCount(achievement)) {
+      
+      // 업적 취득 여부 확인
       if (achievement.getProgress() >= 100) {
+        // progress가 100 이상이면 업적 취득 처리 후 acquired 반환
         achievementService.completeAchievement(achievement);
         return "acquired";
       }
+      
+      // updateCount 성공 후 업적 미취득 상태이면 success 반환
       return "success";
     }
+    
+    // updateCount 실패 시 failure 반환
     return "failure";
   }
 
