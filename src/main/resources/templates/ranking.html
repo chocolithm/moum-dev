@@ -13,57 +13,12 @@
 </head>
 
 <body>
-    <!-- 업적 랭킹 섹션 -->
-    <!--<div class="ranking-section">-->
-    <!--    <div class="row g-3 d-flex flex-row">-->
-    <!--        &lt;!&ndash; Top 1-5 Rankings &ndash;&gt;-->
-
-    <!--            </div>-->
-    <!--        </div>-->
-
-
-
-
-    <!-- Current Ranking Status -->
-    <!-- <div class="col mx-auto mb-3">
-        <div class="ranking-card card shadow-sm border">
-            <div class="card-header bg-light">
-                <h5 class="card-title mb-0">현재 내 업적 순위</h5>
-            </div>
-            <div
-                data-th-class="'card-body py-4 ' + ${rankNowUserList != null ? (rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : ''))) : ''}">
-                <div class="text-center" data-th-if="${rankNowUserList != null}">
-                    <p class="mb-0">
-                        <span class="fw-bold" data-th-text="${rankNowUserList.rank} + '등'"></span>
-                        <span data-th-text="${rankNowUserList.user.nickname}"></span> -
-                        <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>
-                    </p>
-                </div>
-                <div class="text-center" data-th-if="${rankNowUserList == null}">
-                    <p class="mb-0">
-                        <span class="fw-bold">현재 업적 정보가 없습니다.</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
 
     <div class="achievement-ranking-container">
         <div class="ranking-card card h-100 shadow-sm border">
-            <!-- <div class="card-header" style="background-color: #696969; border-color: #2F4F4F; color: #ffffff;">
-                <h5 class="card-title mb-1">업적 상위 랭킹</h5>
-            </div> -->
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-borderless mb-0">
-                        <!-- <thead class="table-success">
-                            <tr>
-                                <th class="ps-4">등수</th>
-                                <th>닉네임</th>
-                                <th class="pe-4">점수</th>
-                            </tr>
-                        </thead> -->
                         <tbody>
                             <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"
                                 data-th-each="ranking, status : ${rankList}" data-th-if="${status.index < 10}">
