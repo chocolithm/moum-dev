@@ -260,9 +260,27 @@ function updateCollection() {
 }
 
 function validateData(formData) {
-    if (formData.get("name") == "") { alert("이름을 입력해주세요."); return false; }
-    if (formData.get("status.no") == "" || formData.get("status.no") == 0) { alert("상태를 선택해주세요."); return false; }
-    if (formData.get("maincategory.no") == 999 && formData.get("otherCategory") == "") { alert("분류명을 입력해주세요."); return false; }
+    document.querySelector("#name").style = "border-color: #ccc";
+    document.querySelector("#maincategoryNo").style = "border-color: #ccc";
+    document.querySelector("#otherCategory").style = "border-color: #ccc";
+    document.querySelector("#statusNo").style = "border-color: #ccc";
+
+    if (formData.get("name") == "") {
+        document.querySelector("#name").style = "border-color: red";
+        return false;
+    }
+    if (formData.get("maincategory.no") == 0) {
+        document.querySelector("#maincategoryNo").style = "border-color: red";
+        return false;
+    }
+    if (formData.get("maincategory.no") == 999 && formData.get("otherCategory") == "") {
+        document.querySelector("#otherCategory").style = "border-color: red";
+        return false;
+    }
+    if (formData.get("status.no") == "" || formData.get("status.no") == 0) {
+        document.querySelector("#statusNo").style = "border-color: red";
+        return false;
+    }
     if (formData.get("price") == "") { formData.set("price", 0); }
     return true;
 }

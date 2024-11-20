@@ -16,13 +16,14 @@
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin: 15px;    
+    margin: 15px;
 }
 
 .report-layer textarea {
     width: 90%;
     height: 200px;
     resize: none;
+    border: 1px solid #ccc;
 }
 
 .report-layer .report-button {

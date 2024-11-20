@@ -690,6 +690,8 @@ function toggleAdminUser(element, userNo) {
         .catch(error => {
           console.error("error setting admin: ", error);
         })
+    } else {
+      element.value = 1;
     }
   } else if (element.value == 1) {
     if (confirm("관리자 권한을 부여하시겠습니까?")) {
@@ -710,6 +712,8 @@ function toggleAdminUser(element, userNo) {
         .catch(error => {
           console.error("error setting admin: ", error);
         })
+    } else {
+      element.value = 0;
     }
   }
 
@@ -721,12 +725,21 @@ function handleReport(reportNo) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
+    document.getElementById("resultCategory.no").style = "border-color: #ccc";
+    document.getElementById("resultContent").style = "border-color: #ccc";
+
     formData.set("no", reportNo);
     formData.set("resultCategory.no", document.getElementById("resultCategory.no").value);
     formData.set("resultContent", document.getElementById("resultContent").value.trim());
 
-    if (formData.get("resultCategory.name") == 0) { alert("처리결과를 선택하세요."); return; }
-    if (formData.get("resultContent") == "") { alert("처리사항을 입력하세요."); return; }
+    if (formData.get("resultCategory.no") == 0) {
+      document.getElementById("resultCategory.no").style = "border-color: red";
+      return;
+    }
+    if (formData.get("resultContent") == "") {
+      document.getElementById("resultContent").style = "border-color: red";
+      return;
+    }
 
     fetch(`/report/updateResult`, {
       method: "PUT",
