@@ -274,6 +274,7 @@
 
     <update id="completeAchievement" parameterType="moum.project.vo.Achievement">
         update user_achievement set
+            progress = 100,
             get_date = now()
         where
             user_id = #{user.no}

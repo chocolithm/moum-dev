@@ -175,7 +175,7 @@ function executeAlert(alert) {
       .catch(error => {
         console.error("error fetching chatroom: ", error);
       })
-  } else if (alert.category == "board") {
+  } else if (alert.category == "board" || alert.category == "comment") {
     location.href = `/board/boardView?no=${alert.categoryNo}`;
   } else if (alert.category == "achievement") {
     location.href = `/user/myInfo`;

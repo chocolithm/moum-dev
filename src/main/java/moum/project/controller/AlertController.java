@@ -5,9 +5,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AchievementService;
 import moum.project.service.AlertService;
+import moum.project.service.BoardService;
 import moum.project.service.UserService;
 import moum.project.vo.Achievement;
 import moum.project.vo.Alert;
+import moum.project.vo.Board;
 import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,7 @@ public class AlertController {
   private final AlertService alertService;
   private final UserService userService;
   private final AchievementService achievementService;
+  private final BoardService boardService;
 
   @GetMapping("/add")
   @ResponseBody
@@ -37,13 +40,24 @@ public class AlertController {
     Alert alert = new Alert();
     alert.setCategory(category);
     alert.setCategoryNo(categoryNo);
-    alert.setUser(loginUser);
+
     alert.setDate(LocalDateTime.now());
     alert.setRead(false);
 
     if (category.equals("achievement")) {
       Achievement achievement = achievementService.get(categoryNo);
+      alert.setUser(loginUser);
       alert.setContent(String.format("[%s] 업적 달성!", achievement.getName()));
+
+    } else if (category.equals("comment")) {
+      Board board = boardService.get(Integer.parseInt(categoryNo));
+      alert.setUser(board.getUser());
+      alert.setContent("댓글이 달렸습니다.");
+    }
+
+    if (alertService.exists(alert) > 0) {
+      alertService.updateTime(alert.getNo());
+      return "updated";
     }
 
     if (alertService.add(alert)) {
