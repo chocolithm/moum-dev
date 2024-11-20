@@ -208,6 +208,13 @@ function addComment() {
         .then(response => response.json())
         .then(comment => {
             // renderComment(comment);
+
+            // 댓글 알림 처리
+            fetch(`/alert/add?category=comment&categoryNo=${boardId}`)
+                .catch(error => {
+                    console.error("error adding alert: ", error);
+                })
+
             document.getElementById("commentContent").value = "";
             countingLength(document.getElementById("commentContent"));
                 location.href=`/board/boardView?no=${boardId}`;
