@@ -1,6 +1,6 @@
 // 공통
-let nicknameChecked = false;
-let emailChecked = false;
+// let nicknameChecked = false;
+let emailChecked = false;ㅎ
 let passwordMatch = false;
 
 getWikiLink();

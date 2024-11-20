@@ -3,9 +3,15 @@ let countdownTimer = null;
 
 // 닉네임 입력 필드 변경 감지
 document.getElementById('nickname').addEventListener('input', function() {
-    nicknameChecked = false;
-    document.getElementById('nicknameMessage').textContent = '닉네임 중복 확인이 필요합니다.';
-    document.getElementById('nicknameMessage').style.color = 'red';
+    const originalNickname = this.getAttribute('value'); // 원래 저장된 값 가져오기
+    if (this.value !== originalNickname) {
+        nicknameChecked = false;
+        document.getElementById('nicknameMessage').textContent = '닉네임 중복 확인이 필요합니다.';
+        document.getElementById('nicknameMessage').style.color = 'red';
+    } else {
+        nicknameChecked = true;
+        document.getElementById('nicknameMessage').textContent = '';
+    }
 });
 
 // 이메일 입력 필드 변경 감지
