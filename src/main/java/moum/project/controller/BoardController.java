@@ -175,7 +175,8 @@ public class BoardController {
 
   @GetMapping("/boardList")
   public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "size", defaultValue = "12") int size, Model model) throws Exception {
+      @RequestParam(value = "size", defaultValue = "12") int size, Model model,
+      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
     int offset = (page - 1) * size;
     List<Board> recentBoards = boardService.listByPage(offset, size);
     model.addAttribute("recentBoards", recentBoards);
@@ -185,6 +186,17 @@ public class BoardController {
     int totalPages = (int) Math.ceil((double) totalBoards / size);
     model.addAttribute("currentPage", page);
     model.addAttribute("totalPages", totalPages);
+
+    String email = userDetails.getUsername();
+    User loginUser = userService.getByEmail(email);
+
+    List<Achievement> userRankList = achievementService.listByUserRank();
+    model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+
+    Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
+    model.addAttribute("rankNowUserList",
+        user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+
 
     return "board/boardList"; // Thymeleaf 템플릿 이름
   }
