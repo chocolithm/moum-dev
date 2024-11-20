@@ -100,48 +100,92 @@ updateAchievement(123, {
 });
 */
 
-function updateAchievement(
+async function updateAchievement(
     achievement_id,
     { onIgnored, onSuccess, onAcquired, onFailure } = {}
 ) {
-    fetch(`/achievement/updateCount?id=${achievement_id}`)
-        .then(response => response.text())
-        .then(response => {
-            // 이미 취득한 업적
-            if (response == "ignored") {
-                if (onIgnored) { onIgnored(); }
-                return;
+    try {
+        const response = await fetch(`/achievement/updateCount?id=${achievement_id}`);
+        const result = await response.text();
+
+        // 이미 취득한 업적
+        if (result === "ignored") {
+            if (onIgnored) onIgnored();
+            return;
+        }
+
+        // 업적 취득
+        if (result === "success") {
+            if (onSuccess) onSuccess();
+            return;
+        }
+
+        // 업적 취득
+        if (result === "acquired") {
+            try {
+                // 업적 취득 알림 처리
+                await fetch(`/alert/add?category=achievement&categoryNo=${achievement_id}`);
+            } catch (alertError) {
+                console.error("Error adding achievement alert:", alertError);
             }
+            if (onAcquired) onAcquired();
+            return;
+        }
 
-            // 업적 카운트 추가 성공
-            if (response == "success") {
-                if (onSuccess) { onSuccess(); }
-                return;
-            }
-
-            // 업적 취득
-            if (response == "acquired") {
-
-                // 업적취득 알림 처리
-                fetch(`/alert/add?category=achievement&categoryNo=${achievement_id}`)
-                    .catch(error => {
-                        console.error("error adding alert: ", error);
-                    })
-
-                if (onAcquired) { onAcquired(); }
-                return;
-            }
-
-            // 업적 카운트 추가 실패
-            if (response == "failure") {
-                if (onFailure) { onFailure(); }
-                return;
-            }
-        })
-        .catch(error => {
-            console.error("error updating achievement count: ", error);
-        })
+        // 업적 카운트 추가 실패
+        if (result === "failure") {
+            if (onFailure) onFailure();
+            return;
+        }
+        
+    } catch (error) {
+        console.error("Error updating achievement count:", error);
+        if (onFailure) onFailure();
+    }
 }
+
+// function updateAchievement(
+//     achievement_id,
+//     { onIgnored, onSuccess, onAcquired, onFailure } = {}
+// ) {
+//     fetch(`/achievement/updateCount?id=${achievement_id}`)
+//         .then(response => response.text())
+//         .then(response => {
+//             // 이미 취득한 업적
+//             if (response == "ignored") {
+//                 if (onIgnored) { onIgnored(); }
+//                 return;
+//             }
+
+//             // 업적 카운트 추가 성공
+//             if (response == "success") {
+//                 if (onSuccess) { onSuccess(); }
+//                 return;
+//             }
+
+//             // 업적 취득
+//             if (response == "acquired") {
+
+//                 // 업적취득 알림 처리
+//                 fetch(`/alert/add?category=achievement&categoryNo=${achievement_id}`)
+//                     .catch(error => {
+//                         console.error("error adding alert: ", error);
+//                     })
+
+//                 if (onAcquired) { onAcquired(); }
+//                 return;
+//             }
+
+//             // 업적 카운트 추가 실패
+//             if (response == "failure") {
+//                 if (onFailure) { onFailure(); }
+//                 return;
+//             }
+//         })
+//         .catch(error => {
+//             console.error("error updating achievement count: ", error);
+//         })
+// }
 
 // 위키 링크
 function getWikiLink() {

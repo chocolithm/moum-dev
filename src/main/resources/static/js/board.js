@@ -206,37 +206,24 @@ function addComment() {
         body: JSON.stringify({ content: content })
     })
         .then(response => response.json())
-        .then(comment => {
+        .then(async comment => {
             // renderComment(comment);
 
             // 댓글 알림 처리
-            fetch(`/alert/add?category=comment&categoryNo=${boardId}`)
+            await fetch(`/alert/add?category=comment&categoryNo=${boardId}`)
                 .catch(error => {
                     console.error("error adding alert: ", error);
                 })
 
+            // 업적 추가
+            await updateAchievement("HUNDRED_COMMENT");
+            await updateAchievement("THIRTY_COMMENT");
+            await updateAchievement("TEN_COMMENT");
+
             document.getElementById("commentContent").value = "";
             countingLength(document.getElementById("commentContent"));
-                location.href=`/board/boardView?no=${boardId}`;
+            location.href=`/board/boardView?no=${boardId}`;
         })
-
-    // 업적 추가
-               updateAchievement("HUNDRED_COMMENT", {
-                  onSuccess: () => {
-                       updateAchievement("THIRTY_COMMENT", {
-                           onSuccess: () => {
-                               updateAchievement("TEN_COMMENT");
-                           },
-                           onIgnored: () => {
-                               console.log("THIRTY_COMMENT already acquired.");
-                           }
-                       });
-                   },
-                   onIgnored: () => {
-                       console.log("HUNDRED_COMMENT already acquired.");
-                   }
-               });
-
         .catch(error => {
             console.error("댓글 등록 오류:", error);
             alert("댓글 등록에 실패했습니다.");
@@ -332,52 +319,16 @@ function editPost(boardNo) {
     if (boardNo) {
         window.location.href = "/board/update?no=" + boardNo;
 
-                // 업적 추가
-                updateAchievement("THIRTY_UPT_POST", {
-                    onSuccess: () => {
-                        updateAchievement("TEN_UPT_POST", {
-                            onSuccess: () => {
-                                updateAchievement("FIRST_UPT_POST");
-                            },
-                            onIgnored: () => {
-                                console.log("TEN_UPT_POST already acquired.");
-                            }
-                        });
-                    },
-                    onIgnored: () => {
-                        console.log("THIRTY_UPT_POST already acquired.");
-                    }
-                });
-
     } else {
         console.error("게시글 번호가 정의되지 않았습니다.");
         alert("게시글 번호가 유효하지 않습니다.");
     }
 }
 
-function deletePost(boardNo) {
+async function deletePost(boardNo) {
     if (confirm("정말 이 게시글을 삭제하시겠습니까?")) {
         document.getElementById("deleteBoardNo").value = boardNo;
         document.getElementById("deleteForm").submit();
-
-                // 업적 추가
-                updateAchievement("THIRTY_DEL_POST", {
-                    onSuccess: () => {
-                        updateAchievement("TEN_DEL_POST", {
-                            onSuccess: () => {
-                                updateAchievement("FIRST_DEL_POST");
-                            },
-                            onIgnored: () => {
-                                console.log("TEN_DEL_POST already acquired.");
-                            }
-                        });
-                    },
-                    onIgnored: () => {
-                        console.log("THIRTY_DEL_POST already acquired.");
-                    }
-                });
-            }
-        }
     }
 }
 

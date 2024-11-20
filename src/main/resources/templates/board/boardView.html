@@ -60,7 +60,7 @@
                 <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
                         th:if="${board.sellOrSoldStatus == false}">수정하기</button>
 
-                <form method="post" onsubmit="return confirm('삭제하시겠습니까?');" th:action="@{/board/delete}">
+                <form method="post" name="postDeleteForm" onsubmit="return updateDelPostAchievement();" th:action="@{/board/delete}">
                     <input name="no" th:value="${board.no}" type="hidden">
                     <input name="_method" type="hidden" value="DELETE">
                     <button class="delete-button" type="submit">삭제하기</button>
@@ -114,6 +114,21 @@
 
     <!-- comments.forEach(renderComment); -->
 
+    async function updateDelPostAchievement() {
+
+        const confirmed = confirm("삭제하시겠습니까?");
+
+        if (!confirmed) {
+            return false;
+        }
+
+        await updateAchievement("THIRTY_DEL_POST");
+        await updateAchievement("TEN_DEL_POST");
+        await updateAchievement("FIRST_DEL_POST");
+        document.postDeleteForm.submit();
+
+        return false;
+    }
 
 </script>
 
