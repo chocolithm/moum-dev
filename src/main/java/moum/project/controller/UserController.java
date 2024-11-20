@@ -108,16 +108,17 @@ public class UserController {
           achievementList.remove(i--);
         }
       }
+
     } else {
       viewUser = userService.get(userNo);
 
       achievementList = achievementService.listByUser(viewUser.getNo());
-      achievementList.sort(new Comparator<Achievement>() {
-        @Override
-        public int compare(Achievement o1, Achievement o2) {
-          return Integer.compare(o2.getProgress(), o1.getProgress());
+      for (int i = 0; i < achievementList.size(); i++) {
+        Achievement achievement = achievementList.get(i);
+        if (achievement.getProgress() != 100) {
+          achievementList.remove(i--);
         }
-      });
+      }
     }
 
     if (viewUser == null || viewUser.getEndDate() != null) {

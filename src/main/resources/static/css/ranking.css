@@ -4,8 +4,12 @@
     padding: 20px;
 }
 
+.achievement-ranking-container {
+    width: 300px;
+}
+
 /* 자식 요소들의 크기가 변경되지 않도록 설정 */
-.ranking-card {
+.achievement-ranking-container .ranking-card {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -15,21 +19,82 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.ranking-card:hover {
+.achievement-ranking-container .ranking-card:hover {
     transform: translateY(-5px);
 }
 
-/* 카드 내부 테이블과 내용물의 크기도 고정 */
-.ranking-card .table-responsive {
+.achievement-ranking-container .ranking-card .table-responsive {
     width: 100%;
-    overflow-x: auto; /* 가로 스크롤 허용 */
+    overflow-x: hidden;
 }
 
-/* 테이블 셀 */
-.ranking-card .table-borderless td,
-.ranking-card .table-borderless th {
+.ranking-card table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.ranking-card table thead {
+    display: table;
+    width: 300px;
+}
+
+.ranking-card table tbody {
+    position: relative;
+    display: block;
+    height: 65px;
+    max-height: 200px;
+    width: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: height 0.3s ease-in-out;
+}
+
+.ranking-card table tbody:hover tr:nth-last-child(2) {
+    border-bottom: 1px solid #ccc;
+}
+
+.ranking-card table tbody tr {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    position: absolute;
+    width: 300px;
+    left: 0;
+    display: table;
+}
+
+.ranking-card table tbody::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ranking-card table tbody::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.ranking-card table tbody::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.ranking-card table td,
+.ranking-card table th {
     box-sizing: border-box;
     padding: 12px;
+    border: none;
+}
+
+.achievement-ranking-container th:nth-child(1),
+.achievement-ranking-container td:nth-child(1) {
+    width: 33%;
+}
+
+.achievement-ranking-container th:nth-child(2),
+.achievement-ranking-container td:nth-child(2) {
+    width: 43%;
+}
+
+.achievement-ranking-container th:nth-child(3),
+.achievement-ranking-container td:nth-child(3) {
+    width: 33%;
 }
 
 /* 카드 내부 콘텐츠가 크기를 초과하지 않도록 */
@@ -41,24 +106,10 @@
     overflow: hidden;
 }
 
-/* 테이블에 overflow가 생기지 않도록 설정 */
-.ranking-card .table-responsive {
-    overflow-x: auto; /* 가로 스크롤 허용 */
-}
-
-.ranking-card .table-borderless th,
-.ranking-card .table-borderless td {
-    border: none; /* 테이블 테두리 없애기 */
-    padding: 12px; /* 셀 내부 여백 */
-}
-
-.ranking-card .table-light th {
-    background-color: #f7f7f7; /* 헤더 배경색 */
-}
-
 /* 랭킹 순위 및 닉네임 스타일 */
 .table-row td {
-    font-size: 1.125rem; /* 표 내용 크기 */
+    font-size: 1.125rem;
+    /* 표 내용 크기 */
 }
 
 .table-row .rank-badge {
@@ -70,7 +121,8 @@
 .table-row .score-badge {
     font-size: 1rem;
     font-weight: bold;
-    color: #007bff; /* 파란색 점수 */
+    color: #007bff;
+    /* 파란색 점수 */
 }
 
 /* 순위 배지 스타일 */
@@ -87,21 +139,24 @@
 }
 
 .rank-1 {
-    background: linear-gradient(45deg, #FFEC40, #FFD700); /* 금색 */
+    background: linear-gradient(45deg, #FFEC40, #FFD700);
+    /* 금색 */
     position: relative;
     box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.7);
     animation: sparkle1 1.5s infinite alternate;
 }
 
 .rank-2 {
-    background: linear-gradient(45deg, #D3D3D3, #C0C0C0); /* 은색 */
+    background: linear-gradient(45deg, #D3D3D3, #C0C0C0);
+    /* 은색 */
     position: relative;
     box-shadow: 0 0 10px 3px rgba(192, 192, 192, 0.7);
     animation: sparkle2 1.5s infinite alternate;
 }
 
 .rank-3 {
-    background: linear-gradient(45deg, #F4A261, #CD7F32); /* 동색 */
+    background: linear-gradient(45deg, #F4A261, #CD7F32);
+    /* 동색 */
     position: relative;
     box-shadow: 0 0 10px 3px rgba(205, 127, 50, 0.7);
     animation: sparkle3 1.5s infinite alternate;
@@ -112,6 +167,7 @@
     0% {
         box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.7);
     }
+
     100% {
         box-shadow: 0 0 20px 5px rgba(255, 215, 0, 1);
     }
@@ -121,6 +177,7 @@
     0% {
         box-shadow: 0 0 10px 3px rgba(192, 192, 192, 0.7);
     }
+
     100% {
         box-shadow: 0 0 20px 5px rgba(192, 192, 192, 1);
     }
@@ -130,6 +187,7 @@
     0% {
         box-shadow: 0 0 10px 3px rgba(205, 127, 50, 0.7);
     }
+
     100% {
         box-shadow: 0 0 20px 5px rgba(205, 127, 50, 1);
     }
@@ -163,6 +221,19 @@
 
 @media screen and (max-width: 745px) {
     .ranking-section {
-        padding: 10px; /* 작은 화면에서는 패딩을 줄여줍니다 */
+        padding: 10px;
+        /* 작은 화면에서는 패딩을 줄여줍니다 */
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

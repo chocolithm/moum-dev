@@ -1,84 +1,161 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-          name="viewport">
+        name="viewport">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <link href="/css/ranking.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Document</title>
 </head>
+
 <body>
-<!-- 업적 랭킹 섹션 -->
-<!--<div class="ranking-section">-->
-<!--    <div class="row g-3 d-flex flex-row">-->
-<!--        &lt;!&ndash; Top 1-5 Rankings &ndash;&gt;-->
+    <!-- 업적 랭킹 섹션 -->
+    <!--<div class="ranking-section">-->
+    <!--    <div class="row g-3 d-flex flex-row">-->
+    <!--        &lt;!&ndash; Top 1-5 Rankings &ndash;&gt;-->
 
-<!--            </div>-->
-<!--        </div>-->
-
-
+    <!--            </div>-->
+    <!--        </div>-->
 
 
-        <!-- Current Ranking Status -->
-        <div class="col mx-auto mb-3">
-            <div class="ranking-card card shadow-sm border">
-                <div class="card-header bg-light">
-                    <h5 class="card-title mb-0">현재 내 업적 순위</h5>
+
+
+    <!-- Current Ranking Status -->
+    <!-- <div class="col mx-auto mb-3">
+        <div class="ranking-card card shadow-sm border">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">현재 내 업적 순위</h5>
+            </div>
+            <div
+                data-th-class="'card-body py-4 ' + ${rankNowUserList != null ? (rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : ''))) : ''}">
+                <div class="text-center" data-th-if="${rankNowUserList != null}">
+                    <p class="mb-0">
+                        <span class="fw-bold" data-th-text="${rankNowUserList.rank} + '등'"></span>
+                        <span data-th-text="${rankNowUserList.user.nickname}"></span> -
+                        <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>
+                    </p>
                 </div>
-                <div data-th-class="'card-body py-4 ' + ${rankNowUserList != null ? (rankNowUserList.rank == 1 ? 'current-gold' : (rankNowUserList.rank == 2 ? 'current-silver' : (rankNowUserList.rank == 3 ? 'current-bronze' : ''))) : ''}">
-                    <div class="text-center" data-th-if="${rankNowUserList != null}">
-                        <p class="mb-0">
-                            <span class="fw-bold" data-th-text="${rankNowUserList.rank} + '등'"></span>
-                            <span data-th-text="${rankNowUserList.user.nickname}"></span> -
-                            <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>
-                        </p>
-                    </div>
-                    <div class="text-center" data-th-if="${rankNowUserList == null}">
-                        <p class="mb-0">
-                            <span class="fw-bold">현재 업적 정보가 없습니다.</span>
-                        </p>
-                    </div>
+                <div class="text-center" data-th-if="${rankNowUserList == null}">
+                    <p class="mb-0">
+                        <span class="fw-bold">현재 업적 정보가 없습니다.</span>
+                    </p>
                 </div>
             </div>
         </div>
+    </div> -->
 
 
-<div class="col-md-5 ">
-    <div class="ranking-card card h-100 shadow-sm border">
-        <div class="card-header" style="background-color: #696969; border-color: #2F4F4F; color: #ffffff;">
-            <h5 class="card-title mb-1">Top 1-5</h5>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-borderless mb-0">
-                    <thead class="table-success">
-                    <tr>
-                        <th class="ps-4">등수</th>
-                        <th>닉네임</th>
-                        <th class="text-end pe-4">점수</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"
-                        data-th-each="ranking, status : ${rankList}"
-                        data-th-if="${status.index < 10}">
-                        <td class="ps-4">
-                            <div data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">
-                                <span data-th-text="${ranking.rank + '등'}"></span>
-                            </div>
-                        </td>
-                        <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>
-                        <td class="align-middle text-end pe-4">
-                            <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+    <div class="achievement-ranking-container">
+        <div class="ranking-card card h-100 shadow-sm border">
+            <!-- <div class="card-header" style="background-color: #696969; border-color: #2F4F4F; color: #ffffff;">
+                <h5 class="card-title mb-1">업적 상위 랭킹</h5>
+            </div> -->
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+                        <!-- <thead class="table-success">
+                            <tr>
+                                <th class="ps-4">등수</th>
+                                <th>닉네임</th>
+                                <th class="pe-4">점수</th>
+                            </tr>
+                        </thead> -->
+                        <tbody>
+                            <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"
+                                data-th-each="ranking, status : ${rankList}" data-th-if="${status.index < 10}">
+                                <td class="ps-4">
+                                    <div
+                                        data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">
+                                        <span data-th-text="${ranking.rank + '등'}"></span>
+                                    </div>
+                                </td>
+                                <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>
+                                <td class="align-middle pe-4">
+                                    <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>
+                                </td>
+                            </tr>
+
+                            <!-- 내 등수 -->
+                            <tr
+                                data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">
+                                <td class="ps-4">
+                                    <div
+                                        data-th-class="'rank-badge ' + ${rankNowUserList.rank == 1 ? 'rank-1' : (rankNowUserList.rank == 2 ? 'rank-2' : (rankNowUserList.rank == 3 ? 'rank-3' : 'rank-other'))}">
+                                        <span data-th-text="${rankNowUserList.rank + '등'}"></span>
+                                    </div>
+                                </td>
+                                <td class="align-middle fw-bold" data-th-text="${rankNowUserList.user.nickname}"></td>
+                                <td class="align-middle pe-4">
+                                    <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+    </div>
 
 </body>
+
 </html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tbody = document.querySelector(".achievement-ranking-container tbody");
+        const rows = document.querySelectorAll(".achievement-ranking-container tbody tr");
+        let currentIndex = 0;
+        let animationTimer = null;
+
+        function showAllRows() {
+            rows.forEach(row => {
+                row.style.position = 'static';
+                row.style.opacity = '1';
+            });
+            tbody.style.height = 'auto';
+        }
+
+        function resetRows() {
+            rows.forEach(row => {
+                row.style.position = 'absolute';
+                row.style.opacity = '0';
+            });
+            tbody.style.height = '65px';
+            showNextRow();
+        }
+
+        function showNextRow() {
+            if (animationTimer) {
+                clearTimeout(animationTimer);
+            }
+
+            rows.forEach(row => {
+                row.style.opacity = '0';
+            });
+
+            rows[currentIndex].style.opacity = '1';
+
+            currentIndex = (currentIndex + 1) % rows.length;
+
+            animationTimer = setTimeout(showNextRow, 2500);
+        }
+
+        tbody.addEventListener('mouseenter', () => {
+            if (animationTimer) {
+                clearTimeout(animationTimer);
+                animationTimer = null;
+            }
+            showAllRows();
+        });
+
+        tbody.addEventListener('mouseleave', () => {
+            resetRows();
+        });
+
+        showNextRow();
+    });
+</script>

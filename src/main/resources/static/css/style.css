@@ -641,6 +641,22 @@ td {
     text-transform: capitalize;
 }
 
+.my-achievement-container .my-achievement-inner-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.my-achievement-container .yourinfo-achievement-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
 .my-achievement-container .achievement-img-container {
     display: flex;
     justify-content: center;
@@ -648,7 +664,16 @@ td {
     margin-bottom: 10px;
 }
 
-.my-achievement-container .achievement-img-container .achievement-img {
+.my-achievement-container .your-achievement-img-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.my-achievement-container .achievement-img-container .achievement-img,
+.my-achievement-container .your-achievement-img-container .achievement-img {
     width: auto;
     height: 50px;
     object-fit: cover;
@@ -670,12 +695,23 @@ td {
     justify-content: space-around;
 }
 
+.my-achievement-container .your-achievement-box {
+    height: auto;
+    margin: 5px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 .my-achievement-container .my-achievement-box .achievement-details-container {
     width: 80%;
     margin: 0 auto;
 }
 
-.my-achievement-container .my-achievement-box:hover {
+.my-achievement-container .my-achievement-box:hover,
+.my-achievement-container .your-achievement-box:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
