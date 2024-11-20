@@ -336,7 +336,17 @@ function populateEmailField() {
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('error') === 'true') {
-        alert("이메일 또는 암호가 맞지 않습니다.");
+        swal({
+            title: "로그인 실패",
+            text: "이메일 또는 비밀번호가 맞지 않습니다.",
+            icon: "error",
+            button: "확인"
+        }).then(() => {
+            // error 파라미터 제거하고 로그인 모달 다시 열기
+            const newUrl = window.location.pathname + window.location.search.replace(/[?&]error=true/, '');
+            window.history.replaceState({}, document.title, newUrl);
+            openLoginModal();
+        });
     }
 });
 
