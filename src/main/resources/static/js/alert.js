@@ -120,10 +120,18 @@ function createAlertBoxContent(alert, box) {
     box.classList.remove('active');
   });
 
-  const delete_btn = document.createElement("a");
-  delete_btn.className = "alert-delete-btn";
-  delete_btn.innerText = "x";
-  delete_btn.onclick = () => deleteAlert(event, alert.no);
+const delete_btn = document.createElement("a");
+delete_btn.className = "alert-delete-btn"; // 기본 클래스만 추가
+delete_btn.innerText = "x"; // "x" 텍스트 추가
+delete_btn.onclick = () => deleteAlert(event, alert.no);
+
+// 스타일 추가
+delete_btn.style.textDecoration = "none";  // 링크의 기본 밑줄 제거
+delete_btn.style.color = "black";          // 텍스트 색상은 검정색으로 설정
+delete_btn.style.fontSize = "16px";        // 원하는 크기로 텍스트 크기 설정
+delete_btn.style.cursor = "pointer";      // 클릭할 수 있는 모양 유지
+
+
 
   box.append(content, time, delete_btn);
   box.onclick = () => {
