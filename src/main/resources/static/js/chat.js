@@ -508,6 +508,7 @@ function createChatInputbox(chatroomNo, participant) {
   input.rows = "2";
   input.id = "new-message";
   input.className = "new-message";
+  input.placeholder = "메시지 입력"
 
   //채팅 보내기 버튼
   const btn = document.createElement("button");
