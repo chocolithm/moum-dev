@@ -734,8 +734,13 @@ td {
     width: 95%;
 }
 
+.my-info-container .profile-form {
+    display: flex;
+    flex-direction: row;
+}
+
 .my-info-container .profile-img-container {
-    height: 100%;
+    height: auto;
 }
 
 .my-info-container .profile-img-container .profile-img-inner-container {
