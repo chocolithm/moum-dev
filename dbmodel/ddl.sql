@@ -537,7 +537,8 @@ ALTER TABLE chatroom
 CREATE TABLE user_restricted (
     user_id    INTEGER  NOT NULL COMMENT '회원 번호', -- 회원 번호
     start_date DATETIME NOT NULL COMMENT '시작일자', -- 시작일자
-    end_date   DATETIME NOT NULL COMMENT '종료일자' -- 종료일자
+    end_date   DATETIME NOT NULL COMMENT '종료일자', -- 종료일자
+    comment    TEXT     NOT NULL COMMENT '제재사유'  -- 제재사유
 )
 COMMENT '정지회원';
 

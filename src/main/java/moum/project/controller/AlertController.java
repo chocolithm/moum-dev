@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -33,6 +34,7 @@ public class AlertController {
   public String add(
       String category,
       String categoryNo,
+      @RequestParam(required = false) String content,
       @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
     User loginUser = userService.getByEmail(userDetails.getUsername());
@@ -53,8 +55,14 @@ public class AlertController {
       Board board = boardService.get(Integer.parseInt(categoryNo));
       alert.setUser(board.getUser());
       alert.setContent("댓글이 달렸습니다.");
-    } else if (category.equals("report")) {
-
+    } else if (category.equals("boardReport")) {
+      Board board = boardService.get(Integer.parseInt(categoryNo));
+      alert.setUser(board.getUser());
+      alert.setContent(content);
+    } else if (category.equals("userReport")) {
+      User user = userService.get(Integer.parseInt(categoryNo));
+      alert.setUser(user);
+      alert.setContent(content);
     }
 
     if (alertService.exists(alert) > 0) {
