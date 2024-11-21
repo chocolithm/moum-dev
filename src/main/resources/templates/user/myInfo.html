@@ -8,6 +8,7 @@
     <link data-th-href="@{/css/style.css}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <script th:src="@{/js/achievement.js}"></script>
 </head>
 
 <body>
@@ -17,13 +18,11 @@
 
     <div class="wrapper">
         <!-- 검증 -->
-        <div class="alert alert-success" data-th-if="${message}" data-th-text="${message}"></div>
-        <div class="alert alert-danger" data-th-if="${error}" data-th-text="${error}"></div>
-        <div data-th-unless="${user}">
+        <div class="alert alert-success" th:if="${message}" th:text="${message}"></div>
+        <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+        <div th:unless="${user}">
             <p>사용자 정보를 찾을 수 없습니다.</p>
-        </div>
-        <div class="alert alert-danger" data-th-if="${param.notExist}">
-            존재하지 않는 회원입니다.
         </div>
 
         <div class="my-info-container" data-th-if="${user}" data-th-object="${user}">
@@ -119,11 +118,8 @@
                                     <div class="yourinfo-achievement-name" data-th-text="${achievement.name}"></div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -131,10 +127,6 @@
 
     <div class="achievement-user-progress layer"></div>
 </main>
-
 <div th:replace="~{footer :: footer}"></div>
-<script src="/js/achievement.js"></script>
-
 </body>
-
 </html>
