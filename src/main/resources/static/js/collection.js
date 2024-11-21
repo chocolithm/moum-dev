@@ -118,6 +118,30 @@ function addCollection() {
                             alert("등록했습니다.");
                             location.href = "/home";
                             break;
+
+                            async function checkCollectionAchievements(categoryNo) {
+                                switch (categoryNo) {
+                                    case "1": //건담
+                                        await updateAchievement("FIRST_GUNDAM");
+                                        await updateAchievement("TEN_GUNDAM");
+                                        await updateAchievement("THIRTY_GUNDAM");
+                                        break;
+                                    case "2": //레고
+                                        await updateAchievement("FIRST_LEGO");
+                                        await updateAchievement("TEN_LEGO");
+                                        await updateAchievement("THIRTY_LEGO");
+                                        break;
+                                    case "3": //신발
+                                        await updateAchievement("FIRST_SHOES");
+                                        await updateAchievement("TEN_SHOES");
+                                        await updateAchievement("THIRTY_SHOES");
+                                        break;
+                                }
+
+                                await updateAchievement("TEN_COLLECTION");
+                                await updateAchievement("COLLECTION_MASTER");
+                            }
+
                         case "failure":
                             alert("등록에 실패했습니다.");
                             break;

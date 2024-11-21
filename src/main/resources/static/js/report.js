@@ -104,3 +104,43 @@ function validateReport() {
     }
     return true;
 }
+
+function openRestrict(category) {
+    const report_layer = document.querySelector(".report-layer");
+    openOverlay();
+    createRestrictPage(category);
+    fadeInWithFlex(report_layer);
+}
+
+function createRestrictPage(category) {
+    const report_layer = document.querySelector(".report-layer");
+    const htmlContent = `
+        <div>
+            <textarea id="restrictContent" placeholder="안내사항 작성. 미입력시 기본사항"></textarea>
+        </div>
+        <div>
+            <button class="btn btn-warning report-button" onclick="sendWarning('${category}')">경고</button>
+        </div>
+        <div>
+            <button class="btn btn-warning report-button" onclick="restrict('${category}')", ">비공개</button>
+        </div>
+    `;
+
+    report_layer.innerHTML = htmlContent;
+}
+
+function sendWarning(category) {
+    const report_layer = document.querySelector(".report-layer");
+    const content = document.getElementById("restrictContent");
+
+    if (content.value.trim() == "") {
+        content.value = "게시글 신고가 접수되어 경고 처리되었습니다. 게시글 내용을 수정하시기 바랍니다.";
+    }
+
+    fetch(`/alert/add?category=report&categoryNo=`)
+}
+
+function restrict(category) {
+    const report_layer = document.querySelector(".report-layer");
+
+}
