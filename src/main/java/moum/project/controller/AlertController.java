@@ -53,6 +53,8 @@ public class AlertController {
       Board board = boardService.get(Integer.parseInt(categoryNo));
       alert.setUser(board.getUser());
       alert.setContent("댓글이 달렸습니다.");
+    } else if (category.equals("report")) {
+
     }
 
     if (alertService.exists(alert) > 0) {

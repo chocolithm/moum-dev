@@ -137,7 +137,7 @@ function sendWarning(category) {
         content.value = "게시글 신고가 접수되어 경고 처리되었습니다. 게시글 내용을 수정하시기 바랍니다.";
     }
 
-    fetch(`/alert/add?category=report&categoryNo=`)
+    fetch(`/alert/add?category=report&categoryNo=0`)
 }
 
 function restrict(category) {
