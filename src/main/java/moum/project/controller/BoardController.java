@@ -612,5 +612,11 @@ public class BoardController {
     }
   }
 
+  @GetMapping("/get")
+  @ResponseBody
+  public Board get(int no) throws Exception {
+    return boardService.get(no);
+  }
+
 
 }

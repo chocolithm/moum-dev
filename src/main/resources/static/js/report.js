@@ -122,7 +122,7 @@ function createRestrictPage(category, categoryNo) {
             <button class="btn btn-warning report-button" onclick="sendWarning('${category}', '${categoryNo}')">경고</button>
         </div>
         <div>
-            <button class="btn btn-warning report-button" onclick="restrict('${category}', '${categoryNo}')", ">비공개</button>
+            <button class="btn btn-warning report-button" onclick="restrict('${category}', '${categoryNo}')", ">삭제</button>
         </div>
     `;
 
@@ -130,7 +130,6 @@ function createRestrictPage(category, categoryNo) {
 }
 
 function sendWarning(category, categoryNo) {
-    const report_layer = document.querySelector(".report-layer");
     const content = document.getElementById("restrictContent");
 
     if (category == "board") {
@@ -139,7 +138,7 @@ function sendWarning(category, categoryNo) {
         }
     }
 
-    fetch(`/alert/add?category=${category}Report&categoryNo=${categoryNo}&content=${content.value}`)
+    fetch(`/alert/add?category=${category}Warning&categoryNo=${categoryNo}&content=${content.value}`)
         .then(response => response.text())
         .then(response => {
             if (response == "success") {
@@ -152,7 +151,31 @@ function sendWarning(category, categoryNo) {
         })
 }
 
-function restrict(category, categoryNo) {
-    const report_layer = document.querySelector(".report-layer");
+async function restrict(category, categoryNo) {
+    const content = document.getElementById("restrictContent");
 
+    if (category == "board") {
+        if (content.value.trim() == "") {
+            content.value = "게시글 신고가 접수되어 삭제 처리되었습니다.";
+        }
+        await fetch(`/board/get?no=${categoryNo}`)
+            .then(response => response.json())
+            .then(board => {
+                content.value = `
+                    [${board.title}] ${content.value}
+                `;
+            })
+    }
+
+    fetch(`/alert/add?category=${category}Restrict&categoryNo=${categoryNo}&content=${content.value}`)
+        .then(response => response.text())
+        .then(response => {
+            if (response == "success") {
+                alert("처리되었습니다.");
+                location.href="/board/boardList";
+            }
+        })
+        .catch(error => {
+            console.error("error sending warning: ", error);
+        })
 }

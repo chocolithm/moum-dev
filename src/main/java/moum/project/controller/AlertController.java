@@ -55,14 +55,15 @@ public class AlertController {
       Board board = boardService.get(Integer.parseInt(categoryNo));
       alert.setUser(board.getUser());
       alert.setContent("댓글이 달렸습니다.");
-    } else if (category.equals("boardReport")) {
+    } else if (category.equals("boardWarning")) {
       Board board = boardService.get(Integer.parseInt(categoryNo));
       alert.setUser(board.getUser());
       alert.setContent(content);
-    } else if (category.equals("userReport")) {
-      User user = userService.get(Integer.parseInt(categoryNo));
-      alert.setUser(user);
+    } else if (category.equals("boardRestrict")) {
+      Board board = boardService.get(Integer.parseInt(categoryNo));
+      alert.setUser(board.getUser());
       alert.setContent(content);
+      boardService.delete(board.getNo());
     }
 
     if (alertService.exists(alert) > 0) {
