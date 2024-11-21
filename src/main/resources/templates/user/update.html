@@ -184,9 +184,11 @@
                   </li>
                   <th:block th:if="${title.isPrimary == 1}">
                     <script th:inline="javascript">
-                      const id = /*[[${title.id}]]*/ '[[${title.id}]]';
-                      // 동적으로 click 이벤트 트리거 (this가 해당 요소로 동작)
-                      document.querySelector(`[data-id='${id}']`).click();
+                      window.addEventListener('load', function() {
+                        const id = /*[[${title.id}]]*/ '[[${title.id}]]';
+                        // 동적으로 click 이벤트 트리거 (this가 해당 요소로 동작)
+                        document.querySelector(`[data-id='${id}']`).click();
+                      });
                     </script>
                   </th:block>
                 </th:block>
@@ -200,7 +202,7 @@
             </ul>
           </div>
           <!-- 선택된 업적 ID를 저장할 hidden input -->
-          <input id="user-achievement" name="user-achievement" type="hidden" value="*{userAchievementId}">
+          <input data-th-value="${userAchievementId}" id="user-achievement" name="user-achievement" type="hidden">
         </div>
 
         <!-- 버튼 그룹 -->
@@ -210,9 +212,9 @@
         </div>
       </div>
     </form>
-    <form id="withdrawForm" th:action="@{/user/delete}" method="post" onsubmit="return confirmWithdraw()">
-      <input type="hidden" name="no" th:value="${user.no}">
-      <button type="submit" class="btn btn-danger">
+    <form id="withdrawForm" method="post" onsubmit="return confirmWithdraw()" th:action="@{/user/delete}">
+      <input name="no" th:value="${user.no}" type="hidden">
+      <button class="btn btn-danger" type="submit">
         회원탈퇴
       </button>
     </form>

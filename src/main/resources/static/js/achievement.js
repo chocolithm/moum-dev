@@ -57,8 +57,8 @@ function selectAchievement(element) {
     document.getElementById('user-achievement').value = achievementId;
 
     // 드롭다운을 자동으로 닫기
-    var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
-    dropdown.hide();
+    // var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
+    // dropdown.hide();
 }
 
 // 페이지 로드시 선택된 업적이 있으면 드롭다운 최상단에 해당 업적을 표시

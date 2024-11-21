@@ -168,10 +168,18 @@ public class UserController {
         .map(User_SNS::getProvider)
         .collect(Collectors.toList());
 
+   Achievement primaryAchievement = achievementService.findPrimary(user.getNo());
+    if (primaryAchievement == null) {
+      model.addAttribute("userAchievementId", "");
+    } else {
+      model.addAttribute("userAchievementId", primaryAchievement.getId());
+    }
+
     model.addAttribute("user", user);
     model.addAttribute("connectedProviders", connectedProviders);
     model.addAttribute("listGetUserAchievement",
         achievementService.listUserGetAchievement(user.getNo()));
+
     return "user/update";
   }
 

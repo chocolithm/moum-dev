@@ -539,18 +539,18 @@ document.getElementById('confirmPassword').addEventListener('input', checkPasswo
 
 //update.html 업적처리
 // 선택된 업적을 처리하는 함수
-function selectAchievement(element) {
-// 선택된 업적 텍스트와 ID 가져오기
-var achievementText = element.innerText;
-var achievementId = element.getAttribute('data-id');
+// function selectAchievement(element) {
+// // 선택된 업적 텍스트와 ID 가져오기
+// var achievementText = element.innerText;
+// var achievementId = element.getAttribute('data-id');
 
-// 버튼에 선택된 업적 이름을 표시
-document.getElementById('achievement-selected').innerText = achievementText;
+// // 버튼에 선택된 업적 이름을 표시
+// document.getElementById('achievement-selected').innerText = achievementText;
 
-// 선택된 업적 ID를 hidden input에 저장
-document.getElementById('user-achievement').value = achievementId;
+// // 선택된 업적 ID를 hidden input에 저장
+// document.getElementById('user-achievement').value = achievementId;
 
-// 드롭다운을 자동으로 닫기
-var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
-dropdown.hide();
-}
+// // 드롭다운을 자동으로 닫기
+// var dropdown = new bootstrap.Dropdown(element.closest('.dropdown-toggle'));
+// dropdown.hide();
+// }
