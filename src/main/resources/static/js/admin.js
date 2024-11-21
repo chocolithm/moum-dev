@@ -65,29 +65,6 @@ function createAdminTableHead(menu, pageNo, pageCount) {
 
   content_section.innerHTML = "";
 
-  if (menu == "user") {
-    title.innerHTML = "회원 관리";
-    thead.innerHTML = `
-      <tr>
-        <th>회원번호</th>
-        <th>ID</th>
-        <th>닉네임</th>
-        <th>가입일</th>
-        <th>최근접속일자</th>
-        <th>관리자여부</th>
-        <th>SNS연동</th>
-      </tr>
-      <tr class="tr_search">
-        <th><input name="no" type="text"></th>
-        <th><input name="email" type="text"></th>
-        <th><input name="nickname" type="text"></th>
-        <th><input name="startDateString" type="text"></th>
-        <th><input name="lastLoginString" type="text"></th>
-        <th><input name="isAdmin" type="text"></th>
-        <th><input name="userSns.provider" type="text"></th>
-      </tr>
-    `;
-  }
 
   if (menu == "board") {
     title.innerHTML = "게시글 관리";
@@ -101,7 +78,7 @@ function createAdminTableHead(menu, pageNo, pageCount) {
           <th>추천수</th>
         </tr>
         <tr class="tr_search">
-          <th><input name="no" type="text"></th>
+          <th><input name="no" type="text" placeholder="search"</th>
           <th><input name="title" type="text"></th>
           <th><input name="user.nickname" type="text"></th>
           <th><input name="postDateString" type="text"></th>
@@ -120,7 +97,7 @@ function createAdminTableHead(menu, pageNo, pageCount) {
           <th>보유자 수</th>
         </tr>
         <tr class="tr_search">
-          <th><input name="no" type="text"></th>
+          <th><input name="no" type="text" placeholder="search"></th>
           <th><input name="name" type="text"></th>
           <th><input name="countString" type="text"></th>
         </tr>
@@ -138,7 +115,7 @@ function createAdminTableHead(menu, pageNo, pageCount) {
           <th>취득자수</th>
         </tr>
         <tr class="tr_search">
-          <th><input name="id" type="text"></th>
+          <th><input name="id" type="text" placeholder="search"></th>
           <th><input name="name" type="text"></th>
           <th><input name="content" type="text"></th>
           <th><input name="score" type="text"></th>
@@ -146,6 +123,31 @@ function createAdminTableHead(menu, pageNo, pageCount) {
         </tr>
     `;
   }
+
+  if (menu == "user") {
+    title.innerHTML = "회원 관리";
+    thead.innerHTML = `
+      <tr>
+        <th>회원번호</th>
+        <th>ID</th>
+        <th>닉네임</th>
+        <th>가입일</th>
+        <th>최근접속일자</th>
+        <th>관리자여부</th>
+        <th>SNS연동</th>
+      </tr>
+      <tr class="tr_search">
+        <th><input name="no" type="text" placeholder="search"></th>
+        <th><input name="email" type="text"></th>
+        <th><input name="nickname" type="text"></th>
+        <th><input name="startDateString" type="text"></th>
+        <th><input name="lastLoginString" type="text"></th>
+        <th><input name="isAdmin" type="text"></th>
+        <th><input name="userSns.provider" type="text"></th>
+      </tr>
+    `;
+  }
+
 
   if (menu == "report") {
     title.innerHTML = "신고 관리";
@@ -157,7 +159,7 @@ function createAdminTableHead(menu, pageNo, pageCount) {
           <th>처리결과</th>
         </tr>
         <tr class="tr_search">
-          <th><input name="reportDate" type="text"></th>
+          <th><input name="reportDate" type="text" placeholder="search"></th>
           <th><input name="user.nickname" type="text"></th>
           <th><input name="reportCategory.name" type="text"></th>
           <th><input name="resultCategory.name" type="text"></th>
