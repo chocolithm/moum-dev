@@ -91,6 +91,11 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
+  public boolean deleteAchievementByUser(int userNo) throws Exception {
+    return achievementDao.deleteAchievementByUser(userNo);
+  }
+
+  @Override
   public int count(Achievement achievement) throws Exception {
     return achievementDao.count(achievement);
   }

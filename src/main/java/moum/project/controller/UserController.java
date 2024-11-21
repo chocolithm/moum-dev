@@ -349,6 +349,7 @@ public class UserController {
 
       // 회원 정보 업데이트
       userService.update(loginUser);
+      achievementService.deleteAchievementByUser(loginUser.getNo());
 
       // 세션 무효화
       session.invalidate();

@@ -281,4 +281,9 @@
             and achievement_id = #{id}
     </update>
 
+    <delete id="deleteAchievementByUser" parameterType="int">
+        delete from user_achievement
+        where user_id = #{no}
+    </delete>
+
 </mapper>

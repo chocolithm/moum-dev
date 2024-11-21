@@ -35,6 +35,8 @@ public interface AchievementService {
 
   boolean deletePrimaryAchievement(User user) throws Exception;
 
+  boolean deleteAchievementByUser(int userNo) throws Exception;
+
   boolean completeAchievement(Achievement achievement) throws Exception;
 
   int count(Achievement achievement) throws Exception;
