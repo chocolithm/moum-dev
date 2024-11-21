@@ -349,11 +349,6 @@ footer {
     background-color: white;
 }
 
-.btn-secondary {
-    background-color: darkgreen;
-    color: white;
-}
-
 .pos-right {
     position: absolute;
     right: 30px;
