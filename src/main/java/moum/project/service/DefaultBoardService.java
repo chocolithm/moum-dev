@@ -212,4 +212,14 @@ public class DefaultBoardService implements BoardService {
     public void updateAttachedFiles(int no, List<AttachedFile> newFiles) {
 
     }
+
+    @Override
+    public List<Board> searchByPage(String keyword, int offset, int limit) throws Exception {
+        return boardDao.searchByPage(keyword, offset, limit);
+    }
+
+    @Override
+    public int countByKeyword(String keyword) throws Exception {
+        return boardDao.countByKeyword(keyword);
+    }
 }
