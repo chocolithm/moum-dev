@@ -643,4 +643,58 @@
         AND tb.trade_type = 'buy'
     </select>
 
+
+
+    <!-- 검색어를 이용한 게시글 페이징 조회 -->
+    <select id="searchByPage" resultMap="BoardMap" parameterType="map">
+        SELECT
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.nickname,
+        u.end_date,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        bp.photo_id,
+        bp.filename,
+        bp.origin_filename
+        FROM
+        board b
+        LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        AND bp.photo_id = (
+        SELECT MIN(photo_id)
+        FROM board_photo
+        WHERE board_id = b.board_id
+        )
+        WHERE
+        b.is_deleted = 0
+        AND b.board_type = 'general'
+        <if test="keyword != null and keyword != ''">
+            AND b.title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        ORDER BY
+        b.board_id DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 검색 결과의 총 개수 조회 -->
+    <select id="countByKeyword" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM board b
+        WHERE
+        b.is_deleted = 0
+        AND b.board_type = 'general'
+        <if test="keyword != null and keyword != ''">
+            AND b.title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+
+
+
 </mapper>

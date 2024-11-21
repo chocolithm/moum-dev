@@ -174,32 +174,40 @@ public class BoardController {
   }
 
   @GetMapping("/boardList")
-  public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "size", defaultValue = "12") int size, Model model,
-      @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+  public String boardList(
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value = "size", defaultValue = "12") int size,
+          @RequestParam(value = "keyword", required = false) String keyword,
+          Model model,
+          @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
     int offset = (page - 1) * size;
-    List<Board> recentBoards = boardService.listByPage(offset, size);
+
+    // 검색어를 이용하여 게시글 목록 조회
+    List<Board> recentBoards = boardService.searchByPage(keyword, offset, size);
     model.addAttribute("recentBoards", recentBoards);
 
     // 페이징 정보 추가
-    int totalBoards = boardService.count();
+    int totalBoards = boardService.countByKeyword(keyword);
     int totalPages = (int) Math.ceil((double) totalBoards / size);
     model.addAttribute("currentPage", page);
     model.addAttribute("totalPages", totalPages);
+    model.addAttribute("keyword", keyword); // 검색어를 모델에 추가
 
+    // 로그인한 사용자 정보 가져오기
     String email = userDetails.getUsername();
     User loginUser = userService.getByEmail(email);
 
+    // 업적 랭킹 등 필요한 데이터 추가
     List<Achievement> userRankList = achievementService.listByUserRank();
-    model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+    model.addAttribute("rankList", userRankList);
 
-    Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
-    model.addAttribute("rankNowUserList",
-        user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
-
+    Achievement userAchievementRank = achievementService.findRankByUser(loginUser.getNo());
+    model.addAttribute("rankNowUserList", userAchievementRank);
 
     return "board/boardList"; // Thymeleaf 템플릿 이름
   }
+
 
 
   //  @PostMapping("/addGeneral")

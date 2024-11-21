@@ -80,4 +80,7 @@ public interface BoardDao {
     int count() throws Exception;
 
     int countFromAdmin(Board board) throws Exception;
+
+    List<Board> searchByPage(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit) throws Exception;
+    int countByKeyword(@Param("keyword") String keyword) throws Exception;
 }

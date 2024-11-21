@@ -66,4 +66,7 @@ public interface BoardService {
    void insertAttachedFiles(List<AttachedFile> files);
 
     Board findBoardById(int boardId);
+
+    List<Board> searchByPage(String keyword, int offset, int limit) throws Exception;
+    int countByKeyword(String keyword) throws Exception;
 }
