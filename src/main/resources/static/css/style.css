@@ -1011,3 +1011,27 @@ main > .slider-container .slider {
         max-height: 200px;
     }
 }
+
+
+/* 마이홈 스위치 */
+/* 스위치의 기본 배경을 하얀색으로 설정 */
+.form-check-input {
+    background-color: white; /* 기본 배경을 하얀색으로 */
+    border-color: white; /* 테두리도 하얀색 */
+}
+
+/* 체크된 상태에서만 스위치가 검정색으로 변하게 설정 */
+.form-check-input:checked {
+    background-color: #000; /* 체크된 상태에서 배경 검정색 */
+    border-color: #000; /* 체크된 상태에서 테두리 검정색 */
+}
+
+/* 체크된 상태에서 스위치 슬라이드 부분을 검정으로 설정 */
+.form-check-input:checked ~ .form-check-label::before {
+    background-color: #000; /* 슬라이드 부분 검정 */
+}
+
+/* 슬라이드의 기본 색상은 하얀색 */
+.form-check-input:before {
+    background-color: white; /* 기본 슬라이드 부분 하얀색 */
+}

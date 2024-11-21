@@ -40,10 +40,11 @@
             </li>
         </ul>
 
+
     </aside>
     <section class="main-section">
         <div class="myhome-upper-buttons">
-            <button class="btn btn-outline-success" onClick="openCollectionFormModal();" type="button">수집품 등록</button>
+            <button class="btn btn-outline-dark" onClick="openCollectionFormModal();" type="button">수집품 등록</button>
         </div>
         <div class="myhome-collections">
             <div data-th-if="${#lists.isEmpty(collectionList)}">
@@ -55,10 +56,10 @@
                     data-th-if="${not #lists.isEmpty(collectionList)}">
                 <img class="collection-image"
                      data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
-                     data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}" />
+                     data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"/>
                 <img class="collection-image"
                      data-th-if="${#lists.isEmpty(collection.attachedFiles)}"
-                     src="/images/collections/empty-collection.png" />
+                     src="/images/collections/empty-collection.png"/>
                 <div class="collection-title" data-th-text="${collection.name}"></div>
             </button>
         </div>
@@ -80,13 +81,13 @@
 <div class="layer post-view-layer"></div>
 
 
-    <script src="/js/collection.js"></script>
+<script src="/js/collection.js"></script>
 
-    <script src="/js/board.js"></script>
-    <script>
-        <!--  수집품 조회화면 사진 인덱스  -->
-        let collectionSlideIndex = 0;
-    </script>
+<script src="/js/board.js"></script>
+<script>
+    <!--  수집품 조회화면 사진 인덱스  -->
+    let collectionSlideIndex = 0;
+</script>
 
 </body>
 </html>

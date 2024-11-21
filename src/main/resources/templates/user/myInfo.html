@@ -2,136 +2,138 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>회원 정보</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link data-th-href="@{/css/style.css}" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <meta charset="UTF-8">
+    <title>회원 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link data-th-href="@{/css/style.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 </head>
 
 <body>
-	<div data-th-replace="~{header :: header}"></div>
-	<main>
-		<h1>회원 정보</h1>
+<div data-th-replace="~{header :: header}"></div>
+<main>
+    <h1>회원 정보</h1>
 
-		<div class="wrapper">
-			<!-- 검증 -->
-			<div class="alert alert-success" data-th-if="${message}" data-th-text="${message}"></div>
-			<div class="alert alert-danger" data-th-if="${error}" data-th-text="${error}"></div>
-			<div data-th-unless="${user}">
-				<p>사용자 정보를 찾을 수 없습니다.</p>
-			</div>
-			<div class="alert alert-danger" data-th-if="${param.notExist}">
-				존재하지 않는 회원입니다.
-			</div>
+    <div class="wrapper">
+        <!-- 검증 -->
+        <div class="alert alert-success" data-th-if="${message}" data-th-text="${message}"></div>
+        <div class="alert alert-danger" data-th-if="${error}" data-th-text="${error}"></div>
+        <div data-th-unless="${user}">
+            <p>사용자 정보를 찾을 수 없습니다.</p>
+        </div>
+        <div class="alert alert-danger" data-th-if="${param.notExist}">
+            존재하지 않는 회원입니다.
+        </div>
 
-			<div class="my-info-container" data-th-if="${user}" data-th-object="${user}">
-				<!-- 프로필 이미지 -->
-				<div class="profile-img-container">
-					<div class="profile-img-inner-container">
-						<a data-th-href="'https://kr.object.ncloudstorage.com/bitcamp-moum/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'}"
-							target="_blank">
-							<img alt="프로필 이미지" class="profile-img"
-								data-th-src="'https://kr.object.ncloudstorage.com/bitcamp-moum/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'}"
-								src="https://kr.object.ncloudstorage.com/bitcamp-moum/images/default-profile.png">
-						</a>
-						<div class="user-info-dropdown" th:if="${isOwnProfile}">
-							<a class="btn btn-primary" href="/user/update">수정하기</a>
-						</div>
-					</div>
-				</div>
+        <div class="my-info-container" data-th-if="${user}" data-th-object="${user}">
+            <!-- 프로필 이미지 -->
+            <div class="profile-img-container">
+                <div class="profile-img-inner-container">
+                    <a data-th-href="'https://kr.object.ncloudstorage.com/bitcamp-moum/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'}"
+                       target="_blank">
+                        <img alt="프로필 이미지" class="profile-img"
+                             data-th-src="'https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'} + '?type=f&w=400&h=400'"
+                             src="https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/images/default-profile.png?type=f&w=400&h=400">
+                    </a>
+                    <div class="user-info-dropdown" th:if="${isOwnProfile}">
+                        <a class="btn btn-dark" href="/user/update">수정하기</a>
+                    </div>
+                </div>
+            </div>
 
-				<div class="my-info-right-container">
+            <div class="my-info-right-container">
 
-					<div class="my-info-right-container-header">
-						<div class="my-primary-achievement" data-th-if="${primaryAchievement}">
-							<img alt="대표업적 이미지" class="my-primary-achievement-img"
-								data-th-src="${'/images/achievement/complete/' + primaryAchievement.photo}">
-							<span data-th-text="${primaryAchievement.name}"></span>
-						</div>
-						<div class="user-nickname" data-th-text="*{nickname}"></div>
-					</div>
+                <div class="my-info-right-container-header">
+                    <div class="my-primary-achievement" data-th-if="${primaryAchievement}">
+                        <img alt="대표업적 이미지" class="my-primary-achievement-img"
+                             data-th-src="${'/images/achievement/complete/' + primaryAchievement.photo}">
+                        <span data-th-text="${primaryAchievement.name}"></span>
+                    </div>
+                    <div class="user-nickname" data-th-text="*{nickname}"></div>
+                </div>
 
-					<div class="my-info-right-container-body">
-						<!-- 내 게시글 -->
-						<div class="my-board-container">
-							<h2>최근 게시글</h2>
-							<div class="recent-board" data-th-each="board, iterStat : ${boardList}"
-								data-th-id="'board-' + ${board.no}" data-th-if="${iterStat.index < 5}">
-								<a data-th-href="'/board/boardView?no=' + ${board.no}" data-th-text="${board.title}"></a>
-							</div>
-						</div>
+                <div class="my-info-right-container-body">
+                    <!-- 내 게시글 -->
+                    <div class="my-board-container">
+                        <h2>최근 게시글</h2>
+                        <div class="recent-board" data-th-each="board, iterStat : ${boardList}"
+                             data-th-id="'board-' + ${board.no}" data-th-if="${iterStat.index < 5}">
+                            <a data-th-href="'/board/boardView?no=' + ${board.no}" data-th-text="${board.title}"></a>
+                        </div>
+                    </div>
 
-						<!-- 내 업적 -->
-						<div class="my-achievement-container" data-th-if="${isOwnProfile == true}">
-							<h2>업적 현황</h2>
+                    <!-- 내 업적 -->
+                    <div class="my-achievement-container" data-th-if="${isOwnProfile == true}">
+                        <h2>업적 현황</h2>
 
-							<!-- myinfo 각 업적 박스 -->
-							<img alt="업적 현황" class="achievement-list-btn" onclick="openAchievementListByUser()"
-								src="/images/user/more/three-dots.png">
+                        <!-- myinfo 각 업적 박스 -->
+                        <img alt="업적 현황" class="achievement-list-btn" onclick="openAchievementListByUser()"
+                             src="/images/user/more/three-dots.png">
 
-							<div class="my-achievement-box" data-th-each="achievement, iterStat : ${achievementlist}"
-								data-th-id="${achievement.id}" data-th-if="${iterStat.index < 5}"
-								data-th-progress="${achievement.progress}">
+                        <div class="my-achievement-box" data-th-each="achievement, iterStat : ${achievementlist}"
+                             data-th-id="${achievement.id}" data-th-if="${iterStat.index < 5}"
+                             data-th-progress="${achievement.progress}">
 
-								<div class="achievement-img-container">
-									<img alt="업적 이미지" class="achievement-img"
-										data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}">
-								</div>
+                            <div class="achievement-img-container">
+                                <img alt="업적 이미지" class="achievement-img"
+                                     data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}">
+                            </div>
 
-								<div class="achievement-details-container">
-									<div class="achievement-name" data-th-text="${achievement.name}">
-									</div>
+                            <div class="achievement-details-container">
+                                <div class="achievement-name" data-th-text="${achievement.name}">
+                                </div>
 
-									<div class="achievement-progress">
-										<div class="progress">
-											<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="${achievement.progress}"
-												class="progress-bar" data-th-class="'progress-bar ' + (
+                                <div class="achievement-progress">
+                                    <div class="progress">
+                                        <div aria-valuemax="100" aria-valuemin="0"
+                                             aria-valuenow="${achievement.progress}"
+                                             class="progress-bar" data-th-class="'progress-bar ' + (
 											 ${achievement.progress <= 40 ? 'bg-danger' :
 											 (achievement.progress <= 60 ? 'bg-warning' :
 											 (achievement.progress <= 99 ? 'bg-info' : 'bg-success'))})"
-												data-th-style="'width:' + ${achievement.progress} + '%'" role="progressbar">
-											</div>
-										</div>
-									</div>
+                                             data-th-style="'width:' + ${achievement.progress} + '%'"
+                                             role="progressbar">
+                                        </div>
+                                    </div>
+                                </div>
 
-									<div class="progress-percent">
-										<span data-th-text="${achievement.progress} + '%'">progress</span>
-									</div>
-								</div>
-							</div>
-						</div>
+                                <div class="progress-percent">
+                                    <span data-th-text="${achievement.progress} + '%'">progress</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-						<div class="my-achievement-container" data-th-if="${isOwnProfile == false}">
-							<h2>업적 현황</h2>
+                    <div class="my-achievement-container" data-th-if="${isOwnProfile == false}">
+                        <h2>업적 현황</h2>
 
-							<div class="my-achievement-inner-container">
-								<!-- yourinfo 각 업적 박스 -->
-								<div class="your-achievement-box" data-th-each="achievement, iterStat : ${achievementlist}"
-									data-th-id="${achievement.id}" data-th-if="${iterStat.index < 5}"
-									data-th-progress="${achievement.progress}">
-									<div class="your-achievement-img-container">
-										<img alt="업적 이미지" class="achievement-img"
-											data-th-src="${'/images/achievement/complete/' + achievement.photo}">
-										<div class="yourinfo-achievement-name" data-th-text="${achievement.name}"></div>
-									</div>
-								</div>
+                        <div class="my-achievement-inner-container">
+                            <!-- yourinfo 각 업적 박스 -->
+                            <div class="your-achievement-box" data-th-each="achievement, iterStat : ${achievementlist}"
+                                 data-th-id="${achievement.id}" data-th-if="${iterStat.index < 5}"
+                                 data-th-progress="${achievement.progress}">
+                                <div class="your-achievement-img-container">
+                                    <img alt="업적 이미지" class="achievement-img"
+                                         data-th-src="${'/images/achievement/complete/' + achievement.photo}">
+                                    <div class="yourinfo-achievement-name" data-th-text="${achievement.name}"></div>
+                                </div>
+                            </div>
 
 
-							</div>
-						</div>
+                        </div>
+                    </div>
 
-					</div>
-				</div>
-			</div>
-		</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-		<div class="achievement-user-progress layer"></div>
-	</main>
+    <div class="achievement-user-progress layer"></div>
+</main>
 
-	<div th:replace="~{footer :: footer}"></div>
-	<script src="/js/achievement.js"></script>
+<div th:replace="~{footer :: footer}"></div>
+<script src="/js/achievement.js"></script>
 
 </body>
 
