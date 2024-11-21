@@ -151,10 +151,10 @@ body.dark-mode h1 {
 /* header */
 header {
     padding: 20px;
-    /* position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
-    right: 0; */
+    right: 0;
     border-bottom: 1px solid black;
     background: white;
     z-index: 100;
@@ -199,7 +199,6 @@ header .profile-image {
 main {
     padding: 20px 30px;
     overflow: hidden;
-    margin-top: 115px;
 }
 
 main h1 {
