@@ -7,6 +7,8 @@ import moum.project.vo.Subcategory;
 public interface CollectionCategoryService {
   boolean addSubcategory(Subcategory subcategory) throws Exception;
 
+  boolean addMaincategory(Maincategory maincategory) throws Exception;
+
   List<Subcategory> listSubcategory(int maincategoryNo) throws Exception;
 
   List<Maincategory> listMaincategory() throws Exception;
@@ -16,6 +18,8 @@ public interface CollectionCategoryService {
   List<Subcategory> getMaincategory(int no) throws Exception;
 
   Subcategory getSubcategoryByName(String name) throws Exception;
+
+  Maincategory getMaincategoryByName(String name) throws Exception;
 
   List<Subcategory> listSubcategoryByMaincategory(int no) throws Exception;
 

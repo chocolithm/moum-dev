@@ -286,4 +286,18 @@ public class CollectionController {
     return "failure";
   }
 
+  @PostMapping("/maincategory/add")
+  @ResponseBody
+  public String addMaincategory(Maincategory maincategory) throws Exception {
+
+    if (categoryService.getMaincategoryByName(maincategory.getName()) != null) {
+      return "exist";
+    }
+
+    if (categoryService.addMaincategory(maincategory)) {
+      return "success";
+    }
+    return "failure";
+  }
+
 }

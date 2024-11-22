@@ -1,5 +1,6 @@
 package moum.project.dao;
 
+import com.sun.tools.javac.Main;
 import java.util.List;
 import moum.project.vo.Maincategory;
 import moum.project.vo.Subcategory;
@@ -10,6 +11,8 @@ import org.apache.ibatis.annotations.Param;
 public interface CollectionCategoryDao {
   boolean insertSubcategory(Subcategory subcategory) throws Exception;
 
+  boolean insertMaincategory(Maincategory maincategory) throws Exception;
+
   List<Subcategory> listSubcategory(int maincategoryNo) throws Exception;
 
   List<Maincategory> listMaincategory() throws Exception;
@@ -19,6 +22,8 @@ public interface CollectionCategoryDao {
   List<Subcategory> findMaincategory(int no) throws Exception;
 
   Subcategory findSubcategoryByName(String name) throws Exception;
+
+  Maincategory findMaincategoryByName(String name) throws Exception;
 
   List<Subcategory> listSubcategoryByMaincategory(int no) throws Exception;
 

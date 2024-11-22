@@ -19,6 +19,11 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   }
 
   @Override
+  public boolean addMaincategory(Maincategory maincategory) throws Exception {
+    return categoryDao.insertMaincategory(maincategory);
+  }
+
+  @Override
   public List<Subcategory> listSubcategory(int maincategoryNo) throws Exception {
     return categoryDao.listSubcategory(maincategoryNo);
   }
@@ -41,6 +46,11 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   @Override
   public Subcategory getSubcategoryByName(String name) throws Exception {
     return categoryDao.findSubcategoryByName(name);
+  }
+
+  @Override
+  public Maincategory getMaincategoryByName(String name) throws Exception {
+    return categoryDao.findMaincategoryByName(name);
   }
 
   @Override

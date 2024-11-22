@@ -451,9 +451,34 @@ function openAddPage(menu) {
   btn_section.innerHTML = "";
 
   if (menu == "category") {
-    content_section.innerHTML = `
+    let content = `
+          <table class="maincategory-table">
+            <tbody>
+              <tr>
+                <td>분류명</td>
+                <td><input name="maincategory-name" id="maincategory-name" type="text"></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <button class="btn" onclick="addMaincategory()">등록</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="subcategory-table">
+            <thead>
+              <tr>
+                <th>분류번호</th>
+                <th>소분류</th>
+                <th>취득자수</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        `;
 
-    `;
+        content_section.innerHTML = content;
   }
 
   if (menu == "achievement") {
@@ -1091,6 +1116,46 @@ function handleReport(reportNo) {
       .catch(error => {
         console.error("Error handling report result: ", error);
       });
+  }
+}
+
+function addMaincategory() {
+  if (confirm("등록하시겠습니까?")) {
+    const input = document.querySelector("#maincategory-name");
+    const formData = new FormData();
+
+    formData.append("name", input.value.trim());
+
+    if (formData.get("name") != "") {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+      fetch(`/collection/maincategory/add`, {
+        method: "POST",
+        body: formData,
+        headers: {
+            [csrfHeader]: csrfToken
+        }
+      })
+        .then(response => response.text())
+        .then(response => {
+            switch (response) {
+                case "success":
+                  alert("등록했습니다.");
+                  document.querySelector("#category-admin").click();
+                  break;
+                case "exist":
+                  alert("이미 등록된 이름입니다.");
+                  break;
+                case "failure":
+                  alert("등록 실패했습니다.");
+                  break;
+            }
+        })
+        .catch(error => {
+            console.error("Error adding achievement: ", error);
+        });
+    }
   }
 }
 

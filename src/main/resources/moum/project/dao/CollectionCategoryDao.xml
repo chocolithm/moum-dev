@@ -27,6 +27,11 @@
     values(#{maincategory.no}, #{name})
   </insert>
 
+  <insert id="insertMaincategory" parameterType="moum.project.vo.Maincategory">
+    insert into maincategory(category_name)
+    values(#{name})
+  </insert>
+
   <select id="listSubcategory" resultMap="SubcategoryMap" parameterType="int">
     select
       subcategory_id,
@@ -71,6 +76,16 @@
       category_name
     from
       subcategory
+    where
+      category_name = #{name}
+  </select>
+
+  <select id="findMaincategoryByName" resultMap="MaincategoryMap" parameterType="string">
+    select
+      maincategory_id,
+      category_name
+    from
+      maincategory
     where
       category_name = #{name}
   </select>
