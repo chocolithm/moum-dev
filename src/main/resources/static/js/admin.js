@@ -599,7 +599,7 @@ function addAchievement() {
       formData.append(input.name, input.value);
     });
 
-    if (validateAchievement(formData)) {
+    if (validateAchievement(formData, "add")) {
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
       const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
@@ -624,6 +624,47 @@ function addAchievement() {
         })
         .catch(error => {
             console.error("Error adding achievement: ", error);
+        });
+    }
+  }
+}
+
+function updateAchievement() {
+  if (confirm("수정하시겠습니까?")) {
+    const formData = new FormData();
+
+    formData.append("id", document.querySelector(".achievement-id-td").innerHTML);
+    
+    const inputs = document.querySelectorAll('table.view-table input');
+    inputs.forEach(input => {
+      formData.append(input.name, input.value);
+    });
+
+    if (validateAchievement(formData, "update")) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+      fetch(`/achievement/update`, {
+        method: "PUT",
+        body: formData,
+        headers: {
+            [csrfHeader]: csrfToken
+        }
+      })
+        .then(response => response.text())
+        .then(response => {
+            switch (response) {
+                case "success":
+                    alert("수정했습니다.");
+                    document.querySelector("#achievement-admin").click();
+                    break;
+                case "failure":
+                    alert("수정 실패했습니다.");
+                    break;
+            }
+        })
+        .catch(error => {
+            console.error("Error updating achievement: ", error);
         });
     }
   }
@@ -660,23 +701,27 @@ function deleteAchievement(id) {
   }
 }
 
-function validateAchievement(formData) {
-  const id = document.querySelector(".view-table #id");
+function validateAchievement(formData, type) {
   const name = document.querySelector(".view-table #name");
   const content = document.querySelector(".view-table #content");
   const condition = document.querySelector(".view-table #condition");
   const maxCount = document.querySelector(".view-table #maxCount");
   const score = document.querySelector(".view-table #score");
 
-  id.style="border-color: #ccc";
   name.style="border-color: #ccc";
   content.style="border-color: #ccc";
   condition.style="border-color: #ccc";
   maxCount.style="border-color: #ccc";
   score.style="border-color: #ccc";
 
-  if (formData.getAll("files").length != 2) {alert("이미지를 2장 등록하세요."); return false;}
-  if (formData.get("id").trim() == "") {id.style="border-color: red"; return false;}
+  if (type == "add") {
+    const id = document.querySelector(".view-table #id");
+    id.style="border-color: #ccc";
+
+    if (formData.getAll("files").length != 2) {alert("이미지를 2장 등록하세요."); return false;}
+    if (formData.get("id").trim() == "") {id.style="border-color: red"; return false;}
+  }
+
   if (formData.get("name").trim() == "") {name.style="border-color: red"; return false;}
   if (formData.get("content").trim() == "") {content.style="border-color: red"; return false;}
   if (formData.get("condition").trim() == "") {condition.style="border-color: red"; return false;}
@@ -812,47 +857,46 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
               <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
               <a class="next" onClick="changeSlide(1)">&#10095;</a>
             </div>
-
           </div>
           <table class="view-table">
             <tbody>
               <tr>
                 <td>업적 ID</td>
-                <td>${achievement.id}</td>
+                <td class="achievement-id-td">${achievement.id}</td>
               </tr>
               <tr>
                 <td>엄적명</td>
                 <td>
-                  <input name="name" type="text" value="${achievement.name}">
+                  <input name="name" id="name" type="text" value="${achievement.name}">
                 </td>
               </tr>
               <tr>
                 <td>설명</td>
                 <td>
-                  <input name="content" type="text" value="${achievement.content}">
+                  <input name="content" id="content" type="text" value="${achievement.content}">
                 </td>
               </tr>
               <tr>
                 <td>취득조건</td>
                 <td>
-                  <input name="condition" type="text" value="${achievement.condition}">
+                  <input name="condition" id="condition" type="text" value="${achievement.condition}">
                 </td>
               </tr>
               <tr>
                 <td>조건횟수</td>
                 <td>
-                  <input name="maxCount" type="text" value="${achievement.maxCount}" onchange="formatNumber(this);">
+                  <input name="maxCount" type="text" id="maxCount" value="${achievement.maxCount}" onchange="formatNumber(this);">
                 </td>
               </tr>
               <tr>
                 <td>점수</td>
                 <td>
-                  <input name="score" type="text" value="${achievement.score}" onchange="formatNumber(this);">
+                  <input name="score" type="text" id="score" value="${achievement.score}" onchange="formatNumber(this);">
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <button class="btn">수정</button>
+                  <button class="btn" onclick="updateAchievement()">수정</button>
                   <button class="btn" onclick="deleteAchievement('${achievement.id}')">삭제</button>
                 </td>
               </tr>

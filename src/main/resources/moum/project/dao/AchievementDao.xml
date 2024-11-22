@@ -207,10 +207,9 @@
         update achievement set
             name=#{name},
             content=#{content},
-            photo=#{photo},
             acquisition_condition=#{condition},
             score=#{score},
-            max_count=#{max_count}
+            max_count=#{maxCount}
         where
             achievement_id=#{id}
     </update>

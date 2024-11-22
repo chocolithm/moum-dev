@@ -134,6 +134,9 @@
   background-color: #f0f0f0;
   cursor: pointer;
 }
+.main-section .content-section .achievement-img.current-image {
+  cursor: auto;
+}
 
 .main-section .content-section .maincategory-table,
 .main-section .content-section .subcategory-table {
