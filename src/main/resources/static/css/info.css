@@ -85,6 +85,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.my-board-container .recent-board:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
 .my-board-container .recent-board a {
     font-size: 18px;
@@ -127,11 +131,13 @@
 }
 
 .my-info-right-container-body .my-achievement-container .achievement-list-btn {
-    width: 40px;
+    width: 30px;
     position: absolute;
     top: 20px;
     right: 20px;
     cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
 }
 
 
@@ -240,57 +246,6 @@
     padding-top: 0;
     margin-left: 20px;
 }
-
-/* 카드 스타일 */
-.my-board-container,
-.my-achievement-container {
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 15px;
-}
-
-/* 업적 진행바 스타일 */
-.progress {
-    height: 6px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 5px;
-}
-
-.progress-bar.bg-info {
-    background-color: #2196F3;
-}
-
-.progress-bar.bg-danger {
-    background-color: #f44336;
-}
-
-.progress-bar.bg-warning {
-    background-color: #ff9800;
-}
-
-.progress-bar.bg-success {
-    background-color: #4caf50;
-}
-
-.progress-percent {
-    text-align: right;
-    font-size: 0.8rem;
-    color: #666;
-}
-
-/* 더보기 버튼 */
-.achievement-list-btn {
-    width: 20px;
-    height: 20px;
-    opacity: 0.6;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-
 
 
 /* 반응형 수정 */
