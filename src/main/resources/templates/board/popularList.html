@@ -37,13 +37,7 @@
           <button class="recent" onclick="location.href='/board/boardList'">최근게시물</button>
           <button class="popular active" onclick="location.href='/board/popularList'">인기게시글</button>
         </div>
-        <div class="search-bar">
-          <form th:action="@{/board/boardList}" method="get">
-            <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" type="text" th:value="${keyword}">
-            <input type="hidden" name="size" th:value="${size}">
-            <button type="submit" class="btn btn-dark">검색</button>
-          </form>
-        </div>
+
         <div class="button-group-right">
           <button class="write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
         </div>
@@ -71,7 +65,13 @@
         </div>
       </div>
     </div>
-
+    <div class="search-bar">
+      <form th:action="@{/board/boardList}" method="get">
+        <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" type="text" th:value="${keyword}">
+        <input type="hidden" name="size" th:value="${size}">
+        <button type="submit" class="btn btn-dark">검색</button>
+      </form>
+    </div>
 
     <div class="pagination-container mt-4">
       <nav aria-label="Page navigation">

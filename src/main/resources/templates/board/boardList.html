@@ -83,13 +83,7 @@
                     <button class="btn btn-dark active" onclick="location.href='/board/popularList'">인기게시글</button>
                 </div>
 
-                <div class="search-bar">
-                    <form th:action="@{/board/boardList}" method="get">
-                        <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" type="text" th:value="${keyword}">
-                        <input type="hidden" name="size" th:value="${size}">
-                        <button type="submit" class="btn btn-dark">검색</button>
-                    </form>
-                </div>
+
 
                 <div class="button-group-right">
                     <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
@@ -122,6 +116,14 @@
                     </a>
                 </div>
             </div>
+        </div>
+
+        <div class="search-bar">
+            <form th:action="@{/board/boardList}" method="get">
+                <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" type="text" th:value="${keyword}">
+                <input type="hidden" name="size" th:value="${size}">
+                <button type="submit" class="btn btn-dark">검색</button>
+            </form>
         </div>
 
         <div class="pagination-container mt-4">
