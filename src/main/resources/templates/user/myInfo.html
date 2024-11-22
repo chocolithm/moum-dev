@@ -15,7 +15,6 @@
 <body>
 <div data-th-replace="~{header :: header}"></div>
 <main>
-    <h1>회원 정보</h1>
 
     <div class="wrapper">
         <!-- 검증 -->
@@ -74,7 +73,7 @@
                              src="/images/user/more/three-dots.png">
 
                         <div class="my-achievement-box" data-th-each="achievement, iterStat : ${achievementlist}"
-                             data-th-id="${achievement.id}" data-th-if="${iterStat.index < 5}"
+                             data-th-id="${achievement.id}" data-th-if="${iterStat.index < 3}"
                              data-th-progress="${achievement.progress}">
 
                             <div class="achievement-img-container">
