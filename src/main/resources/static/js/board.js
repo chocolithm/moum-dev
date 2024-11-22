@@ -313,6 +313,24 @@ function toggleLike(boardNo, userNo) {
     });
 }
 
+//<script>
+//    function changeText(button) {
+//       // 이미 추천됨 상태라면 취소 (btn-success -> btn-outline-dark)
+//       if (button.classList.contains('btn-success')) {
+//           button.classList.remove('btn-success'); // 기존 추천됨 클래스 제거
+//           button.classList.add('btn-outline-dark'); // 원래 상태로 복귀
+//           button.innerText = '추천하기'; // 버튼 텍스트도 변경
+//       } else {
+//           // 추천되지 않은 상태라면 추천됨 (btn-outline-dark -> btn-success)
+//           button.classList.remove('btn-outline-dark'); // 기존 클래스 제거
+//           button.classList.add('btn-success'); // 새로운 클래스 추가
+//           button.innerText = '😍추천됨'; // 버튼 텍스트 변경
+//       }
+//   }
+//</script>
+
+
+
 
 // 게시글 수정 함수
 function editPost(boardNo) {
