@@ -67,14 +67,25 @@
 
 
     <div class="page-container">
-        <!-- 게시판 섹션 -->
-        <div class="search-section">
-            <div class="navigation-pill">
-                <div class="title-wrapper">
-                    <div class="title" style="font-weight: bold">주제별</div>
+        <!-- 카테고리 선택 섹션 추가 -->
+        <div class="category-filter-container">
+            <form th:action="@{/board/boardList}" method="get" class="category-filter-form">
+                <div class="form-group">
+                    <select class="form-select category-filter-select" name="categoryNo" onchange="this.form.submit()">
+                        <option value="">종류</option>
+                        <option th:each="category : ${maincategoryList}"
+                                th:value="${category.no}"
+                                th:text="${category.name}"
+                                th:selected="${category.no == categoryNo}">
+                        </option>
+                    </select>
                 </div>
-            </div>
+                <input type="hidden" name="keyword" th:value="${keyword}">
+                <input type="hidden" name="page" th:value="${currentPage}">
+                <input type="hidden" name="size" th:value="${size}">
+            </form>
         </div>
+
 
         <div class="grid-option">
             <div class="grid-item">
@@ -122,33 +133,39 @@
             <form th:action="@{/board/boardList}" method="get">
                 <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" type="text" th:value="${keyword}">
                 <input type="hidden" name="size" th:value="${size}">
+                <input type="hidden" name="categoryNo" th:value="${categoryNo}">
                 <button type="submit" class="btn btn-dark">검색</button>
             </form>
         </div>
 
+
         <div class="pagination-container mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    <!-- Previous Button -->
-                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link bg-dark text-white"
-                           th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword})}">Previous</a>
-                    </li>
+
 
                     <!-- Page Numbers -->
                     <li class="page-item"
                         th:classappend="${i == currentPage ? 'active' : ''}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
                         <a class="page-link bg-dark text-white"
-                           th:href="@{/board/boardList(page=${i}, size=12, keyword=${keyword})}"
+                           th:href="@{/board/boardList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"
                            th:text="${i}"></a>
+                    </li>
+
+                    <!-- Previous and Next Buttons 수정 -->
+                    <!-- Previous Button -->
+                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                        <a class="page-link bg-dark text-white"
+                           th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">Previous</a>
                     </li>
 
                     <!-- Next Button -->
                     <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
                         <a class="page-link bg-dark text-white"
-                           th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword})}">Next</a>
+                           th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">Next</a>
                     </li>
+
 
                 </ul>
             </nav>

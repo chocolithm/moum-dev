@@ -1,6 +1,8 @@
 package moum.project.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Board;
 import org.apache.ibatis.annotations.Mapper;
@@ -81,8 +83,13 @@ public interface BoardDao {
 
     int countFromAdmin(Board board) throws Exception;
 
+    // 기존 메서드 유지
     List<Board> searchByPage(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit) throws Exception;
     int countByKeyword(@Param("keyword") String keyword) throws Exception;
+
+    // 새로운 메서드 추가
+    List<Board> searchByPageWithCategory(Map<String, Object> params) throws Exception;
+    int countByKeywordAndCategory(Map<String, Object> params) throws Exception;
 
 
     void updateIsPopular(@Param("no") int boardNo, @Param("isPopular") boolean isPopular) throws Exception; // 인기게시글

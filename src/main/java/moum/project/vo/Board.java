@@ -32,6 +32,7 @@ public class Board implements Serializable {
 
     private User user; //작성자 정보를 받기 위한 User 객체
     private String postDateString; // 관리자 검색 시 사용할 작성일자
+    private Maincategory maincategory;
 
 
     private boolean isPopular; // 인기게시글 여부

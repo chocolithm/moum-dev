@@ -37,7 +37,10 @@
             <result column="nickname" property="nickname"/>
             <result column="end_date" property="endDate"/>
         </association>
-
+        <association property="maincategory" javaType="moum.project.vo.Maincategory">
+            <id column="maincategory_id" property="no"/>
+            <result column="category_name" property="name"/>
+        </association>
         <!-- attachedFiles 매핑 수정 -->
         <collection property="attachedFiles" ofType="moum.project.vo.AttachedFile">
             <id column="photo_id" property="no"/>
@@ -45,6 +48,9 @@
             <result column="filename" property="filename"/>
             <result column="origin_filename" property="originFilename"/>
         </collection>
+
+
+
     </resultMap>
 
 
@@ -92,6 +98,8 @@
         b.is_public,
         b.is_deleted,
         b.board_type,
+        b.maincategory_id,
+        mc.category_name,
         tb.collection_id,
         tb.price,
         tb.status,
@@ -103,13 +111,15 @@
         bp.origin_filename
         FROM
         board b
+        LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
         LEFT JOIN trade_board tb ON b.board_id = tb.board_id
         LEFT JOIN collection c ON tb.collection_id = c.collection_id
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
-        LEFT JOIN user u ON b.user_id = u.user_id
         WHERE
         b.board_id = #{no} AND b.is_deleted = 0
     </select>
+
 
 
 
@@ -131,24 +141,25 @@
     </insert>
 
 
-
-    <!-- insert 구문 수정 -->
     <insert id="insert" parameterType="moum.project.vo.Board" useGeneratedKeys="true" keyProperty="no" keyColumn="board_id">
         INSERT INTO board (
         title,
         content,
         user_id,
         post_date,
-        board_type
+        board_type,
+        maincategory_id
         )
         VALUES (
         #{title},
         #{content},
         #{userNo},
         NOW(),
-        #{boardType}
+        #{boardType},
+        #{maincategory.no}
         )
     </insert>
+
 
     <!-- insertTrade 수정 -->
     <insert id="insertTrade" parameterType="moum.project.vo.Board">
@@ -690,6 +701,7 @@
     </select>
 
     <!-- 검색 결과의 총 개수 조회 -->
+
     <select id="countByKeyword" resultType="int" parameterType="map">
         SELECT COUNT(*)
         FROM board b
@@ -700,6 +712,65 @@
             AND b.title LIKE CONCAT('%', #{keyword}, '%')
         </if>
     </select>
+
+    <!-- 새로운 검색 메서드 -->
+    <select id="searchByPageWithCategory" resultMap="BoardMap" parameterType="map">
+        SELECT
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.nickname,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        mc.maincategory_id,
+        mc.category_name,
+        bp.photo_id,
+        bp.filename,
+        bp.origin_filename
+        FROM
+        board b
+        LEFT JOIN
+        maincategory mc ON b.maincategory_id = mc.maincategory_id
+        LEFT JOIN
+        user u ON b.user_id = u.user_id
+        LEFT JOIN
+        board_photo bp ON b.board_id = bp.board_id
+        WHERE
+        b.is_deleted = 0
+        AND b.board_type = 'general'
+        <if test="keyword != null and keyword != ''">
+            AND b.title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="categoryNo != null">
+            AND b.maincategory_id = #{categoryNo}
+        </if>
+        ORDER BY
+        b.board_id DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 새로운 검색 결과의 총 개수 조회 -->
+    <select id="countByKeywordAndCategory" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM
+        board b
+        LEFT JOIN
+        maincategory mc ON b.maincategory_id = mc.maincategory_id
+        WHERE
+        b.is_deleted = 0
+        AND b.board_type = 'general'
+        <if test="keyword != null and keyword != ''">
+            AND b.title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="categoryNo != null">
+            AND b.maincategory_id = #{categoryNo}
+        </if>
+    </select>
+
 
 
 

@@ -18,13 +18,11 @@ public interface BoardService {
 
     void delete(int no) throws Exception;
 
-
     void increaseViewCount(int boardId) throws Exception;
 
     List<Board> selectByUserId(int userId);
 
     List<Board> selectRecent(int limit);
-
 
     List<Board> listAll() throws Exception;
 
@@ -32,9 +30,8 @@ public interface BoardService {
 
     int countPopularPosts() throws Exception;
 
-
-
     List<Board> listTradeSellPosts() throws Exception;
+
     List<Board> listTradeBuyPosts() throws Exception;
 
     List<Board> listBraggingPosts() throws Exception;
@@ -59,16 +56,22 @@ public interface BoardService {
 
     void updateAttachedFiles(int no, List<AttachedFile> newFiles);
 
-   void updateTrade(Board board);
+    void updateTrade(Board board);
 
-   void deleteAttachedFiles(int boardNo);
+    void deleteAttachedFiles(int boardNo);
 
-   void deleteAttachedFile(String filename);
+    void deleteAttachedFile(String filename);
 
-   void insertAttachedFiles(List<AttachedFile> files);
+    void insertAttachedFiles(List<AttachedFile> files);
 
     Board findBoardById(int boardId);
 
+    // 기존 메서드 유지
     List<Board> searchByPage(String keyword, int offset, int limit) throws Exception;
     int countByKeyword(String keyword) throws Exception;
+
+    // 새로운 메서드 추가
+    List<Board> searchByCategoryAndPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception;
+    int countByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception;
+
 }

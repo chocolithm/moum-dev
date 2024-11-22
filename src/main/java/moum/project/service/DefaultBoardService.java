@@ -3,7 +3,10 @@ package moum.project.service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.BoardDao;
@@ -224,7 +227,6 @@ public class DefaultBoardService implements BoardService {
     public void updateAttachedFiles(int no, List<AttachedFile> newFiles) {
 
     }
-
     @Override
     public List<Board> searchByPage(String keyword, int offset, int limit) throws Exception {
         return boardDao.searchByPage(keyword, offset, limit);
@@ -234,4 +236,23 @@ public class DefaultBoardService implements BoardService {
     public int countByKeyword(String keyword) throws Exception {
         return boardDao.countByKeyword(keyword);
     }
+
+    @Override
+    public List<Board> searchByCategoryAndPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("categoryNo", categoryNo);
+        params.put("offset", offset);
+        params.put("limit", limit);
+        return boardDao.searchByPageWithCategory(params);
+    }
+
+    @Override
+    public int countByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("categoryNo", categoryNo);
+        return boardDao.countByKeywordAndCategory(params);
+    }
+
 }
