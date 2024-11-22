@@ -248,8 +248,9 @@
       headers: {
         [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
       },
-      success: function (response) {
+      success: async function (response) {
         if (response === 'success') {
+          await checkPostAchievements();
           alert('게시글이 등록되었습니다.');
           var tradeType = formData.get("tradeType");
           if (tradeType === "default") {
@@ -267,6 +268,12 @@
         alert('서버 오류가 발생했습니다.');
       }
     });
+  }
+
+  async function checkPostAchievements() {
+    await updateAchievement("FIRST_POST");
+    await updateAchievement("TEN_POST");
+    await updateAchievement("THIRTY_POST");
   }
 
   function base64ToFile(base64Data, fileName) {
