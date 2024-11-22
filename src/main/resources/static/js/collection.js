@@ -115,32 +115,10 @@ function addCollection() {
                             location.href = "/home";
                             break;
                         case "success":
+                            checkCollectionAchievements(formData.get("maincategory.no"));
                             alert("등록했습니다.");
                             location.href = "/home";
                             break;
-
-                            async function checkCollectionAchievements(categoryNo) {
-                                switch (categoryNo) {
-                                    case "1": //건담
-                                        await updateAchievement("FIRST_GUNDAM");
-                                        await updateAchievement("TEN_GUNDAM");
-                                        await updateAchievement("THIRTY_GUNDAM");
-                                        break;
-                                    case "2": //레고
-                                        await updateAchievement("FIRST_LEGO");
-                                        await updateAchievement("TEN_LEGO");
-                                        await updateAchievement("THIRTY_LEGO");
-                                        break;
-                                    case "3": //신발
-                                        await updateAchievement("FIRST_SHOES");
-                                        await updateAchievement("TEN_SHOES");
-                                        await updateAchievement("THIRTY_SHOES");
-                                        break;
-                                }
-
-                                await updateAchievement("TEN_COLLECTION");
-                                await updateAchievement("COLLECTION_MASTER");
-                            }
 
                         case "failure":
                             alert("등록에 실패했습니다.");
@@ -152,6 +130,29 @@ function addCollection() {
                 });
         }
     }
+}
+
+async function checkCollectionAchievements(categoryNo) {
+    switch (categoryNo) {
+        case "1": //건담
+            await updateAchievement("FIRST_GUNDAM");
+            await updateAchievement("TEN_GUNDAM");
+            await updateAchievement("THIRTY_GUNDAM");
+            break;
+        case "2": //레고
+            await updateAchievement("FIRST_LEGO");
+            await updateAchievement("TEN_LEGO");
+            await updateAchievement("THIRTY_LEGO");
+            break;
+        case "3": //신발
+            await updateAchievement("FIRST_SHOES");
+            await updateAchievement("TEN_SHOES");
+            await updateAchievement("THIRTY_SHOES");
+            break;
+    }
+
+    await updateAchievement("TEN_COLLECTION");
+    await updateAchievement("COLLECTION_MASTER");
 }
 
 // 수집품 조회 화면 열기
@@ -403,7 +404,6 @@ function showSlides(index) {
 // 사진 슬라이드 처리
 function changeSlide(n) {
     showSlides(collectionSlideIndex += n);
-    console.log("collectionSlideIndex: " + collectionSlideIndex);
 }
 
 // 소분류 데이터 조회

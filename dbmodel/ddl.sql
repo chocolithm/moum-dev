@@ -159,7 +159,7 @@ CREATE TABLE achievement (
     content               TEXT         NOT NULL COMMENT '업적 설명', -- 업적 설명
     photo                 VARCHAR(255) NOT NULL COMMENT '업적 이미지', -- 업적 이미지
     acquisition_condition TEXT         NOT NULL COMMENT '취득 조건', -- 취득 조건
-    location              TEXT         NOT NULL COMMENT '취득 장소', -- 취득 장소
+    location              TEXT         NULL     COMMENT '취득 장소', -- 취득 장소
     max_count             INTEGER      NULL     COMMENT '총횟수', -- 총횟수
     score                 INTEGER      NOT NULL COMMENT '업적 점수' -- 업적 점수
 )

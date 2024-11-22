@@ -1,3 +1,5 @@
+let achievementSlideIndex = 0;
+
 // 로딩 시 메뉴에 onclick 부여
 const adminSelects = document.querySelectorAll(".sidemenu input");
 adminSelects.forEach(input => {
@@ -53,6 +55,7 @@ function toggleAdminMenu(menu, pageNo, pageCount, fromPopState = false) {
   createAdminTableHead(menu, pageNo, pageCount);
   fetchAdminData(menu, pageNo, pageCount, fromPopState);
   createAdminPagination(menu, pageCount);
+  createAddBtn(menu);
 }
 
 // 목록 테이블 생성
@@ -424,14 +427,265 @@ function updateActivePage(currentPage, totalPages) {
   }
 }
 
+// 등록 버튼 생성
+function createAddBtn(menu) {
+  const btn_section = document.querySelector(".btn-section");
+  btn_section.innerHTML = "";
+
+  if (menu == "category" || menu == "achievement") {
+    const btn = document.createElement("button");
+    btn.className = `${menu}-add-btn btn`;
+    btn.innerHTML = "등록";
+    btn.onclick = () => openAddPage(menu);
+    btn_section.append(btn);
+  }
+  
+}
+
+function openAddPage(menu) {
+  const content_section = document.querySelector(".content-section");
+  const paginationContainer = document.querySelector('.pagination');
+  const btn_section = document.querySelector(".btn-section");
+  content_section.innerHTML = "";
+  paginationContainer.innerHTML = "";
+  btn_section.innerHTML = "";
+
+  if (menu == "category") {
+    content_section.innerHTML = `
+
+    `;
+  }
+
+  if (menu == "achievement") {
+    content_section.innerHTML = `
+      <div class="img-div">
+        <img alt="업적 사진 등록" class="achievement-img empty-image" onClick="triggerFileInput();"
+             src="/images/collections/empty-collection.png">
+        <div class="slider" style="display: none;">
+          <div class="slides"></div>
+          <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
+          <a class="next" onClick="changeSlide(1)">&#10095;</a>
+        </div>
+        <input id="files" multiple name="files" onChange="previewImage(event);" style="display: none;" type="file">
+      </div>
+      <table class="view-table">
+        <tbody>
+          <tr>
+            <td>업적 ID</td>
+            <td><input name="id" id="id" type="text"></td>
+          </tr>
+          <tr>
+            <td>엄적명</td>
+            <td><input name="name" id="name" type="text"></td>
+          </tr>
+          <tr>
+            <td>설명</td>
+            <td><input name="content" id="content" type="text"></td>
+          </tr>
+          <tr>
+            <td>취득조건</td>
+            <td><input name="condition" id="condition" type="text"></td>
+          </tr>
+          <tr>
+            <td>조건횟수</td>
+            <td><input name="maxCount" id="maxCount" type="text" onchange="formatNumber(this);"></td>
+          </tr>
+          <tr>
+            <td>점수</td>
+            <td><input name="score" id="score" type="text" onchange="formatNumber(this);"></td>
+          </tr>
+          <tr>
+            <td colspan="2"><button class="btn" onclick="addAchievement()">등록</button></td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+  }
+}
+
+function triggerFileInput() {
+  alert("업적 사진은 미취득 1장, 취득 1장 순으로 총 2장이 필요합니다.");
+  document.getElementById('files').click();
+}
+
+// function previewImage(event) {
+//   const file = event.target.files[0];
+//   const emptyImage = document.querySelector(".achievement-img");
+
+//   if (file) {
+//     const reader = new FileReader();
+
+//     reader.onload = function (e) {
+//       emptyImage.src = e.target.result;
+//       emptyImage.alt = "Uploaded Image";
+//       emptyImage.classList.remove("empty-image");
+//       emptyImage.classList.add("new-image");
+//     };
+
+//     reader.readAsDataURL(file);
+//   } else {
+//     emptyImage.src = "/images/collections/empty-collection.png";
+//     emptyImage.alt = "업적 사진 등록";
+//     emptyImage.classList.add("empty-image");
+//     emptyImage.classList.remove("new-image");
+//   }
+// }
+
+// 선택한 이미지 미리보기
+function previewImage(event) {
+    const files = event.target.files;
+    const empty = document.querySelector(".empty-image");
+    const slider = document.querySelector(".slider");
+    const slides = document.querySelector(".slides");
+    const newImages = document.getElementsByClassName("new-image");
+    const currentImages = document.getElementsByClassName("current-image");
+
+    for (i = newImages.length - 1; i >= 0; i--) {
+        newImages[i].remove();
+    }
+
+    if (files && files.length > 0) {
+
+        for (let i = 0; i < files.length; i++) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.alt = "Uploaded Image";
+                img.className = "achievement-img slide new-image";
+                img.onclick = function () {
+                    triggerFileInput();
+                };
+                slides.appendChild(img);
+            }
+
+            reader.readAsDataURL(files[i]);
+        }
+
+        if (empty) {
+            empty.style.display = "none";
+        }
+
+        slider.style.display = "block";
+        if (slides.children.length + files.length > 1) {
+            document.querySelector(".prev").style.display = "block";
+            document.querySelector(".next").style.display = "block";
+        } else {
+            document.querySelector(".prev").style.display = "none";
+            document.querySelector(".next").style.display = "none";
+        }
+
+    } else if (currentImages && currentImages.length > 0) {
+      initAchievementSlideIndex();
+        showSlides(achievementSlideIndex);
+    } else {
+        if (empty) {
+            empty.style.display = "block";
+        }
+        slider.style.display = "none";
+    }
+}
+
+// 사진 인덱스 초기화
+function initAchievementSlideIndex() {
+  achievementSlideIndex = 0;
+}
+
+// 슬라이드 display 처리
+function showSlides(index) {
+  const slides = document.querySelectorAll('.slide');
+  if (index >= slides.length) { achievementSlideIndex = 0; }
+  if (index < 0) { achievementSlideIndex = slides.length - 1; }
+
+  slides.forEach((slide, i) => {
+    console.log(i + ", " + achievementSlideIndex);
+      slide.style.display = (i === achievementSlideIndex) ? 'block' : 'none';
+  });
+}
+
+// 사진 슬라이드 처리
+function changeSlide(n) {
+  showSlides(achievementSlideIndex += n);
+}
+
+function addAchievement() {
+  if (confirm("등록하시겠습니까?")) {
+    const formData = new FormData();
+
+    const filesInput = document.getElementById('files');
+    for (let i = 0; i < filesInput.files.length; i++) {
+      formData.append("files", filesInput.files[i]);
+    }
+    
+    const inputs = document.querySelectorAll('table.view-table input');
+    inputs.forEach(input => {
+      formData.append(input.name, input.value);
+    });
+
+    if (validateAchievement(formData)) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+      fetch(`/achievement/add`, {
+        method: "POST",
+        body: formData,
+        headers: {
+            [csrfHeader]: csrfToken
+        }
+      })
+        .then(response => response.text())
+        .then(response => {
+            switch (response) {
+                case "success":
+                    alert("등록했습니다.");
+                    document.querySelector("#achievement-admin").click();
+                    break;
+                case "failure":
+                    alert("등록 실패했습니다.");
+                    break;
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching collection update:", error);
+        });
+    }
+  }
+}
+
+function validateAchievement(formData) {
+  const id = document.querySelector(".view-table #id");
+  const name = document.querySelector(".view-table #name");
+  const content = document.querySelector(".view-table #content");
+  const condition = document.querySelector(".view-table #condition");
+  const maxCount = document.querySelector(".view-table #maxCount");
+  const score = document.querySelector(".view-table #score");
+
+  id.style="border-color: #ccc";
+  name.style="border-color: #ccc";
+  content.style="border-color: #ccc";
+  condition.style="border-color: #ccc";
+  maxCount.style="border-color: #ccc";
+  score.style="border-color: #ccc";
+
+  if (formData.getAll("files").length != 2) {alert("이미지를 2장 등록하세요."); return false;}
+  if (formData.get("id").trim() == "") {id.style="border-color: red"; return false;}
+  if (formData.get("name").trim() == "") {name.style="border-color: red"; return false;}
+  if (formData.get("content").trim() == "") {content.style="border-color: red"; return false;}
+  if (formData.get("condition").trim() == "") {condition.style="border-color: red"; return false;}
+  if (formData.get("maxCount").trim() == "") {maxCount.style="border-color: red"; return false;}
+  if (formData.get("score").trim() == "") {score.style="border-color: red"; return false;}
+  return true;
+}
 
 // 상세조회 화면
 function fetchAdminDetail(menu, no, fromPopState = false) {
+  if (menu == "board") {
+    location.href = `/board/boardView?no=${no}`;
+  }
+
   const content_section = document.querySelector(".content-section");
   const paginationContainer = document.querySelector('.pagination');
-  console.log("fetchAdminDetail");
-
-  // 목록화면 삭제
   content_section.innerHTML = "";
   paginationContainer.innerHTML = "";
 
@@ -484,10 +738,6 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
             </tbody>
           </table>
         `;
-      }
-
-      if (menu == "board") {
-
       }
 
       if (menu == "category") {
@@ -568,13 +818,19 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
               <tr>
                 <td>취득조건</td>
                 <td>
-                  <input name="content" type="text" value="${achievement.condition}">
+                  <input name="condition" type="text" value="${achievement.condition}">
+                </td>
+              </tr>
+              <tr>
+                <td>조건횟수</td>
+                <td>
+                  <input name="maxCount" type="text" value="${achievement.max_Count}" onchange="formatNumber(this);">
                 </td>
               </tr>
               <tr>
                 <td>점수</td>
                 <td>
-                  <input name="content" type="text" value="${achievement.score}" onchange="formatNumber(this);">
+                  <input name="score" type="text" value="${achievement.score}" onchange="formatNumber(this);">
                 </td>
               </tr>
             </tbody>

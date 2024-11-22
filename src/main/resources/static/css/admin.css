@@ -30,6 +30,7 @@
   background-color: rgb(245, 245, 245);
   border: 1px solid lightgrey;
   border-radius: 25px;
+  position: relative;
 }
 
 .main-section h1 {
@@ -130,6 +131,8 @@
 .main-section .content-section .achievement-img {
   width: 300px;
   object-fit: contain;
+  background-color: #f0f0f0;
+  cursor: pointer;
 }
 
 .main-section .content-section .maincategory-table,
@@ -224,18 +227,69 @@
   background: black;
 }
 
+.main-section .btn-section {
+  position: absolute;
+  bottom: 30px;
+  right: 40px;
+}
 
-        .form-check-input.switch-white {
-          background-color: #fff; /* 스위치 배경을 하얀색으로 */
-          border-color: #ccc; /* 스위치 테두리를 회색으로 */
-        }
 
-        .form-check-input.switch-white:checked {
-          background-color: black; /* 체크된 스위치의 배경을 초록색으로 */
-          border-color: #black; /* 체크된 스위치 테두리 초록색 */
-        }
+.form-check-input.switch-white {
+  background-color: #fff; /* 스위치 배경을 하얀색으로 */
+  border-color: #ccc; /* 스위치 테두리를 회색으로 */
+}
 
-        .form-check-input.switch-white:focus {
-          box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25); /* 초록색 테두리 그림자 */
-        }
+.form-check-input.switch-white:checked {
+  background-color: black; /* 체크된 스위치의 배경을 초록색으로 */
+  border-color: black; /* 체크된 스위치 테두리 초록색 */
+}
+
+.form-check-input.switch-white:focus {
+  box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25); /* 초록색 테두리 그림자 */
+}
   
+.slider {
+  position: relative;
+  max-width: 300px;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 배경 투명도 설정 */
+}
+
+.prev {
+  left: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.next {
+  right: 0;
+  border-radius: 0 3px 3px 0;
+}

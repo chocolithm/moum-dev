@@ -5,7 +5,7 @@ import moum.project.vo.Achievement;
 import moum.project.vo.User;
 
 public interface AchievementService {
-  void add(Achievement achievement) throws Exception;
+  boolean add(Achievement achievement) throws Exception;
 
   List<Achievement> list() throws Exception;
 

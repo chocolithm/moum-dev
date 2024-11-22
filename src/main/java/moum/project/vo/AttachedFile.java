@@ -7,6 +7,7 @@ public class AttachedFile {
   public static final int COLLECTION = 1;
   public static final int BOARD = 2;
   public static final int PROFILE = 3;
+  public static final int ACHIEVEMENT = 4;
 
   @EqualsAndHashCode.Include
   private int no; // photo_id에 매핑

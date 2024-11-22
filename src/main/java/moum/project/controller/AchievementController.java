@@ -1,11 +1,16 @@
 package moum.project.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AchievementService;
+import moum.project.service.StorageService;
 import moum.project.service.UserService;
 import moum.project.vo.Achievement;
+import moum.project.vo.AttachedFile;
 import moum.project.vo.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,18 +21,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/achievement")
 @RequiredArgsConstructor
 public class AchievementController {
 
-
-  @NonNull
   private final AchievementService achievementService;
-
-  @NonNull
   private final UserService userService;
+  private final StorageService storageService;
+
+  private final String folderName = "achievement/";
 
   @GetMapping("list")
   public String list(Model model) throws Exception {
@@ -63,9 +68,37 @@ public class AchievementController {
 
   @PostMapping("add")
   @ResponseBody
-  public Object add(@RequestBody Achievement achievement) throws Exception {
-    achievementService.add(achievement);
-    return achievementService.get(achievement.getId());
+  public Object add(
+      Achievement achievement,
+      MultipartFile[] files) throws Exception {
+
+    if (files != null) {
+      for (int i = 0; i < files.length; i++) {
+        if (files[i].getSize() == 0) {
+          continue;
+        }
+
+        AttachedFile attachedFile = new AttachedFile();
+        attachedFile.setFileCategory(AttachedFile.ACHIEVEMENT);
+        attachedFile.setFilename(files[0].getOriginalFilename());
+        attachedFile.setOriginFilename(files[0].getOriginalFilename());
+
+        Map<String, Object> options = new HashMap<>();
+        options.put(StorageService.CONTENT_TYPE, files[i].getContentType());
+
+        storageService.upload(
+            folderName + (i == 0 ? "" : "complete/") + attachedFile.getFilename(),
+            files[i].getInputStream(),
+            options);
+      }
+
+      achievement.setPhoto(files[0].getOriginalFilename());
+    }
+
+    if (achievementService.add(achievement)) {
+      return "success";
+    }
+    return "failure";
   }
 
   @PostMapping("update")

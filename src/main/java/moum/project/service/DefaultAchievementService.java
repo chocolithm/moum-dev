@@ -16,8 +16,8 @@ public class DefaultAchievementService implements AchievementService {
   AchievementDao achievementDao;
 
   @Override
-  public void add(Achievement achievement) throws Exception {
-    achievementDao.insert(achievement);
+  public boolean add(Achievement achievement) throws Exception {
+    return achievementDao.insert(achievement);
   }
 
   @Override

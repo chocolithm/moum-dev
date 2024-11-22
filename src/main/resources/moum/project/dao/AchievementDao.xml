@@ -209,7 +209,8 @@
             content=#{content},
             photo=#{photo},
             acquisition_condition=#{condition},
-            location=#{location}
+            score=#{score},
+            max_count=#{max_count}
         where
             achievement_id=#{id}
     </update>
