@@ -83,4 +83,8 @@ public interface BoardDao {
 
     List<Board> searchByPage(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit) throws Exception;
     int countByKeyword(@Param("keyword") String keyword) throws Exception;
+
+
+    void updateIsPopular(@Param("no") int boardNo, @Param("isPopular") boolean isPopular) throws Exception; // 인기게시글
+
 }
