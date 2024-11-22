@@ -183,11 +183,11 @@
     });
   }
 
-  // 게시글 수정 함수
   function updatePost() {
     var formData = new FormData($('#updateForm')[0]);
     var no = $('#boardNo').val();  // 숨겨진 input에서 no 값을 가져옴
 
+    // 필수 입력 필드 확인
     if (formData.get("title") === "") { alert("제목을 입력하세요"); return; }
     if (formData.get("content") === "") { alert("내용을 입력하세요"); return; }
     if (formData.get("price") === "" && $('#boardType').val() === 'trade') { formData.set("price", 0); }
@@ -198,10 +198,18 @@
       }
     }
 
+    // Summernote 내용에서 이미지 존재 여부 확인
+    var content = $('#content').summernote('code');
+    var hasImage = $(content).find('img').length > 0;
+    if (!hasImage) {
+      alert("사진을 최소 1개 이상 본문에 넣어주세요");
+      return;
+    }
+
     formData.delete("files");
     const oldImages = [];
     const base64Images = [];
-    $('.card-block p img').each(function () {
+    $('.note-editable img').each(function () {
       const imageUrl = $(this).attr('src');
       if (imageUrl && imageUrl.startsWith('data:image')) {
         base64Images.push(imageUrl);
@@ -213,7 +221,7 @@
     // base64 이미지를 파일 객체로 변환 후 formData에 추가
     base64Images.forEach((base64Image) => {
       const imageData = imageUrls.find(image => image.url === base64Image);
-      const fileName = imageData.name;
+      const fileName = imageData ? imageData.name : 'image.png';
 
       const file = base64ToFile(base64Image, fileName);
       formData.append('files', file);
@@ -249,6 +257,7 @@
       }
     });
   }
+
 
   function base64ToFile(base64Data, fileName) {
     const [metadata, base64String] = base64Data.split(',');
