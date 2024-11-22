@@ -314,9 +314,12 @@ public class BoardController {
 
 
   @PostMapping("/update/{no}")
-  public ResponseEntity<String> update(@PathVariable("no") int no, Board updatedBoard,
-      @RequestParam(value = "files", required = false) MultipartFile[] files, String[] oldFiles,
-      Model model) throws Exception {
+  public ResponseEntity<String> update(
+          @PathVariable("no") int no,
+          Board updatedBoard,
+          @RequestParam(value = "files", required = false) MultipartFile[] files,
+          @RequestParam(value = "oldFiles", required = false) String[] oldFiles,
+          Model model) throws Exception {
 
     updatedBoard.setNo(no);
     Board existingBoard = boardService.get(no);
@@ -342,13 +345,20 @@ public class BoardController {
     }
 
     List<AttachedFile> existingFiles = existingBoard.getAttachedFiles();
+    if (existingFiles == null) {
+      existingFiles = new ArrayList<>();
+    }
 
     // 기존 첨부파일 중 유지되는 파일은 attachedFiles로 담고 existingFiles에서 삭제
-    for (String oldFile : oldFiles) {
-      for (AttachedFile attachedFile : existingFiles) {
-        if (attachedFile.getFilename().equals(oldFile)) {
-          existingFiles.remove(attachedFile);
-          break;
+    if (oldFiles != null && oldFiles.length > 0) {
+      for (String oldFile : oldFiles) {
+        Iterator<AttachedFile> iterator = existingFiles.iterator();
+        while (iterator.hasNext()) {
+          AttachedFile attachedFile = iterator.next();
+          if (attachedFile.getFilename().equals(oldFile)) {
+            iterator.remove();
+            break;
+          }
         }
       }
     }
@@ -367,7 +377,7 @@ public class BoardController {
 
       for (AttachedFile attachedFile : attachedFiles) {
         String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s",
-            attachedFile.getFilename());
+                attachedFile.getFilename());
 
         // 정규식을 통해 첫 번째 data:image 형식의 base64 이미지를 newUrl로 교체
         content = content.replaceFirst("src=\"data:image[^\"]+\"", "src=\"" + newUrl + "\"");
@@ -375,38 +385,6 @@ public class BoardController {
 
       updatedBoard.setContent(content);
     }
-
-
-    // existingBoard의 attachedFiles를 가져와서 oldFiles와 비교하며 없는 파일을 storage에서 삭제
-    // 있는 파일은 storage에서 유지 및 updatedBoard의 attachedFiles에 추가
-
-    //if (files != null && files.length > 0) {
-    //        List<AttachedFile> attachedFiles = uploadFiles(files);
-    //        board.setAttachedFiles(attachedFiles);
-    //
-    //        String content = board.getContent();
-    //
-    //        for (AttachedFile attachedFile : attachedFiles) {
-    //          String newUrl = String.format("https://kr.object.ncloudstorage.com/bitcamp-moum/board/%s", attachedFile.getFilename());
-    //
-    //          // 정규식을 통해 첫 번째 data:image 형식의 base64 이미지를 newUrl로 교체
-    //          content = content.replaceFirst("src=\"data:image[^\"]+\"", "src=\"" + newUrl + "\"");
-    //        }
-    //
-    //        board.setContent(content);
-    //      }
-
-
-    //    if (files != null && files.length > 0 && !files[0].isEmpty()) {
-    //      boardService.deleteAttachedFiles(no);
-    //      List<AttachedFile> newFiles = uploadFiles(files);
-    //      for (AttachedFile file : newFiles) {
-    //        file.setBoardNo(no);
-    //      }
-    //      boardService.insertAttachedFiles(newFiles);
-    //      existingBoard.setAttachedFiles(newFiles);
-    //    }
-
 
     if (boardService.update(updatedBoard)) {
       return ResponseEntity.ok("success");

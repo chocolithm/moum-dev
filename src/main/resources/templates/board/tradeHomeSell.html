@@ -26,17 +26,14 @@
                     <div class="title" style="font-weight: bold">주제별</div>
                 </div>
             </div>
-            <div class="search-bar">
-                <input class="search-input" placeholder="Search" type="text">
-                <button class="btn btn-dark">검색</button>
-            </div>
+
         </div>
 
         <div class="grid-option">
             <div class="grid-item">
                 <div class="button-group-left">
-                    <button class="btn btn-danger" onclick="location.href='/board/tradeHomeBuy'">구매</button>
-                    <button class="btn btn-success active" onclick="location.href='/board/tradeHomeSell'">판매</button>
+                    <button class="btn btn-dark active" onclick="location.href='/board/tradeHomeSell'">판매</button>
+                    <button class="btn btn-dark active" onclick="location.href='/board/tradeHomeBuy'">구매</button>
                 </div>
                 <div class="button-group-right">
                     <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
@@ -68,6 +65,14 @@
                     </a>
                 </div>
             </div>
+        </div>
+
+        <div class="search-bar">
+            <form th:action="@{/board/boardList}" method="get">
+                <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" type="text" th:value="${keyword}">
+                <input type="hidden" name="size" th:value="${size}">
+                <button type="submit" class="btn btn-dark">검색</button>
+            </form>
         </div>
 
         <div class="pagination-container mt-4">
