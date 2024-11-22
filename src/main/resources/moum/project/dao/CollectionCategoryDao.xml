@@ -64,6 +64,17 @@
       s.subcategory_id = #{no}
   </select>
 
+  <select id="findSubcategoryByName" resultMap="SubcategoryMap" parameterType="string">
+    select
+      subcategory_id,
+      maincategory_id,
+      category_name
+    from
+      subcategory
+    where
+      category_name = #{name}
+  </select>
+
   <select id="findMaincategory" resultMap="SubcategoryMap" parameterType="int">
     SELECT
       m.maincategory_id,

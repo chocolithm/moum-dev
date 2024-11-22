@@ -275,6 +275,11 @@ public class CollectionController {
   @PostMapping("/subcategory/add")
   @ResponseBody
   public String addSubcategory(Subcategory subcategory) throws Exception {
+
+    if (categoryService.getSubcategoryByName(subcategory.getName()) != null) {
+      return "exist";
+    }
+
     if (categoryService.addSubcategory(subcategory)) {
       return "success";
     }

@@ -15,6 +15,8 @@ public interface CollectionCategoryService {
 
   List<Subcategory> getMaincategory(int no) throws Exception;
 
+  Subcategory getSubcategoryByName(String name) throws Exception;
+
   List<Subcategory> listSubcategoryByMaincategory(int no) throws Exception;
 
   List<Maincategory> listMaincategoryByPage(Maincategory maincategory, int pageNo, int pageCount) throws Exception;

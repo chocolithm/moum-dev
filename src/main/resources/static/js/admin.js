@@ -1117,12 +1117,15 @@ function addSubcategory(maincategoryNo) {
         .then(response => {
             switch (response) {
                 case "success":
-                    alert("등록했습니다.");
-                    fetchAdminDetail("category", maincategoryNo);
-                    break;
+                  alert("등록했습니다.");
+                  fetchAdminDetail("category", maincategoryNo);
+                  break;
+                case "exist":
+                  alert("이미 등록된 이름입니다.");
+                  break;
                 case "failure":
-                    alert("등록 실패했습니다.");
-                    break;
+                  alert("등록 실패했습니다.");
+                  break;
             }
         })
         .catch(error => {

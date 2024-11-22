@@ -18,6 +18,8 @@ public interface CollectionCategoryDao {
 
   List<Subcategory> findMaincategory(int no) throws Exception;
 
+  Subcategory findSubcategoryByName(String name) throws Exception;
+
   List<Subcategory> listSubcategoryByMaincategory(int no) throws Exception;
 
   List<Maincategory> listMaincategoryByPage(

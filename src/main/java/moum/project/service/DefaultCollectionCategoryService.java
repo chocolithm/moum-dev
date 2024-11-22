@@ -39,6 +39,11 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   }
 
   @Override
+  public Subcategory getSubcategoryByName(String name) throws Exception {
+    return categoryDao.findSubcategoryByName(name);
+  }
+
+  @Override
   public List<Subcategory> listSubcategoryByMaincategory(int no) throws Exception {
     return categoryDao.listSubcategoryByMaincategory(no);
   }
