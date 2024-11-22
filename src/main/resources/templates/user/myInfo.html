@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>회원 정보</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link data-th-href="@{/css/info.css}" rel="stylesheet">
     <link data-th-href="@{/css/style.css}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
@@ -31,13 +32,14 @@
                 <div class="profile-img-inner-container">
                     <a data-th-href="'https://kr.object.ncloudstorage.com/bitcamp-moum/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'}"
                        target="_blank">
-                        <img alt="프로필 이미지" class="profile-img"
+                        <img alt="프로필 이미지"
+                             class="profile-img"
                              data-th-src="'https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'} + '?type=f&w=400&h=400'"
                              src="https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/images/default-profile.png?type=f&w=400&h=400">
                     </a>
-                    <div class="user-info-dropdown" th:if="${isOwnProfile}">
-                        <a class="btn btn-dark" href="/user/update">수정하기</a>
-                    </div>
+                </div>
+                <div class="user-info-dropdown" th:if="${isOwnProfile}">
+                    <a href="/user/update" class="btn btn-dark btn-lg w-100">수정하기</a>
                 </div>
             </div>
 

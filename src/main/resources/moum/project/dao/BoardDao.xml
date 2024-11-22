@@ -335,14 +335,13 @@
     </select>
 
 
-    <!-- 인기 게시글 총 개수 조회 (countPopularPosts) -->
+    <!-- 수정된 인기 게시글 총 개수 조회 -->
     <select id="countPopularPosts" resultType="int">
         SELECT COUNT(*)
         FROM board b
         WHERE
         b.is_deleted = 0
-        AND b.view_count >= 100
-        AND b.post_date >= DATE_SUB(NOW(), INTERVAL 1 HOUR)
+        AND b.is_popular = TRUE
     </select>
 
     <update id="updateIsPopular" parameterType="map">

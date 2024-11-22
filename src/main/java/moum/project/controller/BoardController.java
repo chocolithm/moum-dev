@@ -43,19 +43,19 @@ public class BoardController {
 
   @GetMapping("/popularList")
   public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "limit", defaultValue = "12") int limit,  // size -> limit
-      Model model) throws Exception {
+                            @RequestParam(value = "limit", defaultValue = "12") int limit, Model model) throws Exception {
     int offset = (page - 1) * limit;
     List<Board> popularBoards = boardService.listPopularByPage(offset, limit);
     model.addAttribute("popularBoards", popularBoards);
 
     int totalBoards = boardService.countPopularPosts();
-    int totalPages = (int) Math.ceil((double) totalBoards / limit);  // size -> limit
+    int totalPages = (int) Math.ceil((double) totalBoards / limit);
     model.addAttribute("currentPage", page);
     model.addAttribute("totalPages", totalPages);
 
     return "board/popularList";
   }
+
 
 
 
