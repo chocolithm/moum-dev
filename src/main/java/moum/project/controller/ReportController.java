@@ -2,6 +2,7 @@ package moum.project.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moum.project.service.BoardService;
 import moum.project.service.ReportService;
 import moum.project.service.UserService;
 import moum.project.vo.Report;
@@ -25,6 +26,7 @@ public class ReportController {
 
   private final ReportService reportService;
   private final UserService userService;
+  private final BoardService boardService;
 
   @PostMapping("/add")
   @ResponseBody
@@ -63,6 +65,17 @@ public class ReportController {
     if (reportService.updateResult(report)) {
       return "success";
     }
+    return "failure";
+  }
+
+  @GetMapping("/restrict")
+  @ResponseBody
+  public String restrict(String category, String categoryNo) throws Exception {
+    if (category.equals("boardRestrict")) {
+      boardService.delete(Integer.parseInt(categoryNo));
+        return "success";
+    }
+
     return "failure";
   }
 }

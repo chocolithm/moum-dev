@@ -63,7 +63,6 @@ public class AlertController {
       Board board = boardService.get(Integer.parseInt(categoryNo));
       alert.setUser(board.getUser());
       alert.setContent(content);
-      boardService.delete(board.getNo());
     }
 
     if (alertService.exists(alert) > 0) {

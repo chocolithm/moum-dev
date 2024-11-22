@@ -162,7 +162,7 @@ async function restrict(category, categoryNo) {
             .then(response => response.json())
             .then(board => {
                 content.value = `
-                    [${board.title}] ${content.value}
+                    %5B${board.title}%5D ${content.value}
                 `;
             })
     }
@@ -171,11 +171,22 @@ async function restrict(category, categoryNo) {
         .then(response => response.text())
         .then(response => {
             if (response == "success") {
-                alert("처리되었습니다.");
-                location.href="/board/boardList";
+                fetch(`/report/restrict?category=${category}Restrict&categoryNo=${categoryNo}`)
+                    .then(response => response.text())
+                    .then(response => {
+                        if (response == "success") {
+                            alert("처리되었습니다.");
+                            location.href="/board/boardList";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("error executing restriction: ", error);
+                    })
             }
         })
         .catch(error => {
-            console.error("error sending warning: ", error);
+            console.error("error sending alert: ", error);
         })
+
+    
 }
