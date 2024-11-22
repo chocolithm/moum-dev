@@ -725,7 +725,8 @@ td {
 
 main > .slider-container {
     position: relative;
-    width: 100%;
+    left: -20px;
+    width: 100vw;
     height: 0;
     padding-bottom: 26.67%;
     overflow: hidden;
