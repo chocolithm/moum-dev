@@ -20,6 +20,7 @@
         <result column="price" property="price"/>
         <result column="status" property="sellOrSoldStatus"/>
         <result column="trade_type" property="tradeType"/>
+        <result column="is_popular" property="isPopular"/>
 
         <association property="collection" javaType="moum.project.vo.Collection">
             <id column="collection_id" property="no"/>
@@ -304,7 +305,7 @@
     </select>
 
 
-    <!-- 인기 게시글 페이징 조회 (listPopularByPage) -->
+    <!-- 인기 게시글 페이징 조회 -->
     <select id="listPopularByPage" resultMap="BoardMap">
         SELECT
         b.board_id,
@@ -327,12 +328,12 @@
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
         WHERE
         b.is_deleted = 0
-        AND b.view_count >= 100
-        AND b.post_date >= DATE_SUB(NOW(), INTERVAL 1 HOUR)
+        AND b.is_popular = TRUE
         ORDER BY
-        b.view_count DESC
+        b.post_date DESC
         LIMIT #{offset}, #{limit}
     </select>
+
 
     <!-- 인기 게시글 총 개수 조회 (countPopularPosts) -->
     <select id="countPopularPosts" resultType="int">
@@ -343,6 +344,13 @@
         AND b.view_count >= 100
         AND b.post_date >= DATE_SUB(NOW(), INTERVAL 1 HOUR)
     </select>
+
+    <update id="updateIsPopular" parameterType="map">
+        UPDATE board
+        SET is_popular = #{isPopular}
+        WHERE board_id = #{no}
+    </update>
+
 
     <!-- 수집품 구매 게시글 조회 (listTradeBuyPosts) -->
     <select id="listTradeBuyPosts" resultMap="BoardMap" parameterType="int">

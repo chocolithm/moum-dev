@@ -34,4 +34,8 @@ public class Board implements Serializable {
     private String postDateString; // 관리자 검색 시 사용할 작성일자
 
 
+    private boolean isPopular; // 인기게시글 여부
+
+
+
 }

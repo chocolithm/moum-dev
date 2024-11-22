@@ -32,6 +32,8 @@ public interface BoardService {
 
     int countPopularPosts() throws Exception;
 
+
+
     List<Board> listTradeSellPosts() throws Exception;
     List<Board> listTradeBuyPosts() throws Exception;
 

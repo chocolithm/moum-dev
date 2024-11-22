@@ -1,5 +1,8 @@
 package moum.project.service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -148,13 +151,22 @@ public class DefaultBoardService implements BoardService {
     }
 
 
+    // BoardService.java의 increaseViewCount 메서드 수정
     @Override
-    public void increaseViewCount(int boardId) throws Exception{
-        Board board =boardDao.selectById(boardId);
+    public void increaseViewCount(int boardId) throws Exception {
+        Board board = boardDao.selectById(boardId);
         if (board != null) {
-            boardDao.increaseViewCount(board.getNo(), board.getViewCount() + 1);
+            int newViewCount = board.getViewCount() + 1;
+            boardDao.increaseViewCount(board.getNo(), newViewCount);
+
+            // 인기 게시글 선정 여부 체크 (시간 제한 제거)
+            if (!board.isPopular() && newViewCount >= 100) {
+                boardDao.updateIsPopular(board.getNo(), true);
+            }
         }
     }
+
+
 
     @Override
     public List<Board> selectByUserId(int userId) {
