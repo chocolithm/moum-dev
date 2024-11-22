@@ -678,10 +678,10 @@ td {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.my-achievement-container .achievement-img-container .achievement-img:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+/*.my-achievement-container .achievement-img-container .achievement-img:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 .my-achievement-container .my-achievement-box {
     height: auto;
@@ -707,11 +707,11 @@ td {
     margin: 0 auto;
 }
 
-.my-achievement-container .my-achievement-box:hover,
-.my-achievement-container .your-achievement-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+/*.my-achievement-container .my-achievement-box:hover,*/
+/*.my-achievement-container .your-achievement-box:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 .my-achievement-container .achievement-progress {
     height: 10px;
