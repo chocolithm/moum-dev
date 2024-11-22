@@ -100,6 +100,11 @@ a {
 }
 
 
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 
 /* 회원가입 모달 닫기 버튼 스타일 */
@@ -119,6 +124,11 @@ a {
 }
 
 
+/* 회원가입 모달 닫기 버튼에 hover 효과 */
+.signup-close-btn:hover {
+    color: darkgreen;
+    transition: color 0.3s ease;
+}
 
 
 body {
@@ -165,6 +175,16 @@ header .logo {
     width: auto;   /* 비율 유지 */
 }
 
+/* 로고 이미지에만 호버 효과 적용 */
+header img.logo:hover {
+    transform: scale(1.1);
+    /* 이미지 크기 확대 */
+}
+
+header img:not(.logo):hover {
+    transform: none;
+    /* 호버 시 변형 없애기 */
+}
 
 header > nav {
     display: inline;
@@ -319,7 +339,11 @@ footer {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
 
 .btn a {
     text-decoration: none;
@@ -382,7 +406,9 @@ footer {
     left: 90%;
 }
 
-
+.x:hover {
+    cursor: pointer;
+}
 
 
 /* table */
@@ -425,6 +451,12 @@ td {
     /* 효과 적용 */
 }
 
+.achievement-user-progress .achievement-photo:hover {
+    transform: translateY(-5px);
+    /* 마우스 올리면 살짝 위로 올라오는 효과 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* 그림자 강화 */
+}
 
 .achievement-user-progress .achievement-photo span {
     display: inline-block;
@@ -473,6 +505,10 @@ td {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/*.achievement-user-progress .progress-bar-container:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 .achievement-user-progress .progress-bar {
     height: 20px;
@@ -526,6 +562,11 @@ td {
     position: relative;
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.achievement-user-progress .achievement-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -637,6 +678,10 @@ td {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/*.my-achievement-container .achievement-img-container .achievement-img:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 .my-achievement-container .my-achievement-box {
     height: auto;
@@ -662,7 +707,11 @@ td {
     margin: 0 auto;
 }
 
-
+/*.my-achievement-container .my-achievement-box:hover,*/
+/*.my-achievement-container .your-achievement-box:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 .my-achievement-container .achievement-progress {
     height: 10px;

@@ -29,6 +29,16 @@
           </select>
         </div>
 
+        <!-- 카테고리 선택 -->
+        <div class="form-group">
+          <label for="categoryNo">카테고리 선택</label>
+          <select class="form-control" id="categoryNo" name="categoryNo" required>
+            <option th:each="category : ${maincategoryList}" th:value="${category.no}" th:text="${category.name}"></option>
+          </select>
+        </div>
+
+
+
         <!-- 제목 입력 -->
         <div class="form-group">
           <label for="title">제목</label>

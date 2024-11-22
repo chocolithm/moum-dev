@@ -57,7 +57,7 @@
                 <div class="my-info-right-container-body">
                     <!-- 내 게시글 -->
                     <div class="my-board-container">
-                        <h2>최근 게시글</h2>
+                        <h4 class="text-center" style="margin-bottom: 2.5rem;">최근 게시글</h4>
                         <div class="recent-board" data-th-each="board, iterStat : ${boardList}"
                              data-th-id="'board-' + ${board.no}" data-th-if="${iterStat.index < 5}">
                             <a data-th-href="'/board/boardView?no=' + ${board.no}" data-th-text="${board.title}"></a>
@@ -66,7 +66,7 @@
 
                     <!-- 내 업적 -->
                     <div class="my-achievement-container" data-th-if="${isOwnProfile == true}">
-                        <h2>업적 현황</h2>
+                        <h4 class="text-center" style="margin-bottom: 2.5rem;">업적 현황</h4>
 
                         <!-- myinfo 각 업적 박스 -->
                         <img alt="업적 현황" class="achievement-list-btn" onclick="openAchievementListByUser()"
@@ -107,7 +107,7 @@
                     </div>
 
                     <div class="my-achievement-container" data-th-if="${isOwnProfile == false}">
-                        <h2>업적 현황</h2>
+                        <h4 class="text-center" style="margin-bottom: 2.5rem;">업적 현황</h4>
 
                         <div class="my-achievement-inner-container">
                             <!-- yourinfo 각 업적 박스 -->

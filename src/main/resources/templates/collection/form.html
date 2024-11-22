@@ -39,13 +39,17 @@
                 <td>
                     <select id="maincategoryNo" name="maincategory.no" onChange="fetchSubcategories(this.value)">
                         <option value="0">선택</option>
-                        <option data-th-each="maincategory : ${maincategoryList}" data-th-text="${maincategory.name}"
-                                data-th-value="${maincategory.no}" value="1">maincategory
+                        <!-- maincategoryList 반복 출력 -->
+                        <option th:each="maincategory : ${maincategoryList}"
+                                th:text="${maincategory.name}"
+                                th:value="${maincategory.no}">
                         </option>
+                        <!-- 기타 옵션 -->
                         <option value="999">기타</option>
                     </select>
                 </td>
             </tr>
+
             <tr>
                 <td><label for="subcategoryNo">소분류 *</label></td>
                 <td>

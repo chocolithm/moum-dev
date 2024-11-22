@@ -23,13 +23,17 @@
 
             <!-- 게시글 헤더 -->
             <div class="post-header">
-                <h1 class="post-title" th:text="${board.title}">게시글 제목</h1>
+                <h1 class="post-title">
+                    <span th:text="${board.title}">게시글 제목</span>
+                    <!-- 카테고리 표시 -->
+                    <small class="text-muted" th:text="'[' + ${board.maincategory.name} + ']'">[카테고리]</small>
+                </h1>
                 <div class="post-meta">
-                    <span th:text="${board.userNo}">작성자</span>
+                    <span th:text="${board.user.nickname}">작성자</span>
                     <span>조회수: <span th:text="${board.viewCount}">0</span></span>
                     <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>
                     <div class="post-meta-date">
-                    <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
+                        <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
                     </div>
                 </div>
             </div>
