@@ -189,6 +189,8 @@ function executeAlert(alert) {
     location.href = `/user/myInfo`;
   } else if (alert.category == "comment") {
     location.href = `/board/boardView?no=${alert.categoryNo}#comments-section`;
+  } else if (alert.category == "boardWarning") {
+    location.href = `/board/boardView?no=${alert.categoryNo}`;
   }
 }
 

@@ -105,42 +105,88 @@ function validateReport() {
     return true;
 }
 
-function openRestrict(category) {
+function openRestrict(category, categoryNo) {
     const report_layer = document.querySelector(".report-layer");
     openOverlay();
-    createRestrictPage(category);
+    createRestrictPage(category, categoryNo);
     fadeInWithFlex(report_layer);
 }
 
-function createRestrictPage(category) {
+function createRestrictPage(category, categoryNo) {
     const report_layer = document.querySelector(".report-layer");
     const htmlContent = `
         <div>
             <textarea id="restrictContent" placeholder="안내사항 작성. 미입력시 기본사항"></textarea>
         </div>
         <div>
-            <button class="btn btn-warning report-button" onclick="sendWarning('${category}')">경고</button>
+            <button class="btn btn-warning report-button" onclick="sendWarning('${category}', '${categoryNo}')">경고</button>
         </div>
         <div>
-            <button class="btn btn-warning report-button" onclick="restrict('${category}')", ">비공개</button>
+            <button class="btn btn-warning report-button" onclick="restrict('${category}', '${categoryNo}')", ">삭제</button>
         </div>
     `;
 
     report_layer.innerHTML = htmlContent;
 }
 
-function sendWarning(category) {
-    const report_layer = document.querySelector(".report-layer");
+function sendWarning(category, categoryNo) {
     const content = document.getElementById("restrictContent");
 
-    if (content.value.trim() == "") {
-        content.value = "게시글 신고가 접수되어 경고 처리되었습니다. 게시글 내용을 수정하시기 바랍니다.";
+    if (category == "board") {
+        if (content.value.trim() == "") {
+            content.value = "게시글 신고가 접수되어 경고 처리되었습니다. 게시글 내용을 수정하시기 바랍니다.";
+        }
     }
 
-    fetch(`/alert/add?category=report&categoryNo=0`)
+    fetch(`/alert/add?category=${category}Warning&categoryNo=${categoryNo}&content=${content.value}`)
+        .then(response => response.text())
+        .then(response => {
+            if (response == "success") {
+                alert("처리되었습니다.");
+                closeModal();
+            }
+        })
+        .catch(error => {
+            console.error("error sending warning: ", error);
+        })
 }
 
-function restrict(category) {
-    const report_layer = document.querySelector(".report-layer");
+async function restrict(category, categoryNo) {
+    const content = document.getElementById("restrictContent");
 
+    if (category == "board") {
+        if (content.value.trim() == "") {
+            content.value = "게시글 신고가 접수되어 삭제 처리되었습니다.";
+        }
+        await fetch(`/board/get?no=${categoryNo}`)
+            .then(response => response.json())
+            .then(board => {
+                content.value = `
+                    %5B${board.title}%5D ${content.value}
+                `;
+            })
+    }
+
+    fetch(`/alert/add?category=${category}Restrict&categoryNo=${categoryNo}&content=${content.value}`)
+        .then(response => response.text())
+        .then(response => {
+            if (response == "success") {
+                fetch(`/report/restrict?category=${category}Restrict&categoryNo=${categoryNo}`)
+                    .then(response => response.text())
+                    .then(response => {
+                        if (response == "success") {
+                            alert("처리되었습니다.");
+                            location.href="/board/boardList";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("error executing restriction: ", error);
+                    })
+            }
+        })
+        .catch(error => {
+            console.error("error sending alert: ", error);
+        })
+
+    
 }
