@@ -1266,3 +1266,25 @@ a {
     display: flex;
     gap: 20px;
 }
+
+
+    /* 추천하기 버튼 css */
+    .recommend_button {
+        color: #212529; /* 기본 글씨색 검정 */
+        border-color: #212529; /* 기본 테두리 검정 */
+    }
+
+    /* 마우스를 올렸을 때 효과 없애기 */
+    .recommend_button:hover {
+        color: #212529; /* 기본 검정색 텍스트 유지 */
+        background-color: transparent; /* 배경색 투명하게 유지 */
+        border-color: #212529; /* 검정색 테두리 유지 */
+    }
+
+    /* 마우스를 누를 때 효과 없애기 */
+    .recommend_button:focus, .recommend_button:active {
+        box-shadow: none; /* 포커스 또는 클릭 시 테두리 효과 제거 */
+        color: #212529;
+        background-color: transparent;
+        border-color: #212529;
+    }

@@ -77,7 +77,7 @@
                 </form>
 
 
-                <button class="btn btn-warning" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
+                <button class="recommend_button btn btn-outline-dark" th:onclick="'toggleLike(' + ${board.no} + '); changeText(this);'" type="button">추천하기</button>
                 <button class="btn btn-warning" th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
                         onclick="openReport('board');" type="button">신고하기</button>
                 <button class="btn btn-warning" th:if="${authenticatedUser.admin == true}"
