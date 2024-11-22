@@ -50,21 +50,32 @@
 
             <!-- 추천/신고 버튼 -->
             <div class="action-buttons">
+                <!-- 거래완료 버튼 -->
                 <button class="trade-complete"
+                        th:if="${(authenticatedUser.no == board.userNo or authenticatedUser.admin) and board.sellOrSoldStatus == false and board.boardType == 'trade'}"
                         th:attr="disabled=${board.sellOrSoldStatus}"
-                        th:if="${board.boardType == 'trade'}"
-                        th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ')'">거래완료</button>
+                        th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ')'">
+                    거래완료
+                </button>
 
 
 
+                <!-- 수정 버튼 -->
                 <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
-                        th:if="${board.sellOrSoldStatus == false}">수정하기</button>
+                        th:if="${(board.sellOrSoldStatus == false) and (authenticatedUser.no == board.userNo or authenticatedUser.admin)}">
+                    수정하기
+                </button>
 
+                <!-- 삭제 버튼 -->
                 <form method="post" name="postDeleteForm" th:action="@{/board/delete}">
                     <input name="no" th:value="${board.no}" type="hidden">
                     <input name="_method" type="hidden" value="DELETE">
-                    <button class="delete-button" type="button" onclick="deletePostWithDelAchieve()">삭제하기</button>
+                    <button class="delete-button" type="button" onclick="deletePostWithDelAchieve()"
+                            th:if="${authenticatedUser.no == board.userNo or authenticatedUser.admin}">
+                        삭제하기
+                    </button>
                 </form>
+
 
                 <button class="btn btn-warning" th:onclick="'toggleLike(' + ${board.no} + ');'" type="button">추천하기</button>
                 <button class="btn btn-warning" th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"

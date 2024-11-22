@@ -319,13 +319,21 @@ public class BoardController {
           Board updatedBoard,
           @RequestParam(value = "files", required = false) MultipartFile[] files,
           @RequestParam(value = "oldFiles", required = false) String[] oldFiles,
-          Model model) throws Exception {
+          @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-    updatedBoard.setNo(no);
+
+
+    // 현재 로그인한 사용자 정보 가져오기
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+
     Board existingBoard = boardService.get(no);
-
     if (existingBoard == null) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글을 찾을 수 없습니다: " + no);
+    }
+
+    // 게시글 작성자나 관리자만 수정 가능하도록 체크
+    if (existingBoard.getUserNo() != loginUser.getNo() && !loginUser.isAdmin()) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("게시글을 수정할 권한이 없습니다.");
     }
 
     if ("trade".equals(existingBoard.getBoardType())) {
@@ -394,9 +402,22 @@ public class BoardController {
   }
 
   @GetMapping("/complete/{no}")
-  public ResponseEntity<String> tradeComplete(@PathVariable("no") int no) throws Exception {
+  public ResponseEntity<String> tradeComplete(
+          @PathVariable("no") int no,
+          @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
+    // 현재 로그인한 사용자 정보 가져오기
+    User loginUser = userService.getByEmail(userDetails.getUsername());
 
+    Board existingBoard = boardService.get(no);
+    if (existingBoard == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글을 찾을 수 없습니다: " + no);
+    }
+
+    // 권한 체크
+    if (existingBoard.getUserNo() != loginUser.getNo() && !loginUser.isAdmin()) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("거래를 완료할 권한이 없습니다.");
+    }
 
     if (boardService.completeTrade(no)) {
       return ResponseEntity.ok("success");
@@ -404,6 +425,7 @@ public class BoardController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("거래완료 실패");
     }
   }
+
 
   @PostMapping("/uploadImage")
   @ResponseBody
@@ -472,12 +494,27 @@ public class BoardController {
   //    }
 
   @PostMapping("/delete")
-  public String delete(@RequestParam("no") int no) throws Exception {
+  public ResponseEntity<String> delete(
+          @RequestParam("no") int no,
+          @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    // 현재 로그인한 사용자 정보 가져오기
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+
+    Board existingBoard = boardService.get(no);
+    if (existingBoard == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글을 찾을 수 없습니다: " + no);
+    }
+
+    // 게시글 작성자나 관리자만 삭제 가능하도록 체크
+    if (existingBoard.getUserNo() != loginUser.getNo() && !loginUser.isAdmin()) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("게시글을 삭제할 권한이 없습니다.");
+    }
+
     // 게시글과 첨부 파일 삭제
     boardService.delete(no);
-    return "redirect:/board/boardList?deleted=true";
+    return ResponseEntity.ok("success");
   }
-
 
   private List<AttachedFile> uploadFiles(MultipartFile[] files) throws Exception {
     List<AttachedFile> attachedFiles = new ArrayList<>();
