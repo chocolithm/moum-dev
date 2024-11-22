@@ -81,8 +81,8 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
-  public void delete(String id) throws Exception {
-    achievementDao.delete(id);
+  public boolean delete(String id) throws Exception {
+    return achievementDao.delete(id);
   }
 
   @Override

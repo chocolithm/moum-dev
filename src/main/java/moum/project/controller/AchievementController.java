@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,11 +60,17 @@ public class AchievementController {
     return achievementService.get(id); // 상세 페이지 뷰 반환
   }
 
-  @GetMapping("delete")
+  @DeleteMapping("delete")
   @ResponseBody
-  public Object delete(String id) throws Exception {
-    achievementService.delete(id);
-    return "Achievement with id" + id + "삭제되었습니다.";
+  public String delete(String id) throws Exception {
+    Achievement achievement = achievementService.get(id);
+    storageService.delete(folderName + "complete/" + achievement.getPhoto());
+    storageService.delete(folderName + achievement.getPhoto());
+
+    if (achievementService.delete(id)) {
+      return "success";
+    }
+    return "failure";
   }
 
   @PostMapping("add")

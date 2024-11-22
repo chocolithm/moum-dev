@@ -31,7 +31,7 @@ public interface AchievementService {
 
   boolean updateCount(Achievement achievement) throws Exception;
 
-  void delete(String id) throws Exception;
+  boolean delete(String id) throws Exception;
 
   boolean deletePrimaryAchievement(User user) throws Exception;
 

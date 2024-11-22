@@ -508,29 +508,6 @@ function triggerFileInput() {
   document.getElementById('files').click();
 }
 
-// function previewImage(event) {
-//   const file = event.target.files[0];
-//   const emptyImage = document.querySelector(".achievement-img");
-
-//   if (file) {
-//     const reader = new FileReader();
-
-//     reader.onload = function (e) {
-//       emptyImage.src = e.target.result;
-//       emptyImage.alt = "Uploaded Image";
-//       emptyImage.classList.remove("empty-image");
-//       emptyImage.classList.add("new-image");
-//     };
-
-//     reader.readAsDataURL(file);
-//   } else {
-//     emptyImage.src = "/images/collections/empty-collection.png";
-//     emptyImage.alt = "업적 사진 등록";
-//     emptyImage.classList.add("empty-image");
-//     emptyImage.classList.remove("new-image");
-//   }
-// }
-
 // 선택한 이미지 미리보기
 function previewImage(event) {
     const files = event.target.files;
@@ -599,8 +576,7 @@ function showSlides(index) {
   if (index < 0) { achievementSlideIndex = slides.length - 1; }
 
   slides.forEach((slide, i) => {
-    console.log(i + ", " + achievementSlideIndex);
-      slide.style.display = (i === achievementSlideIndex) ? 'block' : 'none';
+    slide.style.display = (i === achievementSlideIndex) ? 'block' : 'none';
   });
 }
 
@@ -647,9 +623,40 @@ function addAchievement() {
             }
         })
         .catch(error => {
-            console.error("Error fetching collection update:", error);
+            console.error("Error adding achievement: ", error);
         });
     }
+  }
+}
+
+function deleteAchievement(id) {
+  if (confirm("삭제하시겠습니까?")) {
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+    fetch(`/achievement/delete?id=${id}`, {
+      method: "DELETE",
+      headers: {
+          [csrfHeader]: csrfToken
+      }
+    })
+      .then(response => response.text())
+      .then(response => {
+          switch (response) {
+              case "success":
+                  alert("삭제했습니다.");
+                  document.querySelector("#achievement-admin").click();
+                  break;
+              case "failure":
+                  alert("삭제 실패했습니다.");
+                  break;
+          }
+      })
+      .catch(error => {
+          console.error("Error deleting achievement: ", error);
+      });
+    
   }
 }
 
@@ -686,8 +693,10 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
 
   const content_section = document.querySelector(".content-section");
   const paginationContainer = document.querySelector('.pagination');
+  const btn_section = document.querySelector(".btn-section");
   content_section.innerHTML = "";
   paginationContainer.innerHTML = "";
+  btn_section.innerHTML = "";
 
   fetch(`/admin/${menu}?no=${no}`)
     .then(response => response.json())
@@ -792,10 +801,18 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
       if (menu == "achievement") {
         const achievement = data;
         content_section.innerHTML = `
-          <div class="img-div">
-            <img src="${achievement.photo != "" && achievement.photo != null
-            ? 'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/' + achievement.photo
-            : '/images/common2/profile.png'}" alt="업적 사진" class="achievement-img">
+          <div class="img-div">            
+            <div class="slider">
+              <div class="slides">
+                <img alt="수집품 이미지" class="achievement-img slide current-image"
+                  src="https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/complete/${achievement.photo}">
+                <img alt="수집품 이미지" class="achievement-img slide current-image" style="display: none;"
+                  src="https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/${achievement.photo}">
+              </div>
+              <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
+              <a class="next" onClick="changeSlide(1)">&#10095;</a>
+            </div>
+
           </div>
           <table class="view-table">
             <tbody>
@@ -824,13 +841,19 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
               <tr>
                 <td>조건횟수</td>
                 <td>
-                  <input name="maxCount" type="text" value="${achievement.max_Count}" onchange="formatNumber(this);">
+                  <input name="maxCount" type="text" value="${achievement.maxCount}" onchange="formatNumber(this);">
                 </td>
               </tr>
               <tr>
                 <td>점수</td>
                 <td>
                   <input name="score" type="text" value="${achievement.score}" onchange="formatNumber(this);">
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <button class="btn">수정</button>
+                  <button class="btn" onclick="deleteAchievement('${achievement.id}')">삭제</button>
                 </td>
               </tr>
             </tbody>
