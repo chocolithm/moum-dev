@@ -1060,8 +1060,9 @@ a {
     flex-direction: column;
     align-items: center;
     width: 1246px;
-    height: 1800px;
+    height: auto;
     min-width: 1246px;
+    min-height: 1800px;
     padding: 20px;
     background-color: #ffffff;
 
