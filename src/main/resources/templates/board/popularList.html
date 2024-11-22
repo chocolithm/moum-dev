@@ -17,8 +17,9 @@
     };
   </script>
 </head>
-<div th:replace="~{header}"></div>
+
 <body>
+<div th:replace="~{header}"></div>
 
 <main>
   <div class="page-container">
@@ -34,8 +35,8 @@
     <div class="grid-option">
       <div class="grid-item">
         <div class="button-group-left">
-          <button class="recent" onclick="location.href='/board/boardList'">최근게시물</button>
-          <button class="popular active" onclick="location.href='/board/popularList'">인기게시글</button>
+          <button class="btn btn-dark active" onclick="location.href='/board/boardList'">최근게시물</button>
+          <button class="btn btn-dark active" onclick="location.href='/board/popularList'">인기게시글</button>
         </div>
 
         <div class="button-group-right">
