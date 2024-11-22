@@ -262,7 +262,7 @@ public class CollectionController {
   private boolean validateColletion(Collection collection) {
     if (collection.getName().trim().isEmpty()) {return false;}
     if (collection.getStatus().getNo() == 0) {return false;}
-    if (collection.getMaincategory().getNo() == 999 && collection.getOtherCategory().isEmpty()) {return false;}
+    if (collection.getMaincategory().getNo() == -999 && collection.getOtherCategory().isEmpty()) {return false;}
     return true;
   }
 
@@ -270,6 +270,15 @@ public class CollectionController {
   @ResponseBody
   public List<Subcategory> list(int maincategoryNo) throws Exception {
     return categoryService.listSubcategory(maincategoryNo);
+  }
+
+  @PostMapping("/subcategory/add")
+  @ResponseBody
+  public String addSubcategory(Subcategory subcategory) throws Exception {
+    if (categoryService.addSubcategory(subcategory)) {
+      return "success";
+    }
+    return "failure";
   }
 
 }

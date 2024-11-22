@@ -22,6 +22,11 @@
     <result column="count" property="count"/>
   </resultMap>
 
+  <insert id="insertSubcategory" parameterType="moum.project.vo.Subcategory">
+    insert into subcategory(maincategory_id, category_name)
+    values(#{maincategory.no}, #{name})
+  </insert>
+
   <select id="listSubcategory" resultMap="SubcategoryMap" parameterType="int">
     select
       subcategory_id,
@@ -39,7 +44,7 @@
     from
       maincategory
     where
-      maincategory_id != 999
+      maincategory_id != -999
   </select>
 
   <select id="findSubcategory" resultMap="SubcategoryMap" parameterType="int">

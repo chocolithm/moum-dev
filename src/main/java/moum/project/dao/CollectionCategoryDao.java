@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface CollectionCategoryDao {
+  boolean insertSubcategory(Subcategory subcategory) throws Exception;
+
   List<Subcategory> listSubcategory(int maincategoryNo) throws Exception;
 
   List<Maincategory> listMaincategory() throws Exception;

@@ -181,6 +181,17 @@
   overflow: hidden;
 }
 
+.main-section .subcategory-table .subcategory-add-tr {
+  position: sticky;
+  bottom: -7px;
+  background-color: rgb(245, 245, 245);
+}
+
+.main-section .subcategory-table .subcategory-add-tr input {
+  width: 100%;
+  text-align: center;
+}
+
 .main-section .content-section .view-table,
 .main-section .content-section .maincategory-table {
   transition: opacity 0.3s ease-in-out;

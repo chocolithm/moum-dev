@@ -207,7 +207,7 @@
       // 카테고리 목록 추가
       List<Maincategory> maincategoryList = categoryService.listMaincategory();
       Maincategory etcCategory = new Maincategory();
-      etcCategory.setNo(999);
+      etcCategory.setNo(-999);
       etcCategory.setName("기타");
       maincategoryList.add(etcCategory);
       model.addAttribute("maincategoryList", maincategoryList);
@@ -583,7 +583,7 @@
 
       // "기타" 카테고리 추가
       Maincategory etcCategory = new Maincategory();
-      etcCategory.setNo(999); // 999번 ID로 설정
+      etcCategory.setNo(-999); // 999번 ID로 설정
       etcCategory.setName("기타");
       maincategoryList.add(etcCategory);
 

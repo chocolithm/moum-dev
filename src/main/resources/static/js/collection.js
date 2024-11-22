@@ -298,7 +298,7 @@ function validateData(formData) {
         document.querySelector("#maincategoryNo").style = "border-color: red";
         return false;
     }
-    if (formData.get("maincategory.no") == 999 && formData.get("otherCategory") == "") {
+    if (formData.get("maincategory.no") == -999 && formData.get("otherCategory") == "") {
         document.querySelector("#otherCategory").style = "border-color: red";
         return false;
     }
@@ -417,7 +417,7 @@ function fetchSubcategories(maincategoryNo) {
         otherCategoryInput.parentNode.parentNode.style.display = "none";
         subcategorySelect.parentNode.parentNode.style.display = "table-row";
         subcategorySelect.disabled = true;
-    } else if (maincategoryNo > 0 && maincategoryNo < 999) {
+    } else if (maincategoryNo > 0) {
         otherCategoryInput.parentNode.parentNode.style.display = "none";
         subcategorySelect.parentNode.parentNode.style.display = "table-row";
         subcategorySelect.disabled = false;
@@ -437,13 +437,13 @@ function fetchSubcategories(maincategoryNo) {
             .catch(error => {
                 console.error("Error fetching subcategories:", error);
             });
-    } else if (maincategoryNo == 999) {
+    } else if (maincategoryNo == -999) {
         subcategorySelect.parentNode.parentNode.style.display = "none";
         otherCategoryInput.parentNode.parentNode.style.display = "table-row";
         subcategorySelect.disabled = true;
 
         const option = document.createElement("option");
-        option.value = 999;
+        option.value = -999;
         option.selected = true;
         subcategorySelect.appendChild(option);
     }

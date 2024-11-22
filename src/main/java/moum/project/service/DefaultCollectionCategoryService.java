@@ -14,6 +14,11 @@ public class DefaultCollectionCategoryService implements CollectionCategoryServi
   private final CollectionCategoryDao categoryDao;
 
   @Override
+  public boolean addSubcategory(Subcategory subcategory) throws Exception {
+    return categoryDao.insertSubcategory(subcategory);
+  }
+
+  @Override
   public List<Subcategory> listSubcategory(int maincategoryNo) throws Exception {
     return categoryDao.listSubcategory(maincategoryNo);
   }

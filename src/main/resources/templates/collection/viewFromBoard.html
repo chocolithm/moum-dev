@@ -40,14 +40,14 @@
         <td>대분류</td>
         <td data-th-each="maincategory : ${maincategoryList}"
             data-th-if="${maincategory.no} == ${collection.maincategory.no}" data-th-text="${maincategory.name}">대분류명</td>
-        <td data-th-if="${collection.maincategory.no == 999}">기타</td>
+        <td data-th-if="${collection.maincategory.no == -999}">기타</td>
       </tr>
-      <tr data-th-style="${collection.subcategory.no != 999 ? 'display: table-row;' : 'display: none;'}">
+      <tr data-th-style="${collection.subcategory.no != -999 ? 'display: table-row;' : 'display: none;'}">
         <td>소분류</td>
         <td data-th-each="subcategory : ${subcategoryList}"
             data-th-if="${subcategory.no} == ${collection.subcategory.no}" data-th-text="${subcategory.name}">소분류명</td>
       </tr>
-      <tr data-th-style="${collection.subcategory.no == 999 ? 'display: table-row;' : 'display: none;'}">
+      <tr data-th-style="${collection.subcategory.no == -999 ? 'display: table-row;' : 'display: none;'}">
         <td>분류명</td>
         <td data-th-text="${collection.otherCategory}"></td>
       </tr>

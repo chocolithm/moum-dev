@@ -836,6 +836,10 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
         }
 
         content += `
+              <tr class="subcategory-add-tr">
+                <td colspan="2"><input name="subcategory-name" id="subcategory-name" type="text"></td>
+                <td><button onclick="addSubcategory(${category[0].maincategory.no})">등록</button></td>
+              </tr>
             </tbody>
           </table>
         `;
@@ -1087,5 +1091,43 @@ function handleReport(reportNo) {
       .catch(error => {
         console.error("Error handling report result: ", error);
       });
+  }
+}
+
+function addSubcategory(maincategoryNo) {
+  if (confirm("등록하시겠습니까?")) {
+    const input = document.querySelector("#subcategory-name");
+    const formData = new FormData();
+
+    formData.append("name", input.value.trim());
+    formData.append("maincategory.no", maincategoryNo);
+
+    if (formData.get("name") != "") {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+      fetch(`/collection/subcategory/add`, {
+        method: "POST",
+        body: formData,
+        headers: {
+            [csrfHeader]: csrfToken
+        }
+      })
+        .then(response => response.text())
+        .then(response => {
+            switch (response) {
+                case "success":
+                    alert("등록했습니다.");
+                    fetchAdminDetail("category", maincategoryNo);
+                    break;
+                case "failure":
+                    alert("등록 실패했습니다.");
+                    break;
+            }
+        })
+        .catch(error => {
+            console.error("Error adding achievement: ", error);
+        });
+    }
   }
 }
