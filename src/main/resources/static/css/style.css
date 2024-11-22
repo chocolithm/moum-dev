@@ -170,6 +170,11 @@ header img {
     transition: transform 0.3s ease;
 }
 
+header .logo {
+    height: 60px;  /* 원하는 크기로 조절 */
+    width: auto;   /* 비율 유지 */
+}
+
 /* 로고 이미지에만 호버 효과 적용 */
 header img.logo:hover {
     transform: scale(1.1);
@@ -197,7 +202,7 @@ header .profile-image {
 
 /* main */
 main {
-    padding: 20px 30px;
+    padding: 20px 10px;
     overflow: hidden;
 }
 
