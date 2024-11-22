@@ -82,14 +82,15 @@
                th:href="@{/board/popularList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword})}">Previous</a>
           </li>
 
-          <!-- Page Numbers -->
+          <!-- 페이지 번호 -->
           <li class="page-item"
               th:classappend="${i == currentPage ? 'active' : ''}"
               th:each="i : ${#numbers.sequence(1, totalPages)}">
             <a class="page-link bg-dark text-white"
-               th:href="@{/board/popularList(page=${i}, size=12, keyword=${keyword})}"
+               th:href="@{/board/popularList(page=${i}, size=${limit})}"
                th:text="${i}"></a>
           </li>
+
 
           <!-- Next Button -->
           <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
