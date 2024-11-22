@@ -55,9 +55,6 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #45a049;
-}
 
 .submit-button {
     width: 100%;

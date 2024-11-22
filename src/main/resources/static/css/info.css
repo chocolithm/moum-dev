@@ -38,9 +38,6 @@
 }
 
 
-.my-info-container .edit-button:hover {
-    background-color: #00ffaa;
-}
 
 .my-info-container .my-info-right-container {
     display: flex;
@@ -88,10 +85,6 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.my-board-container .recent-board:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 
 .my-board-container .recent-board a {
     font-size: 18px;
@@ -206,11 +199,6 @@
     transition: background-color 0.3s ease;
 }
 
-/* 드롭다운 아이템 호버 시 스타일 */
-.dropdown-item:hover {
-    background-color: darkgreen;
-    color: white;
-}
 
 /* 선택된 업적을 표시하는 버튼의 스타일 */
 .dropdown-item.active {
@@ -303,9 +291,7 @@
     transition: opacity 0.2s;
 }
 
-.achievement-list-btn:hover {
-    opacity: 1;
-}
+
 
 /* 반응형 수정 */
 @media (max-width: 768px) {

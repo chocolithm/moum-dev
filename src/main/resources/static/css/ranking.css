@@ -19,9 +19,7 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.achievement-ranking-container .ranking-card:hover {
-    transform: translateY(-5px);
-}
+
 
 .achievement-ranking-container .ranking-card .table-responsive {
     width: 100%;
@@ -49,9 +47,7 @@
     transition: height 0.3s ease-in-out;
 }
 
-.ranking-card table tbody:hover tr:nth-last-child(2) {
-    border-bottom: 1px solid #ccc;
-}
+
 
 .ranking-card table tbody tr {
     opacity: 0;
@@ -199,10 +195,6 @@
     color: black;
 }
 
-/* hover 시 강조되는 효과 */
-.ranking-card:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
 
 /* 현재 내 업적 순위 스타일 */
 .col-12 .card-body.py-4 {

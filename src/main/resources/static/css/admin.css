@@ -104,17 +104,6 @@
   overflow: hidden;
 }
 
-.main-section .content-section .list-table tr:hover {
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
-  transform: scale(1.02);
-  cursor: pointer;
-}
-
-.main-section .content-section .list-table thead tr:hover {
-  box-shadow: none;
-  transform: none;
-  cursor: auto;
-}
 
 .main-section .page-section {
   margin: 10px;

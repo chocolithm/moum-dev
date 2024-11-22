@@ -222,11 +222,7 @@
     transition: background-color 0.3s ease;
 }
 
-.pagination li.active a,
-.pagination li a:hover {
-    background-color: #007bff;
-    color: #fff;
-}
+
 
     /*-----------------------------------------------------------------------*/
 
@@ -433,17 +429,12 @@ body {
     background-color: #4CAF50; /* 녹색 */
 }
 
-.edit-button:hover {
-    background-color: #45a049;
-}
+
 
 .delete-button {
     background-color: #f44336; /* 빨간색 */
 }
 
-.delete-button:hover {
-    background-color: #e53935;
-}
 
 
 /* 중고거래 --------------------------------*/
@@ -490,9 +481,6 @@ body {
 }
 
 /* 업적 랭킹 */
-.achievement-ranking-container .ranking-card:hover {
-    transform: translateY(-5px);
-}
 
 .achievement-ranking-container .ranking-card .table-responsive {
     width: 100%;
@@ -520,9 +508,6 @@ body {
     transition: height 0.3s ease-in-out;
 }
 
-.ranking-card table tbody:hover tr:nth-last-child(2) {
-    border-bottom: 1px solid #ccc;
-}
 
 .ranking-card table tbody tr {
     opacity: 0;
@@ -670,10 +655,7 @@ body {
     color: black;
 }
 
-/* hover 시 강조되는 효과 */
-.ranking-card:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
+
 
 /* 현재 내 업적 순위 스타일 */
 .col-12 .card-body.py-4 {
@@ -709,11 +691,7 @@ body {
     }
 }
 
-/* */
 
-
-/* 임시 */
-/* board.css */
 
 /* board.css */
 
@@ -803,9 +781,6 @@ button {
     color: #ffffff;
 }
 
-.like-button:hover {
-    background-color: #343a40;
-}
 
 /* 수집품 보기 버튼 */
 .collection-load-button {
@@ -813,9 +788,7 @@ button {
     color: #495057;
 }
 
-.collection-load-button:hover {
-    background-color: #dee2e6;
-}
+
 
 /* 거래완료와 삭제 버튼 동일 크기 */
 .action-buttons {
@@ -830,9 +803,6 @@ button {
     flex: 1;
 }
 
-.trade-complete:hover {
-    background-color: #12b886;
-}
 
 .delete-button {
     background-color: #ff6b6b;
@@ -840,9 +810,6 @@ button {
     flex: 1;
 }
 
-.delete-button:hover {
-    background-color: #fa5252;
-}
 
 /* 슬라이더 이미지 스타일 */
 .slider {
@@ -920,9 +887,6 @@ button {
     font-weight: bold;
 }
 
-.comment-form button:hover {
-    background-color: #000000;
-}
 
 
 /* 댓글 아이템 스타일 */
@@ -1115,9 +1079,6 @@ a {
 }
 
 
-.grid-item:hover {
-    transform: translateY(-5px);
-}
 
 .item-image {
     width: 100%;
@@ -1185,9 +1146,9 @@ a {
 }
 
 .button-group-left {
-
     margin-right: auto;
 }
+
 .button-group-right {
     margin-left: auto; /* 오른쪽 정렬 */
 }
@@ -1205,13 +1166,9 @@ a {
 .grid-option .write-button {
     background-color: #7a7a7a;
     color: white;
-
 }
 
-.grid-option button:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-}
+
 
 
 .post-grid {
