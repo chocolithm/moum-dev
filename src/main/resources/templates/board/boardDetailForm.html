@@ -104,11 +104,12 @@
       ],
       callbacks: {
         onImageUpload: function (files) {
-          // uploadImage(files[0]);
-          // for (i = 0; i < files.length; i++) {
-          //   uploadImage(files[i]);
-          // }
-          for (i = 0; i < files.length; i++) {
+          const maxSize = 10 * 1024 * 1024; // 10MB 제한
+          for (let i = 0; i < files.length; i++) {
+            if (files[i].size > maxSize) {
+              alert("10MB 이하 파일만 첨부해주세요");
+              return;
+            }
             saveImages(files[i]);
           }
         },
