@@ -24,18 +24,19 @@
 
     <select id="list" resultMap="UserMap">
         select
-        user_id,
-        nickname,
-        email,
-        admin,
-        photo,
-        start_date,
-        end_date,
-        last_login
+            user_id,
+            nickname,
+            email,
+            admin,
+            photo,
+            start_date,
+            last_login
         from
-        user
+            user
+        where
+            end_date is null
         order by
-        user_id asc
+            user_id asc
     </select>
 
     <insert id="insert" parameterType="moum.project.vo.User"

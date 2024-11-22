@@ -1,9 +1,11 @@
 package moum.project.service;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import moum.project.dao.AchievementDao;
+import moum.project.dao.UserDao;
 import moum.project.vo.Achievement;
 import moum.project.vo.User;
 import org.springframework.stereotype.Service;
@@ -12,12 +14,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultAchievementService implements AchievementService {
 
-  @NonNull
-  AchievementDao achievementDao;
+  private final AchievementDao achievementDao;
+  private final UserDao userDao;
 
   @Override
   public boolean add(Achievement achievement) throws Exception {
-    return achievementDao.insert(achievement);
+    List<User> userList = userDao.list();
+    if (achievementDao.insert(achievement)) {
+      achievementDao.insertByAchievements(achievement, userList);
+      return true;
+    }
+    return false;
   }
 
   @Override
@@ -81,7 +88,9 @@ public class DefaultAchievementService implements AchievementService {
   }
 
   @Override
+  @Transactional
   public boolean delete(String id) throws Exception {
+    achievementDao.deleteByAchievement(id);
     return achievementDao.delete(id);
   }
 

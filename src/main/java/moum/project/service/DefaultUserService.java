@@ -43,10 +43,7 @@ public class DefaultUserService implements UserService {
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       userDao.insert(user);
       List<Achievement> achievementList = achievementDao.list();
-      for (Achievement achievement: achievementList){
-          achievement.setUser(user);
-          achievementDao.insertByUser(achievement);
-      }
+      achievementDao.insertByUser(achievementList, user);
     }
 
     /**

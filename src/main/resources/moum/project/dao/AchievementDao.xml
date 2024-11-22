@@ -33,9 +33,21 @@
     </insert>
 
 
-    <!--1,2번!--> <insert id="insertByUser" parameterType="moum.project.vo.Achievement">
-        insert into user_achievement(achievement_id, user_id)
-        values (#{id}, #{user.no})
+    <!--1,2번!-->
+    <insert id="insertByUser" parameterType="map">
+        insert into user_achievement (achievement_id, user_id)
+        values
+        <foreach collection="achievementList" item="achievement" separator=",">
+            (#{achievement.id}, #{user.no})
+        </foreach>
+    </insert>
+
+    <insert id="insertByAchievements" parameterType="map">
+        insert into user_achievement (achievement_id, user_id)
+        values
+        <foreach collection="userList" item="user" separator=",">
+            (#{achievement.id}, #{user.no})
+        </foreach>
     </insert>
 
     <select id="list" resultMap="AchievementMap"> <!--목록!-->
@@ -284,6 +296,11 @@
     <delete id="deleteAchievementByUser" parameterType="int">
         delete from user_achievement
         where user_id = #{no}
+    </delete>
+
+    <delete id="deleteByAchievement" parameterType="String">
+        delete from user_achievement
+        where achievement_id = #{id}
     </delete>
 
 </mapper>

@@ -65,10 +65,10 @@ public class AchievementController {
   @ResponseBody
   public String delete(String id) throws Exception {
     Achievement achievement = achievementService.get(id);
-    storageService.delete(folderName + "complete/" + achievement.getPhoto());
-    storageService.delete(folderName + achievement.getPhoto());
 
     if (achievementService.delete(id)) {
+      storageService.delete(folderName + "complete/" + achievement.getPhoto());
+      storageService.delete(folderName + achievement.getPhoto());
       return "success";
     }
     return "failure";
@@ -80,7 +80,10 @@ public class AchievementController {
       Achievement achievement,
       MultipartFile[] files) throws Exception {
 
+
     if (files != null) {
+      achievement.setPhoto(files[0].getOriginalFilename());
+
       for (int i = 0; i < files.length; i++) {
         if (files[i].getSize() == 0) {
           continue;
@@ -95,12 +98,11 @@ public class AchievementController {
         options.put(StorageService.CONTENT_TYPE, files[i].getContentType());
 
         storageService.upload(
-            folderName + (i == 0 ? "" : "complete/") + attachedFile.getFilename(),
+            folderName + (i == 0 ? "" : "complete/") + achievement.getPhoto(),
             files[i].getInputStream(),
             options);
       }
 
-      achievement.setPhoto(files[0].getOriginalFilename());
     }
 
     if (achievementService.add(achievement)) {

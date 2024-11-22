@@ -12,7 +12,9 @@ public interface AchievementDao {
 
     boolean insert(Achievement achievement) throws Exception;
 
-    boolean insertByUser(Achievement achievement) throws Exception;
+    boolean insertByUser(List<Achievement> achievementList, User user) throws Exception;
+
+    boolean insertByAchievements(Achievement achievement, List<User> userList) throws Exception;
 
     List<Achievement> list() throws Exception;
 
@@ -50,6 +52,8 @@ public interface AchievementDao {
     boolean deletePrimaryAchievement(User user) throws Exception;
 
     boolean deleteAchievementByUser(int userNo) throws Exception;
+
+    boolean deleteByAchievement(String id) throws Exception;
 
     boolean completeAchievement(Achievement achievement) throws Exception;
 
