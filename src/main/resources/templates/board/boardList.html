@@ -6,13 +6,13 @@
     <title>전체게시판</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link data-th-href="@{/css/style.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
     <script>
         // 페이지 로드 시 삭제 완료 메시지 표시
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get("deleted") === "true") {
+            if (urlParams.get("deleted") === "true")     {
                 alert("삭제되었습니다.");
             }
         };
@@ -94,9 +94,6 @@
                     <button class="btn btn-dark active" onclick="location.href='/board/boardList'">최근게시물</button>
                     <button class="btn btn-dark active" onclick="location.href='/board/popularList'">인기게시글</button>
                 </div>
-
-
-
                 <div class="button-group-right">
                     <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
                 </div>
@@ -106,7 +103,7 @@
         </div>
 
         <div class="grid-container">
-            <div class="grid-item-list" th:each="board : ${recentBoards}">
+            <div class="grid-item" th:each="board : ${recentBoards}">
                 <img alt="게시글 이미지"
                      class="item-image"
                      th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
@@ -143,7 +140,12 @@
         <div class="pagination-container mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-
+                    <!-- Previous and Next Buttons 수정 -->
+                    <!-- Previous Button -->
+                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                        <a class="page-link bg-dark text-white"
+                           th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">Previous</a>
+                    </li>
 
                     <!-- Page Numbers -->
                     <li class="page-item"
@@ -152,13 +154,6 @@
                         <a class="page-link bg-dark text-white"
                            th:href="@{/board/boardList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"
                            th:text="${i}"></a>
-                    </li>
-
-                    <!-- Previous and Next Buttons 수정 -->
-                    <!-- Previous Button -->
-                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link bg-dark text-white"
-                           th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">Previous</a>
                     </li>
 
                     <!-- Next Button -->
@@ -178,61 +173,8 @@
 
 <footer th:replace="~{footer :: footer}"></footer>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const tbody = document.querySelector(".achievement-ranking-container tbody");
-        const rows = document.querySelectorAll(".achievement-ranking-container tbody tr");
-        let currentIndex = 0;
-        let animationTimer = null;
+<<script src="/js/board.js"></script>
 
-        function showAllRows() {
-            rows.forEach(row => {
-                row.style.position = 'static';
-                row.style.opacity = '1';
-            });
-            tbody.style.height = 'auto';
-        }
-
-        function resetRows() {
-            rows.forEach(row => {
-                row.style.position = 'absolute';
-                row.style.opacity = '0';
-            });
-            tbody.style.height = '65px';
-            showNextRow();
-        }
-
-        function showNextRow() {
-            if (animationTimer) {
-                clearTimeout(animationTimer);
-            }
-
-            rows.forEach(row => {
-                row.style.opacity = '0';
-            });
-
-            rows[currentIndex].style.opacity = '1';
-
-            currentIndex = (currentIndex + 1) % rows.length;
-
-            animationTimer = setTimeout(showNextRow, 2500);
-        }
-
-        tbody.addEventListener('mouseenter', () => {
-            if (animationTimer) {
-                clearTimeout(animationTimer);
-                animationTimer = null;
-            }
-            showAllRows();
-        });
-
-        tbody.addEventListener('mouseleave', () => {
-            resetRows();
-        });
-
-        showNextRow();
-    });
-</script>
 </body>
 
 </html>

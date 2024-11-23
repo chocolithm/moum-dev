@@ -255,4 +255,24 @@ public class DefaultBoardService implements BoardService {
         return boardDao.countByKeywordAndCategory(params);
     }
 
+
+    @Override
+    public List<Board> searchPopularByCategoryAndPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("categoryNo", categoryNo);
+        params.put("offset", offset);
+        params.put("limit", limit);
+        return boardDao.searchPopularByPageWithCategory(params);
+    }
+
+    @Override
+    public int countPopularByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("categoryNo", categoryNo);
+        return boardDao.countPopularByKeywordAndCategory(params);
+    }
+
+
 }

@@ -23,13 +23,23 @@
 
 <main style="background-color: white">
   <div class="page-container">
-    <div class="search-section">
-      <div class="navigation-pill">
-        <div class="title-wrapper">
-          <div class="title" style="font-weight: bold">주제별</div>
+    <!-- 카테고리 선택 섹션 추가 -->
+    <div class="category-filter-container">
+      <form th:action="@{/board/popularList}" method="get" class="category-filter-form">
+        <div class="form-group">
+          <select class="form-select category-filter-select" name="categoryNo" onchange="this.form.submit()">
+            <option value="">종류</option>
+            <option th:each="category : ${maincategoryList}"
+                    th:value="${category.no}"
+                    th:text="${category.name}"
+                    th:selected="${category.no == categoryNo}">
+            </option>
+          </select>
         </div>
-      </div>
-
+        <input type="hidden" name="keyword" th:value="${keyword}">
+        <input type="hidden" name="page" th:value="${currentPage}">
+        <input type="hidden" name="size" th:value="${size}">
+      </form>
     </div>
 
     <div class="grid-option">
@@ -40,7 +50,7 @@
         </div>
 
         <div class="button-group-right">
-          <button class="write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
+          <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
         </div>
       </div>
     </div>
@@ -61,17 +71,20 @@
             <div class="item-title" th:text="${board.title}">게시글 제목</div>
             <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100</div>
             <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
-            <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd')}">2024-11-15</div>
+            <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-11-15 12:34</div>
           </a>
         </div>
       </div>
     </div>
+
     <div class="search-bar">
-      <form th:action="@{/board/boardList}" method="get">
+      <form th:action="@{/board/popularList}" method="get">
         <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" type="text" th:value="${keyword}">
         <input type="hidden" name="size" th:value="${size}">
+        <input type="hidden" name="categoryNo" th:value="${categoryNo}">
         <button type="submit" class="btn btn-dark">검색</button>
       </form>
+
     </div>
 
     <div class="pagination-container mt-4">
@@ -80,7 +93,7 @@
           <!-- Previous Button -->
           <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
             <a class="page-link bg-dark text-white"
-               th:href="@{/board/popularList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword})}">Previous</a>
+               th:href="@{/board/popularList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=${size}, keyword=${keyword}, categoryNo=${categoryNo})}">Previous</a>
           </li>
 
           <!-- 페이지 번호 -->
@@ -88,21 +101,18 @@
               th:classappend="${i == currentPage ? 'active' : ''}"
               th:each="i : ${#numbers.sequence(1, totalPages)}">
             <a class="page-link bg-dark text-white"
-               th:href="@{/board/popularList(page=${i}, size=${limit})}"
+               th:href="@{/board/popularList(page=${i}, size=${size}, keyword=${keyword}, categoryNo=${categoryNo})}"
                th:text="${i}"></a>
           </li>
-
 
           <!-- Next Button -->
           <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
             <a class="page-link bg-dark text-white"
-               th:href="@{/board/popularList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword})}">Next</a>
+               th:href="@{/board/popularList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=${size}, keyword=${keyword}, categoryNo=${categoryNo})}">Next</a>
           </li>
-
         </ul>
       </nav>
     </div>
-
 
   </div>
 </main>

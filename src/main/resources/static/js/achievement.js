@@ -1,5 +1,3 @@
-
-
 //회원별 업적 현황 가져오기
 function fetchAchievementByUser() {
     fetch(`/achievement/listByUser`)
@@ -140,5 +138,3 @@ function filterAchievements() {
         }
     });
 }
-
-

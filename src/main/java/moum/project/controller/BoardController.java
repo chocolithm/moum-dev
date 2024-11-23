@@ -14,6 +14,7 @@
   import org.springframework.web.bind.annotation.*;
   import org.springframework.web.context.request.WebRequest;
   import org.springframework.web.multipart.MultipartFile;
+  import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
   import java.util.*;
 
@@ -43,19 +44,46 @@
     }
 
     @GetMapping("/popularList")
-    public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
-                              @RequestParam(value = "limit", defaultValue = "12") int limit, Model model) throws Exception {
-      int offset = (page - 1) * limit;
-      List<Board> popularBoards = boardService.listPopularByPage(offset, limit);
-      model.addAttribute("popularBoards", popularBoards);
+    public String popularList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "12") int size,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
+            Model model) throws Exception {
 
-      int totalBoards = boardService.countPopularPosts();
-      int totalPages = (int) Math.ceil((double) totalBoards / limit);
+      int offset = (page - 1) * size;
+      List<Board> popularBoards;
+      int totalBoards;
+
+      // 검색 및 필터링 조건에 따라 메서드 호출
+      if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
+        popularBoards = boardService.searchPopularByCategoryAndPage(keyword, categoryNo, offset, size);
+        totalBoards = boardService.countPopularByKeywordAndCategory(keyword, categoryNo);
+      } else {
+        popularBoards = boardService.listPopularByPage(offset, size);
+        totalBoards = boardService.countPopularPosts();
+      }
+
+      // 페이징 데이터 계산
+      int totalPages = (int) Math.ceil((double) totalBoards / size);
+      model.addAttribute("popularBoards", popularBoards);
       model.addAttribute("currentPage", page);
       model.addAttribute("totalPages", totalPages);
+      model.addAttribute("keyword", keyword);
+      model.addAttribute("categoryNo", categoryNo);
+      model.addAttribute("size", size);
+
+      // 카테고리 목록 추가
+      List<Maincategory> maincategoryList = categoryService.listMaincategory();
+      Maincategory etcCategory = new Maincategory();
+      etcCategory.setNo(-999);
+      etcCategory.setName("기타");
+      maincategoryList.add(etcCategory);
+      model.addAttribute("maincategoryList", maincategoryList);
 
       return "board/popularList";
     }
+
 
 
 
@@ -510,27 +538,32 @@
     //    }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> delete(
+    public String delete(
             @RequestParam("no") int no,
-            @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+            @AuthenticationPrincipal UserDetails userDetails,
+            RedirectAttributes redirectAttributes) throws Exception {
 
       // 현재 로그인한 사용자 정보 가져오기
       User loginUser = userService.getByEmail(userDetails.getUsername());
 
       Board existingBoard = boardService.get(no);
       if (existingBoard == null) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글을 찾을 수 없습니다: " + no);
+        redirectAttributes.addFlashAttribute("message", "해당 게시글을 찾을 수 없습니다: " + no);
+        return "redirect:/board/boardList";
       }
 
       // 게시글 작성자나 관리자만 삭제 가능하도록 체크
       if (existingBoard.getUserNo() != loginUser.getNo() && !loginUser.isAdmin()) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("게시글을 삭제할 권한이 없습니다.");
+        redirectAttributes.addFlashAttribute("message", "게시글을 삭제할 권한이 없습니다.");
+        return "redirect:/board/boardList";
       }
 
       // 게시글과 첨부 파일 삭제
       boardService.delete(no);
-      return ResponseEntity.ok("success");
+      redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 삭제되었습니다.");
+      return "redirect:/board/boardList";
     }
+
 
     private List<AttachedFile> uploadFiles(MultipartFile[] files) throws Exception {
       List<AttachedFile> attachedFiles = new ArrayList<>();
