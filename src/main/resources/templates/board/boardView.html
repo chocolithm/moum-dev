@@ -86,9 +86,9 @@
 <!--                        th:onclick="'toggleLike(' + ${board.no} + '); changeText(this);'"-->
 <!--&lt;!&ndash;                        type="button">추천하기</button>&ndash;&gt;-->
 
-                <button class="btn btn-warning" th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
+                <button class="btn btn-danger" th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
                         onclick="openReport('board');" type="button">신고하기</button>
-                <button class="btn btn-warning" th:if="${authenticatedUser.admin == true}"
+                <button class="btn btn-danger" th:if="${authenticatedUser.admin == true}"
                         data-th-onclick="|openRestrict('board', '${board.no}')|" type="button">경고/제재</button>
             </div>
 

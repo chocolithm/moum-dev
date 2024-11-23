@@ -69,23 +69,22 @@
     <div class="page-container">
         <!-- 카테고리 선택 섹션 추가 -->
         <div class="category-filter-container">
-            <form th:action="@{/board/boardList}" method="get" class="category-filter-form">
+            <form class="category-filter-form" method="get" th:action="@{/board/boardList}">
                 <div class="form-group">
                     <select class="form-select category-filter-select" name="categoryNo" onchange="this.form.submit()">
                         <option value="">종류</option>
                         <option th:each="category : ${maincategoryList}"
-                                th:value="${category.no}"
+                                th:selected="${category.no == categoryNo}"
                                 th:text="${category.name}"
-                                th:selected="${category.no == categoryNo}">
+                                th:value="${category.no}">
                         </option>
                     </select>
                 </div>
-                <input type="hidden" name="keyword" th:value="${keyword}">
-                <input type="hidden" name="page" th:value="${currentPage}">
-                <input type="hidden" name="size" th:value="${size}">
+                <input name="keyword" th:value="${keyword}" type="hidden">
+                <input name="page" th:value="${currentPage}" type="hidden">
+                <input name="size" th:value="${size}" type="hidden">
             </form>
         </div>
-
 
 
         <div class="grid-option">
@@ -128,22 +127,20 @@
         </div>
 
         <div class="search-bar">
-            <form th:action="@{/board/boardList}" method="get">
-                <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" type="text" th:value="${keyword}">
-                <input type="hidden" name="size" th:value="${size}">
-                <input type="hidden" name="categoryNo" th:value="${categoryNo}">
-                <button type="submit" class="btn btn-dark">검색</button>
+            <form method="get" th:action="@{/board/boardList}">
+                <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" th:value="${keyword}" type="text">
+                <input name="size" th:value="${size}" type="hidden">
+                <input name="categoryNo" th:value="${categoryNo}" type="hidden">
+                <button class="btn btn-dark" type="submit">검색</button>
             </form>
         </div>
-
-
+        
         <div class="pagination-container mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    <!-- Previous and Next Buttons 수정 -->
                     <!-- Previous Button -->
                     <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link bg-dark text-white"
+                        <a class="page-link bg-white text-dark"
                            th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">Previous</a>
                     </li>
 
@@ -158,14 +155,20 @@
 
                     <!-- Next Button -->
                     <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link bg-dark text-white"
+                        <a class="page-link bg-white text-dark"
                            th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">Next</a>
                     </li>
-
-
                 </ul>
             </nav>
         </div>
+
+        <!-- Custom CSS to remove the blue outline on link buttons -->
+        <style>
+            .pagination .page-link:focus {
+                outline: none;
+                box-shadow: none;
+            }
+        </style>
 
 
     </div>
@@ -173,7 +176,8 @@
 
 <footer th:replace="~{footer :: footer}"></footer>
 
-<<script src="/js/board.js"></script>
+<
+<script src="/js/board.js"></script>
 
 </body>
 
