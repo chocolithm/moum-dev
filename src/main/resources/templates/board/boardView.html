@@ -58,7 +58,7 @@
                 <button class="trade-complete"
                         th:if="${(authenticatedUser.no == board.userNo or authenticatedUser.admin) and board.sellOrSoldStatus == false and board.boardType == 'trade'}"
                         th:attr="disabled=${board.sellOrSoldStatus}"
-                        th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ')'">
+                        th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ', ' + ${board.maincategory.no} + ')'">
                     거래완료
                 </button>
 

@@ -128,6 +128,10 @@ async function updateAchievement(
             } catch (alertError) {
                 console.error("Error adding achievement alert:", alertError);
             }
+
+            await updateAchievement("TEN_ACHIEVEMENT");
+            await updateAchievement("THIRTY_ACHIEVEMENT");
+            
             if (onAcquired) onAcquired();
             return;
         }
