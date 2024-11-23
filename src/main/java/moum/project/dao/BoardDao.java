@@ -94,4 +94,9 @@ public interface BoardDao {
 
     void updateIsPopular(@Param("no") int boardNo, @Param("isPopular") boolean isPopular) throws Exception; // 인기게시글
 
+
+    List<Board> searchPopularByPageWithCategory(Map<String, Object> params) throws Exception;
+
+    int countPopularByKeywordAndCategory(Map<String, Object> params) throws Exception;
+
 }

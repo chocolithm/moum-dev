@@ -44,19 +44,46 @@
     }
 
     @GetMapping("/popularList")
-    public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
-                              @RequestParam(value = "limit", defaultValue = "12") int limit, Model model) throws Exception {
-      int offset = (page - 1) * limit;
-      List<Board> popularBoards = boardService.listPopularByPage(offset, limit);
-      model.addAttribute("popularBoards", popularBoards);
+    public String popularList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "12") int size,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
+            Model model) throws Exception {
 
-      int totalBoards = boardService.countPopularPosts();
-      int totalPages = (int) Math.ceil((double) totalBoards / limit);
+      int offset = (page - 1) * size;
+      List<Board> popularBoards;
+      int totalBoards;
+
+      // 검색 및 필터링 조건에 따라 메서드 호출
+      if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
+        popularBoards = boardService.searchPopularByCategoryAndPage(keyword, categoryNo, offset, size);
+        totalBoards = boardService.countPopularByKeywordAndCategory(keyword, categoryNo);
+      } else {
+        popularBoards = boardService.listPopularByPage(offset, size);
+        totalBoards = boardService.countPopularPosts();
+      }
+
+      // 페이징 데이터 계산
+      int totalPages = (int) Math.ceil((double) totalBoards / size);
+      model.addAttribute("popularBoards", popularBoards);
       model.addAttribute("currentPage", page);
       model.addAttribute("totalPages", totalPages);
+      model.addAttribute("keyword", keyword);
+      model.addAttribute("categoryNo", categoryNo);
+      model.addAttribute("size", size);
+
+      // 카테고리 목록 추가
+      List<Maincategory> maincategoryList = categoryService.listMaincategory();
+      Maincategory etcCategory = new Maincategory();
+      etcCategory.setNo(-999);
+      etcCategory.setName("기타");
+      maincategoryList.add(etcCategory);
+      model.addAttribute("maincategoryList", maincategoryList);
 
       return "board/popularList";
     }
+
 
 
 

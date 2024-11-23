@@ -74,4 +74,8 @@ public interface BoardService {
     List<Board> searchByCategoryAndPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception;
     int countByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception;
 
+    List<Board> searchPopularByCategoryAndPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception;
+
+    int countPopularByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception;
+
 }
