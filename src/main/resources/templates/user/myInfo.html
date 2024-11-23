@@ -78,6 +78,7 @@
 
                             <div class="achievement-img-container">
                                 <img alt="업적 이미지" class="achievement-img"
+                                     src="/images/achievement/defaultImage.png"
                                      data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}">
                             </div>
 
@@ -91,9 +92,9 @@
                                              aria-valuenow="${achievement.progress}"
                                              class="progress-bar progress-bar-striped progress-bar-animated"
                                              data-th-class="'progress-bar progress-bar-striped progress-bar-animated ' + (
-                ${achievement.progress <= 40 ? 'bg-danger' :
-                (achievement.progress <= 60 ? 'bg-warning' :
-                (achievement.progress <= 99 ? 'bg-info' : 'bg-success'))})"
+                                             ${achievement.progress <= 40 ? 'bg-danger' :
+                                             (achievement.progress <= 60 ? 'bg-warning' :
+                                             (achievement.progress <= 99 ? 'bg-info' : 'bg-success'))})"
                                              data-th-style="'width:' + ${achievement.progress} + '%'"
                                              role="progressbar">
                                         </div>
@@ -117,6 +118,7 @@
                                  data-th-progress="${achievement.progress}">
                                 <div class="your-achievement-img-container">
                                     <img alt="업적 이미지" class="achievement-img"
+                                         src="/images/achievement/defaultImage.png"
                                          data-th-src="${'/images/achievement/complete/' + achievement.photo}">
                                     <div class="yourinfo-achievement-name" data-th-text="${achievement.name}"></div>
                                 </div>

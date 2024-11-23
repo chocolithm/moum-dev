@@ -408,3 +408,91 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("회원가입 중 오류가 발생했습니다.");
     }
 });
+
+// 페이지 전환을 위한 스타일
+const style = document.createElement('style');
+style.textContent = `
+  .content-transition {
+    transition: opacity 0.3s ease;
+  }
+
+  .content-fade {
+    opacity: 0;
+  }
+`;
+document.head.appendChild(style);
+
+// 페이지 콘텐츠 교체 함수
+async function smoothPageTransition(targetUrl) {
+    try {
+        // 현재 스크롤 위치 저장
+        const currentScroll = window.scrollY;
+
+        // AJAX로 새 페이지 콘텐츠 가져오기
+        const response = await fetch(targetUrl);
+        const html = await response.text();
+
+        // 새 페이지의 콘텐츠만 파싱
+        const parser = new DOMParser();
+        const newDoc = parser.parseFromString(html, 'text/html');
+        const newContent = newDoc.querySelector('.wrapper');
+
+        // 현재 페이지의 콘텐츠
+        const currentContent = document.querySelector('.wrapper');
+
+        // 부드러운 전환을 위한 클래스 추가
+        currentContent.classList.add('content-transition');
+        currentContent.classList.add('content-fade');
+
+        // 잠시 후 새 콘텐츠로 교체
+        setTimeout(() => {
+            // 새 콘텐츠로 교체
+            currentContent.innerHTML = newContent.innerHTML;
+
+            // URL 업데이트 (브라우저 히스토리에 추가)
+            window.history.pushState({}, '', targetUrl);
+
+            // 페이드 인
+            currentContent.classList.remove('content-fade');
+
+            // 스크롤 위치 복원
+            window.scrollTo(0, currentScroll);
+
+            // 새 페이지의 스크립트 실행
+            newDoc.querySelectorAll('script').forEach(script => {
+                if (script.textContent) {
+                    eval(script.textContent);
+                }
+            });
+
+            // 이벤트 리스너 재설정
+            setupEventListeners();
+        }, 300);
+
+    } catch (error) {
+        console.error('페이지 전환 중 오류 발생:', error);
+        // 오류 발생 시 일반적인 페이지 이동으로 폴백
+        window.location.href = targetUrl;
+    }
+}
+
+// 이벤트 리스너 설정 함수
+function setupEventListeners() {
+    // 수정하기 버튼 이벤트 리스너
+    const editButton = document.querySelector('.user-info-dropdown a');
+    if (editButton) {
+        editButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetUrl = this.getAttribute('href');
+            smoothPageTransition(targetUrl);
+        });
+    }
+}
+
+// 브라우저 뒤로가기/앞으로가기 처리
+window.addEventListener('popstate', function() {
+    smoothPageTransition(window.location.href);
+});
+
+// 초기 이벤트 리스너 설정
+document.addEventListener('DOMContentLoaded', setupEventListeners);

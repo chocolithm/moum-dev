@@ -23,9 +23,16 @@ function fetchAchievementByUser() {
 function openAchievementListByUser() {
     fetchAchievementByUser();
     openOverlay();
-    fadeIn(document.querySelector(".achievement-user-progress"));
-}
+    const modal = document.querySelector(".achievement-user-progress");
+    document.body.style.overflow = 'hidden';
+    modal.style.display = "block";
 
+    // 부드러운 페이드인 효과
+    requestAnimationFrame(() => {
+        modal.style.opacity = "1";
+        modal.classList.add('show');
+    });
+}
 
 // 정렬 함수 추가
 function sortAchievements() {
@@ -113,7 +120,7 @@ function filterAchievements() {
             (checkedValues.includes('not-started') && progress > 0 && progress < 100) ||
             (checkedValues.includes('completed') && progress === 100);
 
-        achievement.style.display = shouldShow ? 'block' : 'none';
+        achievement.style.display = shouldShow ? 'flex' : 'none';
 
         // Bootstrap Progress Bar 색상 및 애니메이션 설정
         const progressBar = achievement.querySelector('.progress-bar');
