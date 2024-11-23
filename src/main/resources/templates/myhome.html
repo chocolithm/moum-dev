@@ -83,11 +83,29 @@
 
 <script src="/js/collection.js"></script>
 
-<script src="/js/board.js"></script>
 <script>
-    <!--  수집품 조회화면 사진 인덱스  -->
     let collectionSlideIndex = 0;
-</script>
 
+    window.addEventListener('load', async function() {
+        const params = new URLSearchParams(location.search);
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+
+        if (params.has('lastLogin')) {
+            if (!params.get("lastLogin").startsWith(`${year}-${month}-${day}`)) {
+                await updateAchievement("FIRST_LOGIN");
+                await updateAchievement("SEVEN_LOGIN");
+                await updateAchievement("THIRTY_LOGIN");
+                await updateAchievement("HUNDRED_LOGIN");
+            }
+            
+            history.replaceState(null, '', location.origin + '/home');
+        }
+    })
+    
+</script>
 </body>
 </html>

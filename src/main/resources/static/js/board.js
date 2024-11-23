@@ -357,24 +357,7 @@ function tradeComplete(boardNo, categoryNo) {
         success: async function (response) {
             if (response === 'success') {
 
-                switch (categoryNo) {
-                    case 1: // 건담
-                        await updateAchievement("FIRST_GUNDAM");
-                        await updateAchievement("GUNDAM_PRO");
-                        break;
-                    case 2: // 레고
-                        await updateAchievement("FIRST_LEGO");
-                        await updateAchievement("LEGO_PRO");
-                        break;
-                    case 3: // 신발
-                        await updateAchievement("FIRST_SHOES");
-                        await updateAchievement("SHOE_PRO");
-                        break;
-                }
-
-                await updateAchievement("FIRST_TRADE");
-                await updateAchievement("TEN_TRADE");
-                await updateAchievement("THIRTY_TRADE");
+                await updateTradeAchievement(categoryNo);
 
                 alert('거래 완료 되었습니다');
                 window.location.href = `/board/boardView?no=${boardNo}`;
@@ -386,6 +369,27 @@ function tradeComplete(boardNo, categoryNo) {
             alert('서버 오류가 발생했습니다.');
         }
     });
+}
+
+async function updateTradeAchievement(categoryNo) {
+    switch (categoryNo) {
+        case 1: // 건담
+            await updateAchievement("FIRST_GUNDAM");
+            await updateAchievement("GUNDAM_PRO");
+            break;
+        case 2: // 레고
+            await updateAchievement("FIRST_LEGO");
+            await updateAchievement("LEGO_PRO");
+            break;
+        case 3: // 신발
+            await updateAchievement("FIRST_SHOES");
+            await updateAchievement("SHOE_PRO");
+            break;
+    }
+
+    await updateAchievement("FIRST_TRADE");
+    await updateAchievement("TEN_TRADE");
+    await updateAchievement("THIRTY_TRADE");
 }
 
 
