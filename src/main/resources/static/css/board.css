@@ -1149,6 +1149,7 @@ a {
     background: #f8f9fa;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translate(-170px, 77px); /* x축 20px, y축 10px 이동 */
 }
 
 /* 카테고리 필터 폼 */
