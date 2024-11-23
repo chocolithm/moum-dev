@@ -375,3 +375,287 @@ function collectionLoadButton(no) {
 /*-----------------------------------------------------------------------*/
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    const tbody = document.querySelector(".achievement-ranking-container tbody");
+    const rows = document.querySelectorAll(".achievement-ranking-container tbody tr");
+    let currentIndex = 0;
+    let animationTimer = null;
+
+    function showAllRows() {
+        rows.forEach(row => {
+            row.style.position = 'static';
+            row.style.opacity = '1';
+        });
+        tbody.style.height = 'auto';
+    }
+
+    function resetRows() {
+        rows.forEach(row => {
+            row.style.position = 'absolute';
+            row.style.opacity = '0';
+        });
+        tbody.style.height = '65px';
+        showNextRow();
+    }
+
+    function showNextRow() {
+        if (animationTimer) {
+            clearTimeout(animationTimer);
+        }
+
+        rows.forEach(row => {
+            row.style.opacity = '0';
+        });
+
+        rows[currentIndex].style.opacity = '1';
+
+        currentIndex = (currentIndex + 1) % rows.length;
+
+        animationTimer = setTimeout(showNextRow, 2500);
+    }
+
+    tbody.addEventListener('mouseenter', () => {
+        if (animationTimer) {
+            clearTimeout(animationTimer);
+            animationTimer = null;
+        }
+        showAllRows();
+    });
+
+    tbody.addEventListener('mouseleave', () => {
+        resetRows();
+    });
+
+    showNextRow();
+});
+
+/* 게시글 등록 */
+
+let imageUrls = [];
+
+// Summernote 에디터 초기화 및 이미지 업로드 함수
+$(document).ready(function () {
+    $('#content').summernote({
+        placeholder: '내용을 입력하세요 (최대 2048자)',
+        height: 300,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'strikethrough']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        callbacks: {
+            onImageUpload: function (files) {
+                // for (i = 0; i < files.length; i++) {
+                //   uploadImage(files[i]);
+                // }
+                for (i = 0; i < files.length; i++) {
+                    saveImages(files[i]);
+                }
+            },
+            onPaste: function (e) {
+                var clipboardData = e.originalEvent.clipboardData;
+                if (clipboardData && clipboardData.items && clipboardData.items.length) {
+                    var item = clipboardData.items[0];
+                    if (item.kind === 'file') {
+                        e.preventDefault();
+                    }
+                }
+            }
+        }
+    });
+
+    // 수집품 목록 불러오기
+    loadCollections();
+
+    // 수집품 선택 시 이미지 업데이트
+    $('#collectionNo').change(function () {
+        var filename = $(this).find(':selected').data('filename');
+        if (filename) {
+            $('#collectionImage').attr('src', 'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + filename);
+        }
+    });
+});
+
+function saveImages(file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const imageUrl = e.target.result;
+        const fileName = file.name;
+
+        imageUrls.push({ url: imageUrl, name: fileName });
+        $('#content').summernote('insertImage', imageUrl);
+    };
+    reader.readAsDataURL(file);
+}
+
+// 이미지 업로드 함수
+// function uploadImage(file) {
+//   var data = new FormData();
+//   data.append("file", file);
+
+//   $.ajax({
+//     url: '/board/uploadImage',
+//     type: 'POST',
+//     data: data,
+//     contentType: false,
+//     processData: false,
+//     headers: {
+//       [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
+//     },
+//     success: function (imageUrl) {
+//       $('#content').summernote('insertImage', imageUrl);
+//     },
+//     error: function () {
+//       alert('이미지 업로드에 실패했습니다.');
+//     }
+//   });
+// }
+
+// 수집품 목록을 불러와 옵션에 추가
+function loadCollections() {
+    $.ajax({
+        url: '/collection/list',
+        method: 'GET',
+        success: function (data) {
+            var collectionSelect = $('#collectionNo');
+            data.forEach(function (collection) {
+                collectionSelect.append('<option value="' + collection.no + '">' + collection.name + '</option>');
+            });
+        },
+        error: function () {
+            alert('수집품 목록을 불러오는 데 실패했습니다.');
+        }
+    });
+}
+
+function updatePost() {
+    var formData = new FormData($('#updateForm')[0]);
+    var no = $('#boardNo').val();  // 숨겨진 input에서 no 값을 가져옴
+
+    // 필수 입력 필드 확인
+    if (formData.get("title") === "") { alert("제목을 입력하세요"); return; }
+    if (formData.get("content") === "") { alert("내용을 입력하세요"); return; }
+    if (formData.get("price") === "" && $('#boardType').val() === 'trade') { formData.set("price", 0); }
+    if (formData.get("boardType") === "trade") {
+        if (formData.get("tradeType") === 'default') { alert("거래 종류를 선택하세요"); return; }
+        if (formData.get("tradeType") === 'sell' && (!formData.get('collection.no') || formData.get('collection.no') === '0')) {
+            alert("수집품을 선택해주세요"); return;
+        }
+    }
+
+    // Summernote 내용에서 이미지 존재 여부 확인
+    var content = $('#content').summernote('code');
+    var hasImage = $(content).find('img').length > 0;
+    if (!hasImage) {
+        alert("사진을 최소 1개 이상 본문에 넣어주세요");
+        return;
+    }
+
+    formData.delete("files");
+    const oldImages = [];
+    const base64Images = [];
+    $('.note-editable img').each(function () {
+        const imageUrl = $(this).attr('src');
+        if (imageUrl && imageUrl.startsWith('data:image')) {
+            base64Images.push(imageUrl);
+        } else if (imageUrl && imageUrl.startsWith('https://')) {
+            oldImages.push(imageUrl);
+        }
+    });
+
+    // base64 이미지를 파일 객체로 변환 후 formData에 추가
+    base64Images.forEach((base64Image) => {
+        const imageData = imageUrls.find(image => image.url === base64Image);
+        const fileName = imageData ? imageData.name : 'image.png';
+
+        const file = base64ToFile(base64Image, fileName);
+        formData.append('files', file);
+    });
+
+    oldImages.forEach((ncpImage) => {
+        const fileName = ncpImage.match(/board\/([^/]+)$/)[1];
+        formData.append('oldFiles', fileName);
+    });
+
+    $.ajax({
+        url: `/board/update/${no}`,  // 가져온 no 값을 URL에 추가
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+            [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: async function (response) {
+            if (response === 'success') {
+                alert('게시글이 수정되었습니다.');
+                await updateAchievement("THIRTY_UPT_POST");
+                await updateAchievement("TEN_UPT_POST");
+                await updateAchievement("FIRST_UPT_POST");
+                window.location.href = `/board/boardView?no=${no}`;
+            } else {
+                alert('게시글 수정에 실패했습니다.');
+            }
+        },
+        error: function () {
+            alert('서버 오류가 발생했습니다.');
+        }
+    });
+}
+
+
+function base64ToFile(base64Data, fileName) {
+    const [metadata, base64String] = base64Data.split(',');
+    const mimeType = metadata.match(/:(.*?);/)[1]; // MIME 타입 추출
+    const byteCharacters = atob(base64String); // base64 디코딩
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+        const slice = byteCharacters.slice(offset, offset + 1024);
+        const byteNumbers = new Array(slice.length);
+
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        byteArrays.push(new Uint8Array(byteNumbers));
+    }
+
+    const blob = new Blob(byteArrays, { type: mimeType });
+    return new File([blob], fileName, { type: mimeType });
+}
+
+function validatePhoto() {
+    const photos = document.querySelector(".card-block").childNodes[1].children;
+    for (i = 0; i < photos.length; i++) {
+        const filename = photos[i].src.substring(photos[i].src.lastIndexOf("/") + 1);
+        console.log(filename);
+    }
+}
+
+/* 게시글 화면 */
+
+let boardId = /*[[${board.no}]]*/[];
+let comments = /*[[${comments}]]*/[];
+const isTrade = /*[[${board.boardType == "trade" ? true : false}]]*/[];
+
+// 수집품 조회화면 사진 인덱스
+let collectionSlideIndex = 0;
+
+// comments.forEach(renderComment);
+
+async function deletePostWithDelAchieve() {
+
+    if (confirm("삭제하시겠습니까?")) {
+        await updateAchievement("THIRTY_DEL_POST");
+        await updateAchievement("TEN_DEL_POST");
+        await updateAchievement("FIRST_DEL_POST");
+        document.postDeleteForm.submit();
+        alert("삭제되었습니다");
+    }
+}

@@ -23,14 +23,25 @@
 
 <main style="background-color: white">
   <div class="page-container">
-    <div class="search-section">
-      <div class="navigation-pill">
-        <div class="title-wrapper">
-          <div class="title" style="font-weight: bold">주제별</div>
+    <!-- 카테고리 선택 섹션 추가 -->
+    <div class="category-filter-container">
+      <form th:action="@{/board/boardList}" method="get" class="category-filter-form">
+        <div class="form-group">
+          <select class="form-select category-filter-select" name="categoryNo" onchange="this.form.submit()">
+            <option value="">종류</option>
+            <option th:each="category : ${maincategoryList}"
+                    th:value="${category.no}"
+                    th:text="${category.name}"
+                    th:selected="${category.no == categoryNo}">
+            </option>
+          </select>
         </div>
-      </div>
-
+        <input type="hidden" name="keyword" th:value="${keyword}">
+        <input type="hidden" name="page" th:value="${currentPage}">
+        <input type="hidden" name="size" th:value="${size}">
+      </form>
     </div>
+
 
     <div class="grid-option">
       <div class="grid-item">
@@ -46,7 +57,7 @@
     </div>
 
     <div class="grid-container">
-      <div class="grid-item" th:each="board : ${popularBoards}">
+      <div class="grid-item-list" th:each="board : ${popularBoards}">
         <img alt="게시글 이미지"
              class="item-image"
              th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
