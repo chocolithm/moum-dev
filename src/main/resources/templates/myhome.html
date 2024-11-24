@@ -47,9 +47,11 @@
             <button class="btn btn-outline-dark" onClick="openCollectionFormModal();" type="button">수집품 등록</button>
         </div>
         <div class="myhome-collections">
-            <div data-th-if="${#lists.isEmpty(collectionList)}">
-                <p>소집품이 없습니다.</p>
-            </div>
+            <button data-th-if="${#lists.isEmpty(collectionList)}"
+                    class="empty-collection-box btn" onclick="openCollectionFormModal();">
+                <img class="empty-collection-image" src="/images/collections/empty-collection-image.jpg">
+                <div class="empty-collection-title">첫 수집품을 등록해보세요!</div>
+            </button>
             <button data-th-attr="onclick='openCollectionViewModal(' + ${collection.no} + ');'"
                     data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategory.no}"
                     data-th-each="collection : ${collectionList}"
