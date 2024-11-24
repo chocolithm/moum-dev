@@ -55,11 +55,11 @@
                     data-th-each="collection : ${collectionList}"
                     data-th-if="${not #lists.isEmpty(collectionList)}">
                 <img class="collection-image"
-                     data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
-                     data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"/>
+                    data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
+                    data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"/>
                 <img class="collection-image"
-                     data-th-if="${#lists.isEmpty(collection.attachedFiles)}"
-                     src="/images/collections/empty-collection.png"/>
+                    data-th-if="${#lists.isEmpty(collection.attachedFiles)}"
+                    src="/images/collections/empty-collection.png"/>
                 <div class="collection-title" data-th-text="${collection.name}"></div>
             </button>
         </div>
