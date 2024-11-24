@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/ranking.css}" type="text/css">
     <script>
         // 페이지 로드 시 삭제 완료 메시지 표시
         window.onload = function() {
@@ -23,50 +24,50 @@
 <div th:replace="~{header}"></div>
 
 <main style="background-color: white">
-    <!--    &lt;!&ndash; 업적 랭킹 임의로 설정 &ndash;&gt;-->
-    <!--    <div class="achievement-ranking-container">-->
-    <!--        <div class="ranking-card card h-92 shadow-sm border">-->
-    <!--            <div class="card-body">-->
-    <!--                <div class="table-responsive">-->
-    <!--                    <table class="table table-borderless mb-0">-->
-    <!--                        <tbody>-->
-    <!--                        <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"-->
-    <!--                            data-th-each="ranking, status : ${rankList}" data-th-if="${status.index < 10}">-->
-    <!--                            <td class="ps-4">-->
-    <!--                                <div-->
-    <!--                                        data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
-    <!--                                    <span data-th-text="${ranking.rank + '등'}"></span>-->
-    <!--                                </div>-->
-    <!--                            </td>-->
-    <!--                            <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>-->
-    <!--                            <td class="align-middle pe-4">-->
-    <!--                                <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>-->
-    <!--                            </td>-->
-    <!--                        </tr>-->
-
-    <!--                        &lt;!&ndash; 내 등수 &ndash;&gt;-->
-    <!--                        <tr-->
-    <!--                                data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">-->
-    <!--                            <td class="ps-4">-->
-    <!--                                <div-->
-    <!--                                        data-th-class="'rank-badge ' + ${rankNowUserList.rank == 1 ? 'rank-1' : (rankNowUserList.rank == 2 ? 'rank-2' : (rankNowUserList.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
-    <!--                                    <span data-th-text="${rankNowUserList.rank + '등'}"></span>-->
-    <!--                                </div>-->
-    <!--                            </td>-->
-    <!--                            <td class="align-middle fw-bold" data-th-text="${rankNowUserList.user.nickname}"></td>-->
-    <!--                            <td class="align-middle pe-4">-->
-    <!--                                <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>-->
-    <!--                            </td>-->
-    <!--                        </tr>-->
-    <!--                        </tbody>-->
-    <!--                    </table>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-
-
     <div class="page-container">
+        
+        <!-- 업적 랭킹 임의로 설정 -->
+<!--        <div class="achievement-ranking-container">-->
+<!--            <div class="ranking-card card h-100 shadow-sm border">-->
+<!--                <div class="card-body p-0">-->
+<!--                    <div class="table-responsive">-->
+<!--                        <table class="table table-borderless mb-0">-->
+<!--                            <tbody>-->
+<!--                                <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"-->
+<!--                                    data-th-each="ranking, status : ${rankList}" data-th-if="${status.index < 10}">-->
+<!--                                    <td class="ps-4">-->
+<!--                                        <div-->
+<!--                                            data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
+<!--                                            <span data-th-text="${ranking.rank + '등'}"></span>-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+<!--                                    <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>-->
+<!--                                    <td class="align-middle pe-4">-->
+<!--                                        <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+
+<!--                                &lt;!&ndash; 내 등수 &ndash;&gt;-->
+<!--                                <tr-->
+<!--                                    data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">-->
+<!--                                    <td class="ps-4">-->
+<!--                                        <div-->
+<!--                                            data-th-class="'rank-badge ' + ${rankNowUserList.rank == 1 ? 'rank-1' : (rankNowUserList.rank == 2 ? 'rank-2' : (rankNowUserList.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
+<!--                                            <span data-th-text="${rankNowUserList.rank + '등'}"></span>-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+<!--                                    <td class="align-middle fw-bold" data-th-text="${rankNowUserList.user.nickname}"></td>-->
+<!--                                    <td class="align-middle pe-4">-->
+<!--                                        <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
         <!-- 카테고리 선택 섹션 추가 -->
         <div class="category-filter-container">
             <form class="category-filter-form" method="get" th:action="@{/board/boardList}">
@@ -176,6 +177,61 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="/js/board.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tbody = document.querySelector(".achievement-ranking-container tbody");
+        const rows = document.querySelectorAll(".achievement-ranking-container tbody tr");
+        let currentIndex = 0;
+        let animationTimer = null;
+
+        function showAllRows() {
+            rows.forEach(row => {
+                row.style.position = 'static';
+                row.style.opacity = '1';
+            });
+            tbody.style.height = 'auto';
+        }
+
+        function resetRows() {
+            rows.forEach(row => {
+                row.style.position = 'absolute';
+                row.style.opacity = '0';
+            });
+            tbody.style.height = '65px';
+            showNextRow();
+        }
+
+        function showNextRow() {
+            if (animationTimer) {
+                clearTimeout(animationTimer);
+            }
+
+            rows.forEach(row => {
+                row.style.opacity = '0';
+            });
+
+            rows[currentIndex].style.opacity = '1';
+
+            currentIndex = (currentIndex + 1) % rows.length;
+
+            animationTimer = setTimeout(showNextRow, 2500);
+        }
+
+        tbody.addEventListener('mouseenter', () => {
+            if (animationTimer) {
+                clearTimeout(animationTimer);
+                animationTimer = null;
+            }
+            showAllRows();
+        });
+
+        tbody.addEventListener('mouseleave', () => {
+            resetRows();
+        });
+
+        showNextRow();
+    });
+</script>
 
 </body>
 

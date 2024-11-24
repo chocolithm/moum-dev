@@ -399,59 +399,61 @@ function collectionLoadButton(no) {
 /*-----------------------------------------------------------------------*/
 
 
-document.addEventListener("DOMContentLoaded", () => {
-    const tbody = document.querySelector(".achievement-ranking-container tbody");
-    const rows = document.querySelectorAll(".achievement-ranking-container tbody tr");
-    let currentIndex = 0;
-    let animationTimer = null;
+// boardList에만 쓰이므로 boardList.html로 이동
 
-    function showAllRows() {
-        rows.forEach(row => {
-            row.style.position = 'static';
-            row.style.opacity = '1';
-        });
-        tbody.style.height = 'auto';
-    }
+// document.addEventListener("DOMContentLoaded", () => {
+//     const tbody = document.querySelector(".achievement-ranking-container tbody");
+//     const rows = document.querySelectorAll(".achievement-ranking-container tbody tr");
+//     let currentIndex = 0;
+//     let animationTimer = null;
 
-    function resetRows() {
-        rows.forEach(row => {
-            row.style.position = 'absolute';
-            row.style.opacity = '0';
-        });
-        tbody.style.height = '65px';
-        showNextRow();
-    }
+//     function showAllRows() {
+//         rows.forEach(row => {
+//             row.style.position = 'static';
+//             row.style.opacity = '1';
+//         });
+//         tbody.style.height = 'auto';
+//     }
 
-    function showNextRow() {
-        if (animationTimer) {
-            clearTimeout(animationTimer);
-        }
+//     function resetRows() {
+//         rows.forEach(row => {
+//             row.style.position = 'absolute';
+//             row.style.opacity = '0';
+//         });
+//         tbody.style.height = '65px';
+//         showNextRow();
+//     }
 
-        rows.forEach(row => {
-            row.style.opacity = '0';
-        });
+//     function showNextRow() {
+//         if (animationTimer) {
+//             clearTimeout(animationTimer);
+//         }
 
-        rows[currentIndex].style.opacity = '1';
+//         rows.forEach(row => {
+//             row.style.opacity = '0';
+//         });
 
-        currentIndex = (currentIndex + 1) % rows.length;
+//         rows[currentIndex].style.opacity = '1';
 
-        animationTimer = setTimeout(showNextRow, 2500);
-    }
+//         currentIndex = (currentIndex + 1) % rows.length;
 
-    tbody.addEventListener('mouseenter', () => {
-        if (animationTimer) {
-            clearTimeout(animationTimer);
-            animationTimer = null;
-        }
-        showAllRows();
-    });
+//         animationTimer = setTimeout(showNextRow, 2500);
+//     }
 
-    tbody.addEventListener('mouseleave', () => {
-        resetRows();
-    });
+//     tbody.addEventListener('mouseenter', () => {
+//         if (animationTimer) {
+//             clearTimeout(animationTimer);
+//             animationTimer = null;
+//         }
+//         showAllRows();
+//     });
 
-    showNextRow();
-});
+//     tbody.addEventListener('mouseleave', () => {
+//         resetRows();
+//     });
+
+//     showNextRow();
+// });
 
 /* 게시글 등록 */
 
