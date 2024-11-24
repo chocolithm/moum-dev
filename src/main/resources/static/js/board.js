@@ -188,7 +188,7 @@ function countingLength(element) {
 }
 
 // 댓글 추가
-function addComment() {
+function addComment(boardId) {
     const content = document.getElementById("commentContent").value;
     if (content.trim() === "") {
         alert("댓글 내용을 입력해주세요.");
