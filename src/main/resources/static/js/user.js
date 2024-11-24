@@ -15,29 +15,35 @@ document.getElementById('nickname').addEventListener('input', function() {
 });
 
 // 이메일 입력 필드 변경 감지
-document.getElementById('email').addEventListener('input', function() {
-    emailChecked = false;
-    document.getElementById('emailMessage').textContent = '이메일 중복 확인이 필요합니다.';
-    document.getElementById('emailMessage').style.color = 'red';
-});
+if (document.getElementById('email')) {
+    document.getElementById('email').addEventListener('input', function() {
+        emailChecked = false;
+        document.getElementById('emailMessage').textContent = '이메일 중복 확인이 필요합니다.';
+        document.getElementById('emailMessage').style.color = 'red';
+    });
+}
 
 // 비밀번호 유효성 검사
-document.getElementById('password').addEventListener('input', function() {
-    const password = this.value;
-    const passwordMessage = document.getElementById('passwordMessage');
-
-    if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
-        passwordMessage.textContent = '최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다.';
-        passwordMessage.style.color = 'red';
-    } else {
-        passwordMessage.textContent = '사용 가능한 비밀번호입니다.';
-        passwordMessage.style.color = 'green';
-    }
-    checkPasswordMatch();
-});
+if (document.getElementById('password')) {
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+        const passwordMessage = document.getElementById('passwordMessage');
+    
+        if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)) {
+            passwordMessage.textContent = '최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다.';
+            passwordMessage.style.color = 'red';
+        } else {
+            passwordMessage.textContent = '사용 가능한 비밀번호입니다.';
+            passwordMessage.style.color = 'green';
+        }
+        checkPasswordMatch();
+    });
+}
 
 // 비밀번호 확인 체크
-document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+if (document.getElementById('confirmPassword')) {
+    document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+}
 
 function checkPasswordMatch() {
     const password = document.getElementById('password').value;

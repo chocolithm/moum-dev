@@ -117,7 +117,7 @@
                 <div class="comment-form">
                     <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" rows="3" placeholder="댓글을 입력하세요"></textarea>
                     <p id="counter">0/300자</p>
-                    <button class="btn btn-primary" onclick="addComment()" type="button">댓글 작성</button>
+                    <button class="btn btn-primary" data-th-onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
                 </div>
             </div>
         </div>
