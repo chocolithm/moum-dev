@@ -192,18 +192,6 @@
                                     <span id="confirmPasswordMessage"></span>
                                 </div>
                             </div>
-
-                            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 0; border-top: 1px solid #dee2e6;">
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <form id="withdrawForm" method="post" th:action="@{/user/delete}">
-                                        <input name="no" th:value="*{no}" type="hidden"/>
-                                        <button class="btn btn-danger" onclick="confirmWithdraw()"
-                                                style="margin-right: 20px"
-                                                type="button">회원 탈퇴
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="my-achievement-container">
@@ -277,6 +265,17 @@
                     </div>
                 </div>
             </form>
+            <div class="withdraw-container">
+                <div class="d-grid gap-4 d-md-flex justify-content-md-end mt-4">
+                    <form id="withdrawForm" method="post" th:action="@{/user/delete}">
+                        <input name="no" th:value="*{no}" type="hidden"/>
+                        <button class="btn btn-danger" onclick="confirmWithdraw()"
+                                style="margin-right: 18px"
+                                type="button">회원 탈퇴
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </main>

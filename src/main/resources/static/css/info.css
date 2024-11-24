@@ -46,11 +46,19 @@
     flex-direction: column;
     width: 70%;
     padding-left: 20px;
+    position: relative; /* 추가 */
 }
 
 .my-info-right-container .my-info-right-container-body {
     display: flex;
     height: 100%;
+}
+
+.withdraw-container {
+    height: 1300px; /* 버튼 영역 높이 */
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
 .my-info-right-container-body .my-board-container,
