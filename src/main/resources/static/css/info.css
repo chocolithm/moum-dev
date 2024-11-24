@@ -55,8 +55,8 @@
 
 .my-info-right-container-body .my-board-container,
 .my-info-right-container-body .my-achievement-container {
-    width: 400px; /* 너비 500px로 고정 */
-    height: 400px; /* 높이 300px로 고정 */
+    width: 400px;
+    height: 450px;
     min-width: unset; /* min-width 속성 제거 */
     flex-shrink: 0;
     padding: 35px;
@@ -339,4 +339,33 @@
     padding: 1rem;
     margin: 0;
     border-bottom: 1px solid #dee2e6;
+}
+
+.profile-img-inner-container label {
+    position: relative;
+    display: block;
+}
+
+.edit-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.edit-overlay i {
+    color: white;
+    font-size: 48px;  /* 아이콘 크기 */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);  /* 아이콘에 그림자 효과 */
+}
+
+.profile-img-inner-container label:hover .edit-overlay {
+    opacity: 1;
 }

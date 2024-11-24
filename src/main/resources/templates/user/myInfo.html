@@ -18,8 +18,23 @@
 
     <div class="wrapper">
         <!-- 검증 -->
-        <div class="alert alert-success" th:if="${message}" th:text="${message}"></div>
-        <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+        <script th:if="${message}">
+            swal({
+                title: "수정 완료",
+                text: "[[${message}]]",
+                icon: "success",
+                button: "확인"
+            });
+        </script>
+
+        <script th:if="${error}">
+            swal({
+                title: "오류",
+                text: "[[${error}]]",
+                icon: "error",
+                button: "확인"
+            });
+        </script>
 
         <div th:unless="${user}">
             <p>사용자 정보를 찾을 수 없습니다.</p>
