@@ -10,6 +10,8 @@
 	<link data-th-href="@{/css/info.css}" rel="stylesheet">
 	<link data-th-href="@{/css/style.css}" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.1/sweetalert2.all.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.1/sweetalert2.min.css">
 </head>
 
 <body>
@@ -133,18 +135,18 @@
 					<div class="my-info-right-container-body">
 						<div class="my-board-container">
 							<h4 class="text-center" style="margin-bottom: 2rem;">회원 수정</h4>
-							<div class="input-field">
-								<label for="email">이메일</label>
-								<input id="email"
-								       name="email"
-								       readonly
-								       th:value="*{email}"
-								       type="text">
-							</div>
+							<fieldset disabled>
+								<div class="mb-3">
+									<label for="disabledTextInput" class="form-label">내 이메일 계정</label>
+									<input type="text"  th:value="*{email}" id="disabledTextInput" class="form-control" placeholder="Disabled input">
+								</div>
+							</fieldset>
 
-							<div class="input-field">
-								<label for="password">비밀번호</label>
+							<div class="mb-3">
+								<label for="password" class="form-label">비밀번호 변경</label>
+								<div class="input-group">
 								<input id="password"
+								       class="form-control"
 								       minlength="8"
 								       name="password"
 								       oninput="toggleConfirmPasswordField()"
@@ -153,22 +155,28 @@
 								       title="최소 8자, 영문, 숫자, 특수문자를 포함해야 합니다"
 								       type="password">
 								<span id="passwordMessage"></span>
+								</div>
 							</div>
 
-							<div class="input-field" id="confirmPasswordField" style="display: none;">
-								<label for="confirmPassword">비밀번호 확인</label>
-								<input id="confirmPassword"
-								       placeholder="비밀번호 확인"
-								       type="password">
-								<span id="confirmPasswordMessage"></span>
+							<div class="mb-3" id="confirmPasswordField" style="display: none;">
+								<label for="confirmPassword" class="form-label">비밀번호 확인</label>
+								<div class="input-group">
+									<input id="confirmPassword"
+									       class="form-control"
+									       placeholder="비밀번호 확인"
+									       type="password">
+									<span id="confirmPasswordMessage"></span>
+								</div>
 							</div>
-							<form id="withdrawForm" method="post" onsubmit="return confirmWithdraw()"
-							      th:action="@{/user/delete}">
-								<input name="no" th:value="${user.no}" type="hidden">
-								<button class="btn btn-danger" type="submit">
-									회원탈퇴
-								</button>
-							</form>
+
+							<div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 0; border-top: 1px solid #dee2e6;">
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+									<form id="withdrawForm" th:action="@{/user/delete}" method="post">
+										<input type="hidden" name="no" th:value="*{no}" />
+										<button type="button" class="btn btn-danger" style="margin-right: 20px" onclick="confirmWithdraw()">회원 탈퇴</button>
+									</form>
+								</div>
+							</div>
 						</div>
 
 					<div class="my-achievement-container">
@@ -182,7 +190,7 @@
 							<div class="sns-connection-item">
 								<button class="btn btn-light w-100 py-2 border"
 								        disabled
-								        style="background-color: #f2f2f2; color: gray;"
+								        style="background-color: #f2f2f2; color: gray; margin-bottom: 30px;"
 								        th:if="${connectedProviders != null && connectedProviders.contains('google')}">
 									<img alt="Google Icon" class="me-2" src="/images/user/Google.png"
 									     style="width: 20px; height: 20px;">
@@ -190,7 +198,7 @@
 								</button>
 								<a class="btn btn-light w-100 py-2 border"
 								   href="/oauth2/authorization/google"
-								   style="background-color: #f2f2f2;"
+								   style="background-color: #f2f2f2; margin-bottom: 30px;"
 								   th:unless="${connectedProviders != null && connectedProviders.contains('google')}">
 									<img alt="Google Icon" class="me-2" src="/images/user/Google.png"
 									     style="width: 20px; height: 20px;">
@@ -202,7 +210,7 @@
 							<div class="sns-connection-item">
 								<button class="btn w-100 py-2 text-white"
 								        disabled
-								        style="background-color: #03c75a; color: gray;"
+								        style="background-color: #03c75a; color: gray; margin-bottom: 30px;"
 								        th:if="${connectedProviders != null && connectedProviders.contains('naver')}">
 									<img alt="Naver Icon" class="me-2" src="/images/user/Naver.png"
 									     style="width: 20px; height: 20px;">
@@ -210,7 +218,7 @@
 								</button>
 								<a class="btn w-100 py-2 text-white"
 								   href="/oauth2/authorization/naver"
-								   style="background-color: #03c75a;"
+								   style="background-color: #03c75a; margin-bottom: 30px;"
 								   th:unless="${connectedProviders != null && connectedProviders.contains('naver')}">
 									<img alt="Naver Icon" class="me-2" src="/images/user/Naver.png"
 									     style="width: 20px; height: 20px;">
@@ -222,7 +230,7 @@
 							<div class="sns-connection-item">
 								<button class="btn w-100 py-2"
 								        disabled
-								        style="background-color: #FEE500; color: gray;"
+								        style="background-color: #FEE500; color: gray; margin-bottom: 30px;"
 								        th:if="${connectedProviders != null && connectedProviders.contains('kakao')}">
 									<img alt="Kakao Icon" class="me-2" src="/images/user/KakaoTalk.png"
 									     style="width: 20px; height: 20px;">
@@ -230,7 +238,7 @@
 								</button>
 								<a class="btn w-100 py-2"
 								   href="/oauth2/authorization/kakao"
-								   style="background-color: #FEE500;"
+								   style="background-color: #FEE500; margin-bottom: 30px;"
 								   th:unless="${connectedProviders != null && connectedProviders.contains('kakao')}">
 									<img alt="Kakao Icon" class="me-2" src="/images/user/KakaoTalk.png"
 									     style="width: 20px; height: 20px;">

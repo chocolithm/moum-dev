@@ -145,3 +145,13 @@ function filterAchievements() {
         }
     });
 }
+
+function showAchievementEdit() {
+    document.getElementById('achievementDisplay').style.display = 'none';
+    document.getElementById('achievementEdit').style.display = 'block';
+}
+
+function hideAchievementEdit() {
+    document.getElementById('achievementDisplay').style.display = 'flex';
+    document.getElementById('achievementEdit').style.display = 'none';
+}

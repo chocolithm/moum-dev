@@ -1,0 +1,29 @@
+<div id="achievementDisplay">
+	<div class="my-primary-achievement" th:if="${primaryAchievement}">
+		<img alt="대표업적 이미지" class="my-primary-achievement-img" th:src="@{${'/images/achievement/complete/' + primaryAchievement.photo}}">
+		<span th:text="${primaryAchievement.name}"></span>
+	</div>
+	<button type="button" onclick="showAchievementEdit()">수정</button>
+</div>
+<div id="achievementEdit" class="input-achievement" style="display: none;">
+	<div class="btn-group w-100">
+		<button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+			업적을 선택하세요
+		</button>
+		<ul class="dropdown-menu">
+			<li th:each="achievement : ${listGetUserAchievement}">
+				<a href="#" class="dropdown-item" onclick="selectAchievement(this)" th:data-id="${achievement.id}" th:text="${achievement.name}"></a>
+			</li>
+			<li th:if="${#lists.isEmpty(listGetUserAchievement)}">
+				<a class="dropdown-item disabled">업적이 없습니다</a>
+			</li>
+		</ul>
+	</div>
+	<button type="button" onclick="hideAchievementEdit()">취소</button>
+</div>
+
+<div class="my-primary-achievement" data-th-if="${primaryAchievement}">
+	<img alt="대표업적 이미지" class="my-primary-achievement-img"
+	     data-th-src="${'/images/achievement/complete/' + primaryAchievement.photo}">
+	<span data-th-text="${primaryAchievement.name}"></span>
+</div>

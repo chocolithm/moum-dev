@@ -55,8 +55,8 @@
 
 .my-info-right-container-body .my-board-container,
 .my-info-right-container-body .my-achievement-container {
-    width: 400px; /* 너비 500px로 고정 */
-    height: 400px; /* 높이 300px로 고정 */
+    width: 400px;
+    height: 450px;
     min-width: unset; /* min-width 속성 제거 */
     flex-shrink: 0;
     padding: 35px;
