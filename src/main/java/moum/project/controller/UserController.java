@@ -173,6 +173,7 @@ public class UserController {
       model.addAttribute("userAchievementId", "");
     } else {
       model.addAttribute("userAchievementId", primaryAchievement.getId());
+      model.addAttribute("primaryAchievement", primaryAchievement);
     }
 
     model.addAttribute("user", user);

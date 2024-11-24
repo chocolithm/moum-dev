@@ -71,49 +71,55 @@
 					<input name="no" th:value="*{no}" type="hidden">
 
 					<div class="my-info-right-container-header">
-						<!-- 업적 업데이트 !-->
+						<!-- 업적 업데이트 -->
 						<div class="my-primary-achievement">
-							<div class="input-achievement">
-								<!-- btn-group을 사용하여 드롭다운 버튼 형식으로 바꾸기 -->
+							<!-- 현재 대표업적 표시 -->
+							<div id="achievementDisplay" style="display: flex; align-items: center; margin-bottom: 1rem;">
+								<div th:if="${primaryAchievement}" style="display: flex; align-items: center; gap: 1rem;">
+									<img alt="대표업적 이미지" class="my-primary-achievement-img"
+									     th:src="${'/images/achievement/complete/' + primaryAchievement.photo}">
+									<span th:text="${primaryAchievement.name}"></span>
+								</div>
+								<div th:unless="${primaryAchievement}">
+									<span>대표업적을 선택해주세요</span>
+								</div>
+								<button class="btn" onclick="showAchievementEdit()" type="button">수정</button>
+							</div>
+
+							<!-- 업적 수정 드롭다운 (기본적으로 숨김) -->
+							<div class="input-achievement" id="achievementEdit" style="display: none;">
 								<div class="btn-group w-100">
-									<!-- 버튼: 사용자가 선택한 업적이 여기 표시됨 -->
 									<button aria-expanded="false"
 									        class="btn btn-outline-secondary dropdown-toggle w-100"
-									        data-bs-toggle="dropdown" type="button">
-										<span id="achievement-selected">업적을 선택하세요</span> <!-- 기본 텍스트 -->
+									        data-bs-toggle="dropdown"
+									        type="button">
+										<span id="achievement-selected">업적을 선택하세요</span>
 									</button>
 									<ul class="dropdown-menu w-100">
-										<!-- 업적 리스트 동적 출력 -->
 										<th:block th:if="${not #lists.isEmpty(listGetUserAchievement)}">
 											<th:block th:each="title : ${listGetUserAchievement}">
 												<li>
-													<a class="dropdown-item" href="#"
-													   onclick="selectAchievement(this)" th:data-id="${title.id}"
+													<a class="dropdown-item"
+													   href="#"
+													   onclick="selectAchievement(this)"
+													   th:data-id="${title.id}"
 													   th:text="${title.name}">
-														<!-- 업적 이름 표시 -->
 													</a>
 												</li>
-												<th:block th:if="${title.isPrimary == 1}">
-													<script th:inline="javascript">
-														window.addEventListener('load', function() {
-															const id = /*[[${title.id}]]*/ '[[${title.id}]]';
-															// 동적으로 click 이벤트 트리거 (this가 해당 요소로 동작)
-															document.querySelector(`[data-id='${id}']`).click();
-														});
-													</script>
-												</th:block>
 											</th:block>
 										</th:block>
-
-										<!-- 업적이 없는 경우 처리 -->
 										<th:block th:if="${#lists.isEmpty(listGetUserAchievement)}">
 											<li><a class="dropdown-item" href="#">업적이 없습니다</a></li>
 										</th:block>
 									</ul>
 								</div>
-								<!-- 선택된 업적 ID를 저장할 hidden input -->
-								<input data-th-value="${userAchievementId}" id="user-achievement" name="user-achievement"
+								<input data-th-value="${userAchievementId}"
+								       id="user-achievement"
+								       name="user-achievement"
 								       type="hidden">
+								<div style="margin-top: 0.5rem;">
+									<button class="btn btn-secondary" onclick="hideAchievementEdit()" type="button">취소</button>
+								</div>
 							</div>
 						</div>
 
