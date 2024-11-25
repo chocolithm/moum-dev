@@ -956,7 +956,7 @@ a {
 }
 
 .item-content {
-    padding: 15px;
+    padding: 5px;
 }
 
 .item-title {
@@ -965,7 +965,13 @@ a {
     font-size: 1.1em;
     font-weight: bold;
     margin-bottom: 8px;
+    /* 아래의 세 가지 속성을 추가합니다 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+
 
 .item-number {
     color: #666;
@@ -1216,5 +1222,4 @@ a {
 .recommend_button.btn-outline-dark {
     color: black !important; /* 텍스트 기본 색 */
 }
-
 

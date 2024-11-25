@@ -387,7 +387,7 @@ let imageUrls = [];
 $(document).ready(function () {
     $('#content').summernote({
         placeholder: '내용을 입력하세요 (최대 2048자)',
-        height: 300,
+        height: 3000,
         toolbar: [
             ['style', ['style']],
             ['font', ['bold', 'italic', 'underline', 'strikethrough']],

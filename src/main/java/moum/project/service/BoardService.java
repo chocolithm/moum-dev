@@ -78,4 +78,14 @@ public interface BoardService {
 
     int countPopularByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception;
 
+    List<Board> searchTradeSellPostsByPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception;
+
+    int countTradeSellPostsByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception;
+
+    List<Board> searchTradeBuyPostsByPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception;
+
+    int countTradeBuyPostsByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception;
+
+
+
 }

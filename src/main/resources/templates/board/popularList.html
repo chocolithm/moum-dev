@@ -67,23 +67,26 @@
 
     <div class="page-container">
         <div class="category-filter-container">
-            <button class="btn-scroll btn-scroll-left" onclick="scrollCategories('left')">&lt;</button>
             <div class="filter-buttons-wrapper">
                 <div class="filter-buttons" id="categoryButtons">
-                    <a class="btn category-button" th:classappend="${categoryNo == null ? 'active' : ''}"
-                       th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}">
+                    <!-- 전체 카테고리 버튼 -->
+                    <a class="btn category-button"
+                       th:classappend="${categoryNo == null ? 'active' : ''}"
+                       th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}"
+                       draggable="false"> <!-- 여기 추가 -->
                         전체
                     </a>
-                    <a th:each="category : ${maincategoryList}" class="btn category-button"
+                    <!-- 동적으로 카테고리 버튼 추가 -->
+                    <a th:each="category : ${maincategoryList}"
+                       class="btn category-button"
                        th:classappend="${category.no == categoryNo ? 'active' : ''}"
                        th:href="@{/board/boardList(categoryNo=${category.no}, keyword=${keyword})}"
-                       th:text="${category.name}">
+                       th:text="${category.name}"
+                       draggable="false"> <!-- 여기 추가 -->
                     </a>
                 </div>
             </div>
-            <button class="btn-scroll btn-scroll-right" onclick="scrollCategories('right')">&gt;</button>
         </div>
-
         <div class="grid-option">
             <div class="grid-item">
                 <div class="button-group-left">
@@ -172,5 +175,65 @@
 
 
 <script src="/js/board.js"></script>
+<!-- JavaScript 코드 삽입 -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="/js/board.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let isDragging = false;
+        let isMouseDown = false;
+        let startX = 0;
+        let scrollStart = 0;
+        let dragThreshold = 5;
+
+        const container = document.querySelector('.filter-buttons-wrapper');
+
+        // 드래그 시작
+        container.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            isDragging = false; // 드래그 상태 초기화
+            startX = e.pageX;
+            scrollStart = container.scrollLeft;
+            container.style.cursor = 'grabbing';
+        });
+
+        // 드래그 중
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+
+            const deltaX = e.pageX - startX;
+
+            if (Math.abs(deltaX) > dragThreshold) {
+                isDragging = true;
+                container.scrollLeft = scrollStart - deltaX;
+            }
+        });
+
+        // 마우스 버튼을 놓을 때
+        document.addEventListener('mouseup', (e) => {
+            if (isMouseDown) {
+                container.style.cursor = 'grab';
+                isMouseDown = false;
+                setTimeout(() => { isDragging = false; }, 50); // 약간의 지연 후 드래그 상태 해제
+            }
+        });
+
+        // 클릭 이벤트 처리
+        const links = container.querySelectorAll('a');
+        links.forEach(link => {
+            // 클릭 이벤트에서 드래그 여부에 따라 기본 동작 제어
+            link.addEventListener('click', (e) => {
+                if (isDragging) {
+                    e.preventDefault(); // 드래그 중이면 클릭 동작 막기
+                }
+            });
+
+            // dragstart 이벤트 막기 (링크 드래그 방지)
+            link.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+            });
+        });
+    });
+</script>
 </body>
 </html>

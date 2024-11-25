@@ -118,50 +118,84 @@
     }
 
     @GetMapping("/tradeHomeSell")
-    public String tradeHomeSell(@RequestParam(value = "page", defaultValue = "1") int page,
-        @RequestParam(value = "size", defaultValue = "10") int size, Model model) throws Exception {
+    public String tradeHomeSell(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "12") int size,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
+            Model model) throws Exception {
 
-      // 페이지 번호와 사이즈를 기반으로 offset 계산
       int offset = (page - 1) * size;
+      List<Board> tradeSellPosts;
+      int totalTradeSellPosts;
 
-      // 판매 게시글 목록 조회
-      List<Board> tradeSellPosts = boardService.listTradeSellPostsByPage(offset, size);
-      model.addAttribute("tradeSellPosts", tradeSellPosts);
+      if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
+        tradeSellPosts = boardService.searchTradeSellPostsByPage(keyword, categoryNo, offset, size);
+        totalTradeSellPosts = boardService.countTradeSellPostsByKeywordAndCategory(keyword, categoryNo);
+      } else {
+        tradeSellPosts = boardService.listTradeSellPostsByPage(offset, size);
+        totalTradeSellPosts = boardService.countTradeSellPosts();
+      }
 
-      // 총 게시글 수 조회
-      int totalTradeSellPosts = boardService.countTradeSellPosts();
-
-      // 총 페이지 수 계산
       int totalPages = (int) Math.ceil((double) totalTradeSellPosts / size);
+      model.addAttribute("tradeSellPosts", tradeSellPosts);
       model.addAttribute("currentPage", page);
       model.addAttribute("totalPages", totalPages);
+      model.addAttribute("keyword", keyword);
+      model.addAttribute("categoryNo", categoryNo);
+      model.addAttribute("size", size);
+
+      // 카테고리 목록 추가 (필요한 경우)
+      List<Maincategory> maincategoryList = categoryService.listMaincategory();
+      Maincategory etcCategory = new Maincategory();
+      etcCategory.setNo(-999);
+      etcCategory.setName("기타");
+      maincategoryList.add(etcCategory);
+      model.addAttribute("maincategoryList", maincategoryList);
 
       return "board/tradeHomeSell"; // Thymeleaf 템플릿 이름
     }
 
-    // 구매 게시글 페이징 조회
+
     @GetMapping("/tradeHomeBuy")
-    public String tradeHomeBuy(@RequestParam(value = "page", defaultValue = "1") int page,
-        @RequestParam(value = "size", defaultValue = "10") int size, Model model) throws Exception {
+    public String tradeHomeBuy(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "12") int size,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
+            Model model) throws Exception {
 
-      // 페이지 번호와 사이즈를 기반으로 offset 계산
       int offset = (page - 1) * size;
+      List<Board> tradeBuyPosts;
+      int totalTradeBuyPosts;
 
-      // 구매 게시글 목록 조회
-      List<Board> tradeBuyPosts = boardService.listTradeBuyPostsByPage(offset, size);
-      model.addAttribute("tradeBuyPosts", tradeBuyPosts);
+      if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
+        tradeBuyPosts = boardService.searchTradeBuyPostsByPage(keyword, categoryNo, offset, size);
+        totalTradeBuyPosts = boardService.countTradeBuyPostsByKeywordAndCategory(keyword, categoryNo);
+      } else {
+        tradeBuyPosts = boardService.listTradeBuyPostsByPage(offset, size);
+        totalTradeBuyPosts = boardService.countTradeBuyPosts();
+      }
 
-      // 총 게시글 수 조회
-      int totalTradeBuyPosts = boardService.countTradeBuyPosts();
-
-      // 총 페이지 수 계산
       int totalPages = (int) Math.ceil((double) totalTradeBuyPosts / size);
+      model.addAttribute("tradeBuyPosts", tradeBuyPosts);
       model.addAttribute("currentPage", page);
       model.addAttribute("totalPages", totalPages);
-      model.addAttribute("size", size); // 템플릿에서 size를 사용하기 위해 추가
+      model.addAttribute("keyword", keyword);
+      model.addAttribute("categoryNo", categoryNo);
+      model.addAttribute("size", size);
+
+      // 카테고리 목록 추가 (필요한 경우)
+      List<Maincategory> maincategoryList = categoryService.listMaincategory();
+      Maincategory etcCategory = new Maincategory();
+      etcCategory.setNo(-999);
+      etcCategory.setName("기타");
+      maincategoryList.add(etcCategory);
+      model.addAttribute("maincategoryList", maincategoryList);
 
       return "board/tradeHomeBuy"; // Thymeleaf 템플릿 이름
     }
+
 
     @GetMapping("/tradeHomeButton")
     public String tradeHomeButton() {
