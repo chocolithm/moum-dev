@@ -386,7 +386,13 @@ function createBoardInfo(board_info, chatroom) {
   transaction_price.innerHTML = chatroom.board.price != 0 ? chatroom.board.price + "원" : "가격 미정";
 
   const link = document.createElement("a");
-  link.href = `/board/boardView?no=${chatroom.board.no}`;
+  if (chatroom.board.deleted) {
+    link.onclick = () => alert("삭제된 게시글입니다.");
+    link.href = "#";
+  } else {
+    link.href = `/board/boardView?no=${chatroom.board.no}`;
+  }
+  
   link.append(board_status, board_title, br, transaction_type, transaction_price);
   board_info.append(link, exit_btn);
 }
