@@ -87,9 +87,15 @@
 <!--                        th:onclick="'toggleLike(' + ${board.no} + '); changeText(this);'"-->
 <!--                        type="button">♡</button>-->
 
+<!--                <button class="recommend_button btn btn-outline-dark"-->
+<!--                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"-->
+<!--                        type="button">♡</button>-->
+<!--                -->
+
                 <button class="recommend_button btn btn-outline-dark"
                         th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
                         type="button">♡</button>
+
 
 
                 <button class="btn btn-danger" th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"

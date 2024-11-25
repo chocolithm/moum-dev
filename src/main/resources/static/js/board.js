@@ -314,41 +314,44 @@ function getCsrfTokenHeaders() {
 //}
 
   function toggleLike(boardNo, userNo) {
-        const csrfHeaders = getCsrfTokenHeaders(); // CSRF 보호 헤더 가져오기
+      const csrfHeaders = getCsrfTokenHeaders();  // CSRF 토큰 헤더 설정
 
-        $.ajax({
-            url: "/board/toggleLike",
-            type: "POST",
-            data: { boardNo: boardNo, userNo: userNo },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader(csrfHeaders.header, csrfHeaders.token); // CSRF 헤더 추가
-            },
-            success: function (response) {
-                // 좋아요 수 업데이트
-                $("#likeCount").text(response.likeCount);
-                Swal.fire(response.message); // 성공 메시지 표시
-            },
-            error: function (error) {
-                console.error("좋아요 오류:", error);
-                Swal.fire("좋아요 처리에 실패했습니다."); // 오류 메시지 표시
-            }
-        });
-    }
+      $.ajax({
+          url: "/board/toggleLike",
+          type: "POST",
+          data: { boardNo: boardNo, userNo: userNo },
+          beforeSend: function (xhr) {
+              xhr.setRequestHeader(csrfHeaders.header, csrfHeaders.token); // CSRF 헤더 추가
+          },
+          success: function (response) {
+              $("#likeCount").text(response.likeCount); // 서버에서 받은 좋아요 수로 갱신
+              Swal.fire(response.message); // 알림 메시지 표시
+          },
+          error: function (error) {
+              console.error("좋아요 오류:", error);
+              Swal.fire("좋아요 처리에 실패했습니다.");
+          }
+      });
+  }
 
-    function changeText(button) {
-        // 버튼이 'btn-success' 클래스를 가지면 '♥' 상태, 없으면 '♡' 상태
-        if (button.classList.contains('btn-danger')) {
-            // ♥ -> ♡ 상태로 변경
-            button.classList.remove('btn-danger'); // 빨간색 배경 제거
-            button.classList.add('btn-outline-dark'); // 원래 상태 (흰색 배경)로 복귀
-            button.innerText = '♡'; // 텍스트 변경
-        } else {
-            // ♡ -> ♥ 상태로 변경
-            button.classList.remove('btn-outline-danger'); // 흰색 배경 제거
-            button.classList.add('btn-danger'); // 빨간색 배경 추가
-            button.innerText = '♥'; // 텍스트 변경
-        }
+
+function changeText(button) {
+    // 버튼이 'btn-danger' 클래스를 가지면 '♥' 상태, 없으면 '♡' 상태
+    if (button.classList.contains('btn-danger')) {
+        // ♥ -> ♡ 상태로 변경
+        button.classList.remove('btn-danger'); // 'btn-danger' 클래스 제거
+        button.classList.add('btn-outline-dark'); // 원래 상태 (흰색 배경)로 복귀
+        button.innerText = '♡'; // 텍스트 변경
+        button.style.color = ''; // 텍스트 색상 초기화 (기본 색상으로 복귀)
+    } else {
+        // ♡ -> ♥ 상태로 변경
+        button.classList.remove('btn-outline-dark'); // 흰색 배경 제거
+        button.classList.add('btn-danger'); // 'btn-danger' 클래스 추가
+        button.innerText = '♥'; // 텍스트 변경
+        button.style.color = 'red'; // '♥' 텍스트 색상을 빨간색으로 변경
     }
+}
+
 
     // CSRF 토큰 헤더를 가져오는 함수
     function getCsrfTokenHeaders() {
