@@ -68,24 +68,26 @@
 <!--            </div>-->
 <!--        </div>-->
 
-        <!-- 카테고리 선택 섹션 추가 -->
         <div class="category-filter-container">
-            <button class="btn-scroll btn-scroll-left" onclick="scrollCategories('left')">&lt;</button>
             <div class="filter-buttons-wrapper">
                 <div class="filter-buttons" id="categoryButtons">
-                    <a class="btn category-button" th:classappend="${categoryNo == null ? 'active' : ''}"
+                    <!-- 전체 카테고리 버튼 -->
+                    <a class="btn category-button"
+                       th:classappend="${categoryNo == null ? 'active' : ''}"
                        th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}">
                         전체
                     </a>
-                    <a th:each="category : ${maincategoryList}" class="btn category-button"
+                    <!-- 동적으로 카테고리 버튼 추가 -->
+                    <a th:each="category : ${maincategoryList}"
+                       class="btn category-button"
                        th:classappend="${category.no == categoryNo ? 'active' : ''}"
                        th:href="@{/board/boardList(categoryNo=${category.no}, keyword=${keyword})}"
                        th:text="${category.name}">
                     </a>
                 </div>
             </div>
-            <button class="btn-scroll btn-scroll-right" onclick="scrollCategories('right')">&gt;</button>
         </div>
+
 
 
 

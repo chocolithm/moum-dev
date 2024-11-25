@@ -424,27 +424,6 @@
     </select>
 
 
-    <!-- 자랑하기 게시글 조회 (listBraggingPosts) -->
-    <select id="listBraggingPosts" resultMap="BoardMap">
-        SELECT
-        b.board_id,
-        b.title,
-        b.content,
-        b.user_id,
-        b.post_date,
-        b.view_count,
-        b.is_public,
-        b.is_deleted,
-        bp.price,
-        bp.collection_id
-        FROM
-        board b
-        INNER JOIN bragging_board bp ON b.board_id = bp.board_id
-        WHERE
-        b.is_deleted = 0
-        ORDER BY
-        b.post_date DESC
-    </select>
 
 
     <!-- 게시글 페이징 조회 (listByPage) -->

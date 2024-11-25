@@ -611,23 +611,48 @@ async function deletePostWithDelAchieve() {
 }
 
 
+let isDragging = false; // 드래그 여부 플래그
+let startX = 0; // 드래그 시작 지점
+let scrollStart = 0; // 초기 스크롤 위치
+let dragThreshold = 5; // 드래그로 간주할 최소 이동 거리
 
+const container = document.querySelector('.filter-buttons-wrapper');
+const target = document.querySelector('#categoryButtons');
 
+// 드래그 시작
+container.addEventListener('mousedown', (e) => {
+    isDragging = false; // 드래그 시작 시 초기화
+    container.style.cursor = 'grabbing';
+    startX = e.pageX;
+    scrollStart = container.scrollLeft;
+});
 
-// JavaScript 코드
-function scrollCategories(direction) {
-    const container = document.getElementById('categoryButtons');
-    const scrollAmount = 150; // 한 번에 스크롤할 픽셀 양
-    const currentTransform = getComputedStyle(container).transform;
-    const currentX = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[4]) : 0;
+// 드래그 중
+container.addEventListener('mousemove', (e) => {
+    const deltaX = e.pageX - startX;
 
-    // 새로운 스크롤 위치 계산
-    let newX = direction === 'right' ? currentX - scrollAmount : currentX + scrollAmount;
+    if (Math.abs(deltaX) > dragThreshold) {
+        isDragging = true; // 드래그로 간주
+        container.scrollLeft = scrollStart - deltaX; // 스크롤 이동
+    }
+});
 
-    // 최소 및 최대 스크롤 제한
-    const maxScroll = container.scrollWidth - container.parentElement.offsetWidth;
-    if (newX > 0) newX = 0; // 왼쪽 끝
-    if (Math.abs(newX) > maxScroll) newX = -maxScroll; // 오른쪽 끝
+// 드래그 종료
+['mouseup', 'mouseleave'].forEach((event) => {
+    container.addEventListener(event, (e) => {
+        container.style.cursor = 'grab';
 
-    container.style.transform = `translateX(${newX}px)`;
-}
+        if (isDragging) {
+            e.preventDefault(); // 드래그 중에는 클릭 이벤트 방지
+        }
+
+        isDragging = false; // 드래그 종료
+    });
+});
+
+// 버튼 클릭 방지 (드래그 중 클릭 이벤트 막기)
+container.addEventListener('click', (e) => {
+    if (isDragging) {
+        e.preventDefault(); // 드래그 중 클릭 이벤트 방지
+    }
+});
