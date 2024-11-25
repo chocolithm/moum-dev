@@ -67,22 +67,26 @@
 
     <div class="page-container">
         <!-- 카테고리 선택 섹션 추가 -->
+        <!-- 카테고리 선택 섹션 추가 -->
         <div class="category-filter-container">
-            <form class="category-filter-form" method="get" th:action="@{/board/popularList}">
-                <div class="form-group">
-                    <select class="form-select category-filter-select" name="categoryNo" onchange="this.form.submit()">
-                        <option value="">종류</option>
-                        <option th:each="category : ${maincategoryList}"
-                                th:selected="${category.no == categoryNo}"
-                                th:text="${category.name}"
-                                th:value="${category.no}">
-                        </option>
-                    </select>
-                </div>
-                <input name="keyword" th:value="${keyword}" type="hidden">
-                <input name="page" th:value="${currentPage}" type="hidden">
-                <input name="size" th:value="${size}" type="hidden">
-            </form>
+            <div class="filter-buttons">
+                <!-- "전체" 버튼 -->
+                <a
+                        class="btn category-button"
+                        th:classappend="${categoryNo == null ? 'active' : ''}"
+                        th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}">
+                    전체
+                </a>
+
+                <!-- 카테고리 버튼 동적 생성 -->
+                <a
+                        th:each="category : ${maincategoryList}"
+                        class="btn category-button"
+                        th:classappend="${category.no == categoryNo ? 'active' : ''}"
+                        th:href="@{/board/boardList(categoryNo=${category.no}, keyword=${keyword})}"
+                        th:text="${category.name}">
+                </a>
+            </div>
         </div>
 
         <div class="grid-option">
