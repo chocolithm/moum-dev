@@ -1124,39 +1124,54 @@ function addMaincategory() {
     const input = document.querySelector("#maincategory-name");
     const formData = new FormData();
 
+    // input.style = "border-color: #ccc";
     formData.append("name", input.value.trim());
 
-    if (formData.get("name") != "") {
-      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
-
-      fetch(`/collection/maincategory/add`, {
-        method: "POST",
-        body: formData,
-        headers: {
-            [csrfHeader]: csrfToken
-        }
-      })
-        .then(response => response.text())
-        .then(response => {
-            switch (response) {
-                case "success":
-                  alert("등록했습니다.");
-                  document.querySelector("#category-admin").click();
-                  break;
-                case "exist":
-                  alert("이미 등록된 이름입니다.");
-                  break;
-                case "failure":
-                  alert("등록 실패했습니다.");
-                  break;
-            }
-        })
-        .catch(error => {
-            console.error("Error adding achievement: ", error);
-        });
+    if (formData.get("name") == "") {
+      alert("분류명을 입력해주세요.");
+      // input.style = "border-color: red";
+      return;
     }
+
+    if (formData.get("name").length > 7) {
+      alert("분류명은 최대 7자까지 가능합니다.");
+      // input.style = "border-color: red";
+      return;
+    }
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+    fetch(`/collection/maincategory/add`, {
+      method: "POST",
+      body: formData,
+      headers: {
+          [csrfHeader]: csrfToken
+      }
+    })
+      .then(response => response.text())
+      .then(response => {
+          switch (response) {
+              case "success":
+                alert("등록했습니다.");
+                document.querySelector("#category-admin").click();
+                break;
+              case "exist":
+                alert("이미 등록된 이름입니다.");
+                break;
+              case "overSeven":
+                alert("분류명은 최대 7자까지 가능합니다.");
+                break;
+              case "failure":
+                alert("등록 실패했습니다.");
+                break;
+          }
+      })
+      .catch(error => {
+          console.error("Error adding achievement: ", error);
+      });
   }
+  
 }
 
 function addSubcategory(maincategoryNo) {
