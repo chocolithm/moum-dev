@@ -155,13 +155,12 @@
 
 /* 전체적인 레이아웃을 깔끔하게 */
 .input-achievement {
-    margin: 20px 0;
     width: 180px;
 }
 
 .btn-group .dropdown-toggle {
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px 10px;
     /* 사이즈 줄이기 */
     font-size: 14px;
     /* 텍스트 크기 줄이기 */
@@ -377,4 +376,38 @@
 
 .profile-img-inner-container label:hover .edit-overlay {
     opacity: 1;
+}
+
+ /* myinfo-업적 수정 버튼 */
+.myinfo-achievement-editbutton {
+    border: 2px solid white; /* 테두리 색을 흰색으로 설정 */
+    background: white; /* 배경 제거 */
+    color: black; /* 텍스트 색을 흰색으로 설정 */
+    cursor: pointer; /* 마우스를 올렸을 때 손 모양 커서 */
+    outline: none; /* 포커스 시 테두리 제거 */
+    transition: none; /* 호버 효과 제거 */
+    height: 5px;
+}
+
+/* 호버 시 색상 변화 제거 */
+.myinfo-achievement-editbutton:hover {
+    color: black; /* 호버 시 텍스트 색상 유지 */
+    border: 2px solid white; /* 호버 시 테두리 색상 유지 */
+}
+
+
+/* myinfo 닉네임 수정 버튼 */
+.myinfo-nickname-editbutton {
+      border: 2px solid white; /* 테두리 색을 흰색으로 설정 */
+       background: white; /* 배경 제거 */
+       color: black; /* 텍스트 색을 흰색으로 설정 */
+       cursor: pointer; /* 마우스를 올렸을 때 손 모양 커서 */
+       outline: none; /* 포커스 시 테두리 제거 */
+       transition: none; /* 호버 효과 제거 */
+}
+
+/* 호버 시 색상 변화 제거 */
+.myinfo-nickname-editbutton:hover {
+    color: black; /* 호버 시 텍스트 색상 유지 */
+      border: 2px solid white; /* 호버 시 테두리 색상 유지 */
 }

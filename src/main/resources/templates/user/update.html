@@ -86,13 +86,14 @@
                                 <div th:unless="${primaryAchievement}">
                                     <span>대표업적을 선택해주세요</span>
                                 </div>
-                                <button class="btn btn-outline-dark" onclick="showAchievementEdit()" type="button">수정
+                                <button class="myinfo-achievement-editbutton" onclick="showAchievementEdit()"
+                                        type="button">🖊️
                                 </button>
-
                             </div>
 
                             <!-- 업적 수정 드롭다운 (기본적으로 숨김) -->
-                            <div class="input-achievement" id="achievementEdit" style="display: none;">
+                            <div class="input-achievement" id="achievementEdit"
+                                 style="display: none;">
                                 <div class="btn-group w-100">
                                     <button aria-expanded="false"
                                             class="btn btn-outline-secondary dropdown-toggle w-100"
@@ -122,8 +123,11 @@
                                        id="user-achievement"
                                        name="user-achievement"
                                        type="hidden">
-                                <div style="margin-top: 0.5rem;">
-                                    <button class="btn btn-secondary" onclick="hideAchievementEdit()" type="button">취소
+                                <div>
+                                    <button class="btn btn-dark"
+                                            onclick="hideAchievementEdit()"
+                                            style="position: relative; left: 200px; top: -40px;"
+                                            type="button">취소
                                     </button>
                                 </div>
                             </div>
@@ -134,20 +138,29 @@
                             <div class="input-field">
                                 <div id="nicknameDisplay" style="display: flex; align-items: center;">
                                     <span th:text="*{nickname}"></span>
-                                    <!--                                    <button class="btn" onclick="showNicknameEdit()" type="button">수정</button>-->
-                                    <button class="btn btn-outline-dark" onclick="showNicknameEdit()" type="button">수정
+                                    <button class="myinfo-nickname-editbutton" onclick="showNicknameEdit()"
+                                            type="button">🖊️
                                     </button>
+
                                 </div>
 
                                 <div id="nicknameEdit" style="display: none;">
                                     <div style="display: flex; align-items: center;">
                                         <input id="nickname" name="nickname" th:value="*{nickname}" type="text"/>
-                                        <button class="btn"
-                                                onclick="checkDuplicate('nickname', document.getElementById('nickname').value)"
-                                                type="button">중복확인
-                                        </button>
-                                        <button class="btn" onclick="hideNicknameEdit()" type="button">취소</button>
+
+                                        <div class="btn-group" style="position: relative; left: 10px;">
+                                            <button class="btn btn-dark"
+                                                    onclick="checkDuplicate('nickname', document.getElementById('nickname').value)"
+                                                    type="button">중복확인
+                                            </button>
+
+                                            <button class="btn btn-secondary"
+                                                    onclick="hideNicknameEdit()"
+                                                    type="button">취소
+                                            </button>
+                                        </div>
                                     </div>
+
                                 </div>
                                 <span id="nicknameMessage"></span>
                             </div>
