@@ -55,11 +55,13 @@
     height: 100%;
 }
 
+/* 기본 스타일 (데스크탑) */
 .withdraw-container {
     position: absolute;
-    top: 680px;   /* 상단에서 200px 위치 */
-    left: 1600px;  /* 왼쪽에서 300px 위치 */
+    top: 680px;
+    left: 1600px;
 }
+
 
 
 .my-info-right-container-body .my-board-container,

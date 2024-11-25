@@ -111,11 +111,11 @@ function checkDuplicate(type, value) {
 
 function handleNicknameCheckResult(data) {
     if (data.isNicknameTaken) {
-        document.getElementById('nicknameMessage').textContent = '이미 사용중인 닉네임입니다.';
+        document.getElementById('nicknameMessage').textContent = '❌이미 사용중인 닉네임입니다.';
         document.getElementById('nicknameMessage').style.color = 'red';
         nicknameChecked = false;
     } else {
-        document.getElementById('nicknameMessage').textContent = '사용 가능한 닉네임입니다.';
+        document.getElementById('nicknameMessage').textContent = '✅사용 가능한 닉네임입니다.';
         document.getElementById('nicknameMessage').style.color = 'green';
         nicknameChecked = true;
     }
