@@ -38,10 +38,14 @@
                              th:id="${achievement.id}">
                             <div class="achievement-info">
                                 <span class="achievement-image">
-                                    <img class="achievement-img"
+                                    <!-- <img class="achievement-img"
                                          data-th-src="@{${achievement.progress == 100 ?
                                          '/images/achievement/complete/' + achievement.photo :
-                                         '/images/achievement/' + achievement.photo}}">
+                                         '/images/achievement/' + achievement.photo}}"> -->
+                                    <img class="achievement-img"
+                                         data-th-src="@{${achievement.progress == 100 ?
+                                         '/images/achievement/complete/completeDefaultImage.png' :
+                                         '/images/achievement/defaultImage.png'}}">
                                 </span>
                                 <div class="d-flex align-items-center gap-3 mb-3">
                                     <div class="achievement-icon">
