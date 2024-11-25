@@ -74,7 +74,8 @@
                     <!-- 전체 카테고리 버튼 -->
                     <a class="btn category-button"
                        th:classappend="${categoryNo == null ? 'active' : ''}"
-                       th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}">
+                       th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}"
+                       draggable="false"> <!-- 여기 추가 -->
                         전체
                     </a>
                     <!-- 동적으로 카테고리 버튼 추가 -->
@@ -82,7 +83,8 @@
                        class="btn category-button"
                        th:classappend="${category.no == categoryNo ? 'active' : ''}"
                        th:href="@{/board/boardList(categoryNo=${category.no}, keyword=${keyword})}"
-                       th:text="${category.name}">
+                       th:text="${category.name}"
+                       draggable="false"> <!-- 여기 추가 -->
                     </a>
                 </div>
             </div>
@@ -178,66 +180,68 @@
 </main>
 
 <footer th:replace="~{footer :: footer}"></footer>
-
-
+<!-- JavaScript 코드 삽입 -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="/js/board.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const tbody = document.querySelector(".achievement-ranking-container tbody");
-        const rows = document.querySelectorAll(".achievement-ranking-container tbody tr");
-        let currentIndex = 0;
-        let animationTimer = null;
+    document.addEventListener("DOMContentLoaded", function() {
+        let isDragging = false;
+        let isMouseDown = false;
+        let startX = 0;
+        let scrollStart = 0;
+        let dragThreshold = 5;
 
-        function showAllRows() {
-            rows.forEach(row => {
-                row.style.position = 'static';
-                row.style.opacity = '1';
-            });
-            tbody.style.height = 'auto';
-        }
+        const container = document.querySelector('.filter-buttons-wrapper');
 
-        function resetRows() {
-            rows.forEach(row => {
-                row.style.position = 'absolute';
-                row.style.opacity = '0';
-            });
-            tbody.style.height = '65px';
-            showNextRow();
-        }
-
-        function showNextRow() {
-            if (animationTimer) {
-                clearTimeout(animationTimer);
-            }
-
-            rows.forEach(row => {
-                row.style.opacity = '0';
-            });
-
-            rows[currentIndex].style.opacity = '1';
-
-            currentIndex = (currentIndex + 1) % rows.length;
-
-            animationTimer = setTimeout(showNextRow, 2500);
-        }
-
-        tbody.addEventListener('mouseenter', () => {
-            if (animationTimer) {
-                clearTimeout(animationTimer);
-                animationTimer = null;
-            }
-            showAllRows();
+        // 드래그 시작
+        container.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            isDragging = false; // 드래그 상태 초기화
+            startX = e.pageX;
+            scrollStart = container.scrollLeft;
+            container.style.cursor = 'grabbing';
         });
 
-        tbody.addEventListener('mouseleave', () => {
-            resetRows();
+        // 드래그 중
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+
+            const deltaX = e.pageX - startX;
+
+            if (Math.abs(deltaX) > dragThreshold) {
+                isDragging = true;
+                container.scrollLeft = scrollStart - deltaX;
+            }
         });
 
-        showNextRow();
+        // 마우스 버튼을 놓을 때
+        document.addEventListener('mouseup', (e) => {
+            if (isMouseDown) {
+                container.style.cursor = 'grab';
+                isMouseDown = false;
+                setTimeout(() => { isDragging = false; }, 50); // 약간의 지연 후 드래그 상태 해제
+            }
+        });
+
+        // 클릭 이벤트 처리
+        const links = container.querySelectorAll('a');
+        links.forEach(link => {
+            // 클릭 이벤트에서 드래그 여부에 따라 기본 동작 제어
+            link.addEventListener('click', (e) => {
+                if (isDragging) {
+                    e.preventDefault(); // 드래그 중이면 클릭 동작 막기
+                }
+            });
+
+            // dragstart 이벤트 막기 (링크 드래그 방지)
+            link.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+            });
+        });
     });
 </script>
 
-</body>
 
+
+</body>
 </html>

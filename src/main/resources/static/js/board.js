@@ -611,48 +611,4 @@ async function deletePostWithDelAchieve() {
 }
 
 
-let isDragging = false; // 드래그 여부 플래그
-let startX = 0; // 드래그 시작 지점
-let scrollStart = 0; // 초기 스크롤 위치
-let dragThreshold = 5; // 드래그로 간주할 최소 이동 거리
 
-const container = document.querySelector('.filter-buttons-wrapper');
-const target = document.querySelector('#categoryButtons');
-
-// 드래그 시작
-container.addEventListener('mousedown', (e) => {
-    isDragging = false; // 드래그 시작 시 초기화
-    container.style.cursor = 'grabbing';
-    startX = e.pageX;
-    scrollStart = container.scrollLeft;
-});
-
-// 드래그 중
-container.addEventListener('mousemove', (e) => {
-    const deltaX = e.pageX - startX;
-
-    if (Math.abs(deltaX) > dragThreshold) {
-        isDragging = true; // 드래그로 간주
-        container.scrollLeft = scrollStart - deltaX; // 스크롤 이동
-    }
-});
-
-// 드래그 종료
-['mouseup', 'mouseleave'].forEach((event) => {
-    container.addEventListener(event, (e) => {
-        container.style.cursor = 'grab';
-
-        if (isDragging) {
-            e.preventDefault(); // 드래그 중에는 클릭 이벤트 방지
-        }
-
-        isDragging = false; // 드래그 종료
-    });
-});
-
-// 버튼 클릭 방지 (드래그 중 클릭 이벤트 막기)
-container.addEventListener('click', (e) => {
-    if (isDragging) {
-        e.preventDefault(); // 드래그 중 클릭 이벤트 방지
-    }
-});
