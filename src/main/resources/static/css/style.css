@@ -392,15 +392,13 @@ td {
 }
 
 .achievement-user-progress .achievement-photo {
-    background: white;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 15px;
     display: flex;
-    overflow-y: auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* 효과 적용 */
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .achievement-user-progress .achievement-photo:hover {
