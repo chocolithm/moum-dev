@@ -241,22 +241,25 @@
       model.addAttribute("maincategoryList", maincategoryList);
 
       // 로그인한 사용자 정보 추가 (옵션)
-      User loginUser = null;
       if (userDetails != null) {
         String email = userDetails.getUsername();
-        loginUser = userService.getByEmail(email);
+        User loginUser = userService.getByEmail(email);
         model.addAttribute("authenticatedUser", loginUser);
+
+        // 업적 랭킹 정보 추가
+        List<Achievement> userRankList = achievementService.listByUserRank();
+        model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+        Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
+        model.addAttribute("rankNowUserList",
+                user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+
       }
 
-      // 업적 랭킹 정보 추가
-      List<Achievement> userRankList = achievementService.listByUserRank();
-      model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
-      Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
-      model.addAttribute("rankNowUserList",
-          user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
+
 
       return "board/boardList";
     }
+
 
 
 

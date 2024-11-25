@@ -1138,54 +1138,50 @@ a {
 
 
 
-
-
-/* 카테고리 필터 컨테이너 */
 .category-filter-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px 0;
-    background: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transform: translate(-170px, 77px); /* x축 20px, y축 10px 이동 */
+    padding: 10px;
 }
 
-/* 카테고리 필터 폼 */
-.category-filter-form {
+.filter-buttons {
     display: flex;
-    align-items: center;
     gap: 10px;
-    width: 100%;
-    max-width: 800px;
 }
 
-/* 셀렉트 박스 스타일 */
-.category-filter-select {
-    width: 100%;
-    max-width: 300px;
-    font-size: 16px;
+.category-button {
+    background-color: #e9ecef;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 셀렉트 박스 포커스 효과 */
-.category-filter-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+.category-button:hover {
+    background-color: #007bff;
+    color: #fff;
 }
 
-/* 셀렉트 박스 호버 효과 */
-.category-filter-select:hover {
-    background-color: #f1f1f1;
+.category-button.active {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+.btn.category-button {
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
     cursor: pointer;
 }
-
-/* 폼 그룹 */
-.form-group {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
+.btn.category-button:hover {
+    background-color: #ddd;
 }
+
+
