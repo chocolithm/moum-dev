@@ -274,5 +274,40 @@ public class DefaultBoardService implements BoardService {
         return boardDao.countPopularByKeywordAndCategory(params);
     }
 
+    @Override
+    public List<Board> searchTradeSellPostsByPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("categoryNo", categoryNo);
+        params.put("offset", offset);
+        params.put("limit", limit);
+        return boardDao.searchTradeSellPostsByPage(params);
+    }
+
+    @Override
+    public int countTradeSellPostsByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("categoryNo", categoryNo);
+        return boardDao.countTradeSellPostsByKeywordAndCategory(params);
+    }
+
+    @Override
+    public List<Board> searchTradeBuyPostsByPage(String keyword, Integer categoryNo, int offset, int limit) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("categoryNo", categoryNo);
+        params.put("offset", offset);
+        params.put("limit", limit);
+        return boardDao.searchTradeBuyPostsByPage(params);
+    }
+
+    @Override
+    public int countTradeBuyPostsByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("categoryNo", categoryNo);
+        return boardDao.countTradeBuyPostsByKeywordAndCategory(params);
+    }
 
 }

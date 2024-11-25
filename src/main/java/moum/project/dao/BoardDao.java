@@ -99,4 +99,12 @@ public interface BoardDao {
 
     int countPopularByKeywordAndCategory(Map<String, Object> params) throws Exception;
 
+    List<Board> searchTradeSellPostsByPage(Map<String, Object> params) throws Exception;
+
+    int countTradeSellPostsByKeywordAndCategory(Map<String, Object> params) throws Exception;
+
+    List<Board> searchTradeBuyPostsByPage(Map<String, Object> params) throws Exception;
+
+    int countTradeBuyPostsByKeywordAndCategory(Map<String, Object> params) throws Exception;
+
 }
