@@ -156,6 +156,8 @@
 /* 전체적인 레이아웃을 깔끔하게 */
 .input-achievement {
     width: 180px;
+    height: 40px;
+    margin-bottom: 1rem;
 }
 
 .btn-group .dropdown-toggle {
@@ -386,7 +388,7 @@
     cursor: pointer; /* 마우스를 올렸을 때 손 모양 커서 */
     outline: none; /* 포커스 시 테두리 제거 */
     transition: none; /* 호버 효과 제거 */
-    height: 5px;
+    height: 30px;
 }
 
 /* 호버 시 색상 변화 제거 */
