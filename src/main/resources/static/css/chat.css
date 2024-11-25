@@ -112,6 +112,28 @@
   opacity: 0.7;
 }
 
+.chatroom-layer .chat-close-btn {
+    background-color: transparent;
+    border: none;
+    color: grey;
+    font-size: 1.5rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.chatroom-layer .chat-close-btn:hover {
+    transform: scale(1.1);
+    color: white;
+}
+
 .chatroom-layer .chat-info {
   display: flex;
   flex-direction: column;
@@ -126,6 +148,14 @@
 
 .chatroom-layer .chat-info .owner-message-box {
   text-align: right;
+}
+
+.chatroom-layer .chat-info .owner-message-box .message {
+  border-bottom-right-radius: 0;
+}
+
+.chatroom-layer .chat-info .guest-message-box .message {
+  border-bottom-left-radius: 0;
 }
 
 .chatroom-layer .chat-info .message-time {

@@ -808,6 +808,131 @@
     </select>
 
 
+    <!-- 검색 및 페이징 처리를 위한 판매 게시글 조회 -->
+    <select id="searchTradeSellPostsByPage" resultMap="BoardMap" parameterType="map">
+        SELECT
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.nickname,
+        u.end_date,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        tb.price,
+        tb.status,
+        tb.trade_type,
+        c.collection_id,
+        c.name AS collection_name,
+        mc.maincategory_id,
+        mc.category_name,
+        bp.photo_id,
+        bp.filename,
+        bp.origin_filename
+        FROM
+        board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN user u ON b.user_id = u.user_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'sell'
+        <if test="keyword != null and keyword != ''">
+            AND b.title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="categoryNo != null">
+            AND b.maincategory_id = #{categoryNo}
+        </if>
+        ORDER BY
+        b.post_date DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 검색 결과의 총 개수 조회 -->
+    <select id="countTradeSellPostsByKeywordAndCategory" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM
+        board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'sell'
+        <if test="keyword != null and keyword != ''">
+            AND b.title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="categoryNo != null">
+            AND b.maincategory_id = #{categoryNo}
+        </if>
+    </select>
+
+
+    <!-- 검색 및 페이징 처리를 위한 구매 게시글 조회 -->
+    <select id="searchTradeBuyPostsByPage" resultMap="BoardMap" parameterType="map">
+        SELECT
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.nickname,
+        u.end_date,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        tb.price,
+        tb.status,
+        tb.trade_type,
+        c.collection_id,
+        c.name AS collection_name,
+        mc.maincategory_id,
+        mc.category_name,
+        bp.photo_id,
+        bp.filename,
+        bp.origin_filename
+        FROM
+        board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN user u ON b.user_id = u.user_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'buy' <!-- 'buy'로 수정 -->
+        <if test="keyword != null and keyword != ''">
+            AND b.title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="categoryNo != null">
+            AND b.maincategory_id = #{categoryNo}
+        </if>
+        ORDER BY
+        b.post_date DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 검색 결과의 총 개수 조회 -->
+    <select id="countTradeBuyPostsByKeywordAndCategory" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM
+        board b
+        INNER JOIN trade_board tb ON b.board_id = tb.board_id
+        WHERE
+        b.is_deleted = 0
+        AND tb.trade_type = 'buy' <!-- 'buy'로 수정 -->
+        <if test="keyword != null and keyword != ''">
+            AND b.title LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        <if test="categoryNo != null">
+            AND b.maincategory_id = #{categoryNo}
+        </if>
+    </select>
+
 
 
 </mapper>

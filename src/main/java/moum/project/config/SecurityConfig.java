@@ -116,16 +116,18 @@ public class SecurityConfig {
             )
             .successHandler((request, response, authentication) -> {
               CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+              LocalDateTime lastLogin = null;
 
               try {
                 User user = userDao.findByEmail(userDetails.getUsername());
+                lastLogin = user.getLastLogin();
                 if (user != null) {
                   userDao.updateLastLogin(user.getNo(), LocalDateTime.now());
                   request.getSession().setAttribute("nickname", userDetails.getNickname());
                 }
 
                 // OAuth2 로그인은 myhome으로 리다이렉트
-                response.sendRedirect("/home");
+                response.sendRedirect("/home?lastLogin=" + lastLogin);
               } catch (Exception e) {
                 log.error("OAuth2 login success handler error", e);
                 response.sendRedirect("/home?error=true");

@@ -339,9 +339,9 @@ function fetchChatroom(chatroomNo) {
 function createBoardInfo(board_info, chatroom) {
   const br = document.createElement("br");
 
-  const board_status = document.createElement("span");
-  board_status.className = "board-status";
-  board_status.innerHTML = chatroom.board.status == true ? "거래완료" : "거래중";
+  // const board_status = document.createElement("span");
+  // board_status.className = "board-status";
+  // board_status.innerHTML = chatroom.board.status == true ? "거래완료" : "거래중";
 
   const board_title = document.createElement("span");
   board_title.className = "board-title";
@@ -349,14 +349,14 @@ function createBoardInfo(board_info, chatroom) {
 
   // 채팅 닫기 버튼
   const exit_btn = document.createElement("button");
-  exit_btn.className = "btn-close";
-  exit_btn.setAttribute("aria-label", "Close");
+  exit_btn.className = "chat-close-btn";
+  exit_btn.innerHTML = "X";
 
   exit_btn.addEventListener("click", function () {
     closeChat();
   });
 
-  document.body.appendChild(exit_btn);
+  // document.body.appendChild(exit_btn);
 
   const transaction_type = document.createElement("span");
   transaction_type.className = "transaction-type";
@@ -374,7 +374,8 @@ function createBoardInfo(board_info, chatroom) {
     link.href = `/board/boardView?no=${chatroom.board.no}`;
   }
   
-  link.append(board_status, board_title, br, transaction_type, transaction_price);
+  // link.append(board_status, board_title, br, transaction_type, transaction_price);
+  link.append(board_title, br, transaction_type, transaction_price);
   board_info.append(link, exit_btn);
 }
 

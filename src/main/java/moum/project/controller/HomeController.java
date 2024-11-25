@@ -57,9 +57,9 @@ public class HomeController {
     model.addAttribute("maincategoryList", maincategoryList);
 
     // OAuth2 로그인인 경우 myhome으로 리다이렉트
-    if (userDetails.getAttributes() != null) {
-      return "redirect:/myhome";
-    }
+//    if (userDetails.getAttributes() != null) {
+//      return "redirect:/myhome";
+//    }
 
     return "myhome";
   }
