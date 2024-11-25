@@ -215,11 +215,25 @@
     transition: background-color 0.3s ease;
 }
 
-.achievement-icon {
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0;
-    margin-right: 20px;
+/* 업적 정보 컨테이너 */
+.achievement-info {
+    display: flex;
+    padding: 15px;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* 업적 설명 스타일 */
+.achievement-content {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+/* 업적 내용 컨테이너 */
+.achievement-info > div {
+    flex: 1;
+    min-width: 0; /* text-overflow가 제대로 작동하기 위해 필요 */
 }
 
 /* 선택된 업적을 표시하는 버튼의 스타일 */

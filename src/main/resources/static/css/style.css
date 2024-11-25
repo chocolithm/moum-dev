@@ -414,11 +414,16 @@ td {
 
 .achievement-user-progress .achievement-image {
     flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    display: block;
 }
 
 .achievement-user-progress .achievement-img {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .achievement-user-progress .achievement-details {
@@ -484,8 +489,6 @@ td {
 .achievement-user-progress .progress-text {
     font-size: 14px;
     color: #666;
-    margin-top: 5px;
-    font-weight: bold;
 }
 
 .achievement-user-progress .filter-container {
@@ -583,8 +586,6 @@ td {
     font-weight: bold;
     color: #333;
     margin-bottom: 8px;
-    text-align: center;
-    text-transform: capitalize;
 }
 
 .my-achievement-container .my-achievement-inner-container {
