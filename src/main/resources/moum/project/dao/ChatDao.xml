@@ -53,6 +53,7 @@
       <result column="post_date" property="postDate"/>
       <result column="price" property="price"/>
       <result column="status" property="status"/>
+      <result column="is_deleted" property="isDeleted"/>
 
       <association property="collection" javaType="moum.project.vo.Collection">
         <id column="collection_id" property="no"/>
@@ -152,6 +153,7 @@
       u2.end_date as owner_end_date,
       b.title,
       b.post_date,
+      b.is_deleted,
       tb.collection_id,
       cl.name,
       tb.price

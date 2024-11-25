@@ -81,25 +81,18 @@
                 </form>
 
 
-<!--                <button class="recommend_button btn btn-outline-dark" th:onclick="'toggleLike(' + ${board.no} + '); changeText(this);'" type="button">추천하기</button>-->
 
-<!--                <button class="recommend_button btn btn-outline-dark"-->
-<!--                        th:onclick="'toggleLike(' + ${board.no} + '); changeText(this);'"-->
-<!--                        type="button">♡</button>-->
-
-<!--                <button class="recommend_button btn btn-outline-dark"-->
-<!--                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"-->
-<!--                        type="button">♡</button>-->
-<!--                -->
 
                 <button class="recommend_button btn btn-outline-dark"
                         th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
-                        type="button">♡</button>
+                        type="button">🤍</button>
 
 
 
-                <button class="btn btn-danger" th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
-                        onclick="openReport('board');" type="button">신고하기</button>
+                <button class="report_button btn btn-outline-white"
+                        th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
+                        onclick="openReport('board');" type="button">🚨</button>
+
                 <button class="btn btn-danger" th:if="${authenticatedUser.admin == true}"
                         data-th-onclick="|openRestrict('board', '${board.no}')|" type="button">경고/제재</button>
             </div>
