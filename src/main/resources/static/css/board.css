@@ -1218,17 +1218,3 @@ a {
 }
 
 
-/* 버튼 클릭 시 x축으로 이동하는 효과 -기윤 */
-.board-edit-button, .board-edit-cancel-button {
-    transition: transform 0.3s ease-in-out; /* 이동 애니메이션 */
-}
-
-/* 버튼 클릭 시 50px만큼 오른쪽으로 이동 */
-.board-edit-button:active, .board-edit-cancel-button:active {
-    transform: translateX(50px); /* x축으로 오른쪽 이동 */
-}
-
-/* 버튼 클릭 시 50px만큼 왼쪽으로 이동 */
-.board-edit-cancel-button:active {
-    transform: translateX(-50px); /* x축으로 왼쪽 이동 */
-}
