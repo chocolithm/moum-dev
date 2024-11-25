@@ -59,29 +59,7 @@ function fetchPostForm() {
 //     toggleFields(this);
 // })
 
-document.getElementById('tradeType').addEventListener('change', function () {
-    const collectionSelectContainer = document.getElementById('collectionSelectContainer');
 
-    if (this.value === 'buy') {
-        // 구매를 선택하면 수집품 목록 숨기기
-        collectionSelectContainer.style.display = 'none';
-    } else if (this.value === 'sell') {
-        // 판매를 선택하면 수집품 목록 보이기
-        collectionSelectContainer.style.display = 'block';
-    }
-});
-
-// 페이지 로드 시 초기 상태 설정 (선택된 값에 따라 숨기기/보이기 적용)
-document.addEventListener('DOMContentLoaded', function () {
-    const tradeType = document.getElementById('tradeType').value;
-    const collectionSelectContainer = document.getElementById('collectionSelectContainer');
-
-    if (tradeType === 'buy') {
-        collectionSelectContainer.style.display = 'none';
-    } else {
-        collectionSelectContainer.style.display = 'block';
-    }
-});
 
 
 
@@ -387,7 +365,7 @@ let imageUrls = [];
 $(document).ready(function () {
     $('#content').summernote({
         placeholder: '내용을 입력하세요 (최대 2048자)',
-        height: 3000,
+        height: 500,
         toolbar: [
             ['style', ['style']],
             ['font', ['bold', 'italic', 'underline', 'strikethrough']],
@@ -609,6 +587,7 @@ async function deletePostWithDelAchieve() {
         alert("삭제되었습니다");
     }
 }
+
 
 
 
