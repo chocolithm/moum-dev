@@ -87,8 +87,10 @@
                                     <span>대표업적을 선택해주세요</span>
                                 </div>
                                 <button class="myinfo-achievement-editbutton" onclick="showAchievementEdit()"
-                                        type="button">🖊️
+                                        type="button">
+                                    <img alt="Edit" src="/images/edit-button.png" style="width: 20px; height: 20px;">
                                 </button>
+
                             </div>
 
                             <!-- 업적 수정 드롭다운 (기본적으로 숨김) -->
@@ -124,9 +126,9 @@
                                        name="user-achievement"
                                        type="hidden">
                                 <button class="btn btn-dark"
-                                    onclick="hideAchievementEdit()"
-                                    style="position: relative; left: 200px; top: -40px;"
-                                    type="button">취소
+                                        onclick="hideAchievementEdit()"
+                                        style="position: relative; left: 200px; top: -40px;"
+                                        type="button">취소
                                 </button>
                                 <!-- <div>
                                     <button class="btn btn-dark"
@@ -144,14 +146,18 @@
                                 <div id="nicknameDisplay" style="display: flex; align-items: center;">
                                     <span th:text="*{nickname}"></span>
                                     <button class="myinfo-nickname-editbutton" onclick="showNicknameEdit()"
-                                            type="button">🖊️
+                                            type="button">
+                                        <img alt="Edit" src="/images/edit-button.png"
+                                             style="width: 20px; height: 20px;">
                                     </button>
 
                                 </div>
 
                                 <div id="nicknameEdit" style="display: none;">
                                     <div style="display: flex; align-items: center;">
-                                        <input id="nickname" name="nickname" th:value="*{nickname}" type="text"/>
+                                        <input id="nickname" name="nickname" style="width: 260px;"
+                                               th:value="*{nickname}"
+                                               type="text"/>
 
                                         <div class="btn-group" style="position: relative; left: 10px;">
                                             <button class="btn btn-dark"
@@ -287,10 +293,11 @@
                 <div class="d-grid gap-4 d-md-flex justify-content-md-end mt-4">
                     <form id="withdrawForm" method="post" th:action="@{/user/delete}">
                         <input name="no" th:value="*{no}" type="hidden"/>
-                        <button class="btn btn-danger" onclick="confirmWithdraw()"
-                                style="margin-right: 18px"
+                        <button class="myinfo-withdrawbutton btn btn-danger" onclick="confirmWithdraw()"
+                                style="margin-right: 18px; margin-left: -135px; margin-top: -60px;"
                                 type="button">회원 탈퇴
                         </button>
+
                     </form>
                 </div>
             </div>

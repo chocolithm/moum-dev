@@ -85,6 +85,7 @@
       } else {
         popularBoards = boardService.listPopularByPage(offset, size);
         totalBoards = boardService.countPopularPosts();
+        System.out.println(popularBoards.get(0));
       }
 
       // 페이징 데이터 계산

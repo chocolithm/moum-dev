@@ -45,7 +45,9 @@
                     <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span></div>
                     <div><strong>거래 방식:</strong> <span th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>
                 </div>
+
             </div>
+
 
             <!-- 게시글 내용 -->
             <div class="post-content" th:utext="${board.content}">
@@ -107,7 +109,7 @@
                                         th:onclick="'deleteComment(' + ${comment.no} + ');'">삭제</button>
                             </div>
                             <div class="comment-header">
-                                <span class="comment-author" th:text="'작성자 :' + ${comment.userNo}">작성자</span>
+                                <span th:text="${comment.user.nickname}">작성자</span>
                                 <span class="comment-date" th:text="${#dates.format(comment.date, 'yyyy-MM-dd')}">작성일자</span>
                             </div>
                             <div class="comment-content" th:text="${comment.content}">내용</div>

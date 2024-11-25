@@ -119,12 +119,14 @@
                      th:src="@{/images/board/defaultBoardPicture.jpg}">
 
                 <div class="item-content">
+
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <div class="item-title" th:text="${board.title}">게시글 제목</div>
                         <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100"></div>
                         <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
                         <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">
                             2024-11-15 12:34
+
                         </div>
                     </a>
                 </div>
