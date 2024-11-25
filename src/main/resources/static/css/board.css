@@ -1140,16 +1140,69 @@ a {
 
 .category-filter-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 20px 0;
-    padding: 10px;
+    gap: 10px;
+    width: 1000px; /* 컨테이너 너비를 제한 */
+    overflow: hidden; /* 초과된 버튼 숨김 */
+    position: relative; /* 슬라이드 버튼 배치용 */
+}
+
+.filter-buttons-wrapper {
+    flex: 1; /* 버튼 영역이 버튼 옆에서 확장 */
+    overflow: hidden; /* 초과된 카테고리 숨김 */
+    display: flex;
 }
 
 .filter-buttons {
     display: flex;
     gap: 10px;
+    transition: transform 0.3s ease; /* 슬라이드 애니메이션 */
+    white-space: nowrap; /* 한 줄 유지 */
 }
+
+
+.filter-buttons-wrapper {
+    flex: 1; /* 버튼 영역이 버튼 옆에서 확장 */
+    overflow: hidden; /* 초과된 카테고리 숨김 */
+    display: flex;
+}
+
+
+
+.btn-scroll {
+    background-color: #f8f9fa;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-scroll-left {
+    left: 0;
+}
+
+.btn-scroll-right {
+    right: 0;
+}
+
+.btn-scroll:hover {
+    background-color: #e9ecef;
+}
+
+
+
+
+
 
 .category-button {
     background-color: #e9ecef;
@@ -1157,14 +1210,14 @@ a {
     border-radius: 20px;
     padding: 8px 16px;
     font-size: 16px;
-    color: #333;
+    color: black;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .category-button:hover {
     background-color: #007bff;
-    color: #fff;
+    color: black;
 }
 
 .category-button.active {
@@ -1175,13 +1228,16 @@ a {
 
 .btn.category-button {
     display: inline-block;
+    max-width: 130px;
+    max-height: 40px;
+    font-size: 12px;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     cursor: pointer;
 }
 .btn.category-button:hover {
-    background-color: #ddd;
+        background-color: #ddd;
 }
 
 

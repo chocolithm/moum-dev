@@ -715,3 +715,25 @@ async function deletePostWithDelAchieve() {
         alert("삭제되었습니다");
     }
 }
+
+
+
+
+
+// JavaScript 코드
+function scrollCategories(direction) {
+    const container = document.getElementById('categoryButtons');
+    const scrollAmount = 150; // 한 번에 스크롤할 픽셀 양
+    const currentTransform = getComputedStyle(container).transform;
+    const currentX = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[4]) : 0;
+
+    // 새로운 스크롤 위치 계산
+    let newX = direction === 'right' ? currentX - scrollAmount : currentX + scrollAmount;
+
+    // 최소 및 최대 스크롤 제한
+    const maxScroll = container.scrollWidth - container.parentElement.offsetWidth;
+    if (newX > 0) newX = 0; // 왼쪽 끝
+    if (Math.abs(newX) > maxScroll) newX = -maxScroll; // 오른쪽 끝
+
+    container.style.transform = `translateX(${newX}px)`;
+}
