@@ -317,7 +317,6 @@
     </select>
 
 
-    <!-- 인기 게시글 페이징 조회 -->
     <select id="listPopularByPage" resultMap="BoardMap">
         SELECT
         b.board_id,
@@ -333,11 +332,21 @@
         b.board_type,
         bp.photo_id,
         bp.filename,
-        bp.origin_filename
+        bp.origin_filename,
+        IFNULL(like_count_table.like_count, 0) AS like_count
         FROM
         board b
         LEFT JOIN user u ON b.user_id = u.user_id
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN (
+        SELECT
+        l.board_id,
+        COUNT(*) AS like_count
+        FROM
+        likes l
+        GROUP BY
+        l.board_id
+        ) like_count_table ON b.board_id = like_count_table.board_id
         WHERE
         b.is_deleted = 0
         AND b.is_popular = TRUE
@@ -640,8 +649,6 @@
     </select>
 
 
-
-    <!-- 검색어를 이용한 게시글 페이징 조회 -->
     <select id="searchByPage" resultMap="BoardMap" parameterType="map">
         SELECT
         b.board_id,
@@ -657,7 +664,9 @@
         b.board_type,
         bp.photo_id,
         bp.filename,
-        bp.origin_filename
+        bp.origin_filename,
+        -- 좋아요 수 추가
+        COALESCE(l.likeCount, 0) AS like_count
         FROM
         board b
         LEFT JOIN user u ON b.user_id = u.user_id
@@ -667,6 +676,16 @@
         FROM board_photo
         WHERE board_id = b.board_id
         )
+        -- 좋아요 수 계산을 위한 서브쿼리 추가
+        LEFT JOIN (
+        SELECT
+        board_id,
+        COUNT(*) AS likeCount
+        FROM
+        likes
+        GROUP BY
+        board_id
+        ) l ON b.board_id = l.board_id
         WHERE
         b.is_deleted = 0
         AND b.board_type = 'general'
@@ -691,7 +710,6 @@
         </if>
     </select>
 
-    <!-- 새로운 검색 메서드 -->
     <select id="searchByPageWithCategory" resultMap="BoardMap" parameterType="map">
         SELECT
         b.board_id,
@@ -708,15 +726,18 @@
         mc.category_name,
         bp.photo_id,
         bp.filename,
-        bp.origin_filename
+        bp.origin_filename,
+        COALESCE(l.like_count, 0) AS like_count
         FROM
         board b
-        LEFT JOIN
-        maincategory mc ON b.maincategory_id = mc.maincategory_id
-        LEFT JOIN
-        user u ON b.user_id = u.user_id
-        LEFT JOIN
-        board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
+        LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN (
+        SELECT board_id, COUNT(*) AS like_count
+        FROM likes
+        GROUP BY board_id
+        ) l ON b.board_id = l.board_id
         WHERE
         b.is_deleted = 0
         AND b.board_type = 'general'
@@ -730,6 +751,7 @@
         b.board_id DESC
         LIMIT #{offset}, #{limit}
     </select>
+
 
     <!-- 새로운 검색 결과의 총 개수 조회 -->
     <select id="countByKeywordAndCategory" resultType="int" parameterType="map">
@@ -749,7 +771,6 @@
         </if>
     </select>
 
-    <!-- 인기 게시글 검색 및 카테고리별 페이징 조회 -->
     <select id="searchPopularByPageWithCategory" resultMap="BoardMap" parameterType="map">
         SELECT
         b.board_id,
@@ -766,15 +787,18 @@
         mc.category_name,
         bp.photo_id,
         bp.filename,
-        bp.origin_filename
+        bp.origin_filename,
+        COALESCE(l.like_count, 0) AS like_count
         FROM
         board b
-        LEFT JOIN
-        maincategory mc ON b.maincategory_id = mc.maincategory_id
-        LEFT JOIN
-        user u ON b.user_id = u.user_id
-        LEFT JOIN
-        board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
+        LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN (
+        SELECT board_id, COUNT(*) AS like_count
+        FROM likes
+        GROUP BY board_id
+        ) l ON l.board_id = b.board_id
         WHERE
         b.is_deleted = 0
         AND b.is_popular = TRUE
@@ -788,6 +812,9 @@
         b.board_id DESC
         LIMIT #{offset}, #{limit}
     </select>
+
+
+
 
     <!-- 인기 게시글 검색 결과의 총 개수 조회 -->
     <select id="countPopularByKeywordAndCategory" resultType="int" parameterType="map">
@@ -808,7 +835,6 @@
     </select>
 
 
-    <!-- 검색 및 페이징 처리를 위한 판매 게시글 조회 -->
     <select id="searchTradeSellPostsByPage" resultMap="BoardMap" parameterType="map">
         SELECT
         b.board_id,
@@ -831,7 +857,8 @@
         mc.category_name,
         bp.photo_id,
         bp.filename,
-        bp.origin_filename
+        bp.origin_filename,
+        COALESCE(l.like_count, 0) AS like_count
         FROM
         board b
         INNER JOIN trade_board tb ON b.board_id = tb.board_id
@@ -839,6 +866,11 @@
         LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
         LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN (
+        SELECT board_id, COUNT(*) AS like_count
+        FROM likes
+        GROUP BY board_id
+        ) l ON b.board_id = l.board_id
         WHERE
         b.is_deleted = 0
         AND tb.trade_type = 'sell'
@@ -852,6 +884,8 @@
         b.post_date DESC
         LIMIT #{offset}, #{limit}
     </select>
+
+
 
     <!-- 검색 결과의 총 개수 조회 -->
     <select id="countTradeSellPostsByKeywordAndCategory" resultType="int" parameterType="map">
@@ -871,7 +905,6 @@
     </select>
 
 
-    <!-- 검색 및 페이징 처리를 위한 구매 게시글 조회 -->
     <select id="searchTradeBuyPostsByPage" resultMap="BoardMap" parameterType="map">
         SELECT
         b.board_id,
@@ -894,7 +927,8 @@
         mc.category_name,
         bp.photo_id,
         bp.filename,
-        bp.origin_filename
+        bp.origin_filename,
+        COALESCE(l.like_count, 0) AS like_count
         FROM
         board b
         INNER JOIN trade_board tb ON b.board_id = tb.board_id
@@ -902,9 +936,14 @@
         LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
         LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN (
+        SELECT board_id, COUNT(*) AS like_count
+        FROM likes
+        GROUP BY board_id
+        ) l ON b.board_id = l.board_id
         WHERE
         b.is_deleted = 0
-        AND tb.trade_type = 'buy' <!-- 'buy'로 수정 -->
+        AND tb.trade_type = 'buy'
         <if test="keyword != null and keyword != ''">
             AND b.title LIKE CONCAT('%', #{keyword}, '%')
         </if>
@@ -915,6 +954,7 @@
         b.post_date DESC
         LIMIT #{offset}, #{limit}
     </select>
+
 
     <!-- 검색 결과의 총 개수 조회 -->
     <select id="countTradeBuyPostsByKeywordAndCategory" resultType="int" parameterType="map">
