@@ -293,11 +293,10 @@
                 <div class="d-grid gap-4 d-md-flex justify-content-md-end mt-4">
                     <form id="withdrawForm" method="post" th:action="@{/user/delete}">
                         <input name="no" th:value="*{no}" type="hidden"/>
-                        <button class="myinfo-withdrawbutton btn btn-danger" onclick="confirmWithdraw()"
-                                style="margin-right: 18px; margin-left: -135px; margin-top: -60px;"
+                        <button class="btn btn-danger" onclick="confirmWithdraw()"
+                                style="margin-right: 18px"
                                 type="button">회원 탈퇴
                         </button>
-
                     </form>
                 </div>
             </div>
