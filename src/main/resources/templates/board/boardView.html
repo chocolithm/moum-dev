@@ -81,10 +81,15 @@
                 </form>
 
 
-                <button class="recommend_button btn btn-outline-dark" th:onclick="'toggleLike(' + ${board.no} + '); changeText(this);'" type="button">추천하기</button>
+<!--                <button class="recommend_button btn btn-outline-dark" th:onclick="'toggleLike(' + ${board.no} + '); changeText(this);'" type="button">추천하기</button>-->
+
 <!--                <button class="recommend_button btn btn-outline-dark"-->
 <!--                        th:onclick="'toggleLike(' + ${board.no} + '); changeText(this);'"-->
-<!--                        type="button">추천하기</button>-->
+<!--                        type="button">♡</button>-->
+
+                <button class="recommend_button btn btn-outline-dark"
+                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
+                        type="button">♡</button>
 
 
                 <button class="btn btn-danger" th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
@@ -117,7 +122,7 @@
                 <div class="comment-form">
                     <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" rows="3" placeholder="댓글을 입력하세요"></textarea>
                     <p id="counter">0/300자</p>
-                    <button class="btn btn-primary" data-th-onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
+                    <button class="btn btn-dark" data-th-onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
                 </div>
             </div>
         </div>
