@@ -2,82 +2,83 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta name="csrf-token" th:content="${_csrf.token}" />
-  <meta name="csrf-header" th:content="${_csrf.headerName}" />
-  <meta charset="UTF-8">
-  <title>게시글 수정 - Summernote 에디터</title>
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Summernote CSS & JS -->
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-  <!-- Bootstrap JavaScript -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <meta name="csrf-token" th:content="${_csrf.token}"/>
+    <meta name="csrf-header" th:content="${_csrf.headerName}"/>
+    <meta charset="UTF-8">
+    <title>게시글 수정 - Summernote 에디터</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Summernote CSS & JS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
-    <div class="container mt-4">
-      <h2>게시글 수정</h2>
-      <form enctype="multipart/form-data" id="updateForm">
-        <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden" />
-        <input id="boardNo" name="no" th:value="${board.no}" type="hidden" />
-        <input id="existingBoardType" th:value="${board.boardType}" type="hidden" />
+<div class="container mt-4">
+    <h2>게시글 수정</h2>
+    <form enctype="multipart/form-data" id="updateForm">
+        <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>
+        <input id="boardNo" name="no" th:value="${board.no}" type="hidden"/>
+        <input id="existingBoardType" th:value="${board.boardType}" type="hidden"/>
 
         <!-- 게시글 종류 표시 (수정 불가) -->
         <div class="form-group">
-          <label for="boardType">게시글 종류</label>
-          <input class="form-control" id="boardType" name="boardType" readonly
-            th:value="${board.boardType == 'trade' ? '거래 게시글' : '일반 게시글'}" type="text">
+            <label for="boardType">게시글 종류</label>
+            <input class="form-control" id="boardType" name="boardType" readonly
+                   th:value="${board.boardType == 'trade' ? '거래 게시글' : '일반 게시글'}" type="text">
         </div>
 
         <!-- 공통 필드 -->
         <div class="form-group">
-          <label for="title">제목</label>
-          <input class="form-control" id="title" name="title" required th:value="${board.title}" type="text">
+            <label for="title">제목</label>
+            <input class="form-control" id="title" name="title" required th:value="${board.title}" type="text">
         </div>
 
         <div class="form-group">
-          <label for="content">내용</label>
-          <textarea class="form-control" id="content" name="content" th:utext="${board.content}"></textarea>
+            <label for="content">내용</label>
+            <textarea class="form-control" id="content" name="content" th:utext="${board.content}"></textarea>
         </div>
 
         <!-- 거래 게시글 전용 필드 -->
         <div id="tradeFields" th:style="${board.boardType == 'trade' ? 'display: block;' : 'display: none;'}">
-          <div class="form-group">
-            <label for="price">가격</label>
-            <input class="form-control" id="price" name="price" th:value="${board.price}" type="number">
-          </div>
+            <div class="form-group">
+                <label for="price">가격</label>
+                <input class="form-control" id="price" name="price" th:value="${board.price}" type="number">
+            </div>
 
-          <div class="form-group">
-            <label for="collectionNo">수집품 선택</label>
-            <select class="form-control" id="collectionNo" name="collection.no">
-              <option disabled value="">수집품을 선택하세요</option>
-              <option th:data-filename="${collection.name}" th:each="collection : ${collections}"
-                th:selected="${board.collection != null && board.collection.no == collection.no}"
-                th:text="${collection.name}" th:value="${collection.no}">
-              </option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>수집품 이미지</label>
-            <img alt="수집품 이미지" class="note-float-left"
-              id="collectionImage"
-              style="width: 50%; float: left;" th:if="${board.collection != null}" th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.collection.name}}">
-          </div>
+            <div class="form-group">
+                <label for="collectionNo">수집품 선택</label>
+                <select class="form-control" id="collectionNo" name="collection.no">
+                    <option disabled value="">수집품을 선택하세요</option>
+                    <option th:data-filename="${collection.name}" th:each="collection : ${collections}"
+                            th:selected="${board.collection != null && board.collection.no == collection.no}"
+                            th:text="${collection.name}" th:value="${collection.no}">
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>수집품 이미지</label>
+                <img alt="수집품 이미지" class="note-float-left"
+                     id="collectionImage"
+                     style="width: 50%; float: left;" th:if="${board.collection != null}"
+                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.collection.name}}">
+            </div>
         </div>
 
         <!-- 수정 버튼 -->
         <div class="form-group mt-3">
-          <button class="btn btn-primary" onclick="updatePost()" type="button">수정하기</button>
-          <a class="btn btn-success" href="javascript:history.back()">취소</a>
+            <button class="board-edit-button btn btn-primary" onclick="updatePost()" type="button">수정하기</button>
+            <a class="board-edit-cancel-button btn btn-success" href="javascript:history.back()">취소</a>
         </div>
-      </form>
-    </div>
+    </form>
+</div>
 
 </body>
 </html>
 
 <script src="/js/common.js"></script>
-<<script src="/js/board.js"></script>
+<script src="/js/board.js"></script>

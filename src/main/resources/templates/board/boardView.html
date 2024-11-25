@@ -87,8 +87,6 @@
                         th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
                         type="button">🤍</button>
 
-
-
                 <button class="report_button btn btn-outline-white"
                         th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
                         onclick="openReport('board');" type="button">🚨</button>
