@@ -56,9 +56,10 @@
 }
 
 .withdraw-container {
-    position: absolute;
-    top: 680px;   /* 상단에서 200px 위치 */
-    left: 1600px;  /* 왼쪽에서 300px 위치 */
+    height: 1300px; /* 버튼 영역 높이 */
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
 
