@@ -60,7 +60,7 @@ function toggleAdminMenu(menu, pageNo, pageCount, fromPopState = false) {
 
 // 목록 테이블 생성
 function createAdminTableHead(menu, pageNo, pageCount) {
-  const title = document.querySelector("h1");
+  const title = document.querySelector("h2");
   const content_section = document.querySelector(".content-section");
   const table = document.createElement("table");
   table.className = "list-table";

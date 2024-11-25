@@ -33,17 +33,17 @@
   position: relative;
 }
 
-.main-section h1 {
-  margin-top: 20px;
+.main-section h2 {
+  margin-top: 10px;
 }
 
 .main-section .content-section {
-  height: calc(100vh - 310px);
+  height: calc(100vh - 420px);
   width: 100%;
   display: flex;
   justify-content: center;
   overflow: auto;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 .main-section .content-section::-webkit-scrollbar {
@@ -106,8 +106,8 @@
 
 
 .main-section .page-section {
-  margin: 10px;
   opacity: 1;
+  margin-top: 10px;
   transition: opacity 0.3s ease-in-out;
 }
 
@@ -232,7 +232,7 @@
 
 .main-section .btn-section {
   position: absolute;
-  bottom: 30px;
+  bottom: 20px;
   right: 40px;
 }
 
