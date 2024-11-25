@@ -289,7 +289,7 @@ public class CollectionController {
   @PostMapping("/maincategory/add")
   @ResponseBody
   public String addMaincategory(Maincategory maincategory) throws Exception {
-    
+
     if (categoryService.getMaincategoryByName(maincategory.getName()) != null) {
       return "exist";
     }

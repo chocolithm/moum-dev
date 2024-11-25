@@ -76,9 +76,4 @@ public class DefaultCollectionService implements CollectionService {
   public boolean deleteFile(int no) throws Exception {
     return collectionDao.deleteFile(no);
   }
-
-  @Override
-  public List<Collection> listAll() throws Exception {
-    return collectionDao.listAll();
-  }
 }

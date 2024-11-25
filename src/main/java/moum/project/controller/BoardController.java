@@ -1,22 +1,45 @@
   package moum.project.controller;
 
+  import java.util.ArrayList;
+  import java.util.Collections;
+  import java.util.Iterator;
+  import java.util.List;
+  import java.util.Map;
+  import java.util.UUID;
   import lombok.RequiredArgsConstructor;
   import moum.project.dao.BoardDao;
-  import moum.project.service.*;
+  import moum.project.service.AchievementService;
+  import moum.project.service.BoardService;
+  import moum.project.service.CollectionCategoryService;
+  import moum.project.service.CollectionService;
+  import moum.project.service.CollectionStatusService;
+  import moum.project.service.CommentService;
+  import moum.project.service.LikesService;
+  import moum.project.service.StorageService;
+  import moum.project.service.UserService;
+  import moum.project.vo.Achievement;
+  import moum.project.vo.AttachedFile;
+  import moum.project.vo.Board;
   import moum.project.vo.Collection;
-  import moum.project.vo.*;
+  import moum.project.vo.CollectionStatus;
+  import moum.project.vo.CommentResponse;
+  import moum.project.vo.Maincategory;
+  import moum.project.vo.User;
   import org.springframework.http.HttpStatus;
   import org.springframework.http.ResponseEntity;
   import org.springframework.security.core.annotation.AuthenticationPrincipal;
   import org.springframework.security.core.userdetails.UserDetails;
   import org.springframework.stereotype.Controller;
   import org.springframework.ui.Model;
-  import org.springframework.web.bind.annotation.*;
+  import org.springframework.web.bind.annotation.GetMapping;
+  import org.springframework.web.bind.annotation.PathVariable;
+  import org.springframework.web.bind.annotation.PostMapping;
+  import org.springframework.web.bind.annotation.RequestMapping;
+  import org.springframework.web.bind.annotation.RequestParam;
+  import org.springframework.web.bind.annotation.ResponseBody;
   import org.springframework.web.context.request.WebRequest;
   import org.springframework.web.multipart.MultipartFile;
   import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-  import java.util.*;
 
   @Controller
   @RequestMapping("/board")
@@ -346,7 +369,7 @@
         List<CollectionStatus> collectionStatusList = collectionStatusService.list();
         model.addAttribute("collectionStatusList", collectionStatusList);
 
-        List<Collection> collections = collectionService.listAll();
+        List<Collection> collections = collectionService.list(board.getUser().getNo());
         model.addAttribute("collections", collections);
 
         model.addAttribute("price", board.getPrice());
@@ -613,9 +636,12 @@
 
 
     @GetMapping("/boardDetailForm")
-    public String boardDetailForm(Model model) throws Exception {
+    public String boardDetailForm(Model model, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+      User loginUser = userService.getByEmail(userDetails.getUsername());
+
       // 수집품 목록 가져오기
-      List<Collection> collections = collectionService.listAll();
+      List<Collection> collections = collectionService.list(loginUser.getNo());
       model.addAttribute("collections", collections);
 
       // 수집품 상태 목록 가져오기

@@ -230,7 +230,8 @@ CREATE TABLE collection (
     purchase_place   VARCHAR(255) NULL     COMMENT '구매처', -- 구매처
     price            INTEGER      NULL     DEFAULT 0 COMMENT '가격', -- 가격
     storage_location VARCHAR(255) NULL     COMMENT '보관장소', -- 보관장소
-    post_date        DATETIME     NOT NULL DEFAULT now() COMMENT '등록일시' -- 등록일시
+    post_date        DATETIME     NOT NULL DEFAULT now() COMMENT '등록일시', -- 등록일시
+    is_deleted       TINYINT(1)   NOT NULL DEFAULT 0 COMMENT '삭제여부' -- 삭제여부ㅡ
 )
 COMMENT '수집품';
 
