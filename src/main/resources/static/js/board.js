@@ -291,27 +291,6 @@ function getCsrfTokenHeaders() {
     };
 }
 
-//function toggleLike(boardNo, userNo) {
-//    const csrfHeaders = getCsrfTokenHeaders();
-//
-//    $.ajax({
-//        url: "/board/toggleLike",
-//        type: "POST",
-//        data: { boardNo: boardNo, userNo: userNo },
-//        beforeSend: function (xhr) {
-//            xhr.setRequestHeader(csrfHeaders.header, csrfHeaders.token); // CSRF 헤더 추가
-//        },
-//        success: function (response) {
-//            $("#likeCount").text(response.likeCount); // 좋아요 수 업데이트
-//
-//            Swal.fire(response.message);
-//        },
-//        error: function (error) {
-//            console.error("좋아요 오류:", error);
-//            Swal.fire("좋아요 처리에 실패했습니다.");
-//        }
-//    });
-//}
 
   function toggleLike(boardNo, userNo) {
       const csrfHeaders = getCsrfTokenHeaders();  // CSRF 토큰 헤더 설정
@@ -341,13 +320,13 @@ function changeText(button) {
         // ♥ -> ♡ 상태로 변경
         button.classList.remove('btn-danger'); // 'btn-danger' 클래스 제거
         button.classList.add('btn-outline-dark'); // 원래 상태 (흰색 배경)로 복귀
-        button.innerText = '♡'; // 텍스트 변경
+        button.innerText = '🩷'; // 텍스트 변경
         button.style.color = ''; // 텍스트 색상 초기화 (기본 색상으로 복귀)
     } else {
         // ♡ -> ♥ 상태로 변경
         button.classList.remove('btn-outline-dark'); // 흰색 배경 제거
         button.classList.add('btn-danger'); // 'btn-danger' 클래스 추가
-        button.innerText = '♥'; // 텍스트 변경
+        button.innerText = '🤍'; // 텍스트 변경
         button.style.color = 'red'; // '♥' 텍스트 색상을 빨간색으로 변경
     }
 }
