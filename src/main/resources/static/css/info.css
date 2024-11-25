@@ -56,11 +56,11 @@
 }
 
 .withdraw-container {
-    height: 1300px; /* 버튼 영역 높이 */
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
+    position: absolute;
+    top: 680px;   /* 상단에서 200px 위치 */
+    left: 1600px;  /* 왼쪽에서 300px 위치 */
 }
+
 
 .my-info-right-container-body .my-board-container,
 .my-info-right-container-body .my-achievement-container {
