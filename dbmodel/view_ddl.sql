@@ -20,3 +20,4 @@ order by score desc;
 -- trade_board 테이블에 trade_type 컬럼 추가
 -- alert 테이블에 alert_category_id 컬럼 varchar(50)으로 수정
 -- user_restricted 테이블에 comment 컬럼 추가
+-- collection 테이블에 is_deleted 컬럼 추가

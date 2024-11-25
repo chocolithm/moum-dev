@@ -21,7 +21,4 @@ public interface CollectionService {
 
   boolean deleteFile(int no) throws Exception;
 
-  // 모든 컬렉션 목록을 조회
-  List<Collection> listAll() throws Exception;
-
 }

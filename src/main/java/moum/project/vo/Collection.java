@@ -24,6 +24,7 @@ public class Collection implements Serializable {
   private String storageLocation;
   private LocalDateTime postDate;
   private List<AttachedFile> attachedFiles;
+  private boolean isDeleted;
 
   public Collection() {
   }
