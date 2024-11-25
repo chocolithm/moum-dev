@@ -8,11 +8,10 @@
   border: 1px solid lightgrey;
   box-shadow: 3px 3px 2px;
   width: 400px;
-  height: calc(100vh - 136px);
-  max-height: calc(1000vh - 100px);
+  height: calc(100vh - 96px);
   overflow-y: auto;
   position: fixed;
-  top: 136px;
+  top: 96px;
   right: 0;
   z-index: 50;
   display: none;

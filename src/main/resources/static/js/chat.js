@@ -97,13 +97,6 @@ function removeNewMessageAlert() {
   }
 }
 
-// [채팅하기] 버튼 생성
-function createOpenChatBtn(open_chat_btn) {
-  open_chat_btn.className = "open-chat-btn btn";
-  open_chat_btn.innerHTML = "채팅하기";
-  open_chat_btn.setAttribute("onclick", "openChat(0)");
-}
-
 // 채팅 모달 열기
 function openChatroomModal() {
   closeAlertModal();
@@ -111,17 +104,11 @@ function openChatroomModal() {
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
 
-  if (typeof isTrade !== "undefined" && isTrade) {
-    const open_chat_btn = document.createElement("button");
-    createOpenChatBtn(open_chat_btn);
-    chatroom_layer.appendChild(open_chat_btn);
-  }
-
   fetchChatroomList();
   chat_btn.onclick = () => closeChatroomModal();
   fadeIn(chatroom_layer);
 
-  document.querySelector("main").addEventListener("click", function () {
+  document.querySelector("main").addEventListener("onmousedown", function () {
     closeChatroomModal();
   }, { once: true });
 }
@@ -248,12 +235,6 @@ function closeChat() {
 
   setTimeout(function () {
     chatroom_layer.innerHTML = "";
-
-    if (typeof isTrade !== "undefined" && isTrade) {
-      const open_chat_btn = document.createElement("button");
-      createOpenChatBtn(open_chat_btn);
-      chatroom_layer.appendChild(open_chat_btn);
-    }
 
     fetchChatroomList();
   }, 500);
