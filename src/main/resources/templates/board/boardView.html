@@ -76,7 +76,7 @@
                     <input name="_method" type="hidden" value="DELETE">
                     <button class="delete-button" type="button" onclick="deletePostWithDelAchieve()"
                             th:if="${authenticatedUser.no == board.userNo or authenticatedUser.admin}">
-                        삭제하기
+                        🗑삭제하기
                     </button>
                 </form>
 
@@ -92,7 +92,7 @@
                         th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
                         onclick="openReport('board');" type="button">🚨</button>
 
-                <button class="btn btn-danger" th:if="${authenticatedUser.admin == true}"
+                <button class="btn btn-warning" th:if="${authenticatedUser.admin == true}"
                         data-th-onclick="|openRestrict('board', '${board.no}')|" type="button">경고/제재</button>
             </div>
 
