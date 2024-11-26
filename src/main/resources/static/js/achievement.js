@@ -120,7 +120,7 @@ function filterAchievements() {
             (checkedValues.includes('not-started') && progress > 0 && progress < 100) ||
             (checkedValues.includes('completed') && progress === 100);
 
-        achievement.style.display = shouldShow ? 'flex' : 'none';
+        achievement.style.display = shouldShow ? 'block' : 'none';
 
         // Bootstrap Progress Bar 색상 및 애니메이션 설정
         const progressBar = achievement.querySelector('.progress-bar');

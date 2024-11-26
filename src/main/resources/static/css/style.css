@@ -392,7 +392,6 @@ td {
 }
 
 .achievement-user-progress .achievement-photo {
-    display: flex;
     align-items: center;
     padding: 15px;
     margin-bottom: 20px;

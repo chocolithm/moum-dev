@@ -33,7 +33,8 @@
 
                 <div class="modal-body px-4 achievement-list">
                     <div class="achievement-container">
-                        <div class="achievement-photo" th:attr="progress=${achievement.progress}"
+                        <div class="achievement-photo"
+                             th:attr="progress=${achievement.progress}"
                              th:each="achievement : ${list}"
                              th:id="${achievement.id}">
                             <div class="achievement-info">
@@ -51,6 +52,7 @@
                                     <h6 class="achievement-name mb-1" th:text="${achievement.name}">업적명</h6>
                                     <p class="achievement-content mb-0" th:text="${achievement.content}">업적 설명</p>
                                 </div>
+                            </div>
                                 <div class="progress-wrap">
                                     <div class="progress">
                                         <div aria-valuemax="100"
@@ -69,7 +71,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
 </main>
 </body>
