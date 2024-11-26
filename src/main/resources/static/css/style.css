@@ -52,11 +52,13 @@ a {
 }
 
 
+/* 주석 처리 (양지윤)
 .close:hover, .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
+*/
 
 
 /* 회원가입 모달 닫기 버튼 스타일 */
@@ -76,12 +78,13 @@ a {
 }
 
 
-/* 회원가입 모달 닫기 버튼에 hover 효과 */
+/* 주석 처리 (양지윤)
+#회원가입 모달 닫기 버튼에 hover 효과
 .signup-close-btn:hover {
     color: darkgreen;
     transition: color 0.3s ease;
 }
-
+*/
 
 body {
     position: relative;
@@ -291,11 +294,13 @@ footer {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* 주석 처리 (양지윤)
 .btn:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
+*/
 
 .btn a {
     text-decoration: none;

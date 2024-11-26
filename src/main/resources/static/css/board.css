@@ -1193,10 +1193,12 @@ a {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* 주석 처리 (양지윤)
 .category-button:hover {
     background-color: #007bff;
     color: #fff;
 }
+*/
 
 .category-button.active {
     background-color: #007bff;
@@ -1213,9 +1215,11 @@ a {
     text-decoration: none;
 }
 
+/* 주석처리 (양지윤)
 .btn.category-button:hover {
     background-color: #ddd;
 }
+*/
 
 .maincategory-label {
     font-size: 14px;
