@@ -981,7 +981,7 @@ a {
 .item-number {
     display: flex;
     justify-content: space-between; /* 날짜와 댓글 개수를 양쪽으로 배치 */
-    align-items: center; /* 수직 정렬 */
+    align-items: normal; /* 수직 정렬 */
     font-size: 0.9em;
     color: #666;
 }
@@ -1138,7 +1138,7 @@ a {
 }
 
 .trade-info {
-    background: #f8f9fa;
+    background-color: #ffffff;
     padding: 15px;
     border-radius: 4px;
     margin: 10px 0;
@@ -1147,6 +1147,7 @@ a {
 .trade-box {
     display: flex;
     gap: 20px;
+    background-color: white;
 }
 
 .category-filter-container {

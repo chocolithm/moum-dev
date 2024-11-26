@@ -36,6 +36,7 @@
                         <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
                     </div>
                 </div>
+
             </div>
 
             <!-- 거래 정보 (있는 경우) -->
@@ -45,7 +46,15 @@
                     <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span></div>
                     <div><strong>거래 방식:</strong> <span th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>
                 </div>
+                <!-- 수집품 정보 보기 버튼 추가 -->
+                <button class="btn btn-info" style="background-color: white; width: 150px; margin: 0 auto; display: block; border-color: white; gap: 20px;
+               box-shadow: 0 10px 6px rgba(0, 0, 0, 0.1); border-radius: 8px;"
+                        th:if="${board.collection != null}"
+                        th:onclick="'openCollectionViewModalFromBoard(' + ${board.collection.no} + ')'">
+                    수집품 정보 보기
+                </button>
             </div>
+
 
             <!-- 게시글 내용 -->
             <div class="post-content" th:utext="${board.content}">
@@ -54,6 +63,8 @@
 
             <!-- 추천/신고 버튼 -->
             <div class="action-buttons">
+
+
                 <!-- 거래완료 버튼 -->
                 <button class="trade-complete"
                         th:if="${(authenticatedUser.no == board.userNo or authenticatedUser.admin) and board.sellOrSoldStatus == false and board.boardType == 'trade'}"
@@ -100,25 +111,10 @@
 
                 <button class="btn btn-warning" th:if="${authenticatedUser.admin == true}"
                         data-th-onclick="|openRestrict('board', '${board.no}')|" type="button">경고/제재</button>
+
+
             </div>
 
-            <div class="board-personal-button">
-                <!-- 수정 버튼 -->
-                <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
-                        th:if="${(board.sellOrSoldStatus == false) and (authenticatedUser.no == board.userNo)}">
-                    수정하기
-                </button>
-
-                <!-- 삭제 버튼 -->
-                <form method="post" name="postDeleteForm" th:action="@{/board/delete}">
-                    <input name="no" th:value="${board.no}" type="hidden">
-                    <input name="_method" type="hidden" value="DELETE">
-                    <button class="delete-button" type="button" onclick="deletePostWithDelAchieve()"
-                            th:if="${authenticatedUser.no == board.userNo}">
-                        🗑삭제하기
-                    </button>
-                </form>
-            </div>
 
             <!-- 댓글 섹션 -->
             <div class="comments-section" id="comments-section">
@@ -159,6 +155,51 @@
 
 <script src="/js/board.js"></script>
 <script src="/js/collection.js"></script>
+
+<script>
+
+    // 수집품 조회 화면 열기 (게시글에서 호출)
+    function openCollectionViewModalFromBoard(collectionNo) {
+        fetchCollectionViewFromBoard(collectionNo);
+        openOverlay();
+        fadeInWithFlex(document.querySelector(".collection-view-layer"));
+    }
+
+    function fetchCollectionViewFromBoard(no) {
+        console.log("Fetching collection view for board:", no);
+
+        fetch(`/collection/viewFromBoard?no=${no}`)
+            .then(response => {
+                if (!response.ok) {
+                    console.error("Failed to fetch collection view:", response.statusText);
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                console.log("Fetched HTML:", html); // 서버에서 반환한 HTML을 출력
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                const newContent = doc.querySelector('.collection-view-layer').innerHTML;
+                if (newContent) {
+                    document.querySelector('.collection-view-layer').innerHTML = newContent;
+
+                    // 필요한 이벤트 초기화
+                    document.addEventListener("DOMContentLoaded", function () {
+                        showSlides(collectionSlideIndex);
+                    });
+                } else {
+                    console.error("HTML does not contain '.collection-view-layer'.");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching collection view:", error);
+            });
+    }
+
+
+</script>
 <footer th:replace="~{footer :: footer}"></footer>
 </body>
 </html>
