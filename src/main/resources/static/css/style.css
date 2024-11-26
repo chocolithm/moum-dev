@@ -392,7 +392,6 @@ td {
 }
 
 .achievement-user-progress .achievement-photo {
-    display: flex;
     align-items: center;
     padding: 15px;
     margin-bottom: 20px;
@@ -723,7 +722,7 @@ main > .slider-container .slider {
 /* 스위치의 기본 배경을 하얀색으로 설정 */
 .form-check-input {
     background-color: white; /* 기본 배경을 하얀색으로 */
-    border-color: white; /* 테두리도 하얀색 */
+    /*border-color: white; !* 테두리도 하얀색 *!*/
 }
 
 /* 체크된 상태에서만 스위치가 검정색으로 변하게 설정 */
@@ -741,6 +740,3 @@ main > .slider-container .slider {
 .form-check-input:before {
     background-color: white; /* 기본 슬라이드 부분 하얀색 */
 }
-
-
-

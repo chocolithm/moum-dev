@@ -87,6 +87,16 @@
         totalBoards = boardService.countPopularPosts();
         System.out.println(popularBoards.get(0));
       }
+      // 각 게시글의 댓글 개수 설정 및 maincategory 확인
+      for (Board board : popularBoards) {
+        int commentCount = commentService.countCommentsByBoardId(board.getNo());
+        board.setCommentCount(commentCount); // 댓글 개수 저장
+
+        // Debugging용 로그: maincategory 확인
+        if (board.getMaincategory() == null) {
+          System.out.println("maincategory is null for board ID: " + board.getNo());
+        }
+      }
 
       // 페이징 데이터 계산
       int totalPages = (int) Math.ceil((double) totalBoards / size);
@@ -108,15 +118,82 @@
       return "board/popularList";
     }
 
+    @GetMapping("/boardList")
+    public String boardList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "12") int size,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
+            Model model,
+            @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
+      // 페이징 오프셋 계산
+      int offset = (page - 1) * size;
 
+      // 게시글 및 총 게시글 수 조회
+      List<Board> recentBoards;
+      int totalBoards;
 
+      if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
+        // 검색 및 필터링 조건 적용
+        recentBoards = boardService.searchByCategoryAndPage(keyword, categoryNo, offset, size);
+        totalBoards = boardService.countByKeywordAndCategory(keyword, categoryNo);
+      } else {
+        // 검색 키워드만 적용
+        recentBoards = boardService.searchByPage(keyword, offset, size);
+        totalBoards = boardService.countByKeyword(keyword);
+      }
 
-    // 자랑하기 게시글 조회
-    @GetMapping("/bragging")
-    public List<Board> getBraggingPosts() throws Exception {
-      return boardService.listBraggingPosts();
+      // 각 게시글의 댓글 개수 설정 및 maincategory 확인
+      for (Board board : recentBoards) {
+        int commentCount = commentService.countCommentsByBoardId(board.getNo());
+        board.setCommentCount(commentCount); // 댓글 개수 저장
+
+        // Debugging용 로그: maincategory 확인
+        if (board.getMaincategory() == null) {
+          System.out.println("maincategory is null for board ID: " + board.getNo());
+        }
+      }
+
+      // 페이징 데이터 계산
+      int totalPages = (int) Math.ceil((double) totalBoards / size);
+
+      // 모델 속성 설정
+      model.addAttribute("recentBoards", recentBoards);
+      model.addAttribute("currentPage", page);
+      model.addAttribute("totalPages", totalPages);
+      model.addAttribute("keyword", keyword);
+      model.addAttribute("categoryNo", categoryNo);
+
+      // 카테고리 목록 추가
+      List<Maincategory> maincategoryList = categoryService.listMaincategory();
+
+      // "기타" 카테고리 추가
+      Maincategory etcCategory = new Maincategory();
+      etcCategory.setNo(-999);
+      etcCategory.setName("기타");
+      maincategoryList.add(etcCategory);
+
+      model.addAttribute("maincategoryList", maincategoryList);
+
+      // 로그인한 사용자 정보 추가 (옵션)
+      if (userDetails != null) {
+        String email = userDetails.getUsername();
+        User loginUser = userService.getByEmail(email);
+        model.addAttribute("authenticatedUser", loginUser);
+
+        // 업적 랭킹 정보 추가
+        List<Achievement> userRankList = achievementService.listByUserRank();
+        model.addAttribute("rankList", userRankList);
+
+        Achievement userAchievementRank = achievementService.findRankByUser(loginUser.getNo());
+        model.addAttribute("rankNowUserList", userAchievementRank);
+      }
+
+      return "board/boardList";
     }
+
+
 
     @GetMapping("/tradeHomeSell")
     public String tradeHomeSell(
@@ -260,66 +337,7 @@
       return "ranking";
     }
 
-    @GetMapping("/boardList")
-    public String boardList(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "12") int size,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
-            Model model,
-            @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-      int offset = (page - 1) * size;
-      List<Board> recentBoards;
-      int totalBoards;
-
-      // 검색 및 필터링 조건에 따라 메서드 호출
-      if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
-        recentBoards = boardService.searchByCategoryAndPage(keyword, categoryNo, offset, size);
-        totalBoards = boardService.countByKeywordAndCategory(keyword, categoryNo);
-      } else {
-        recentBoards = boardService.searchByPage(keyword, offset, size);
-        totalBoards = boardService.countByKeyword(keyword);
-      }
-
-      // 각 게시글에 댓글 개수 설정
-      for (Board board : recentBoards) {
-        int commentCount = commentService.countCommentsByBoardId(board.getNo());
-        board.setCommentCount(commentCount); // Board 객체에 댓글 개수 저장
-      }
-
-      // 페이징 데이터 계산
-      int totalPages = (int) Math.ceil((double) totalBoards / size);
-      model.addAttribute("recentBoards", recentBoards);
-      model.addAttribute("currentPage", page);
-      model.addAttribute("totalPages", totalPages);
-      model.addAttribute("keyword", keyword);
-      model.addAttribute("categoryNo", categoryNo);
-
-      // 카테고리 목록 추가
-      List<Maincategory> maincategoryList = categoryService.listMaincategory();
-      Maincategory etcCategory = new Maincategory();
-      etcCategory.setNo(-999);
-      etcCategory.setName("기타");
-      maincategoryList.add(etcCategory);
-      model.addAttribute("maincategoryList", maincategoryList);
-
-      // 로그인한 사용자 정보 추가 (옵션)
-      if (userDetails != null) {
-        String email = userDetails.getUsername();
-        User loginUser = userService.getByEmail(email);
-        model.addAttribute("authenticatedUser", loginUser);
-
-        // 업적 랭킹 정보 추가
-        List<Achievement> userRankList = achievementService.listByUserRank();
-        model.addAttribute("rankList", userRankList); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
-        Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
-        model.addAttribute("rankNowUserList",
-                user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
-      }
-
-      return "board/boardList";
-    }
 
 
 

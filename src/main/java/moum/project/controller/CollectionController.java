@@ -43,6 +43,13 @@ public class CollectionController {
   private final String folderName = "collection/";
 
 
+  @GetMapping("/get")
+  @ResponseBody
+  public Collection get(int no) throws Exception {
+    return collectionService.get(no);
+  }
+
+
   @GetMapping("/form")
   public String form(Model model) throws Exception {
     List<Maincategory> maincategoryList = categoryService.listMaincategory();

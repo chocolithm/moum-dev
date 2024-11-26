@@ -65,14 +65,17 @@
                     </option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>수집품 이미지</label>
-                <img alt="수집품 이미지" class="note-float-left"
-                     id="collectionImage"
-                     style="width: 50%; float: left;" th:if="${board.collection != null}"
-                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.collection.name}}">
+
+            <!-- 수집품 미리보기 영역 추가 -->
+            <div id="collectionPreview" style="display: none; margin-top: 20px;">
+                <h5>수집품 미리보기</h5>
+                <div id="collectionPreviewContent">
+                    <!-- 수집품 정보가 여기에 표시됩니다 -->
+                </div>
             </div>
+            <!-- 추가 끝 -->
         </div>
+
 
         <div class="form-group mt-3" style="text-align: right;">
             <button class="board-edit-button btn btn-primary" onclick="updatePost()" type="button">수정하기</button>
@@ -249,6 +252,56 @@
             const filename = photos[i].src.substring(photos[i].src.lastIndexOf("/") + 1);
             console.log(filename);
         }
+    }
+
+
+    // 수집품 선택 시 미리보기 업데이트
+    $('#collectionNo').change(function () {
+        const collectionNo = $(this).val();
+        if (collectionNo) {
+            fetchCollectionDetails(collectionNo);
+        } else {
+            $('#collectionPreview').hide();
+            $('#collectionPreviewContent').html('');
+        }
+    });
+
+    function fetchCollectionDetails(collectionNo) {
+        $.ajax({
+            url: '/collection/get?no=' + collectionNo,
+            method: 'GET',
+            success: function (collection) {
+                displayCollectionPreview(collection);
+            },
+            error: function () {
+                alert('수집품 정보를 가져오는 데 실패했습니다.');
+            }
+        });
+    }
+
+    function displayCollectionPreview(collection) {
+        let previewHtml = '';
+
+        previewHtml += '<p><strong>이름:</strong> ' + collection.name + '</p>';
+        previewHtml += '<p><strong>가격:</strong> ' + collection.price + '원</p>';
+        previewHtml += '<p><strong>상태:</strong> ' + collection.status.name + '</p>';
+        previewHtml += '<p><strong>구매 장소:</strong> ' + collection.purchasePlace + '</p>';
+        previewHtml += '<p><strong>보관 위치:</strong> ' + collection.storageLocation + '</p>';
+
+        // 이미지가 있을 경우 표시
+        if (collection.attachedFiles && collection.attachedFiles.length > 0) {
+            previewHtml += '<div style="display: flex; overflow-x: auto;">';
+            collection.attachedFiles.forEach(function (file) {
+                const imageUrl = 'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + file.filename;
+                previewHtml += '<img src="' + imageUrl + '" alt="수집품 이미지" style="width: 150px; margin-right: 10px;">';
+            });
+            previewHtml += '</div>';
+        } else {
+            previewHtml += '<p>이미지가 없습니다.</p>';
+        }
+
+        $('#collectionPreviewContent').html(previewHtml);
+        $('#collectionPreview').show();
     }
 </script>
 <script src="/js/board.js"></script>
