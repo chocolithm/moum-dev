@@ -97,36 +97,25 @@ function addComment(boardId) {
         },
         body: JSON.stringify(commentData)
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('댓글 추가 실패');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        // 댓글 추가 성공 시 DOM에 새 댓글 추가
+        // 댓글 추가 성공 시 DOM에 새 댓글 추가 (맨 아래로 추가)
         const commentList = document.querySelector(".comment-list");
         const newComment = document.createElement("li");
         newComment.setAttribute("id", `comment-${data.no}`);
-
-        // 삭제 버튼 표시 여부 결정
-        let deleteButtonHtml = '';
-        if (data.userNo === parseInt(authenticatedUserNo)) { // authenticatedUserNo는 서버에서 제공
-            deleteButtonHtml = `<button class="comment-delete-btn" onclick="deleteComment(${data.no});">삭제</button>`;
-        }
-
         newComment.innerHTML = `
-                <div class="comment-box">
-                    <div class="comment-box-deleteBtn">
-                        ${deleteButtonHtml}
-                    </div>
-                    <div class="comment-header">
-                        <span>${data.user.nickname}</span>
-                        <span class="comment-date">${new Date(data.date).toLocaleDateString()}</span>
-                    </div>
-                    <div class="comment-content">${data.content}</div>
-                </div>`;
-        commentList.appendChild(newComment);
+            <div class="comment-box">
+                <div class="comment-box-deleteBtn">
+                    <button class="comment-delete-btn" 
+                            onclick="deleteComment(${data.no})">삭제</button>
+                </div>
+                <div class="comment-header">
+                    <span>${data.user.nickname}</span>
+                    <span class="comment-date">${new Date(data.date).toLocaleDateString()}</span>
+                </div>
+                <div class="comment-content">${data.content}</div>
+            </div>`;
+        commentList.appendChild(newComment); // 새 댓글을 리스트의 맨 아래에 추가
 
         // 댓글 입력창 초기화
         document.getElementById("commentContent").value = "";
@@ -134,9 +123,9 @@ function addComment(boardId) {
     })
     .catch(error => {
         console.error("댓글 추가 실패:", error);
-        alert("댓글 추가에 실패했습니다.");
     });
 }
+
 
 // CSRF 토큰 및 헤더 설정 함수
 function getCsrfTokenHeaders() {
@@ -148,7 +137,6 @@ function getCsrfTokenHeaders() {
     };
 }
 
-// 댓글 삭제 함수
 function deleteComment(commentId) {
     if (!confirm("댓글을 삭제하시겠습니까?")) return;
 
@@ -163,7 +151,10 @@ function deleteComment(commentId) {
     .then(response => response.text())
     .then((response) => {
         if (response === "success") {
-            document.getElementById(`comment-${commentId}`).remove();
+            const commentElement = document.getElementById(`comment-${commentId}`);
+            if (commentElement) {
+                commentElement.remove();
+            }
         } else {
             alert("댓글 삭제에 실패했습니다.");
         }
@@ -173,6 +164,7 @@ function deleteComment(commentId) {
         alert("댓글 삭제에 실패했습니다.");
     });
 }
+
 
 
 

@@ -1,5 +1,7 @@
     package moum.project.controller;
 
+    import java.util.Comparator;
+    import java.util.stream.Collectors;
     import lombok.RequiredArgsConstructor;
     import moum.project.service.BoardService;
     import moum.project.service.CommentService;
@@ -64,10 +66,14 @@
         }
 
         @GetMapping("/board/{boardId}/comments")
-        @ResponseBody // JSON 형식으로 댓글 목록을 반환
+        @ResponseBody
         public List<CommentResponse> listComment(@PathVariable final int boardId) {
-            return commentService.findAllComment(boardId);
+            // 댓글을 작성일 기준으로 오름차순 정렬
+            return commentService.findAllComment(boardId).stream()
+                .sorted(Comparator.comparing(CommentResponse::getDate))
+                .collect(Collectors.toList());
         }
+
 
         @DeleteMapping("/comments/{no}")
         public String deleteComment(@PathVariable String no) throws Exception {
