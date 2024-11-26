@@ -116,6 +116,7 @@ function filterAchievements() {
     achievements.forEach(achievement => {
         const progress = parseInt(achievement.getAttribute('progress'));
         const shouldShow = checkedValues.length === 0 ||
+            checkedValues.includes('all') ||
             (checkedValues.includes('not-started') && progress === 0) ||
             (checkedValues.includes('not-started') && progress > 0 && progress < 100) ||
             (checkedValues.includes('completed') && progress === 100);

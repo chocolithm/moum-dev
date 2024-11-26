@@ -21,13 +21,26 @@
                     <h5 class="modal-title" id="achievementModalLabel">내 업적</h5>
                 </div>
 
-                <div class="filter-container px-4 pb-3">
-                    <div aria-label="Achievement filters" class="btn-group" onclick="filterAchievements()" role="group">
-                        <input autocomplete="off" checked class="btn-check filter" id="not-started" type="checkbox" value="not-started">
-                        <label class="btn btn-outline-primary" for="not-started">미획득</label>
+<!--                <div class="filter-container px-4 pb-3">-->
+<!--                    <div aria-label="Achievement filters" class="btn-group" onclick="filterAchievements()" role="group">-->
+<!--                        <input autocomplete="off" checked class="btn-check filter" id="not-started" type="checkbox" value="not-started">-->
+<!--                        <label class="btn btn-outline-primary" for="not-started">미획득</label>-->
 
-                        <input autocomplete="off" class="btn-check filter" id="completed" type="checkbox" value="completed">
-                        <label class="btn btn-outline-primary" for="completed">획득</label>
+<!--                        <input autocomplete="off" class="btn-check filter" id="completed" type="checkbox" value="completed">-->
+<!--                        <label class="btn btn-outline-primary" for="completed">획득</label>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <div class="filter-container">
+                    <div class="btn-group" role="group" aria-label="Achievement filters" onclick="filterAchievements()">
+                        <input type="radio" class="btn-check filter" name="achievement-filter" id="all" value="all">
+                        <label class="btn" for="all">전체</label>
+
+                        <input type="radio" class="btn-check filter" name="achievement-filter" id="completed" value="completed">
+                        <label class="btn" for="completed">획득</label>
+
+                        <input type="radio" class="btn-check filter" name="achievement-filter" id="not-started" value="not-started" checked>
+                        <label class="btn" for="not-started">미획득</label>
                     </div>
                 </div>
 
@@ -49,7 +62,7 @@
 <!--                                         '/images/achievement/defaultImage.png'}}">-->
                                 </span>
                                 <div class="achievement-content-inner">
-                                    <h6 class="achievement-name mb-1" th:text="${achievement.name}">업적명</h6>
+                                    <h6 class="achievement-name mb-3" th:text="${achievement.name}">업적명</h6>
                                     <p class="achievement-content mb-0" th:text="${achievement.content}">업적 설명</p>
                                 </div>
                             </div>
