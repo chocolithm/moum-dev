@@ -6,6 +6,7 @@
   width: 22px;
 }
 
+/**
 .alert-count {
   color: red;
   position: absolute;
@@ -13,6 +14,7 @@
   left: 40%;
   transform: translateX(-50%);
 }
+**/
 
 .alert-layer {
   background: white;

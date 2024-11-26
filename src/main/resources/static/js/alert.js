@@ -213,21 +213,43 @@ function deleteAlert(event, alertNo) {
     })
 }
 
-// 알림 개수
+//// 알림 개수
+//function countAlert() {
+//  fetch(`/alert/count`)
+//    .then(response => response.text())
+//    .then(count => {
+//      if (count > 0) {
+//        document.querySelector(".alert-count").innerHTML = "●";
+//      } else {
+//        document.querySelector(".alert-count").innerHTML = "";
+//      }
+//    })
+//    .catch(error => {
+//      console.error("error fetching alert counts: ", error);
+//      return 0;
+//    })
+//}
+
 function countAlert() {
   fetch(`/alert/count`)
     .then(response => response.text())
     .then(count => {
+      const alertCountElement = document.querySelector(".alert-count");
+      const alertImageElement = document.querySelector(".alert-image");
+
       if (count > 0) {
-        document.querySelector(".alert-count").innerHTML = "●";
+        // 새로운 알림이 있을 때
+        alertCountElement.innerHTML = "";
+        alertImageElement.src = "/images/common/alert-count.png"; // 새로운 알림 이미지 경로
       } else {
-        document.querySelector(".alert-count").innerHTML = "";
+        // 새로운 알림이 없을 때
+        alertCountElement.innerHTML = "";
+        alertImageElement.src = "/images/common/alert.png"; // 기본 알림 이미지 경로
       }
     })
     .catch(error => {
-      console.error("error fetching alert counts: ", error);
-      return 0;
-    })
+      console.error("Error fetching alert counts:", error);
+    });
 }
 
 // 화면 로딩 시 알림 개수 카운트
