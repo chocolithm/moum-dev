@@ -105,17 +105,12 @@
         <div class="grid-container">
             <!-- 각 게시글을 반복하여 표시 -->
             <div class="grid-item" th:each="board : ${recentBoards}">
-
                 <!-- 첨부된 이미지가 있을 경우 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
                 <a th:href="@{/board/boardView(no=${board.no})}">
                     <img alt="게시글 이미지"
                          class="item-image"
                          th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
                          th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
-                </a>
-
-                <!-- 첨부된 이미지가 없으면 기본 이미지로 대체하며, 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
-                <a th:href="@{/board/boardView(no=${board.no})}">
                     <img alt="기본 이미지"
                          class="item-image"
                          th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
@@ -126,30 +121,29 @@
                 <div class="item-content">
                     <!-- 게시글 링크 (이미지 외에도 다른 내용에도 링크 적용 가능) -->
                     <a th:href="@{/board/boardView(no=${board.no})}">
-
                         <!-- 게시글 제목 -->
                         <div class="item-title" th:text="${board.title}">게시글 제목</div>
-
-                        <!-- 게시글 작성자 -->
-                        <div class="item-number" th:text="${board.user.nickname}">작성자</div>
-
-                        <!-- 게시글 조회수 -->
-                        <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100</div>
-
-                        <!-- 게시글 추천수 -->
-                        <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
-
-                        <!-- 게시글 작성 일자 및 댓글 수 -->
-                        <div class="item-number">
-                            <!-- 게시글 작성일 포맷팅 -->
-                            <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-11-15 12:34</span>
-                            <!-- 댓글 수 표시 -->
-                            <span class="comment-count" th:text="'🗨️' + ${board.commentCount} + ''"></span>
-                        </div>
-
                     </a>
+
+                    <!-- 게시글 작성자 -->
+                    <div class="item-number" th:text="${board.user.nickname}">작성자</div>
+
+                    <!-- 게시글 조회수 -->
+                    <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100</div>
+
+                    <!-- 게시글 추천수 -->
+                    <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
+
+                    <!-- 게시글 작성 일자 및 댓글 수 -->
+                    <div class="item-number">
+                        <!-- 게시글 작성일 포맷팅 -->
+                        <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-11-15 12:34</span>
+                        <!-- 댓글 수 표시 -->
+                        <span class="comment-count" th:text="'🗨️' + ${board.commentCount} + ''"></span>
+                    </div>
                 </div>
             </div>
+
         </div>
 
 

@@ -52,15 +52,22 @@
 
         <div class="grid-container">
             <div class="grid-item" th:each="board : ${tradeBuyPosts}">
-                <img alt="게시글 이미지"
-                     class="item-image"
-                     th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
-                <img alt="기본 이미지"
-                     class="item-image"
-                     th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-                     th:src="@{/images/board/defaultBoardPicture.jpg}">
+                <!-- 첨부된 이미지가 있을 경우 -->
+                <a th:href="@{/board/boardView(no=${board.no})}">
+                    <img alt="게시글 이미지"
+                         class="item-image"
+                         th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
+                </a>
+                <!-- 기본 이미지 -->
+                <a th:href="@{/board/boardView(no=${board.no})}">
+                    <img alt="기본 이미지"
+                         class="item-image"
+                         th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
+                         th:src="@{/images/board/defaultBoardPicture.jpg}">
+                </a>
 
+                <!-- 게시글 내용 -->
                 <div class="item-content">
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <div class="item-title" th:text="${board.title}">게시글 제목</div>
@@ -73,6 +80,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- 검색 바 -->
         <div class="search-bar">
