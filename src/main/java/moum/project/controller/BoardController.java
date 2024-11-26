@@ -282,6 +282,12 @@
         totalBoards = boardService.countByKeyword(keyword);
       }
 
+      // 각 게시글에 댓글 개수 설정
+      for (Board board : recentBoards) {
+        int commentCount = commentService.countCommentsByBoardId(board.getNo());
+        board.setCommentCount(commentCount); // Board 객체에 댓글 개수 저장
+      }
+
       // 페이징 데이터 계산
       int totalPages = (int) Math.ceil((double) totalBoards / size);
       model.addAttribute("recentBoards", recentBoards);
@@ -310,10 +316,7 @@
         Achievement user_achievement_ranklist = achievementService.findRankByUser(loginUser.getNo());
         model.addAttribute("rankNowUserList",
                 user_achievement_ranklist); //모델에다가 업적 정보를 가진 userRankList를  list라는 이름으로 담는다.
-
       }
-
-
 
       return "board/boardList";
     }

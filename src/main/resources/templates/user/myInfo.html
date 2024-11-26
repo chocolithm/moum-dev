@@ -92,12 +92,12 @@
                              data-th-progress="${achievement.progress}">
 
                             <div class="achievement-img-container">
-                                <!-- <img alt="업적 이미지" class="achievement-img"
-                                     src="/images/achievement/defaultImage.png"
-                                     data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}"> -->
                                 <img alt="업적 이미지" class="achievement-img"
                                      src="/images/achievement/defaultImage.png"
-                                     data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/completeDefaultImage.png' : '/images/achievement/defaultImage.png'}}">
+                                     data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}">
+<!--                                <img alt="업적 이미지" class="achievement-img"-->
+<!--                                     src="/images/achievement/defaultImage.png"-->
+<!--                                     data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/completeDefaultImage.png' : '/images/achievement/defaultImage.png'}}">-->
                             </div>
 
                             <div class="achievement-details-container">

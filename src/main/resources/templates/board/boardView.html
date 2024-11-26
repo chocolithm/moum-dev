@@ -45,9 +45,7 @@
                     <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span></div>
                     <div><strong>거래 방식:</strong> <span th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>
                 </div>
-
             </div>
-
 
             <!-- 게시글 내용 -->
             <div class="post-content" th:utext="${board.content}">
