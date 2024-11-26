@@ -119,18 +119,14 @@
 
                 <div class="item-content">
                     <a th:href="@{/board/boardView(no=${board.no})}">
-                        <!-- Maincategory 표시 추가 -->
-                        <div class="item-category" th:if="${board.maincategory != null}">
-                            <span class="maincategory-label" th:text="'[' + ${board.maincategory.name} + ']'"></span>
+                        <div class="item-category">
+                            <span class="maincategory-label" th:text="'[' + ${board.maincategory?.name ?: '카테고리 없음'} + ']'"></span>
                         </div>
-
                         <div class="item-title" th:text="${board.title}">게시글 제목</div>
                         <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100</div>
                         <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
                         <div class="item-number">
-                    <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">
-                        2024-11-15 12:34
-                    </span>
+                            <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-11-15 12:34</span>
                             <span class="comment-count" th:text="'🗨️' + ${board.commentCount} + ''"></span>
                         </div>
 

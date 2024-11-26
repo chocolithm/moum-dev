@@ -909,9 +909,9 @@ a {
 
 
 .search-bar {
-    margin-left: auto;
+    margin-left: 1550px;
     width: 100%;
-    max-width: 500px;
+    max-width: 1550px;
     display: flex;
     gap: 10px;
 }

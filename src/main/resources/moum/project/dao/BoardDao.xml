@@ -448,26 +448,23 @@
         b.is_public,
         b.is_deleted,
         b.board_type,
+        mc.maincategory_id,
+        mc.category_name, -- 추가: maincategory 데이터를 가져옴
         bp.photo_id,
         bp.filename,
         bp.origin_filename,
         COUNT(l.board_id) AS like_count
         FROM
         board b
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id -- maincategory 테이블과 조인
         LEFT JOIN user u ON b.user_id = u.user_id
         LEFT JOIN board_photo bp ON b.board_id = bp.board_id
-        AND bp.photo_id = (
-        SELECT MIN(photo_id)
-        FROM board_photo
-        WHERE board_id = b.board_id
-        )
         LEFT JOIN likes l ON b.board_id = l.board_id
         WHERE
         b.is_deleted = 0
-        AND b.board_type = 'general'
         GROUP BY
-        b.board_id, u.nickname, b.post_date, b.title, b.content,
-        b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename
+        b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,
+        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename
         ORDER BY
         b.board_id DESC
         LIMIT #{offset}, #{limit}
