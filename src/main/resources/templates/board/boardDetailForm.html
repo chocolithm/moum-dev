@@ -11,14 +11,19 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
 <div th:replace="~{header}"></div>
 
-<div class="container mt-4">
+<div class="container mt-4" style="height: 1400px">
     <h2>게시글 등록</h2>
     <form enctype="multipart/form-data" id="postForm">
+        <!-- 등록 버튼 -->
+        <div style="text-align: right;">
+            <button class="board-add-button btn btn-dark" onclick="addDetailPost()" type="button">등록하기</button>
+        </div>
         <!-- CSRF 토큰 -->
         <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 
@@ -70,7 +75,7 @@
                 </select>
             </div>
 
-            <!-- 기존 수집품 선택 -->
+            <!-- 수집품 선택 -->
             <div class="form-group" id="collectionSelectContainer" style="display: none;">
                 <label for="collectionNo">수집품 선택</label>
                 <select class="form-control" id="collectionNo" name="collection.no">
@@ -78,14 +83,20 @@
                     <!-- 수집품 목록을 동적으로 추가 -->
                 </select>
             </div>
-        </div>
+
+            <!-- 수집품 미리보기 -->
+            <div id="collectionPreview" style="display: none; margin-top: 20px;">
+                <h5>수집품 미리보기</h5>
+                <div id="collectionPreviewContent">
+                    <!-- 수집품 정보가 여기에 표시됩니다 -->
+                </div>
+            </div>
+
 
         <!-- 거래 상태를 '거래중'으로 설정하는 숨은 필드 (초기값은 0) -->
         <input name="status" type="hidden" value="0"/>
 
-        <!-- 등록 버튼 -->
-        <div style="text-align: right;">
-            <button class="board-add-button btn btn-dark" onclick="addDetailPost()" type="button">등록하기</button>
+
         </div>
     </form>
 </div>
@@ -269,4 +280,55 @@
         const blob = new Blob(byteArrays, { type: mimeType });
         return new File([blob], fileName, { type: mimeType });
     }
+
+
+    // 수집품 선택 시 미리보기 업데이트
+    $('#collectionNo').change(function () {
+        const collectionNo = $(this).val();
+        if (collectionNo) {
+            fetchCollectionDetails(collectionNo);
+        } else {
+            $('#collectionPreview').hide();
+            $('#collectionPreviewContent').html('');
+        }
+    });
+
+    function fetchCollectionDetails(collectionNo) {
+        $.ajax({
+            url: '/collection/get?no=' + collectionNo,
+            method: 'GET',
+            success: function (collection) {
+                displayCollectionPreview(collection);
+            },
+            error: function () {
+                alert('수집품 정보를 가져오는 데 실패했습니다.');
+            }
+        });
+    }
+
+    function displayCollectionPreview(collection) {
+        let previewHtml = '';
+
+        previewHtml += '<p><strong>이름:</strong> ' + collection.name + '</p>';
+        previewHtml += '<p><strong>가격:</strong> ' + collection.price + '원</p>';
+        previewHtml += '<p><strong>상태:</strong> ' + collection.status.name + '</p>';
+        previewHtml += '<p><strong>구매 장소:</strong> ' + collection.purchasePlace + '</p>';
+        previewHtml += '<p><strong>보관 위치:</strong> ' + collection.storageLocation + '</p>';
+
+        // 이미지가 있을 경우 표시
+        if (collection.attachedFiles && collection.attachedFiles.length > 0) {
+            previewHtml += '<div style="display: flex; overflow-x: auto;">';
+            collection.attachedFiles.forEach(function (file) {
+                const imageUrl = 'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + file.filename;
+                previewHtml += '<img src="' + imageUrl + '" alt="수집품 이미지" style="width: 150px; margin-right: 10px;">';
+            });
+            previewHtml += '</div>';
+        } else {
+            previewHtml += '<p>이미지가 없습니다.</p>';
+        }
+
+        $('#collectionPreviewContent').html(previewHtml);
+        $('#collectionPreview').show();
+    }
+
 </script>

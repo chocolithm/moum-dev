@@ -119,9 +119,6 @@
 
                 <div class="item-content">
                     <a th:href="@{/board/boardView(no=${board.no})}">
-                        <div class="item-category">
-                            <span class="maincategory-label" th:text="'[' + ${board.maincategory?.name ?: '카테고리 없음'} + ']'"></span>
-                        </div>
                         <div class="item-title" th:text="${board.title}">게시글 제목</div>
                         <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100</div>
                         <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
