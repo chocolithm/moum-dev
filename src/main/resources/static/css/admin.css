@@ -151,7 +151,7 @@
 
 .main-section .content-section .subcategory-table tbody {
   display: block;
-  max-height: calc(100vh - 400px);
+  max-height: calc(100vh - 450px);
   overflow-x: auto;
   overflow-y: scroll;
   padding-bottom: 5px;

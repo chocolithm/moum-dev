@@ -17,6 +17,9 @@
 
 <main>
     <aside class="sidemenu clearfix">
+        <div class="myhome-upper-buttons">
+            <button class="btn btn-outline-dark" onClick="openCollectionFormModal();" type="button">수집품 등록</button>
+        </div>
         <ul>
             <li data-th-each="maincategory : ${maincategoryList}">
                 <div class="form-check form-switch">
@@ -43,9 +46,6 @@
 
     </aside>
     <section class="main-section">
-        <div class="myhome-upper-buttons">
-            <button class="btn btn-outline-dark" onClick="openCollectionFormModal();" type="button">수집품 등록</button>
-        </div>
         <div class="myhome-collections" style="background-color: white">
             <button data-th-if="${#lists.isEmpty(collectionList)}"
                     class="empty-collection-box btn" onclick="openCollectionFormModal();">

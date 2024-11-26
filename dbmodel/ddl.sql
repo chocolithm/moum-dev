@@ -338,7 +338,8 @@ ALTER TABLE forbidden_word
 -- 유형 대분류
 CREATE TABLE maincategory (
     maincategory_id INTEGER     NOT NULL COMMENT '대분류 번호', -- 대분류 번호
-    category_name   VARCHAR(50) NOT NULL COMMENT '분류명' -- 분류명
+    category_name   VARCHAR(50) NOT NULL COMMENT '분류명', -- 분류명
+    color           VARCHAR(50) NOT NULL COMMENT '색상'
 )
 COMMENT '유형 대분류';
 

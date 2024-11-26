@@ -459,6 +459,10 @@ function openAddPage(menu) {
                 <td><input name="maincategory-name" id="maincategory-name" type="text"></td>
               </tr>
               <tr>
+                <td>색상</td>
+                <td><input name="maincategory-color" id="maincategory-color" type="text"></td>
+              </tr>
+              <tr>
                 <td colspan="2">
                   <button class="btn" onclick="addMaincategory()">등록</button>
                 </td>
@@ -837,6 +841,10 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
                 <td>보유자수</td>
                 <td>${category[0].count}</td>
               </tr>
+              <tr>
+                <td>색상</td>
+                <td>${category[0].maincategory.color}</td>
+              </tr>
             </tbody>
           </table>
           <table class="subcategory-table">
@@ -1121,21 +1129,26 @@ function handleReport(reportNo) {
 
 function addMaincategory() {
   if (confirm("등록하시겠습니까?")) {
-    const input = document.querySelector("#maincategory-name");
+    const nameInput = document.querySelector("#maincategory-name");
+    const colorInput = document.querySelector("#maincategory-color");
     const formData = new FormData();
 
     // input.style = "border-color: #ccc";
-    formData.append("name", input.value.trim());
+    formData.append("name", nameInput.value.trim());
+    formData.append("color", colorInput.value.trim());
 
     if (formData.get("name") == "") {
       alert("분류명을 입력해주세요.");
-      // input.style = "border-color: red";
       return;
     }
 
     if (formData.get("name").length > 7) {
       alert("분류명은 최대 7자까지 가능합니다.");
-      // input.style = "border-color: red";
+      return;
+    }
+    
+    if (formData.get("color") == "") {
+      alert("색상을 입력해주세요.");
       return;
     }
     

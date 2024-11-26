@@ -1,9 +1,9 @@
 -- 유형 대분류 데이터
 INSERT INTO maincategory (maincategory_id, category_name) VALUES
-(1, '건담프라모델'),
-(2, '레고'),
-(3, '신발'),
-(-999, '기타');
+(1, '건담프라모델', 'purple'),
+(2, '레고', 'yellow'),
+(3, '신발', 'blue'),
+(-999, '기타', 'lightgrey');
 
 -- 유형 소분류 데이터
 INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES

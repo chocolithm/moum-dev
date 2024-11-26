@@ -13,6 +13,7 @@
     <association property="maincategory" javaType="moum.project.vo.Maincategory">
       <id column="maincategory_id" property="no"/>
       <result column="maincategory_name" property="name"/>
+      <result column="color" property="color"/>
     </association>
   </resultMap>
 
@@ -20,6 +21,7 @@
     <id column="maincategory_id" property="no"/>
     <result column="category_name" property="name"/>
     <result column="count" property="count"/>
+      <result column="color" property="color"/>
   </resultMap>
 
   <insert id="insertSubcategory" parameterType="moum.project.vo.Subcategory">
@@ -28,8 +30,8 @@
   </insert>
 
   <insert id="insertMaincategory" parameterType="moum.project.vo.Maincategory">
-    insert into maincategory(category_name)
-    values(#{name})
+    insert into maincategory(category_name, color)
+    values(#{name}, #{color})
   </insert>
 
   <select id="listSubcategory" resultMap="SubcategoryMap" parameterType="int">
@@ -45,7 +47,8 @@
   <select id="listMaincategory" resultMap="MaincategoryMap">
     select
       maincategory_id,
-      category_name
+      category_name,
+      color
     from
       maincategory
     where
@@ -83,7 +86,8 @@
   <select id="findMaincategoryByName" resultMap="MaincategoryMap" parameterType="string">
     select
       maincategory_id,
-      category_name
+      category_name,
+      color
     from
       maincategory
     where
@@ -94,11 +98,12 @@
     SELECT
       m.maincategory_id,
       m.category_name AS maincategory_name,
+      m.color,
       s.subcategory_id,
       s.category_name,
       COALESCE(SUM(CASE WHEN c.subcategory_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS count
     FROM
-        maincategory m
+      maincategory m
     LEFT JOIN
       subcategory s ON m.maincategory_id = s.maincategory_id
     LEFT OUTER JOIN
@@ -117,6 +122,7 @@
       NULL AS category_name,
       m.maincategory_id,
       m.category_name AS maincategory_name,
+      m.color,
       COALESCE(SUM(CASE WHEN c.subcategory_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS count
     FROM
       maincategory m
@@ -136,6 +142,7 @@
       s.category_name,
       s.maincategory_id,
       m.category_name AS maincategory_name,
+      m.color,
       COALESCE(COUNT(c.subcategory_id), 0) AS count
     FROM
       subcategory s
@@ -156,6 +163,7 @@
     SELECT
       m.maincategory_id,
       m.category_name,
+      m.color,
       COALESCE(SUM(CASE WHEN c.subcategory_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS count
     FROM
       maincategory m

@@ -2,14 +2,18 @@
 
 .sidemenu {
   position: fixed;
-  top: 230px;
+  top: 160px;
   left: 20px;
-  width: 250px;
+  width: 280px;
   padding: 20px;
+}
+
+.sidemenu ul {
   border: 1px solid lightgrey;
   border-radius: 25px;
   background-color: #f9f9f9;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px;
 }
 
 .sidemenu li {
@@ -38,6 +42,11 @@
   gap: 10px;
 }
 
+.myhome-upper-buttons button {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
 .myhome-collections {
   border-radius: 15px;
   background: rgb(240, 240, 240);
@@ -56,13 +65,15 @@
   width: 200px;
   height: 280px;
   padding: 10px 0;
+  border: 1px solid lightgrey;
   border-radius: 4px;
   background: white;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: opacity 0.5s ease;
+  transition: 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .myhome-collections .empty-collection-box {
