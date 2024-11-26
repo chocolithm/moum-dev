@@ -103,18 +103,32 @@ function addComment(boardId) {
         const commentList = document.querySelector(".comment-list");
         const newComment = document.createElement("li");
         newComment.setAttribute("id", `comment-${data.no}`);
+        // newComment.innerHTML = `
+        //     <div class="comment-box">
+        //         <div class="comment-box-deleteBtn">
+        //             <button class="comment-delete-btn" 
+        //                     onclick="deleteComment(${data.no})">삭제</button>
+        //         </div>
+        //         <div class="comment-header">
+        //             <span>${data.user.nickname}</span>
+        //             <span class="comment-date">${new Date(data.date).toLocaleDateString()}</span>
+        //         </div>
+        //         <div class="comment-content">${data.content}</div>
+        //     </div>`;
+
         newComment.innerHTML = `
             <div class="comment-box">
-                <div class="comment-box-deleteBtn">
-                    <button class="comment-delete-btn" 
-                            onclick="deleteComment(${data.no})">삭제</button>
-                </div>
                 <div class="comment-header">
-                    <span>${data.user.nickname}</span>
-                    <span class="comment-date">${new Date(data.date).toLocaleDateString()}</span>
+                    <span style="font-size: 13.5px">${data.user.nickname}</span>
+                    <div style="display: flex; align-items: center;">
+                        <span class="comment-date">${formatDate(data.date)}</span>
+                        <button class="comment-delete-btn"
+                                onclick="deleteComment(${data.no});">❌</button>
+                    </div>
                 </div>
-                <div class="comment-content">${data.content}</div>
+                <div class="comment-content" style="font-size: 13.5px">${data.content}</div>
             </div>`;
+
         commentList.appendChild(newComment); // 새 댓글을 리스트의 맨 아래에 추가
 
         // 댓글 입력창 초기화
