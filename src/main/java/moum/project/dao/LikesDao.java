@@ -18,5 +18,4 @@ public interface LikesDao {
   void deleteLike(int boardNo, int userNo);
 
   boolean hasLiked(@Param("boardNo") int boardNo, @Param("userNo") int userNo) throws Exception;
-
 }

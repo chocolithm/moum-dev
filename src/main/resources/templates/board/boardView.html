@@ -103,7 +103,14 @@
 
                 <button class="recommend_button btn btn-outline-dark"
                         th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
+                        th:if="#{liked == false}"
                         type="button">🤍</button>
+
+                <button class="recommend_button btn btn-outline-dark"
+                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
+                        th:unless="#{liked == false}"
+                        type="button">🩷</button>
+
 
                 <button class="report_button btn btn-outline-white"
                         th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"

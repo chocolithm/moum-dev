@@ -56,6 +56,6 @@ public class DefaultLikesService implements LikesService {
 
   @Override
   public boolean hasLiked(int boardNo, int userNo) throws Exception {
-    return false;
+    return likesDao.hasLiked(boardNo, userNo);
   }
 }
