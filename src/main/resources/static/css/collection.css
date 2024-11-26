@@ -128,6 +128,7 @@
 
 .collection-form-layer .left-side,
 .collection-view-layer .left-side {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 40%;
@@ -324,6 +325,31 @@
   text-align: center;
   line-height: 180px; /* 세로 가운데 정렬 */
   clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+}
+
+.edit-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.edit-overlay i {
+  color: white;
+  font-size: 48px;  /* 아이콘 크기 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);  /* 아이콘에 그림자 효과 */
+}
+
+.collection-form-layer label:hover .edit-overlay,
+.collection-view-layer label:hover .edit-overlay {
+    opacity: 1;
 }
 
 @media screen and (max-width: 767px) {

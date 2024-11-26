@@ -13,8 +13,21 @@
 <div class="layer collection-form-layer" data-th-fragment="collection-form">
     <img src="/images/common/x.png" class="close-btn" alt="닫기" onclick="closeModal();">
     <div class="left-side">
-        <img alt="수집품 이미지 등록" class="collection-image empty-image" onClick="triggerFileInput();"
-             src="/images/collections/empty-collection.png">
+
+        <label for="files" style="cursor: pointer; position: relative; display: block;">
+            <img alt="수집품 이미지 등록" class="collection-image empty-image" 
+             src="/images/collections/empty-collection-image.jpg" style="opacity: 0.5;">
+            <div class="edit-overlay">
+                <i class="fas fa-camera"></i>
+            </div>
+        </label>
+
+        <!-- <img alt="수집품 이미지 등록" class="collection-image empty-image" 
+             src="/images/collections/empty-collection-image.jpg" style="opacity: 0.5;">
+        <div class="edit-overlay" onClick="triggerFileInput();">
+            <i class="fas fa-camera"></i>
+        </div> -->
+
         <div class="slider" style="display: none;">
             <div class="slides"></div>
             <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
