@@ -56,6 +56,7 @@
                     data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategory.no}"
                     data-th-each="collection : ${collectionList}"
                     data-th-if="${not #lists.isEmpty(collectionList)}">
+                    <div class="bookmark" data-th-style="'background-color: ' + ${collection.maincategory.color}"></div>
                 <img class="collection-image"
                     data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
                     data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"/>
@@ -67,7 +68,7 @@
         </div>
     </section>
 </main>
-
+ㅁ
 <footer data-th-replace="~{footer :: footer}"></footer>
 
 <!--  수집품 등록 화면  -->
