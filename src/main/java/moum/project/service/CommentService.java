@@ -65,4 +65,8 @@ public class CommentService {
         return commentDao.findAll(boardId);
     }
 
+
+    public int countCommentsByBoardId(int boardId) {
+        return commentDao.countByBoardId(boardId);
+    }
 }

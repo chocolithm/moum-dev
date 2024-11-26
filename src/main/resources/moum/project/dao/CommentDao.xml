@@ -24,24 +24,39 @@
         <result column="date" property="date"/>
         <result column="original_comment_id" property="originalCommentNo"/>
         <result column="is_public" property="isPublic"/>
+
+        <!-- User 객체 매핑 -->
+        <association property="user" javaType="moum.project.vo.User">
+            <id column="user_id" property="no"/>
+            <result column="nickname" property="nickname"/>
+        </association>
     </resultMap>
 
     <!-- 댓글 목록 조회 (list) -->
     <select id="findAll" resultMap="CommentResponse">
         SELECT
-        comment_id,
-        user_id,
-        board_id,
-        content,
-        date,
-        original_comment_id,
-        is_public
+        c.comment_id,
+        c.user_id,
+        c.board_id,
+        c.content,
+        c.date,
+        c.original_comment_id,
+        c.is_public,
+        u.user_id AS user_id,
+        u.nickname AS nickname
         FROM
-        comment
+        comment c
+        LEFT JOIN user u ON c.user_id = u.user_id
         WHERE
-        board_id = #{boardNo}
+        c.board_id = #{boardNo}
         ORDER BY
-        date DESC
+        c.date DESC
+    </select>
+
+    <select id="countByBoardId" resultType="int">
+        SELECT COUNT(*)
+        FROM comment
+        WHERE board_id = #{boardId}
     </select>
 
     <!-- 특정 댓글 조회 (selectById) -->

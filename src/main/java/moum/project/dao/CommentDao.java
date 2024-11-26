@@ -48,4 +48,6 @@ public interface CommentDao {
      */
     int count(int boardId);
 
+    int countByBoardId(int boardId);
+
 }

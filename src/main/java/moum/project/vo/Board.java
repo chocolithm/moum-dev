@@ -36,6 +36,7 @@ public class Board implements Serializable {
 
 
     private boolean isPopular; // 인기게시글 여부
+    private int commentCount; // 댓글 개수를 저장하는 필드 추가
 
 
 

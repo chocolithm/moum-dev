@@ -12,4 +12,7 @@ public class CommentResponse {
     private java.util.Date date; // 생성일시
     private int originalCommentNo;
     private boolean isPublic; // 공개여부
+
+    private User user; // 작성자 정보 추가
 }
+

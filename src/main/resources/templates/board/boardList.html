@@ -25,7 +25,7 @@
 
 <main style="background-color: white">
     <div class="page-container">
-        
+
         <!-- 업적 랭킹 임의로 설정 -->
 <!--        <div class="achievement-ranking-container">-->
 <!--            <div class="ranking-card card h-100 shadow-sm border">-->
@@ -112,26 +112,34 @@
                      class="item-image"
                      th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
                      th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
-                <!--이부분 해결해야 함-->
                 <img alt="기본 이미지"
                      class="item-image"
                      th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
                      th:src="@{/images/board/defaultBoardPicture.jpg}">
 
                 <div class="item-content">
-
                     <a th:href="@{/board/boardView(no=${board.no})}">
-                        <div class="item-title" th:text="${board.title}">게시글 제목</div>
-                        <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100"></div>
-                        <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
-                        <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">
-                            2024-11-15 12:34
-
+                        <!-- Maincategory 표시 추가 -->
+                        <div class="item-category" th:if="${board.maincategory != null}">
+                            <span class="maincategory-label" th:text="'[' + ${board.maincategory.name} + ']'"></span>
                         </div>
+
+                        <div class="item-title" th:text="${board.title}">게시글 제목</div>
+                        <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100</div>
+                        <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
+                        <div class="item-number">
+                    <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">
+                        2024-11-15 12:34
+                    </span>
+                            <span class="comment-count" th:text="'🗨️' + ${board.commentCount} + ''"></span>
+                        </div>
+
                     </a>
                 </div>
             </div>
         </div>
+
+
 
         <div class="search-bar">
             <form method="get" th:action="@{/board/boardList}">
