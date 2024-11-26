@@ -351,30 +351,31 @@ public class BoardController {
 
     // 게시글 작성자 여부 추가
     model.addAttribute("authenticated", board.getUserNo() == loginUser.getNo());
-
     model.addAttribute("authenticatedUser", loginUser);
-
 
     // 추천수 가져오기
     int likeCount = likesService.countLikesByBoard(no);
-    board.setLikeCount(likeCount); // Board 객체에 추천수를 설정 (필드가 있다면)
+    board.setLikeCount(likeCount); // Board 객체에 추천수를 설정
+
+    // 댓글 개수 가져오기
+    int commentCount = commentService.countCommentsByBoardId(no);
+    board.setCommentCount(commentCount); // Board 객체에 댓글 개수를 설정
 
     // 세션에서 해당 게시글을 조회한 이력이 있는지 확인
     String sessionAttributeKey = "viewedBoard_" + no;
-    Boolean hasViewed =
-        (Boolean) webRequest.getAttribute(sessionAttributeKey, WebRequest.SCOPE_SESSION);
+    Boolean hasViewed = (Boolean) webRequest.getAttribute(sessionAttributeKey, WebRequest.SCOPE_SESSION);
 
     // 조회 이력이 없으면 조회수 증가 및 세션에 기록
     if (hasViewed == null || !hasViewed) {
       boardService.increaseViewCount(board.getNo());
       webRequest.setAttribute(sessionAttributeKey, true, WebRequest.SCOPE_SESSION);
     }
+
     // 댓글 목록 가져오기
     List<CommentResponse> comments = commentService.findAllComment(no);
 
-    //좋아요 정보 가져오기
+    // 좋아요 정보 가져오기
     boolean hasLiked = likesService.hasLiked(board.getNo(), loginUser.getNo());
-
 
     // 모델에 게시글과 댓글 정보 추가
     model.addAttribute("board", board);
@@ -382,6 +383,7 @@ public class BoardController {
     model.addAttribute("liked", hasLiked);
     return "board/boardView";
   }
+
 
 
   @GetMapping("/update")

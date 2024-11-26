@@ -109,7 +109,8 @@
         bp.photo_id,
         bp.board_id AS bp_board_id,
         bp.filename,
-        bp.origin_filename
+        bp.origin_filename,
+        (SELECT COUNT(*) FROM comment c WHERE c.board_id = b.board_id) AS comment_count
         FROM
         board b
         LEFT JOIN user u ON b.user_id = u.user_id
@@ -120,6 +121,7 @@
         WHERE
         b.board_id = #{no} AND b.is_deleted = 0
     </select>
+
 
 
 

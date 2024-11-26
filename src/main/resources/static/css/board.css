@@ -768,32 +768,44 @@ button {
     position: relative;
 }
 
-/* 댓글 전체 박스 */
+
+.comment-list {
+    list-style: none; /* 기본 목록 스타일 제거 */
+    margin: 0; /* 기본 여백 제거 */
+    padding: 0; /* 기본 안쪽 여백 제거 */
+}
+
+.comment-list li {
+    margin-bottom: 10px; /* 각 댓글 간의 간격 설정 */
+}
+
 .comment-box {
-    position: relative;
-    border-bottom: 1px solid black; /* 추가된 부분 */
-    padding: 10px;
+    padding: 10px; /* 댓글 박스의 내부 여백 */
+    border-top: 1px solid #e9ecef; /* 테두리 추가 */
+    background-color: #ffffff; /* 배경색 추가 */
 }
 
 
 
 .comment-delete-btn {
-    position: absolute; /* 위치를 고정 */
-    top: auto; /* 상단 위치 해제 */
-    right: 10px; /* 오른쪽 여백 유지 */
-    bottom: 10px; /* 날짜 아래로 간격 추가 */
     background-color: transparent;
+    width: 30px;
     border: none;
     color: #ff6b6b;
+    font-size: 12px;
     cursor: pointer;
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
+    transition: color 0.3s ease;
 }
 
-/* 댓글 헤더 스타일 */
 .comment-header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.5rem;
+    align-items: center;
 }
+
 
 
 /*------------------댓글-------------*/
@@ -802,9 +814,12 @@ button {
     font-weight: bold;
 }
 
-/* 작성일자 스타일 */
+
 .comment-date {
+    font-size: 12px;
     color: #868e96;
+    margin: 0; /* 기본 마진 제거 */
+    padding-right: 5px; /* 삭제 버튼과 약간의 간격 추가 */
 }
 
 /* 댓글 내용 스타일 */
