@@ -1197,7 +1197,7 @@ a {
 /* 버튼 스타일 */
 .category-button {
     display: inline-block;
-    background-color: #e9ecef;
+    background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 20px;
     padding: 8px 16px;
@@ -1216,7 +1216,7 @@ a {
 */
 
 .category-button.active {
-    background-color: #007bff;
+    background-color: #000000;
     color: #fff;
     font-weight: bold;
 }
