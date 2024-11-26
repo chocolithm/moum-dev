@@ -42,10 +42,13 @@
             params.setBoardNo(boardId);
 
             int id = commentService.saveComment(params);
-            redirectAttributes.addFlashAttribute("newCommentId", id); // 필요시 새 댓글 ID를 Flash에 저장
 
-            // 댓글 작성 후 GET 요청으로 리다이렉트
-            return commentService.findCommentById(id);
+            // 저장한 댓글을 반환
+            CommentResponse comment = commentService.findCommentById(id);
+            // 작성자 정보 설정
+            comment.setUser(loginUser);
+
+            return comment;
         }
 
 

@@ -129,35 +129,38 @@
 
 
 
-            <!-- 댓글 섹션 -->
-            <div class="comments-section" id="comments-section">
-                <ul class="comment-list">
-                    <li th:each="comment : ${comments}" th:id="'comment-' + ${comment.no}">
-                        <div class="comment-box">
-                            <div class="comment-box-deleteBtn">
-                                <button class="comment-delete-btn"
-                                        th:if="${comment.userNo == authenticatedUser.no}"
-                                        th:onclick="'deleteComment(' + ${comment.no} + ');'">삭제</button>
-                            </div>
-                            <div class="comment-header">
-                                <span th:text="${comment.user.nickname}">작성자</span>
-                                <span class="comment-date" th:text="${#dates.format(comment.date, 'yyyy-MM-dd')}">작성일자</span>
-                            </div>
-                            <div class="comment-content" th:text="${comment.content}">내용</div>
+            <!-- 댓글 목록 -->
+            <ul class="comment-list">
+                <li th:each="comment : ${comments}" th:id="'comment-' + ${comment.no}">
+                    <div class="comment-box">
+                        <div class="comment-box-deleteBtn">
+                            <button class="comment-delete-btn"
+                                    th:if="${comment.userNo == authenticatedUser.no}"
+                                    th:onclick="'deleteComment(' + ${comment.no} + ');'">삭제</button>
                         </div>
-                    </li>
-                </ul>
-            </div>
+                        <div class="comment-header">
+                            <span th:text="${comment.user.nickname}">작성자</span>
+                            <span class="comment-date" th:text="${#dates.format(comment.date, 'yyyy-MM-dd')}">작성일자</span>
+                        </div>
+                        <div class="comment-content" th:text="${comment.content}">내용</div>
+                    </div>
+                </li>
+            </ul>
 
             <!-- 댓글 입력 폼 -->
-                <div class="comment-form">
-                    <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" rows="3" placeholder="댓글을 입력하세요"></textarea>
-                    <p id="counter">0/300자</p>
-                    <button class="btn btn-dark" data-th-onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
-                </div>
+            <div class="comment-form">
+                <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" rows="3" placeholder="댓글을 입력하세요"></textarea>
+                <p id="counter">0/300자</p>
+                <button class="btn btn-dark" th:onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
             </div>
+
+            <!-- 현재 로그인한 사용자 번호를 JavaScript에서 사용할 수 있도록 설정 -->
+            <script>
+                const authenticatedUserNo = [[${authenticatedUser.no}]];
+            </script>
+
         </div>
-    </div>
+        </div>
 </main>
 
 
@@ -214,5 +217,7 @@
 
 </script>
 <footer th:replace="~{footer :: footer}"></footer>
+<!-- 스크립트 파일 포함 -->
+<script src="/js/board.js"></script>
 </body>
 </html>
