@@ -164,6 +164,7 @@ function updateAlertReadAll() {
         document.querySelectorAll('.unread').forEach(element => {
           element.classList.replace('unread', 'read');
         });
+        countAlert();
       }
     });
 }
