@@ -1061,10 +1061,22 @@ a {
     color: #495057;
 }
 
+
 .grid-option .write-button {
-    background-color: #7a7a7a;
-    color: white;
+    background-color: #ffffff; /* 흰 배경 */
+    color: #000000; /* 검은 글씨 */
+    border: 1px solid #000000; /* 검은 테두리 */
+    font-size: 13px; /* 글씨 크기 */
+    box-sizing: border-box; /* 크기 계산 방식 */
+    padding: 8px 10px; /* 여백 조정 */
+    margin: 5px; /* 버튼 간 간격 */
+    line-height: 1.5; /* 텍스트 배치 조정 */
+    outline: 1px solid transparent; /* 테두리 겹침 방지 */
 }
+
+
+
+
 
 
 
@@ -1210,6 +1222,7 @@ a {
 
 
 /* 버튼 스타일 */
+/* 기본 버튼 스타일 */
 .category-button {
     display: inline-block;
     background-color: #ffffff;
@@ -1223,6 +1236,37 @@ a {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* 활성화된 버튼 */
+.category-button.active {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* 인기 게시글 화면 */
+.popularList .popular {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.popularList .recent {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+
+/* 최근 게시글 화면 */
+.boardList .popular {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.boardList .recent {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+
 /* 주석 처리 (양지윤)
 .category-button:hover {
     background-color: #007bff;
@@ -1230,11 +1274,6 @@ a {
 }
 */
 
-.category-button.active {
-    background-color: #000000;
-    color: #fff;
-    font-weight: bold;
-}
 
 .btn.category-button {
     max-width: 130px;

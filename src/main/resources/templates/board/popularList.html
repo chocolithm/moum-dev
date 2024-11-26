@@ -72,7 +72,7 @@
                     <!-- 전체 카테고리 버튼 -->
                     <a class="btn category-button"
                        th:classappend="${categoryNo == null ? 'active' : ''}"
-                       th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}"
+                       th:href="@{/board/popularList(categoryNo=null, keyword=${keyword})}"
                        draggable="false"> <!-- 여기 추가 -->
                         전체
                     </a>
@@ -80,7 +80,7 @@
                     <a th:each="category : ${maincategoryList}"
                        class="btn category-button"
                        th:classappend="${category.no == categoryNo ? 'active' : ''}"
-                       th:href="@{/board/boardList(categoryNo=${category.no}, keyword=${keyword})}"
+                       th:href="@{/board/popularList(categoryNo=${category.no}, keyword=${keyword})}"
                        th:text="${category.name}"
                        draggable="false"> <!-- 여기 추가 -->
                     </a>
@@ -90,11 +90,11 @@
         <div class="grid-option">
             <div class="grid-item">
                 <div class="button-group-left">
-                    <button class="btn btn-dark active" onclick="location.href='/board/boardList'">최근 게시글</button>
-                    <button class="btn btn-dark active" onclick="location.href='/board/popularList'">인기 게시글</button>
+                    <button class="category-button popular active" onclick="location.href='/board/popularList'">인기 게시글</button>
+                    <button class="category-button recent" onclick="location.href='/board/boardList'">최근 게시글</button>
                 </div>
                 <div class="button-group-right">
-                    <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
+                    <button class="category-button write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
                 </div>
             </div>
         </div>
