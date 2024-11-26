@@ -38,14 +38,14 @@
                              th:id="${achievement.id}">
                             <div class="achievement-info">
                                 <span class="achievement-image">
-                                    <!-- <img class="achievement-img"
+                                     <img class="achievement-img"
                                          data-th-src="@{${achievement.progress == 100 ?
                                          '/images/achievement/complete/' + achievement.photo :
-                                         '/images/achievement/' + achievement.photo}}"> -->
-                                    <img class="achievement-img"
-                                         data-th-src="@{${achievement.progress == 100 ?
-                                         '/images/achievement/complete/completeDefaultImage.png' :
-                                         '/images/achievement/defaultImage.png'}}">
+                                         '/images/achievement/' + achievement.photo}}">
+<!--                                    <img class="achievement-img"-->
+<!--                                         data-th-src="@{${achievement.progress == 100 ?-->
+<!--                                         '/images/achievement/complete/completeDefaultImage.png' :-->
+<!--                                         '/images/achievement/defaultImage.png'}}">-->
                                 </span>
                                 <div class="achievement-content-inner">
                                     <h6 class="achievement-name mb-1" th:text="${achievement.name}">업적명</h6>
