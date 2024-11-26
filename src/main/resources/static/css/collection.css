@@ -122,8 +122,7 @@
 .layer.collection-form-layer,
 .layer.collection-view-layer {
   width: 800px;
-  height: 650px;
-  padding: 50px;
+  padding: 30px 50px;
 }
 
 .collection-form-layer .left-side,
@@ -225,7 +224,6 @@
   width: 55%;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .collection-form-layer .right-side table,
@@ -307,7 +305,7 @@
 .collection-view-layer .close-btn {
   position: absolute;
   top: 30px;
-  right: 30px;
+  right: 20px;
   width: 20px;
   height: 20px;
   cursor: pointer;
