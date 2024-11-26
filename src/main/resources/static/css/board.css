@@ -1226,6 +1226,19 @@ a {
     text-transform: uppercase; /* 텍스트를 대문자로 변환 */
 }
 
+/* 수집품 정보 보기 버튼 */
+.collection-info-button {
+    background-color: white;
+    width: 150px;
+    margin: 0 auto;
+    display: block;
+    border-color: white;
+    gap: 20px;
+    box-shadow: 0 10px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+
 
 /* 추천하기 버튼 스타일 기윤*/
 .recommend_button {

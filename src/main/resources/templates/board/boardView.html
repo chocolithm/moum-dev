@@ -46,13 +46,13 @@
                     <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span></div>
                     <div><strong>거래 방식:</strong> <span th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>
                 </div>
-                <!-- 수집품 정보 보기 버튼 추가 -->
-                <button class="btn btn-info" style="background-color: white; width: 150px; margin: 0 auto; display: block; border-color: white; gap: 20px;
-               box-shadow: 0 10px 6px rgba(0, 0, 0, 0.1); border-radius: 8px;"
+                <!-- 수집품 정보 보기 버튼 -->
+                <button class="btn btn-info collection-info-button"
                         th:if="${board.collection != null}"
                         th:onclick="'openCollectionViewModalFromBoard(' + ${board.collection.no} + ')'">
                     수집품 정보 보기
                 </button>
+
             </div>
 
 
