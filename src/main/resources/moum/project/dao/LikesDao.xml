@@ -43,4 +43,11 @@
         WHERE board_id = #{boardNo}
     </select>
 
+    <select id="hasLiked">
+        SELECT count(*)
+        FROM likes
+        WHERE board_id = #{boardNo}
+        and user_id = ${userNo}
+    </select>
+
 </mapper>

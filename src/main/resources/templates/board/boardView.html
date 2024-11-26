@@ -64,21 +64,27 @@
 
 
 
-                <!-- 수정 버튼 -->
-                <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
-                        th:if="${(board.sellOrSoldStatus == false) and (authenticatedUser.no == board.userNo)}">
-                    수정하기
-                </button>
+<!--                &lt;!&ndash; 수정 버튼 &ndash;&gt;-->
+<!--                <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"-->
+<!--                        th:if="${(board.sellOrSoldStatus == false) and (authenticatedUser.no == board.userNo)}">-->
+<!--                    수정하기-->
+<!--                </button>-->
 
-                <!-- 삭제 버튼 -->
-                <form method="post" name="postDeleteForm" th:action="@{/board/delete}">
-                    <input name="no" th:value="${board.no}" type="hidden">
-                    <input name="_method" type="hidden" value="DELETE">
-                    <button class="delete-button" type="button" onclick="deletePostWithDelAchieve()"
-                            th:if="${authenticatedUser.no == board.userNo}">
-                        🗑삭제하기
-                    </button>
-                </form>
+<!--                &lt;!&ndash; 삭제 버튼 &ndash;&gt;-->
+<!--                <form method="post" name="postDeleteForm" th:action="@{/board/delete}">-->
+<!--                    <input name="no" th:value="${board.no}" type="hidden">-->
+<!--                    <input name="_method" type="hidden" value="DELETE">-->
+<!--                    <button class="delete-button" type="button" onclick="deletePostWithDelAchieve()"-->
+<!--                            th:if="${authenticatedUser.no == board.userNo}">-->
+<!--                        🗑삭제하기-->
+<!--                    </button>-->
+<!--                </form>-->
+
+                <div class="post-meta">
+                    <span th:text="${board.user.nickname}">작성자</span>
+                    <span>조회수: <span th:text="${board.viewCount}">0</span></span>
+<!--                    <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>-->
+                </div>
 
                 <button th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}"
                         class="open-chat-btn btn btn-outline-dark" onclick="openChatroomModal(); openChat(0);">채팅하기</button>
@@ -94,6 +100,24 @@
 
                 <button class="btn btn-warning" th:if="${authenticatedUser.admin == true}"
                         data-th-onclick="|openRestrict('board', '${board.no}')|" type="button">경고/제재</button>
+            </div>
+
+            <div class="board-personal-button">
+                <!-- 수정 버튼 -->
+                <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
+                        th:if="${(board.sellOrSoldStatus == false) and (authenticatedUser.no == board.userNo)}">
+                    수정하기
+                </button>
+
+                <!-- 삭제 버튼 -->
+                <form method="post" name="postDeleteForm" th:action="@{/board/delete}">
+                    <input name="no" th:value="${board.no}" type="hidden">
+                    <input name="_method" type="hidden" value="DELETE">
+                    <button class="delete-button" type="button" onclick="deletePostWithDelAchieve()"
+                            th:if="${authenticatedUser.no == board.userNo}">
+                        🗑삭제하기
+                    </button>
+                </form>
             </div>
 
             <!-- 댓글 섹션 -->

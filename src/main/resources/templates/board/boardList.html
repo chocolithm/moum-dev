@@ -27,71 +27,68 @@
     <div class="page-container">
 
         <!-- 업적 랭킹 임의로 설정 -->
-<!--        <div class="achievement-ranking-container">-->
-<!--            <div class="ranking-card card h-100 shadow-sm border">-->
-<!--                <div class="card-body p-0">-->
-<!--                    <div class="table-responsive">-->
-<!--                        <table class="table table-borderless mb-0">-->
-<!--                            <tbody>-->
-<!--                                <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"-->
-<!--                                    data-th-each="ranking, status : ${rankList}" data-th-if="${status.index < 10}">-->
-<!--                                    <td class="ps-4">-->
-<!--                                        <div-->
-<!--                                            data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
-<!--                                            <span data-th-text="${ranking.rank + '등'}"></span>-->
-<!--                                        </div>-->
-<!--                                    </td>-->
-<!--                                    <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>-->
-<!--                                    <td class="align-middle pe-4">-->
-<!--                                        <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
+        <!--        <div class="achievement-ranking-container">-->
+        <!--            <div class="ranking-card card h-100 shadow-sm border">-->
+        <!--                <div class="card-body p-0">-->
+        <!--                    <div class="table-responsive">-->
+        <!--                        <table class="table table-borderless mb-0">-->
+        <!--                            <tbody>-->
+        <!--                                <tr data-th-class="${ranking.rank == 1 ? 'gold' : (ranking.rank == 2 ? 'silver' : (ranking.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'"-->
+        <!--                                    data-th-each="ranking, status : ${rankList}" data-th-if="${status.index < 10}">-->
+        <!--                                    <td class="ps-4">-->
+        <!--                                        <div-->
+        <!--                                            data-th-class="'rank-badge ' + ${ranking.rank == 1 ? 'rank-1' : (ranking.rank == 2 ? 'rank-2' : (ranking.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
+        <!--                                            <span data-th-text="${ranking.rank + '등'}"></span>-->
+        <!--                                        </div>-->
+        <!--                                    </td>-->
+        <!--                                    <td class="align-middle fw-bold" data-th-text="${ranking.user.nickname}"></td>-->
+        <!--                                    <td class="align-middle pe-4">-->
+        <!--                                        <span class="score-badge" data-th-text="${ranking.score} + '점'"></span>-->
+        <!--                                    </td>-->
+        <!--                                </tr>-->
 
-<!--                                &lt;!&ndash; 내 등수 &ndash;&gt;-->
-<!--                                <tr-->
-<!--                                    data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">-->
-<!--                                    <td class="ps-4">-->
-<!--                                        <div-->
-<!--                                            data-th-class="'rank-badge ' + ${rankNowUserList.rank == 1 ? 'rank-1' : (rankNowUserList.rank == 2 ? 'rank-2' : (rankNowUserList.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
-<!--                                            <span data-th-text="${rankNowUserList.rank + '등'}"></span>-->
-<!--                                        </div>-->
-<!--                                    </td>-->
-<!--                                    <td class="align-middle fw-bold" data-th-text="${rankNowUserList.user.nickname}"></td>-->
-<!--                                    <td class="align-middle pe-4">-->
-<!--                                        <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--                                &lt;!&ndash; 내 등수 &ndash;&gt;-->
+        <!--                                <tr-->
+        <!--                                    data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">-->
+        <!--                                    <td class="ps-4">-->
+        <!--                                        <div-->
+        <!--                                            data-th-class="'rank-badge ' + ${rankNowUserList.rank == 1 ? 'rank-1' : (rankNowUserList.rank == 2 ? 'rank-2' : (rankNowUserList.rank == 3 ? 'rank-3' : 'rank-other'))}">-->
+        <!--                                            <span data-th-text="${rankNowUserList.rank + '등'}"></span>-->
+        <!--                                        </div>-->
+        <!--                                    </td>-->
+        <!--                                    <td class="align-middle fw-bold" data-th-text="${rankNowUserList.user.nickname}"></td>-->
+        <!--                                    <td class="align-middle pe-4">-->
+        <!--                                        <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>-->
+        <!--                                    </td>-->
+        <!--                                </tr>-->
+        <!--                            </tbody>-->
+        <!--                        </table>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
         <div class="category-filter-container">
             <div class="filter-buttons-wrapper">
                 <div class="filter-buttons" id="categoryButtons">
                     <!-- 전체 카테고리 버튼 -->
                     <a class="btn category-button"
+                       draggable="false"
                        th:classappend="${categoryNo == null ? 'active' : ''}"
-                       th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}"
-                       draggable="false"> <!-- 여기 추가 -->
+                       th:href="@{/board/boardList(categoryNo=null, keyword=${keyword})}"> <!-- 여기 추가 -->
                         전체
                     </a>
                     <!-- 동적으로 카테고리 버튼 추가 -->
-                    <a th:each="category : ${maincategoryList}"
-                       class="btn category-button"
+                    <a class="btn category-button"
+                       draggable="false"
                        th:classappend="${category.no == categoryNo ? 'active' : ''}"
+                       th:each="category : ${maincategoryList}"
                        th:href="@{/board/boardList(categoryNo=${category.no}, keyword=${keyword})}"
-                       th:text="${category.name}"
-                       draggable="false"> <!-- 여기 추가 -->
+                       th:text="${category.name}"> <!-- 여기 추가 -->
                     </a>
                 </div>
             </div>
         </div>
-
-
-
 
 
         <div class="grid-option">
@@ -138,7 +135,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="search-bar">
@@ -250,7 +246,6 @@
         });
     });
 </script>
-
 
 
 </body>
