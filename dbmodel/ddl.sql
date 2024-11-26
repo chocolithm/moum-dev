@@ -460,7 +460,8 @@ CREATE TABLE collection_photo (
     photo_id        INTEGER      NOT NULL COMMENT '수집품 첨부파일 번호', -- 수집품 첨부파일 번호
     collection_id   INTEGER      NOT NULL COMMENT '수집품 번호', -- 수집품 번호
     filename        VARCHAR(255) NOT NULL COMMENT '파일명', -- 파일명
-    origin_filename VARCHAR(255) NOT NULL COMMENT '원본파일명' -- 원본파일명
+    origin_filename VARCHAR(255) NOT NULL COMMENT '원본파일명', -- 원본파일명
+    is_primary      TINYINT(0)   NOT NULL DEFAULT 0 COMMENT '대표사진', --대표사진
 )
 COMMENT '수집품 첨부파일';
 
