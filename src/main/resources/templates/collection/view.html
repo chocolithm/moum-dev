@@ -13,6 +13,12 @@
 <div class="layer collection-view-layer">
     <img src="/images/common/x.png" class="close-btn" alt="닫기" onclick="closeModal();">
     <div class="left-side">
+        <div class="collection-image-btns">
+            <button class="collection-image-btn btn"></button>
+            <button class="collection-image-btn btn" onClick="triggerFileInput()">⊕</button>
+            <button class="collection-image-btn btn"
+                data-th-onclick="'deleteFile(' + ${collection.no} + ')'">⊗</button>
+        </div>
         <img alt="수집품 이미지 등록" class="collection-image empty-image"
              data-th-style="${not (collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''"
              onClick="triggerFileInput()" src="/images/collections/empty-collection.png">
@@ -22,15 +28,14 @@
                 <img alt="수집품 이미지" class="collection-image slide current-image"
                      data-th-each="attachedFile : ${collection.attachedFiles}"
                      data-th-id="'collection-image-' + ${attachedFile.no}"
-                     data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}"
-                     onClick="triggerFileInput()">
+                     data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + attachedFile.filename}">
             </div>
             <a class="prev" data-th-style="${#lists.size(collection.attachedFiles) <= 1 ? 'display:none;' : ''}"
                onClick="changeSlide(-1)">&#10094;</a>
             <a class="next" data-th-style="${#lists.size(collection.attachedFiles) <= 1 ? 'display:none;' : ''}"
                onClick="changeSlide(1)">&#10095;</a>
         </div>
-        <div id="currentFilenames">
+        <!-- <div id="currentFilenames">
             <div data-th-each="attachedFile : ${collection.attachedFiles}"
                  data-th-id="'currentFilename-' + ${attachedFile.no}"
                  data-th-unless="${collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles)}">
@@ -40,7 +45,7 @@
                 </button>
             </div>
         </div>
-        <div id="filenames"></div>
+        <div id="filenames"></div> -->
     </div>
     <div class="right-side" id="updateForm">
         <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>

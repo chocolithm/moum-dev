@@ -99,11 +99,12 @@ function addCollection() {
         formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#addForm #statusNo").value);
 
+        const filesInput = document.querySelector("#addForm #files");
+        for (let i = 0; i < filesInput.files.length; i++) {
+            formData.append("files", filesInput.files[i]);
+        }
+
         if (validateData(formData)) {
-            const filesInput = document.querySelector("#addForm #files");
-            for (let i = 0; i < filesInput.files.length; i++) {
-                formData.append("files", filesInput.files[i]);
-            }
 
             fetch(`/collection/add`, {
                 method: "POST",
@@ -253,11 +254,12 @@ function updateCollection() {
         formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
 
-        if (validateData(formData)) {
-            const filesInput = document.querySelector("#updateForm #files");
+        const filesInput = document.querySelector("#updateForm #files");
             for (let i = 0; i < filesInput.files.length; i++) {
                 formData.append("files", filesInput.files[i]);
             }
+
+        if (validateData(formData)) {
 
             fetch(`/collection/update`, {
                 method: "PUT",
@@ -294,6 +296,11 @@ function validateData(formData) {
     document.querySelector("#maincategoryNo").style = "border-color: #ccc";
     document.querySelector("#otherCategory").style = "border-color: #ccc";
     document.querySelector("#statusNo").style = "border-color: #ccc";
+
+    if (formData.get("files") == null) {
+        alert("사진을 1장 이상 첨부하세요.");
+        return false;
+    }
 
     if (formData.get("name") == "") {
         document.querySelector("#name").style = "border-color: red";
@@ -354,41 +361,80 @@ function deleteCollection(collectionNo) {
 
 
 // 수집품 첨부파일 삭제 처리
-function deleteFile(fileNo, collectionNo) {
+// function deleteFile(fileNo, collectionNo) {
 
-    if (confirm("사진을 삭제하시겠습니까?")) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+//     if (confirm("사진을 삭제하시겠습니까?")) {
+//         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+//         const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-        fetch(`/collection/deleteFile?no=${fileNo}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                [csrfHeader]: csrfToken
-            }
-        })
-            .then(response => response.text())
-            .then(response => {
-                switch (response) {
-                    case "login":
-                        alert("로그인이 필요합니다.");
-                        location.href = "/home";
-                        break;
-                    case "success":
-                        alert("삭제했습니다.");
-                        fetchCollectionView(collectionNo);
-                        break;
-                    case "failure":
-                        alert("삭제에 실패했습니다.");
-                        break;
+//         fetch(`/collection/deleteFile?no=${fileNo}`, {
+//             method: "DELETE",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 [csrfHeader]: csrfToken
+//             }
+//         })
+//             .then(response => response.text())
+//             .then(response => {
+//                 switch (response) {
+//                     case "login":
+//                         alert("로그인이 필요합니다.");
+//                         location.href = "/home";
+//                         break;
+//                     case "success":
+//                         alert("삭제했습니다.");
+//                         fetchCollectionView(collectionNo);
+//                         break;
+//                     case "failure":
+//                         alert("삭제에 실패했습니다.");
+//                         break;
+//                 }
+//             })
+//             .catch(error => {
+//                 console.error("Error fetching collection delete:", error);
+//             });
+//     }
+// }
+
+
+// 수집품 첨부파일 삭제 처리
+function deleteFile(collectionNo) {
+    if (document.querySelectorAll(".current-image")[collectionSlideIndex]) {
+        const fileNo = parseInt(document.querySelectorAll(".current-image")[collectionSlideIndex].id.replace("collection-image-", ""), 10);
+        
+        if (confirm("사진을 삭제하시겠습니까?")) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+            fetch(`/collection/deleteFile?no=${fileNo}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    [csrfHeader]: csrfToken
                 }
             })
-            .catch(error => {
-                console.error("Error fetching collection delete:", error);
-            });
+                .then(response => response.text())
+                .then(response => {
+                    switch (response) {
+                        case "login":
+                            alert("로그인이 필요합니다.");
+                            location.href = "/home";
+                            break;
+                        case "success":
+                            alert("삭제했습니다.");
+                            fetchCollectionView(collectionNo);
+                            break;
+                        case "failure":
+                            alert("삭제에 실패했습니다.");
+                            break;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching collection delete:", error);
+                });
+        }
     }
 }
-
 
 // 사진 인덱스 초기화
 function initCollectionSlideIndex() {
@@ -397,6 +443,7 @@ function initCollectionSlideIndex() {
 
 // 슬라이드 display 처리
 function showSlides(index) {
+    console.log(collectionSlideIndex);
     const slides = document.querySelectorAll('.slide');
     if (index >= slides.length) { collectionSlideIndex = 0; }
     if (index < 0) { collectionSlideIndex = slides.length - 1; }
@@ -462,9 +509,9 @@ function previewImage(event) {
     const slides = document.querySelector(".slides");
     const newImages = document.getElementsByClassName("new-image");
     const currentImages = document.getElementsByClassName("current-image");
-    const filenames = document.getElementById("filenames");
+    // const filenames = document.getElementById("filenames");
 
-    filenames.innerHTML = "";
+    // filenames.innerHTML = "";
     for (i = newImages.length - 1; i >= 0; i--) {
         newImages[i].remove();
     }
@@ -501,11 +548,11 @@ function previewImage(event) {
             document.querySelector(".next").style.display = "none";
         }
 
-        Array.from(files).forEach(file => {
-            const element = document.createElement("p");
-            element.textContent = file.name;
-            filenames.appendChild(element);
-        });
+        // Array.from(files).forEach(file => {
+        //     const element = document.createElement("p");
+        //     element.textContent = file.name;
+        //     filenames.appendChild(element);
+        // });
     } else if (currentImages && currentImages.length > 0) {
         initCollectionSlideIndex();
         showSlides(collectionSlideIndex);

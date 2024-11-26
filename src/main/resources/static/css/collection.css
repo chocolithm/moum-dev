@@ -138,10 +138,13 @@
 .collection-form-layer .left-side .collection-image,
 .collection-view-layer .left-side .collection-image {
   width: 100%;
-  background-color: #f0f0f0;
   display: flex;
   justify-content: center;
   align-items: center;
+  object-fit: contain;
+}
+
+.collection-form-layer .left-side .collection-image {
   cursor: pointer;
 }
 
@@ -149,7 +152,6 @@
 .collection-view-layer .left-side .slider {
   position: relative;
   max-width: 600px;
-  height: 300px;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -164,13 +166,39 @@
 
 .collection-form-layer .left-side .slide,
 .collection-view-layer .left-side .slide {
-  min-width: 100%;
+  width: 100%;
   box-sizing: border-box;
+  border-radius: 15px;
+  border: 1px solid rgb(228, 228, 228);
 }
 
 .collection-form-layer .left-side #filenames,
 .collection-view-layer .left-side #filenames {
   color: blue;
+}
+
+.collection-view-layer .left-side .collection-image-btns {
+  text-align: right;
+}
+
+.collection-view-layer .left-side .collection-image-btn {
+  font-size: 1.3rem;
+  padding: 0;
+  transition: 0.3s ease;
+}
+
+.collection-view-layer .left-side .collection-image-btn:hover {
+  scale: calc(1.1);
+}
+
+.collection-form-layer .left-side .prev,
+.collection-view-layer .left-side .prev {
+  left: 0;
+}
+
+.collection-form-layer .left-side .next,
+.collection-view-layer .left-side .next {
+  right: 0;
 }
 
 .collection-form-layer .left-side .prev,
@@ -181,27 +209,14 @@
   position: absolute;
   top: 50%;
   width: auto;
-  padding: 16px;
-  color: white;
+  padding: 12px;
+  color: black;
   font-weight: bold;
-  font-size: 18px;
   transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
+  /* border-radius: 0 3px 3px 0; */
+  border-radius: 50px;
   user-select: none;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* 배경 투명도 설정 */
-}
-
-.collection-form-layer .left-side .prev,
-.collection-view-layer .left-side .prev {
-  left: 0;
-  border-radius: 3px 0 0 3px;
-}
-
-.collection-form-layer .left-side .next,
-.collection-view-layer .left-side .next {
-  right: 0;
-  border-radius: 0 3px 3px 0;
+  /* background-color: rgba(0, 0, 0, 0.3); */
 }
 
 .collection-form-layer .left-side #currentFilenames div,

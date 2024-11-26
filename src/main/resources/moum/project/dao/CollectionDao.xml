@@ -41,6 +41,7 @@
       <id column="photo_id" property="no"/>
       <result column="filename" property="filename"/>
       <result column="origin_filename" property="originFilename"/>
+      <result column="is_primary" property="isPrimary"/>
     </collection>
   </resultMap>
 
@@ -48,6 +49,7 @@
     <id column="photo_id" property="no"/>
     <result column="filename" property="filename"/>
     <result column="origin_filename" property="originFilename"/>
+    <result column="is_primary" property="isPrimary"/>
   </resultMap>
 
   <insert id="insert" parameterType="moum.project.vo.Collection"
