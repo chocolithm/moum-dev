@@ -5,6 +5,11 @@ function openCollectionFormModal() {
     fadeInWithFlex(document.querySelector(".collection-form-layer"));
 }
 
+function closeCollectionModal() {
+    if (confirm("")) {
+        
+    }
+}
 
 // 수집품 선택 화면 열기
 function openCollectionSelection() {

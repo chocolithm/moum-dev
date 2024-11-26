@@ -2,7 +2,7 @@
 
 .sidemenu {
   position: fixed;
-  top: 160px;
+  top: 130px;
   left: 20px;
   width: 280px;
   padding: 20px;
@@ -74,6 +74,7 @@
   align-items: center;
   transition: 0.3s ease;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .myhome-collections .empty-collection-box {
@@ -116,6 +117,13 @@
   vertical-align: middle;
   justify-content: center;
   align-items: center;
+}
+
+.layer.collection-form-layer,
+.layer.collection-view-layer {
+  width: 800px;
+  height: 650px;
+  padding: 50px;
 }
 
 .collection-form-layer .left-side,
@@ -287,6 +295,35 @@
 
 .collection-view-layer .left-side .from-board {
   cursor: auto;
+}
+
+.collection-view-layer .collection-view-btn {
+  width: 40%;
+  margin: 0 3%;
+}
+
+.collection-form-layer .close-btn,
+.collection-view-layer .close-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.bookmark {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  width: 15px;
+  height: 20px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 180px; /* 세로 가운데 정렬 */
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
 }
 
 @media screen and (max-width: 767px) {

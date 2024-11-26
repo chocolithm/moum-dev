@@ -60,6 +60,89 @@
             </div>
         </div>
 
+        <style>
+            /* 외부 컨테이너 */
+            #testbox {
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+                height: 100px;
+            }
+
+            /* 배너를 감싸는 요소 */
+            .test {
+                display: flex;
+                flex-wrap: nowrap;
+                animation: bannermove 20s linear infinite;
+            }
+
+            /* 배너의 각 이미지 박스 */
+            .test > div {
+                flex: 0 0 auto;
+                width: 100px; /* 이미지 박스 크기 */
+                height: 100%;
+                margin-right: 20px; /* 이미지 사이 간격 */
+                text-align: center;
+            }
+
+            /* 이미지 스타일 */
+            .test img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            /* 애니메이션 키프레임 */
+            @keyframes bannermove {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(calc(-1600px - (16 * 20px)));
+                }
+            }
+        </style>
+        </head>
+        <body>
+        <div id="testbox">
+            <div class="test">
+                <div><img src="/images/main/sample-01.jpg" alt="Sample 01" /></div>
+                <div><img src="/images/main/sample-02.jpg" alt="Sample 02" /></div>
+                <div><img src="/images/main/sample-03.jpg" alt="Sample 03" /></div>
+                <div><img src="/images/main/sample-04.jpg" alt="Sample 04" /></div>
+                <div><img src="/images/main/sample-05.jpg" alt="Sample 05" /></div>
+                <div><img src="/images/main/sample-06.jpg" alt="Sample 06" /></div>
+                <div><img src="/images/main/sample-07.jpg" alt="Sample 07" /></div>
+                <div><img src="/images/main/sample-08.jpg" alt="Sample 08" /></div>
+                <div><img src="/images/main/sample-09.jpg" alt="Sample 09" /></div>
+                <div><img src="/images/main/sample-10.jpg" alt="Sample 10" /></div>
+                <div><img src="/images/main/sample-11.jpg" alt="Sample 11" /></div>
+                <div><img src="/images/main/sample-12.jpg" alt="Sample 12" /></div>
+                <div><img src="/images/main/sample-13.jpg" alt="Sample 13" /></div>
+                <div><img src="/images/main/sample-14.jpg" alt="Sample 14" /></div>
+                <div><img src="/images/main/sample-15.jpg" alt="Sample 15" /></div>
+                <div><img src="/images/main/sample-16.jpg" alt="Sample 16" /></div>
+                <!-- 복제 이미지 -->
+                <div class="clone"><img src="/images/main/sample-01.jpg" alt="Sample 01" /></div>
+                <div class="clone"><img src="/images/main/sample-02.jpg" alt="Sample 02" /></div>
+                <div class="clone"><img src="/images/main/sample-03.jpg" alt="Sample 03" /></div>
+                <div class="clone"><img src="/images/main/sample-04.jpg" alt="Sample 04" /></div>
+                <div class="clone"><img src="/images/main/sample-05.jpg" alt="Sample 05" /></div>
+                <div class="clone"><img src="/images/main/sample-06.jpg" alt="Sample 06" /></div>
+                <div class="clone"><img src="/images/main/sample-07.jpg" alt="Sample 07" /></div>
+                <div class="clone"><img src="/images/main/sample-08.jpg" alt="Sample 08" /></div>
+                <div class="clone"><img src="/images/main/sample-09.jpg" alt="Sample 09" /></div>
+                <div class="clone"><img src="/images/main/sample-10.jpg" alt="Sample 10" /></div>
+                <div class="clone"><img src="/images/main/sample-11.jpg" alt="Sample 11" /></div>
+                <div class="clone"><img src="/images/main/sample-12.jpg" alt="Sample 12" /></div>
+                <div class="clone"><img src="/images/main/sample-13.jpg" alt="Sample 13" /></div>
+                <div class="clone"><img src="/images/main/sample-14.jpg" alt="Sample 14" /></div>
+                <div class="clone"><img src="/images/main/sample-15.jpg" alt="Sample 15" /></div>
+                <div class="clone"><img src="/images/main/sample-16.jpg" alt="Sample 16" /></div>
+            </div>
+        </div>
+
+
         <div class="main-bottom clearfix">
             <h2>모음의 기능 소개</h2>
 

@@ -11,6 +11,7 @@
 <body>
 
 <div class="layer collection-view-layer">
+    <img src="/images/common/x.png" class="close-btn" alt="닫기" onclick="closeModal();">
     <div class="left-side">
         <img alt="수집품 이미지 등록" class="collection-image empty-image"
              data-th-style="${not (collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''"
@@ -113,9 +114,10 @@
                 </td>
             </tr>
             <tr>
-                <td><input onClick="updateCollection()" type="submit" value="수정"></td>
-                <td><a class="btn btn-danger" data-th-onclick="'deleteCollection(' + ${collection.no} + ')'"
-                       href="#">삭제</a></td>
+                <td colspan="2">
+                    <button class="btn btn-dark collection-view-btn" onclick="updateCollection()">수정</button>
+                    <button class="btn btn-dark collection-view-btn" data-th-onclick="'deleteCollection(' + ${collection.no} + ')'">삭제</button>
+                </td>
             </tr>
         </table>
     </div>
