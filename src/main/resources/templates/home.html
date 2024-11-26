@@ -71,16 +71,17 @@
 
             /* 배너를 감싸는 요소 */
             .test {
-                display: flex !important; /* 강제로 Flex 적용 */
+                display: flex;
                 flex-wrap: nowrap;
-                animation: bannermove 15s linear infinite;
+                animation: bannermove 20s linear infinite;
             }
 
             /* 배너의 각 이미지 박스 */
             .test > div {
                 flex: 0 0 auto;
-                width: 100px;
+                width: 100px; /* 이미지 박스 크기 */
                 height: 100%;
+                margin-right: 20px; /* 이미지 사이 간격 */
                 text-align: center;
             }
 
@@ -97,7 +98,7 @@
                     transform: translateX(0);
                 }
                 100% {
-                    transform: translateX(-50%);
+                    transform: translateX(calc(-1600px - (16 * 20px)));
                 }
             }
         </style>
