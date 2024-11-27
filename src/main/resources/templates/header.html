@@ -128,56 +128,56 @@
 
     <div class="alert-layer header-layer"></div>
 
-    <!--sweet alert2 테스트-->
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    <!--    &lt;!&ndash;sweet alert2 테스트&ndash;&gt;-->
+    <!--    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>-->
 
-    <!-- confetti 라이브러리 추가 -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!--    &lt;!&ndash; confetti 라이브러리 추가 &ndash;&gt;-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>-->
 
-    <script>
-        // Confetti 효과를 실행하는 변수와 함수
-        let confettiInterval;
+    <!--    <script>-->
+    <!--        // Confetti 효과를 실행하는 변수와 함수-->
+    <!--        let confettiInterval;-->
 
-        function startConfetti() {
-            confettiInterval = setInterval(() => {
-                confetti({
-                    particleCount: 100,
-                    startVelocity: 30,
-                    spread: 360,
-                    origin: { x: Math.random(), y: Math.random() - 0.2 },
-                });
-            }, 200); // 0.2초 간격으로 반복
-        }
+    <!--        function startConfetti() {-->
+    <!--            confettiInterval = setInterval(() => {-->
+    <!--                confetti({-->
+    <!--                    particleCount: 100,-->
+    <!--                    startVelocity: 30,-->
+    <!--                    spread: 360,-->
+    <!--                    origin: { x: Math.random(), y: Math.random() - 0.2 },-->
+    <!--                });-->
+    <!--            }, 200); // 0.2초 간격으로 반복-->
+    <!--        }-->
 
-        function stopConfetti() {
-            clearInterval(confettiInterval);
-        }
+    <!--        function stopConfetti() {-->
+    <!--            clearInterval(confettiInterval);-->
+    <!--        }-->
 
-        // 업적 달성 알림과 함께 confetti 실행
-        function showAchievementNotification() {
-            startConfetti(); // Confetti 시작
+    <!--        // 업적 달성 알림과 함께 confetti 실행-->
+    <!--        function showAchievementNotification() {-->
+    <!--            startConfetti(); // Confetti 시작-->
 
-            // SweetAlert2 알림 표시
-            Swal.fire({
-                title: "🎉 업적 달성을 축하합니다!",
-                text: "알림을 확인해주세요.",
-                icon: "success",
-                confirmButtonText: "확인",
-                allowOutsideClick: false, // 클릭으로 알림 닫는 것 방지
-                allowEscapeKey: false,   // ESC로 알림 닫는 것 방지
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    stopConfetti(); // 확인 버튼 클릭 시 Confetti 중지
-                }
-            });
-        }
+    <!--            // SweetAlert2 알림 표시-->
+    <!--            Swal.fire({-->
+    <!--                title: "🎉 업적 달성을 축하합니다!",-->
+    <!--                text: "알림을 확인해주세요.",-->
+    <!--                icon: "success",-->
+    <!--                confirmButtonText: "확인",-->
+    <!--                allowOutsideClick: false, // 클릭으로 알림 닫는 것 방지-->
+    <!--                allowEscapeKey: false,   // ESC로 알림 닫는 것 방지-->
+    <!--            }).then((result) => {-->
+    <!--                if (result.isConfirmed) {-->
+    <!--                    stopConfetti(); // 확인 버튼 클릭 시 Confetti 중지-->
+    <!--                }-->
+    <!--            });-->
+    <!--        }-->
 
-        // 업적 취득 이벤트를 감지
-        document.addEventListener('achievementAcquired', function (event) {
-            showAchievementNotification();
-        });
-    </script>
+    <!--        // 업적 취득 이벤트를 감지-->
+    <!--        document.addEventListener('achievementAcquired', function (event) {-->
+    <!--            showAchievementNotification();-->
+    <!--        });-->
+    <!--    </script>-->
 
     <script>
         document.addEventListener("keydown", function (event) {
