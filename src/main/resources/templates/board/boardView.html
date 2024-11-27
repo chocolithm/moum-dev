@@ -130,6 +130,7 @@
 
         </div>
 
+            <div class="comment-whole-box">
 
 
             <span style="font-size: 20px; border-bottom: 1px solid black">전체 댓글
@@ -162,7 +163,7 @@
                 <p id="counter">0/300자</p>
                 <button class="btn btn-dark" th:onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
             </div>
-
+            </div>
             <!-- 현재 로그인한 사용자 번호를 JavaScript에서 사용할 수 있도록 설정 -->
             <script>
                 const authenticatedUserNo = [[${authenticatedUser.no}]];
