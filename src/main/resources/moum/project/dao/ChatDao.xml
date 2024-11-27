@@ -21,6 +21,7 @@
     <association property="sender" javaType="moum.project.vo.User">
       <id column="sender_id" property="no"/>
       <result column="nickname" property="nickname"/>
+      <result column="photo" property="photo"/>
     </association>
   </resultMap>
 

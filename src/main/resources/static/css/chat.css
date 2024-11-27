@@ -47,6 +47,14 @@
   align-items: center;
 }
 
+.chatroom-layer .chatroom > .chatroom-user .profile {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50px;
+}
+
 .chatroom-layer .chatroom > .chatroom-content {
   width: 230px;
   margin: 10px;
@@ -160,7 +168,11 @@
 
 .chatroom-layer .chat-info .guest-message-box .chat-profile-img {
   width: 40px;
+  height: 40px;
+  object-fit: cover;
+  object-position: center;
   margin-bottom: 30%;
+  border-radius: 50%;
 }
 
 .chatroom-layer .chat-info .guest-message-box span {
