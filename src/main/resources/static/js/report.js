@@ -50,42 +50,55 @@ function fetchReportCategoriesAndContent(type, no) {
 
 
 function report(url) {
-    if (confirm("신고하시겠습니까?")) {
 
-        if (validateReport()) {
+    Swal.fire({
+        text: "신고하시겠습니까?",
+        showCancelButton: true,
+        confirmButtonText: "확인"
+    }).then((result) => {
+    
+        if (result.isConfirmed) {
+            if (validateReport()) {
 
-            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-            const formData = new FormData();
-
-            formData.append("reportCategory.no", document.querySelector("#report-category").value);
-            formData.append("reportContent",
-                `<a href="${url}" target="_blank">${document.querySelector("#reportContent").value.trim()}</a>`);
-
-            fetch(`/report/add`, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    [csrfHeader]: csrfToken
-                }
-            })
-                .then(response => response.text())
-                .then(response => {
-                    switch (response) {
-                        case "success":
-                            alert("신고되었습니다.");
-                            break;
-                        case "failure":
-                            alert("알 수 없는 오류입니다.");
-                            break;
+                const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                const formData = new FormData();
+    
+                formData.append("reportCategory.no", document.querySelector("#report-category").value);
+                formData.append("reportContent",
+                    `<a href="${url}" target="_blank">${document.querySelector("#reportContent").value.trim()}</a>`);
+    
+                fetch(`/report/add`, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        [csrfHeader]: csrfToken
                     }
-                    closeModal();
                 })
-                .catch(error => {
-                    console.error("Error reporting:", error);
-                });
+                    .then(response => response.text())
+                    .then(response => {
+                        switch (response) {
+                            case "success":
+                                Swal.fire({
+                                    icon: "success",
+                                    text: "신고되었습니다."
+                                });
+                                break;
+                            case "failure":
+                                Swal.fire({
+                                    icon: "error",
+                                    text: "알 수 없는 오류입니다."
+                                });
+                                break;
+                        }
+                        closeModal();
+                    })
+                    .catch(error => {
+                        console.error("Error reporting:", error);
+                    });
+            }
         }
-    }
+    });
 }
 
 function validateReport() {
@@ -142,7 +155,10 @@ function sendWarning(category, categoryNo) {
         .then(response => response.text())
         .then(response => {
             if (response == "success") {
-                alert("처리되었습니다.");
+                Swal.fire({
+                    icon: "success",
+                    text: "처리되었습니다."
+                });
                 closeModal();
             }
         })
@@ -175,7 +191,10 @@ async function restrict(category, categoryNo) {
                     .then(response => response.text())
                     .then(response => {
                         if (response == "success") {
-                            alert("처리되었습니다.");
+                            Swal.fire({
+                                icon: "success",
+                                text: "처리되었습니다."
+                            });
                             location.href="/board/boardList";
                         }
                     })

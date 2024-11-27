@@ -206,7 +206,10 @@ function deleteAlert(event, alertNo) {
         box.remove();
         countAlert();
       } else {
-        alert("삭제가 불가합니다. 다시 시도해 주세요.");
+        Swal.fire({
+          icon: "error",
+          text: "삭제가 불가합니다. 다시 시도해 주세요."
+        });
       }
     })
     .catch(error => {
