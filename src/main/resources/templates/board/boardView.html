@@ -28,12 +28,13 @@
                     <span th:text="${board.title}">게시글 제목</span>
                 </h1>
                 <div class="post-meta">
-                    <span th:text="${board.user.nickname}">작성자</span>
+                    <span th:text="${board.user.nickname}" class="author-name" onclick="showProfilePopup(event)">작성자</span>
                     <span>조회수: <span th:text="${board.viewCount}">0</span></span>
                     <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>
                     <div class="post-meta-date">
                         <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
                     </div>
+
                 </div>
 
             </div>
@@ -159,6 +160,8 @@
                 <button class="btn btn-dark" th:onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
             </div>
 
+
+            
             <!-- 현재 로그인한 사용자 번호를 JavaScript에서 사용할 수 있도록 설정 -->
             <script>
                 const authenticatedUserNo = [[${authenticatedUser.no}]];
@@ -179,7 +182,25 @@
 <script src="/js/collection.js"></script>
 
 <script>
+    function showProfilePopup(event) {
+        var popup = document.getElementById('profilePopup');
+        popup.style.display = 'block';
+        popup.style.left = event.pageX + 'px';
+        popup.style.top = event.pageY + 'px';
+    }
 
+    function viewProfile(userNo) {
+        window.location.href = '/user/info/' + userNo;
+    }
+
+    // 페이지 다른 곳을 클릭하면 팝업 닫기
+    document.addEventListener('click', function(event) {
+        var popup = document.getElementById('profilePopup');
+        var authorName = document.querySelector('.author-name');
+        if (popup.style.display === 'block' && !popup.contains(event.target) && event.target !== authorName) {
+            popup.style.display = 'none';
+        }
+    });
     // 수집품 조회 화면 열기 (게시글에서 호출)
     function openCollectionViewModalFromBoard(collectionNo) {
         fetchCollectionViewFromBoard(collectionNo);

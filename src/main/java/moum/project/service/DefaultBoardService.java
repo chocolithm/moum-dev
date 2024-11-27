@@ -62,6 +62,8 @@ public class DefaultBoardService implements BoardService {
             boardDao.insertAttachedFiles(attachedFiles); // 첨부 파일 삽입
 
         }
+
+
         if (board.getBoardType().equals("trade")) {
             boardDao.insertTrade(board);
         }

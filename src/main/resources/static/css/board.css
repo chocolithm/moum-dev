@@ -1112,7 +1112,7 @@ a {
     padding: 20px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #d6d6d6; /* 검은색 테두리 추가 */
 }
 
 .post-title {
@@ -1134,7 +1134,13 @@ a {
 .post-meta .post-meta-date {
     margin-left: auto;
 }
-
+.profile-popup {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    z-index: 1000;
+}
 /* 게시판 myinfo */
 .board-myinfo-data {
     display: flex;
@@ -1153,7 +1159,7 @@ a {
     padding: 20px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #d6d6d6; /* 검은색 테두리 추가 */
     display: flex;
     gap: 10px;
     justify-content: flex-end;
@@ -1162,9 +1168,10 @@ a {
 .post-content {
     min-height: 1000px;
     padding: 20px;
-    background: #fff;
+    background: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #d6d6d6; /* 검은색 테두리 추가 */
+
 }
 
 .post-content img {

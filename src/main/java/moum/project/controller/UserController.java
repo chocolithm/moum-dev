@@ -85,8 +85,8 @@ public class UserController {
    */
   @GetMapping({"/myInfo", "/info/{userNo}"})
   public String userInfo(@PathVariable(required = false) Integer userNo,
-      @AuthenticationPrincipal CustomUserDetails userDetails,
-      Model model) throws Exception {
+                         @AuthenticationPrincipal CustomUserDetails userDetails,
+                         Model model) throws Exception {
 
     User viewUser;
     boolean isOwnProfile = false;
@@ -133,6 +133,10 @@ public class UserController {
       }
     });
 
+    // 새로운 프로필 보기 관련 데이터 추가
+    model.addAttribute("isProfileView", userNo != null); // 게시글 작성자 프로필 보기 여부
+    model.addAttribute("profileViewUser", viewUser); // 프로필 보기 대상 사용자
+
     model.addAttribute("boardList", boardList);
     model.addAttribute("achievementlist", achievementList);
     model.addAttribute("user", viewUser);
@@ -141,6 +145,7 @@ public class UserController {
 
     return "user/myInfo";
   }
+
 
   /**
    * 이 메서드는 "/user/update" URL로 들어오는 GET 요청을 처리합니다.
