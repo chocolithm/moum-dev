@@ -94,19 +94,18 @@
             </div>
 
 
-            <!-- 추천/신고 버튼 -->
             <div class="action-buttons">
                 <!-- 게시판 myinfo  -->
                 <div class="board-myinfo-data">
                     <div class="my-info-container" th:if="${board.user}" th:object="${board.user}">
                         <div class="profile-img-container">
-                            <div class="profile-img-inner-container">
-                                <a target="_blank"
-                                   th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'}">
-                                    <img alt="프로필 이미지"
-                                         class="profile-img"
-                                         th:src="'https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'} + '?type=f&w=100&h=100'"/>
-                                </a>
+                            <div class="profile-img-container">
+                                <div class="profile-img-inner-container">
+                                    <a target="_blank" th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'}">
+                                        <img alt="프로필 이미지" class="profile-img rounded-circle"
+                                             th:src="'https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'} + '?type=f&w=200&h=200'"/>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="my-info-right-container-header">
@@ -127,27 +126,27 @@
                     </div>
                 </div>
 
-
-                <button class="open-chat-btn btn btn-outline-dark"
-                        onclick="openChatroomModal(); openChat(0);"
-                        th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
-                </button>
-                <button class="open-chat-btn btn btn-outline-dark"
-                        onclick="openChatroomModal(); openChat(0);"
-                        th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
-                </button>
-
-                <button class="report_button btn btn-outline-white"
-                        onclick="openReport('board');"
-                        th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
-                        type="button">🚨
-                </button>
-
-                <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
-                        th:if="${authenticatedUser.admin == true}" type="button">경고/제재
-                </button>
             </div>
 
+            <!-- 추천/신고 버튼 -->
+            <button class="open-chat-btn btn btn-outline-dark"
+                    onclick="openChatroomModal(); openChat(0);"
+                    th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
+            </button>
+            <button class="open-chat-btn btn btn-outline-dark"
+                    onclick="openChatroomModal(); openChat(0);"
+                    th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
+            </button>
+
+            <button class="report_button btn btn-outline-white"
+                    onclick="openReport('board');"
+                    th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
+                    type="button">🚨
+            </button>
+
+            <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
+                    th:if="${authenticatedUser.admin == true}" type="button">경고/제재
+            </button>
 
             <div class="board write-user-edit-button">
                 <!-- 기윤/ 건들지 마시오 수정 버튼 -->
