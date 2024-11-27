@@ -5,19 +5,19 @@
 
 .chatroom-layer {
   background: white;
-  border: 1px solid lightgrey;
-  box-shadow: 3px 3px 2px;
+  border: 1px lightgrey;
   width: 400px;
-  height: calc(100vh - 96px);
+  height: 500px;
   overflow-y: auto;
   position: fixed;
-  top: 96px;
+  top: 94px;
   right: 0;
   z-index: 50;
   display: none;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
+
 
 .chatroom-layer::-webkit-scrollbar {
   display: none;
