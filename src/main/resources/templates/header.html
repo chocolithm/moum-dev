@@ -24,7 +24,7 @@
                     <li class="nav-item">
                         <a aria-current="page"
                            class="nav-link"
-                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/boardList\'' : '
+                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/popularList\'' : '
                            swal(\'로그인이 필요합니다!!\', \'\',
                            {icon: \'warning\'
                            }).then((value) => {if(value) {
@@ -36,7 +36,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHomeButton\'' : '
+                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHomeSell\'' : '
                            swal(\'로그인이 필요합니다!!\',
                            \'\',
                            {icon: \'warning\'

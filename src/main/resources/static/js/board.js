@@ -77,48 +77,110 @@ function countingLength(element) {
     }
 }
 
-// 댓글 추가
 function addComment(boardId) {
     const content = document.getElementById("commentContent").value;
+
     if (content.trim() === "") {
         alert("댓글 내용을 입력해주세요.");
         return;
     }
 
-    const csrfHeaders = getCsrfTokenHeaders();
+    const commentData = { content: content };
+
+    const csrfHeaders = getCsrfTokenHeaders(); // CSRF 토큰 및 헤더 가져오기
 
     fetch(`/Comment/board/${boardId}/comments`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
-            [csrfHeaders.header]: csrfHeaders.token
+            'Content-Type': 'application/json',
+            [csrfHeaders.header]: csrfHeaders.token // CSRF 헤더 설정
         },
-        body: JSON.stringify({ content: content })
+        body: JSON.stringify(commentData)
     })
-        .then(response => response.json())
-        .then(async comment => {
-            // renderComment(comment);
+    .then(response => response.json())
+    .then(data => {
+        // 댓글 추가 성공 시 DOM에 새 댓글 추가 (맨 아래로 추가)
+        const commentList = document.querySelector(".comment-list");
+        const newComment = document.createElement("li");
+        newComment.setAttribute("id", `comment-${data.no}`);
+        // newComment.innerHTML = `
+        //     <div class="comment-box">
+        //         <div class="comment-box-deleteBtn">
+        //             <button class="comment-delete-btn" 
+        //                     onclick="deleteComment(${data.no})">삭제</button>
+        //         </div>
+        //         <div class="comment-header">
+        //             <span>${data.user.nickname}</span>
+        //             <span class="comment-date">${new Date(data.date).toLocaleDateString()}</span>
+        //         </div>
+        //         <div class="comment-content">${data.content}</div>
+        //     </div>`;
 
-            // 댓글 알림 처리
-            await fetch(`/alert/add?category=comment&categoryNo=${boardId}`)
-                .catch(error => {
-                    console.error("error adding alert: ", error);
-                })
+        newComment.innerHTML = `
+            <div class="comment-box">
+                <div class="comment-header">
+                    <span style="font-size: 13.5px">${data.user.nickname}</span>
+                    <div style="display: flex; align-items: center;">
+                        <span class="comment-date">${formatDate(data.date)}</span>
+                        <button class="comment-delete-btn"
+                                onclick="deleteComment(${data.no});">❌</button>
+                    </div>
+                </div>
+                <div class="comment-content" style="font-size: 13.5px">${data.content}</div>
+            </div>`;
 
-            // 업적 추가
-            await updateAchievement("HUNDRED_COMMENT");
-            await updateAchievement("THIRTY_COMMENT");
-            await updateAchievement("TEN_COMMENT");
+        commentList.appendChild(newComment); // 새 댓글을 리스트의 맨 아래에 추가
 
-            document.getElementById("commentContent").value = "";
-            countingLength(document.getElementById("commentContent"));
-            location.href=`/board/boardView?no=${boardId}`;
-        })
-        .catch(error => {
-            console.error("댓글 등록 오류:", error);
-            alert("댓글 등록에 실패했습니다.");
-        });
+        // 댓글 입력창 초기화
+        document.getElementById("commentContent").value = "";
+        countingLength(document.getElementById("commentContent"));
+    })
+    .catch(error => {
+        console.error("댓글 추가 실패:", error);
+    });
 }
+
+
+// CSRF 토큰 및 헤더 설정 함수
+function getCsrfTokenHeaders() {
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    return {
+        header: csrfHeader,
+        token: csrfToken
+    };
+}
+
+function deleteComment(commentId) {
+    if (!confirm("댓글을 삭제하시겠습니까?")) return;
+
+    const csrfHeaders = getCsrfTokenHeaders();
+
+    fetch(`/Comment/comments/${commentId}`, {
+        method: "DELETE",
+        headers: {
+            [csrfHeaders.header]: csrfHeaders.token
+        }
+    })
+    .then(response => response.text())
+    .then((response) => {
+        if (response === "success") {
+            const commentElement = document.getElementById(`comment-${commentId}`);
+            if (commentElement) {
+                commentElement.remove();
+            }
+        } else {
+            alert("댓글 삭제에 실패했습니다.");
+        }
+    })
+    .catch(error => {
+        console.error("댓글 삭제 오류:", error);
+        alert("댓글 삭제에 실패했습니다.");
+    });
+}
+
+
+
 
 // // 댓글 수정
 // function editComment(commentId) {
@@ -145,41 +207,41 @@ function addComment(boardId) {
 //         });
 // }
 
-// 댓글 삭제
-function deleteComment(commentId) {
-    if (!confirm("댓글을 삭제하시겠습니까?")) return;
-
-    const csrfHeaders = getCsrfTokenHeaders();
-
-    fetch(`/Comment/comments/${commentId}`, {
-        method: "DELETE",
-        headers: {
-            [csrfHeaders.header]: csrfHeaders.token
-        }
-    })
-        .then(response => response.text())
-        .then((response) => {
-            if (response === "success") {
-                document.getElementById(`comment-${commentId}`).remove();
-            }
-        })
-        .catch(error => {
-            console.error("댓글 삭제 오류:", error);
-            alert("댓글 삭제에 실패했습니다.");
-        });
-}
-
-
-
-function getCsrfTokenHeaders() {
-    // CSRF 토큰을 메타 태그에서 가져옵니다.
-    const csrfToken = $("meta[name='_csrf']").attr("content");
-    const csrfHeader = $("meta[name='_csrf_header']").attr("content");
-    return {
-        header: csrfHeader,
-        token: csrfToken
-    };
-}
+// // 댓글 삭제
+// function deleteComment(commentId) {
+//     if (!confirm("댓글을 삭제하시겠습니까?")) return;
+//
+//     const csrfHeaders = getCsrfTokenHeaders();
+//
+//     fetch(`/Comment/comments/${commentId}`, {
+//         method: "DELETE",
+//         headers: {
+//             [csrfHeaders.header]: csrfHeaders.token
+//         }
+//     })
+//         .then(response => response.text())
+//         .then((response) => {
+//             if (response === "success") {
+//                 document.getElementById(`comment-${commentId}`).remove();
+//             }
+//         })
+//         .catch(error => {
+//             console.error("댓글 삭제 오류:", error);
+//             alert("댓글 삭제에 실패했습니다.");
+//         });
+// }
+//
+//
+//
+// function getCsrfTokenHeaders() {
+//     // CSRF 토큰을 메타 태그에서 가져옵니다.
+//     const csrfToken = $("meta[name='_csrf']").attr("content");
+//     const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+//     return {
+//         header: csrfHeader,
+//         token: csrfToken
+//     };
+// }
 
 
   function toggleLike(boardNo, userNo) {

@@ -1,5 +1,7 @@
     package moum.project.controller;
 
+    import java.util.Comparator;
+    import java.util.stream.Collectors;
     import lombok.RequiredArgsConstructor;
     import moum.project.service.BoardService;
     import moum.project.service.CommentService;
@@ -42,10 +44,13 @@
             params.setBoardNo(boardId);
 
             int id = commentService.saveComment(params);
-            redirectAttributes.addFlashAttribute("newCommentId", id); // 필요시 새 댓글 ID를 Flash에 저장
 
-            // 댓글 작성 후 GET 요청으로 리다이렉트
-            return commentService.findCommentById(id);
+            // 저장한 댓글을 반환
+            CommentResponse comment = commentService.findCommentById(id);
+            // 작성자 정보 설정
+            comment.setUser(loginUser);
+
+            return comment;
         }
 
 
@@ -61,10 +66,14 @@
         }
 
         @GetMapping("/board/{boardId}/comments")
-        @ResponseBody // JSON 형식으로 댓글 목록을 반환
+        @ResponseBody
         public List<CommentResponse> listComment(@PathVariable final int boardId) {
-            return commentService.findAllComment(boardId);
+            // 댓글을 작성일 기준으로 오름차순 정렬
+            return commentService.findAllComment(boardId).stream()
+                .sorted(Comparator.comparing(CommentResponse::getDate))
+                .collect(Collectors.toList());
         }
+
 
         @DeleteMapping("/comments/{no}")
         public String deleteComment(@PathVariable String no) throws Exception {

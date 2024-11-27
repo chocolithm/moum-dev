@@ -11,6 +11,7 @@
 <body>
 
 <div class="layer collection-view-layer">
+  <img src="/images/common/x.png" class="close-btn" alt="닫기" onclick="closeModal();">
   <div class="left-side">
     <img alt="수집품 이미지" class="collection-image empty-image"
          data-th-style="${not (collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''"
@@ -31,10 +32,6 @@
       <tr>
         <td>이름</td>
         <td data-th-text="${collection.name}"></td>
-      </tr>
-      <tr>
-        <td>가격</td>
-        <td data-th-text="${collection.price}"></td>
       </tr>
       <tr>
         <td>대분류</td>

@@ -20,5 +20,6 @@ public class AttachedFile {
 
   private String filename; // filename에 매핑
   private String originFilename; // origin_filename에 매핑
+  private boolean isPrimary;
 
 }
