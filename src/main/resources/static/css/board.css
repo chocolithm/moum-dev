@@ -670,11 +670,7 @@ button {
 .trade-complete {
     background-color: #20c997;
     color: #ffffff;
-    flex: 0 1 auto;
-    width: auto;
-    padding: 10px 100px;
-    display: block;  /* 버튼을 블록 요소로 설정 */
-    margin: 0 auto;  /* 수평 가운데 정렬 */
+    flex: 1;
 }
 
 
