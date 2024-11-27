@@ -129,7 +129,9 @@
                     <!-- 게시글 작성자와 작성일 -->
                     <div class="item-number-info">
                         <div class="item-number-nickname" th:text="${board.user.nickname}">작성자</div>
-                        <div class="item-number-date" th:text="${#dates.format(board.postDate, 'yyyy.MM.dd.')}">2024-11-15</div>
+                        <div class="item-number-date" th:text="${#dates.format(board.postDate, 'yyyy.MM.dd.')}">
+                            2024-11-15
+                        </div>
                     </div>
 
                     <!-- 게시글 조회수 및 추천수 -->
@@ -152,41 +154,6 @@
             </form>
         </div>
 
-        <!--        &lt;!&ndash; 페이징 !&ndash;&gt;-->
-        <!--        <div class="pagination-container mt-4">-->
-        <!--            <nav aria-label="Page navigation">-->
-        <!--                <ul class="pagination justify-content-center">-->
-        <!--                    &lt;!&ndash; Previous Button &ndash;&gt;-->
-        <!--                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">-->
-        <!--                        <a class="page-link bg-white text-dark"-->
-        <!--                           th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">Previous</a>-->
-        <!--                    </li>-->
-
-        <!--                    &lt;!&ndash; Page Numbers &ndash;&gt;-->
-        <!--                    <li class="page-item"-->
-        <!--                        th:classappend="${i == currentPage ? 'active' : ''}"-->
-        <!--                        th:each="i : ${#numbers.sequence(1, totalPages)}">-->
-        <!--                        <a class="page-link bg-dark text-white"-->
-        <!--                           th:href="@{/board/boardList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"-->
-        <!--                           th:text="${i}"></a>-->
-        <!--                    </li>-->
-
-        <!--                    &lt;!&ndash; Next Button &ndash;&gt;-->
-        <!--                    <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">-->
-        <!--                        <a class="page-link bg-white text-dark"-->
-        <!--                           th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">Next</a>-->
-        <!--                    </li>-->
-        <!--                </ul>-->
-        <!--            </nav>-->
-        <!--        </div>-->
-
-        <!--        &lt;!&ndash; Custom CSS to remove the blue outline on link buttons &ndash;&gt;-->
-        <!--        <style>-->
-        <!--            .pagination .page-link:focus {-->
-        <!--                outline: none;-->
-        <!--                box-shadow: none;-->
-        <!--            }-->
-        <!--        </style>-->
 
         <!-- 페이징 !-->
         <div class="pagination-container mt-4">
