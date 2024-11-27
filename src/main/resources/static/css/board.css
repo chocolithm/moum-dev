@@ -952,11 +952,14 @@ a {
     grid-template-rows: repeat(3, 350px); /* 3행 각각 높이 300px로 설정 */
 }
 
-.grid-item {
+/* 게시글 박스 */
+.grid-container .grid-item {
     background: #ffffff;
     border-radius: 8px;
     overflow: hidden;
     transition: transform 0.2s;
+    border: 1px solid #E2E2E2; /* 2px 두께의 검은색 테두리 */
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05); /* 연한 그림자 */
 }
 
 
