@@ -945,7 +945,7 @@ a {
     max-height: 1656px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 10px;
+    gap: 15px;
     padding: 20px;
     background: #ffffff;
     border-radius: 8px;
@@ -958,10 +958,9 @@ a {
     border-radius: 8px;
     overflow: hidden;
     transition: transform 0.2s;
-    border: 1px solid #E2E2E2; /* 2px 두께의 검은색 테두리 */
+    border: 1px solid #E2E2E2;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05); /* 연한 그림자 */
 }
-
 
 .grid-item-list {
     background: #ffffff;
