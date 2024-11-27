@@ -48,8 +48,8 @@
     </aside>
     <section class="main-section">
         <div class="myhome-collections" style="background-color: white">
-            <button data-th-if="${#lists.isEmpty(collectionList)}"
-                    class="empty-collection-box btn" onclick="openCollectionFormModal();">
+            <button class="empty-collection-box btn"
+                    data-th-if="${#lists.isEmpty(collectionList)}" onclick="openCollectionFormModal();">
                 <img class="empty-collection-image" src="/images/collections/empty-collection-image.jpg">
                 <div class="empty-collection-title">첫 수집품을 등록해보세요!</div>
             </button>
@@ -69,7 +69,7 @@
         </div>
     </section>
 </main>
-ㅁ
+
 <footer data-th-replace="~{footer :: footer}"></footer>
 
 <!--  수집품 등록 화면  -->
