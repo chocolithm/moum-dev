@@ -80,7 +80,7 @@
                                 <div style="display: flex; align-items: center; gap: 1rem;"
                                      th:if="${primaryAchievement}">
                                     <img alt="대표업적 이미지" class="my-primary-achievement-img"
-                                         th:src="${'/images/achievement/complete/' + primaryAchievement.photo}">
+                                         th:src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/complete/' + primaryAchievement.photo}">
                                     <span th:text="${primaryAchievement.name}"></span>
                                 </div>
                                 <div th:unless="${primaryAchievement}">
