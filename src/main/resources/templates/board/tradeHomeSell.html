@@ -78,10 +78,10 @@
                 <!-- 게시글 내용 -->
                 <div class="item-content">
                     <a th:href="@{/board/boardView(no=${board.no})}">
-                        <div class="item-title" th:text="${board.title}">게시글 제목</div>
-                        <div class="item-number" th:text="'가격: ' + ${board.price} + '원'">가격: 10000원</div>
-                        <div class="item-number" th:text="'거래상태: ' + (${board.sellOrSoldStatus} ? '거래완료' : '거래중')">거래상태: 거래중</div>
-                        <div class="item-number" th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">
+                        <div class="item-title" data-th-text="${board.title}">게시글 제목</div>
+                        <div class="item-number" th:text="${board.formattedPrice + '원'}">10,000원</div>
+                        <div class="item-number" data-th-text="${board.sellOrSoldStatus} ? '거래완료' : '거래중'">거래중</div>
+                        <div class="item-number" data-th-text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">
                             2024-11-15 12:34
                         </div>
                     </a>

@@ -2,7 +2,9 @@ package moum.project.vo;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import lombok.Data;
 
 @Data
@@ -38,6 +40,8 @@ public class Board implements Serializable {
     private boolean isPopular; // 인기게시글 여부
     private int commentCount; // 댓글 개수를 저장하는 필드 추가
 
-
+    public String getFormattedPrice() {
+        return price != null ? NumberFormat.getInstance(Locale.KOREA).format(price) : "0";
+    }
 
 }

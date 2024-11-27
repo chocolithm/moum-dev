@@ -65,7 +65,7 @@
             <!-- 거래 정보 (있는 경우) -->
             <div class="trade-info" th:if="${board.boardType == 'trade'}">
                 <div class="trade-box">
-                    <div><strong>가격:</strong> <span th:text="${board.price}">0</span>원</div>
+                    <div><strong>가격:</strong> <span th:text="${board.formattedPrice}">0</span>원</div>
                     <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span>
                     </div>
                     <div><strong>거래 방식:</strong> <span
