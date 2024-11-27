@@ -94,10 +94,7 @@
                             <div class="achievement-img-container">
                                 <img alt="업적 이미지" class="achievement-img"
                                      src="/images/achievement/defaultImage.png"
-                                     data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/' + achievement.photo : '/images/achievement/' + achievement.photo}}">
-<!--                                <img alt="업적 이미지" class="achievement-img"-->
-<!--                                     src="/images/achievement/defaultImage.png"-->
-<!--                                     data-th-src="@{${achievement.progress == 100 ? '/images/achievement/complete/completeDefaultImage.png' : '/images/achievement/defaultImage.png'}}">-->
+                                     data-th-src="@{${achievement.progress == 100 ? 'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/complete/' + achievement.photo : 'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/' + achievement.photo}}">
                             </div>
 
                             <div class="achievement-details-container">
