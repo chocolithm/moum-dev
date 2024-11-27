@@ -154,6 +154,13 @@ function fetchChatroomList() {
         div.className = "chatroom";
         div.onclick = () => openChat(chatroom.no, participant);
 
+        const boardDiv = document.createElement("div");
+        boardDiv.className = "chatroom-board-info";
+        boardDiv.innerHTML = chatroom.board.title;
+
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "chatroom-content-info";
+
         const userspan = document.createElement("span");
         userspan.className = "chatroom-user";
 
@@ -186,8 +193,8 @@ function fetchChatroomList() {
         date.innerHTML = formatDate(chatroom.chatDate);
 
         chatspan.append(message, date);
-
-        div.append(userspan, chatspan);
+        contentDiv.append(userspan, chatspan);
+        div.append(boardDiv, contentDiv);
 
         chatroom_layer.append(div);
       });

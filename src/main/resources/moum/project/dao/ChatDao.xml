@@ -104,6 +104,7 @@
       up.photo as participant_photo,
       up.end_date as participant_end_date,
       b.board_id,
+      b.title,
       b.user_id as owner_id,
       uo.nickname as owner_nickname,
       uo.photo as owner_photo,

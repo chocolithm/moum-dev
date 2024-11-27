@@ -3,10 +3,6 @@
   width: 22px;
 }
 
-.chatroom {
-height: 79.6px;
-}
-
 .chatroom-layer {
   background: white;
   border: 1px solid lightgrey;
@@ -35,23 +31,37 @@ height: 79.6px;
 
 .chatroom-layer .chatroom {
   display: flex;
+  flex-direction: column;
   align-items: center;
   border: 1px solid lightgrey;
   transition: 0.3s ease;
+  margin: 3px 0;
 }
 
-.chatroom-layer .chatroom > span {
+.chatroom-layer .chatroom span {
   display: flex;
   flex-direction: column;
 }
 
-.chatroom-layer .chatroom > .chatroom-user {
+.chatroom-layer .chatroom .chatroom-board-info {
+  width: 100%;
+  background: black;
+  color: white;
+  text-align: center;
+}
+
+.chatroom-layer .chatroom .chatroom-content-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.chatroom-layer .chatroom .chatroom-user {
   width: 130px;
   margin: 10px;
   align-items: center;
 }
 
-.chatroom-layer .chatroom > .chatroom-user .profile {
+.chatroom-layer .chatroom .chatroom-user .profile {
   width: 40px;
   height: 40px;
   object-fit: cover;
@@ -59,7 +69,7 @@ height: 79.6px;
   border-radius: 50px;
 }
 
-.chatroom-layer .chatroom > .chatroom-content {
+.chatroom-layer .chatroom .chatroom-content {
   width: 230px;
   margin: 10px;
   font-size: 0.9rem;
@@ -67,7 +77,7 @@ height: 79.6px;
   position: relative;
 }
 
-.chatroom-layer .chatroom > .chatroom-content > .message {
+.chatroom-layer .chatroom .chatroom-content > .message {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -75,7 +85,7 @@ height: 79.6px;
   position: relative;
 }
 
-.chatroom-layer .chatroom > .chatroom-content > .message .unread-count {
+.chatroom-layer .chatroom .chatroom-content > .message .unread-count {
   background-color: red;
   color: white;
   padding: 3px 6px;
@@ -87,7 +97,7 @@ height: 79.6px;
   white-space: nowrap;
 }
 
-.chatroom-layer .chatroom > .chatroom-content > .date {
+.chatroom-layer .chatroom .chatroom-content > .date {
   color: lightgrey;
 }
 
