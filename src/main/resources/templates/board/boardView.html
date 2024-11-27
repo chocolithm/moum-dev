@@ -34,7 +34,10 @@
                     <div class="post-meta-date">
                         <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
                     </div>
-
+                    <!-- 프로필 보기 팝업 -->
+                    <div id="profilePopup" class="profile-popup" style="display: none;">
+                        <button data-th-onclick="'viewProfile(' + ${board.user.no} + ')'">프로필 보기</button>
+                    </div>
                 </div>
 
             </div>
@@ -160,8 +163,6 @@
                 <button class="btn btn-dark" th:onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
             </div>
 
-
-            
             <!-- 현재 로그인한 사용자 번호를 JavaScript에서 사용할 수 있도록 설정 -->
             <script>
                 const authenticatedUserNo = [[${authenticatedUser.no}]];
