@@ -256,11 +256,13 @@ function deleteComment(commentId) {
           },
           success: function (response) {
               $("#likeCount").text(response.likeCount); // 서버에서 받은 좋아요 수로 갱신
-              Swal.fire(response.message); // 알림 메시지 표시
+              $("#likeCount2").text(response.likeCount); // 서버에서 받은 좋아요 수로 갱신
+
+//              Swal.fire(response.message); // 알림 메시지 표시
           },
           error: function (error) {
               console.error("좋아요 오류:", error);
-              Swal.fire("좋아요 처리에 실패했습니다.");
+//              Swal.fire("좋아요 처리에 실패했습니다.");
           }
       });
   }
@@ -268,18 +270,19 @@ function deleteComment(commentId) {
 
 function changeText(button) {
     // 버튼이 'btn-danger' 클래스를 가지면 '♥' 상태, 없으면 '♡' 상태
-    if (button.classList.contains('btn-danger')) {
+    if (button.innerHTML.trim() == '🩷') {
+//    if (button.classList.contains('btn-danger')) {
         // ♥ -> ♡ 상태로 변경
-        button.classList.remove('btn-danger'); // 'btn-danger' 클래스 제거
-        button.classList.add('btn-outline-dark'); // 원래 상태 (흰색 배경)로 복귀
+//        button.classList.remove('btn-danger'); // 'btn-danger' 클래스 제거
+//        button.classList.add('btn-outline-dark'); // 원래 상태 (흰색 배경)로 복귀
         button.innerText = '🤍'; // 텍스트 변경
-        button.style.color = ''; // 텍스트 색상 초기화 (기본 색상으로 복귀)
+//        button.style.color = ''; // 텍스트 색상 초기화 (기본 색상으로 복귀)
     } else {
         // ♡ -> ♥ 상태로 변경
-        button.classList.remove('btn-outline-dark'); // 흰색 배경 제거
-        button.classList.add('btn-danger'); // 'btn-danger' 클래스 추가
+//        button.classList.remove('btn-outline-dark'); // 흰색 배경 제거
+//        button.classList.add('btn-danger'); // 'btn-danger' 클래스 추가
         button.innerText = '🩷'; // 텍스트 변경
-        button.style.color = 'red'; // '♥' 텍스트 색상을 빨간색으로 변경
+//        button.style.color = 'red'; // '♥' 텍스트 색상을 빨간색으로 변경
     }
 }
 
