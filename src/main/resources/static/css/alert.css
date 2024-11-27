@@ -19,6 +19,7 @@
 .alert-layer {
   background: white;
   border: 1px solid lightgrey;
+  border-radius: 5px;
   width: 400px;
   height: 500px;
   overflow-y: auto;
