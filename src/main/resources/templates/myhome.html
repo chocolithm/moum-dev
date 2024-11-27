@@ -50,20 +50,20 @@
         <div class="myhome-collections" style="background-color: white">
             <button class="empty-collection-box btn"
                     data-th-if="${#lists.isEmpty(collectionList)}" onclick="openCollectionFormModal();">
-                <img class="empty-collection-image" src="/images/collections/empty-collection-image.jpg">
+                <img class="empty-collection-image" src="/images/collections/empty-collection-image.png">
                 <div class="empty-collection-title">첫 수집품을 등록해보세요!</div>
             </button>
             <button data-th-attr="onclick='openCollectionViewModal(' + ${collection.no} + ');'"
                     data-th-class="'collection-box btn clearfix maincategory-' + ${collection.maincategory.no}"
                     data-th-each="collection : ${collectionList}"
                     data-th-if="${not #lists.isEmpty(collectionList)}">
-                    <div class="bookmark" data-th-style="'background-color: ' + ${collection.maincategory.color}"></div>
+                <div class="bookmark" data-th-style="'background-color: ' + ${collection.maincategory.color}"></div>
                 <img class="collection-image"
-                    data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
-                    data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"/>
+                     data-th-if="${not #lists.isEmpty(collection.attachedFiles)}"
+                     data-th-src="${'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + collection.attachedFiles[0].filename}"/>
                 <img class="collection-image"
-                    data-th-if="${#lists.isEmpty(collection.attachedFiles)}"
-                    src="/images/collections/empty-collection.png"/>
+                     data-th-if="${#lists.isEmpty(collection.attachedFiles)}"
+                     src="/images/collections/empty-collection.png"/>
                 <div class="collection-title" data-th-text="${collection.name}"></div>
             </button>
         </div>
@@ -110,7 +110,7 @@
             countAlert();
         }
     })
-    
+
 </script>
 </body>
 </html>

@@ -67,6 +67,7 @@
                 position: relative;
                 width: 100%;
                 height: 100px;
+                margin-top: 50px; /* 원하는 크기로 조정 */
             }
 
             /* 배너를 감싸는 요소 */
@@ -101,75 +102,81 @@
                     transform: translateX(calc(-1600px - (16 * 20px)));
                 }
             }
+
+            .main-bottom-full-images {
+    display: flex;
+    flex-direction: column; /* 이미지를 위아래로 배치 */
+    align-items: center;   /* 이미지를 가운데 정렬 */
+    gap: 50px;             /* 이미지 사이의 간격 */
+    width: 100%;           /* 컨테이너가 화면 너비에 꽉 차도록 설정 */
+    margin: 20px 0;        /* 위아래 여백 추가 */
+}
+
+.main-bottom-full-images img {
+    width: 1000px;           /* 이미지를 가로폭에 맞게 설정 */
+    max-width: 1000px;     /* 너무 큰 화면에서는 적절히 제한 */
+    height: auto;          /* 이미지 비율 유지 */
+    display: block;        /* 이미지 요소의 기본 여백 제거 */
+    border-radius: 8px;    /* 선택적으로 둥근 모서리 추가 */
+}
+
+.main-bottom h2 {
+    font-size: 2rem; /* Adjust to your desired font size */
+    font-weight: bold; /* Ensures the font is bold */
+    text-align: center; /* Center-align the text */
+    margin-bottom: 20px; /* Adds space below the heading */
+}
+
         </style>
         </head>
         <body>
-        <div id="testbox">
-            <div class="test">
-                <div><img src="/images/main/sample-01.jpg" alt="Sample 01" /></div>
-                <div><img src="/images/main/sample-02.jpg" alt="Sample 02" /></div>
-                <div><img src="/images/main/sample-03.jpg" alt="Sample 03" /></div>
-                <div><img src="/images/main/sample-04.jpg" alt="Sample 04" /></div>
-                <div><img src="/images/main/sample-05.jpg" alt="Sample 05" /></div>
-                <div><img src="/images/main/sample-06.jpg" alt="Sample 06" /></div>
-                <div><img src="/images/main/sample-07.jpg" alt="Sample 07" /></div>
-                <div><img src="/images/main/sample-08.jpg" alt="Sample 08" /></div>
-                <div><img src="/images/main/sample-09.jpg" alt="Sample 09" /></div>
-                <div><img src="/images/main/sample-10.jpg" alt="Sample 10" /></div>
-                <div><img src="/images/main/sample-11.jpg" alt="Sample 11" /></div>
-                <div><img src="/images/main/sample-12.jpg" alt="Sample 12" /></div>
-                <div><img src="/images/main/sample-13.jpg" alt="Sample 13" /></div>
-                <div><img src="/images/main/sample-14.jpg" alt="Sample 14" /></div>
-                <div><img src="/images/main/sample-15.jpg" alt="Sample 15" /></div>
-                <div><img src="/images/main/sample-16.jpg" alt="Sample 16" /></div>
-                <!-- 복제 이미지 -->
-                <div class="clone"><img src="/images/main/sample-01.jpg" alt="Sample 01" /></div>
-                <div class="clone"><img src="/images/main/sample-02.jpg" alt="Sample 02" /></div>
-                <div class="clone"><img src="/images/main/sample-03.jpg" alt="Sample 03" /></div>
-                <div class="clone"><img src="/images/main/sample-04.jpg" alt="Sample 04" /></div>
-                <div class="clone"><img src="/images/main/sample-05.jpg" alt="Sample 05" /></div>
-                <div class="clone"><img src="/images/main/sample-06.jpg" alt="Sample 06" /></div>
-                <div class="clone"><img src="/images/main/sample-07.jpg" alt="Sample 07" /></div>
-                <div class="clone"><img src="/images/main/sample-08.jpg" alt="Sample 08" /></div>
-                <div class="clone"><img src="/images/main/sample-09.jpg" alt="Sample 09" /></div>
-                <div class="clone"><img src="/images/main/sample-10.jpg" alt="Sample 10" /></div>
-                <div class="clone"><img src="/images/main/sample-11.jpg" alt="Sample 11" /></div>
-                <div class="clone"><img src="/images/main/sample-12.jpg" alt="Sample 12" /></div>
-                <div class="clone"><img src="/images/main/sample-13.jpg" alt="Sample 13" /></div>
-                <div class="clone"><img src="/images/main/sample-14.jpg" alt="Sample 14" /></div>
-                <div class="clone"><img src="/images/main/sample-15.jpg" alt="Sample 15" /></div>
-                <div class="clone"><img src="/images/main/sample-16.jpg" alt="Sample 16" /></div>
-            </div>
-        </div>
-
-
         <div class="main-bottom clearfix">
             <h2>모음의 기능 소개</h2>
-
-            <div class="main-bottom-box">
-                <img alt="마이홈 기능 소개 이미지" class="main-bottom-image" data-th-src="@{/images/main/main-bottom-1.png}">
-                <h4>마이홈에서 내 게시글과 업적을 관리하기</h4>
-                <p class="main-bottom-text" style="text-align: left;">
-                    내가 올린 게시글과 획득한 업적을 한번에 모아볼 수 있어요. 내가 좋아하는 사진으로 프로필을 꾸미고, 개성 있는 닉네임으로 나를 소개해 보세요.
-                </p>
+            <div class="main-bottom-full-images">
+                <img src="/images/main/main-bottom-01.png" alt="Full Image 1">
+                <img src="/images/main/main-bottom-02.png" alt="Full Image 2">
+                <img src="/images/main/main-bottom-03.png" alt="Full Image 3">
+                <img src="/images/main/main-bottom-04.png" alt="Full Image 4">
             </div>
 
-            <div class="main-bottom-box">
-                <img alt="소장품 구경 기능 소개 이미지" class="main-bottom-image" data-th-src="@{/images/main/main-bottom-2.png}">
-                <h4>다른 사람의 소장품을 구경하고 소통하기</h4>
-                <p class="main-bottom-text" style="text-align: left;">
-                    소장품을 쇼케이스에만 두고 혼자 감상하는 것이 외로울 때가 있죠. 그럴 때는 나의 소장품을 자랑하고 나만의 이야기를 써 보세요. 다른 사람은 어떤 소장품을 가지고 있는지 궁금하지
-                    않나요?
-                </p>
+            <div id="testbox">
+                <div class="test">
+                    <div><img src="/images/main/sample-01.jpg" alt="Sample 01" /></div>
+                    <div><img src="/images/main/sample-02.jpg" alt="Sample 02" /></div>
+                    <div><img src="/images/main/sample-03.jpg" alt="Sample 03" /></div>
+                    <div><img src="/images/main/sample-04.jpg" alt="Sample 04" /></div>
+                    <div><img src="/images/main/sample-05.jpg" alt="Sample 05" /></div>
+                    <div><img src="/images/main/sample-06.jpg" alt="Sample 06" /></div>
+                    <div><img src="/images/main/sample-07.jpg" alt="Sample 07" /></div>
+                    <div><img src="/images/main/sample-08.jpg" alt="Sample 08" /></div>
+                    <div><img src="/images/main/sample-09.jpg" alt="Sample 09" /></div>
+                    <div><img src="/images/main/sample-10.jpg" alt="Sample 10" /></div>
+                    <div><img src="/images/main/sample-11.jpg" alt="Sample 11" /></div>
+                    <div><img src="/images/main/sample-12.jpg" alt="Sample 12" /></div>
+                    <div><img src="/images/main/sample-13.jpg" alt="Sample 13" /></div>
+                    <div><img src="/images/main/sample-14.jpg" alt="Sample 14" /></div>
+                    <div><img src="/images/main/sample-15.jpg" alt="Sample 15" /></div>
+                    <div><img src="/images/main/sample-16.jpg" alt="Sample 16" /></div>
+                    <!-- 복제 이미지 -->
+                    <div class="clone"><img src="/images/main/sample-01.jpg" alt="Sample 01" /></div>
+                    <div class="clone"><img src="/images/main/sample-02.jpg" alt="Sample 02" /></div>
+                    <div class="clone"><img src="/images/main/sample-03.jpg" alt="Sample 03" /></div>
+                    <div class="clone"><img src="/images/main/sample-04.jpg" alt="Sample 04" /></div>
+                    <div class="clone"><img src="/images/main/sample-05.jpg" alt="Sample 05" /></div>
+                    <div class="clone"><img src="/images/main/sample-06.jpg" alt="Sample 06" /></div>
+                    <div class="clone"><img src="/images/main/sample-07.jpg" alt="Sample 07" /></div>
+                    <div class="clone"><img src="/images/main/sample-08.jpg" alt="Sample 08" /></div>
+                    <div class="clone"><img src="/images/main/sample-09.jpg" alt="Sample 09" /></div>
+                    <div class="clone"><img src="/images/main/sample-10.jpg" alt="Sample 10" /></div>
+                    <div class="clone"><img src="/images/main/sample-11.jpg" alt="Sample 11" /></div>
+                    <div class="clone"><img src="/images/main/sample-12.jpg" alt="Sample 12" /></div>
+                    <div class="clone"><img src="/images/main/sample-13.jpg" alt="Sample 13" /></div>
+                    <div class="clone"><img src="/images/main/sample-14.jpg" alt="Sample 14" /></div>
+                    <div class="clone"><img src="/images/main/sample-15.jpg" alt="Sample 15" /></div>
+                    <div class="clone"><img src="/images/main/sample-16.jpg" alt="Sample 16" /></div>
+                </div>
             </div>
 
-            <div class="main-bottom-box">
-                <img alt="소장품 판매 기능 소개 이미지" class="main-bottom-image" data-th-src="@{/images/main/main-bottom-3.png}">
-                <h4>소장품을 판매하기</h4>
-                <p class="main-bottom-text" style="text-align: left;">
-                    때로는 비워야 새로운 것을 가질 수 있는 법이에요. 내가 가진 소장품을 다른 사람에게 판매할 수 있어요. 본인인증으로 더욱 안전해진 거래.
-                </p>
-            </div>
         </div>
     </main>
 

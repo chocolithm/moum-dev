@@ -133,9 +133,9 @@ async function updateAchievement(
             await updateAchievement("TEN_ACHIEVEMENT");
             await updateAchievement("THIRTY_ACHIEVEMENT");
 
-            // Custom Event 발행
-            const event = new CustomEvent('achievementAcquired', { detail: { achievementId: achievement_id } });
-            document.dispatchEvent(event);
+//            // Custom Event 발행
+//            const event = new CustomEvent('achievementAcquired', { detail: { achievementId: achievement_id } });
+//            document.dispatchEvent(event);
 
             if (onAcquired) onAcquired();
             return;
