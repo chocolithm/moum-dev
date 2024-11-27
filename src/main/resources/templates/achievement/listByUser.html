@@ -21,16 +21,6 @@
                     <h5 class="modal-title" id="achievementModalLabel">내 업적</h5>
                 </div>
 
-<!--                <div class="filter-container px-4 pb-3">-->
-<!--                    <div aria-label="Achievement filters" class="btn-group" onclick="filterAchievements()" role="group">-->
-<!--                        <input autocomplete="off" checked class="btn-check filter" id="not-started" type="checkbox" value="not-started">-->
-<!--                        <label class="btn btn-outline-primary" for="not-started">미획득</label>-->
-
-<!--                        <input autocomplete="off" class="btn-check filter" id="completed" type="checkbox" value="completed">-->
-<!--                        <label class="btn btn-outline-primary" for="completed">획득</label>-->
-<!--                    </div>-->
-<!--                </div>-->
-
                 <div class="filter-container">
                     <div class="btn-group" role="group" aria-label="Achievement filters" onclick="filterAchievements()">
                         <input type="radio" class="btn-check filter" name="achievement-filter" id="all" value="all">
@@ -54,12 +44,8 @@
                                 <span class="achievement-image">
                                      <img class="achievement-img"
                                          data-th-src="@{${achievement.progress == 100 ?
-                                         '/images/achievement/complete/' + achievement.photo :
-                                         '/images/achievement/' + achievement.photo}}">
-<!--                                    <img class="achievement-img"-->
-<!--                                         data-th-src="@{${achievement.progress == 100 ?-->
-<!--                                         '/images/achievement/complete/completeDefaultImage.png' :-->
-<!--                                         '/images/achievement/defaultImage.png'}}">-->
+                                         'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/complete/' + achievement.photo :
+                                         'https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/' + achievement.photo}}">
                                 </span>
                                 <div class="achievement-content-inner">
                                     <h6 class="achievement-name mb-3" th:text="${achievement.name}">업적명</h6>
