@@ -19,7 +19,30 @@
             <button class="collection-image-btn btn"
                 data-th-onclick="'deleteFile(' + ${collection.no} + ')'">⊗</button>
         </div>
-        <img alt="수집품 이미지 등록" class="collection-image empty-image"
+        <div class="collection-images">
+            <div class="main-image">
+                <img alt="Main Collection Image"
+                     id="mainCollectionImage"
+                     onmousemove="zoomIn(event)"
+                     onmouseout="zoomOut()"
+                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${collection.attachedFiles[0].filename}}">
+                <span id="zoomMouseGuide" style="display: none; position: relative; width: 170px; margin: 0 auto;">
+                    <img alt="마우스를 올려보세요."
+                         id="zoomGuideImage"
+                         src="//img.echosting.cafe24.com/design/skin/admin/ko_KR/txt_product_zoom.gif"
+                         style="position: absolute; top: -27px; right: 0;">
+                </span>
+            </div>
+
+            <div class="thumbnail-images">
+                <img alt="Thumbnail Image"
+                     th:each="file : ${collection.attachedFiles}"
+                     th:onclick="'changeMainImage(this.src)'"
+                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}">
+            </div>
+        </div>
+
+        <!-- <img alt="수집품 이미지 등록" class="collection-image empty-image"
              data-th-style="${not (collection.attachedFiles == null or #lists.isEmpty(collection.attachedFiles))} ? 'display:none;' : ''"
              onClick="triggerFileInput()" src="/images/collections/empty-collection.png">
         <div class="slider"
@@ -34,7 +57,7 @@
                onClick="changeSlide(-1)">&#10094;</a>
             <a class="next" data-th-style="${#lists.size(collection.attachedFiles) <= 1 ? 'display:none;' : ''}"
                onClick="changeSlide(1)">&#10095;</a>
-        </div>
+        </div> -->
         <!-- <div id="currentFilenames">
             <div data-th-each="attachedFile : ${collection.attachedFiles}"
                  data-th-id="'currentFilename-' + ${attachedFile.no}"

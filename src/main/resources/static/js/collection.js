@@ -582,3 +582,29 @@ function filterCategories(element) {
 function triggerFileInput() {
     document.getElementById('files').click();
 }
+
+function zoomIn(event) {
+    const mainImage = document.getElementById('mainCollectionImage');
+    const zoomGuide = document.getElementById('zoomMouseGuide');
+    const rect = mainImage.getBoundingClientRect();
+
+    // 돋보기 표시
+    zoomGuide.style.display = 'block';
+
+    // 마우스 위치 계산
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    // 이미지 확대 위치 설정
+    mainImage.style.transform = `scale(2)`;
+    mainImage.style.transformOrigin = `${x}% ${y}%`;
+}
+
+function zoomOut() {
+    const mainImage = document.getElementById('mainCollectionImage');
+    const zoomGuide = document.getElementById('zoomMouseGuide');
+
+    // 원상복구
+    zoomGuide.style.display = 'none';
+    mainImage.style.transform = 'scale(1)';
+}

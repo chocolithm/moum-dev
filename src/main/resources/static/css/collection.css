@@ -405,3 +405,72 @@
     min-width: 150px;
   }
 }
+
+
+
+
+
+.collection-form-layer .collection-images,
+.collection-view-layer .collection-images {
+  margin-bottom: 20px;
+}
+
+.collection-form-layer .main-image,
+.collection-view-layer .main-image {
+  position: relative;
+  max-width: 400px;
+  max-height: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.collection-form-layer .main-image img,
+.collection-view-layer .main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+.collection-form-layer .main-image:hover img,
+.collection-view-layer .main-image:hover img {
+  transform: scale(1); /* 기본 줌 제거 */
+}
+
+.collection-form-layer #zoomGuideImage,
+.collection-view-layer #zoomGuideImage {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+
+.collection-form-layer .thumbnail-images,
+.collection-view-layer .thumbnail-images {
+  display: flex;
+  justify-content: left; /* 썸네일 중앙 정렬 */
+  margin-top: 10px;
+}
+
+.collection-form-layer .thumbnail-images img,
+.collection-view-layer .thumbnail-images img {
+  width: 80px; /* 썸네일 너비 */
+  height: 80px; /* 썸네일 높이 */
+  margin-right: 10px;
+  cursor: pointer;
+  object-fit: cover; /* 썸네일도 비율 유지 */
+  border: 2px solid #ddd; /* 썸네일 테두리 */
+  border-radius: 4px; /* 썸네일 둥글게 */
+  transition: border-color 0.3s;
+}
+
+.collection-form-layer .thumbnail-images img:last-child,
+.collection-view-layer .thumbnail-images img:last-child {
+  margin-right: 0;
+}
+
+.collection-form-layer .thumbnail-images img:hover,
+.collection-view-layer .thumbnail-images img:hover {
+  border-color: #333; /* 호버 시 테두리 색 변경 */
+}
