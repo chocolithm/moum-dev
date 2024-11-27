@@ -155,7 +155,7 @@
 
                                 <div id="nicknameEdit" style="display: none;">
                                     <div style="display: flex; align-items: center;">
-                                        <input id="nickname" name="nickname" style="width: 260px;"
+                                        <input id="nickname" class="form-control custom-input"  name="nickname" style="width: 260px;"
                                                th:value="*{nickname}"
                                                type="text"/>
 
@@ -304,7 +304,9 @@
         </div>
     </div>
 </main>
+
 <script th:src="@{/js/user.js}"></script>
+<script th:src="@{/js/update.js}"></script>
 <script th:src="@{/js/achievement.js}"></script>
 <div th:replace="~{footer :: footer}"></div>
 </body>
