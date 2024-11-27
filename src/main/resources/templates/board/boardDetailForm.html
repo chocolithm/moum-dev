@@ -272,8 +272,12 @@
             headers: {
                 [$('meta[name="csrf-header"]').attr('content')]: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (response) {
+            success: async function (response) {
                 if (response === 'success') {
+                    await updateAchievement("THIRTY_POST");
+                    await updateAchievement("TEN_POST");
+                    await updateAchievement("FIRST_POST");
+
                     alert('게시글이 등록되었습니다.');
                     const tradeType = formData.get("tradeType");
                     if (tradeType === "sell") {
