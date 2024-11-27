@@ -1406,3 +1406,43 @@ a {
 .edit-button, .delete-button, .recommend_button {
     margin-right: 10px;  /* 선택 사항: 버튼들 간 간격 */
 }
+
+.board-myinfo-data {
+    margin: 10px 0;
+}
+
+.my-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;  /* 추가: 내부 요소들을 가운데 정렬 */
+    text-align: center;  /* 추가: 텍스트도 가운데 정렬 */
+}
+
+.my-info-right-container-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;  /* 추가: 내부 요소들을 가운데 정렬 */
+}
+
+.my-primary-achievement {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 15px;
+}
+
+.my-primary-achievement-img {
+    width: 20px;
+    height: 20px;
+}
+
+.user-nickname {
+    font-weight: bold;
+    color: #000;
+    font-size: 30px;
+    text-align: center;  /* 추가: 텍스트 가운데 정렬 */
+}
