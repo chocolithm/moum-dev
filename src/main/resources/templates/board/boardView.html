@@ -21,26 +21,27 @@
             <!-- 메인 이미지 섹션 -->
 
             <!-- 수집품 사진 영역 -->
-            <div th:if="${board.boardType == 'trade' and board.tradeType == 'sell' and board.collection != null}" class="collection-images">
+            <div class="collection-images"
+                 th:if="${board.boardType == 'trade' and board.tradeType == 'sell' and board.collection != null}">
                 <div class="main-image">
-                    <img id="mainCollectionImage"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}"
-                         alt="Main Collection Image"
+                    <img alt="Main Collection Image"
+                         id="mainCollectionImage"
                          onmousemove="zoomIn(event)"
-                         onmouseout="zoomOut()">
+                         onmouseout="zoomOut()"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}">
                     <span id="zoomMouseGuide" style="display: none; position: relative; width: 170px; margin: 0 auto;">
-                        <img src="//img.echosting.cafe24.com/design/skin/admin/ko_KR/txt_product_zoom.gif"
+                        <img alt="마우스를 올려보세요."
                              id="zoomGuideImage"
-                             alt="마우스를 올려보세요."
+                             src="//img.echosting.cafe24.com/design/skin/admin/ko_KR/txt_product_zoom.gif"
                              style="position: absolute; top: -27px; right: 0;">
                     </span>
                 </div>
 
                 <div class="thumbnail-images">
-                    <img th:each="file : ${board.collection.attachedFiles}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}"
-                         alt="Thumbnail Image"
-                         th:onclick="'changeMainImage(this.src)'">
+                    <img alt="Thumbnail Image"
+                         th:each="file : ${board.collection.attachedFiles}"
+                         th:onclick="'changeMainImage(this.src)'"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}">
                 </div>
             </div>
 
@@ -62,26 +63,28 @@
             </div>
 
             <!-- 거래 정보 (있는 경우) -->
-            <div th:if="${board.boardType == 'trade'}" class="trade-info">
+            <div class="trade-info" th:if="${board.boardType == 'trade'}">
                 <div class="trade-box">
                     <div><strong>가격:</strong> <span th:text="${board.price}">0</span>원</div>
-                    <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span></div>
-                    <div><strong>거래 방식:</strong> <span th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>
+                    <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span>
+                    </div>
+                    <div><strong>거래 방식:</strong> <span
+                            th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>
                     <!-- 거래완료 버튼 -->
                     <button class="trade-complete"
-                            th:if="${(authenticatedUser.no == board.userNo or authenticatedUser.admin) and board.sellOrSoldStatus == false and board.boardType == 'trade'}"
                             th:attr="disabled=${board.sellOrSoldStatus}"
+                            th:if="${(authenticatedUser.no == board.userNo or authenticatedUser.admin) and board.sellOrSoldStatus == false and board.boardType == 'trade'}"
                             th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ', ' + ${board.maincategory.no} + ')'">
                         거래완료
                     </button>
-                </div>
-                <!-- 수집품 정보 보기 버튼 -->
-                <button class="btn btn-info collection-info-button"
-                        th:if="${board.collection != null}"
-                        th:onclick="'openCollectionViewModalFromBoard(' + ${board.collection.no} + ')'">
-                    수집품 정보 보기
-                </button>
 
+                    <!-- 수집품 정보 보기 버튼 -->
+                    <button class="btn btn-info collection-info-button"
+                            th:if="${board.collection != null}"
+                            th:onclick="'openCollectionViewModalFromBoard(' + ${board.collection.no} + ')'">
+                        수집품 정보 보기
+                    </button>
+                </div>
             </div>
 
 
@@ -112,9 +115,10 @@
                                 <span data-th-text="${primaryAchievement.name}"></span>
                             </div>
                             <div class="user-nickname">
-                                <span th:text="${board.user.nickname}" class="author-name" onclick="showProfilePopup(event)">작성자</span>
+                                <span class="author-name" onclick="showProfilePopup(event)"
+                                      th:text="${board.user.nickname}">작성자</span>
                                 <!-- 프로필 보기 팝업 -->
-                                <div id="profilePopup" class="profile-popup" style="display: none;">
+                                <div class="profile-popup" id="profilePopup" style="display: none;">
                                     <button data-th-onclick="'viewProfile(' + ${board.user.no} + ')'">프로필 보기</button>
                                 </div>
                             </div>
@@ -123,87 +127,94 @@
                 </div>
 
 
-
-
-                <button th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}"
-                        class="open-chat-btn btn btn-outline-dark" onclick="openChatroomModal(); openChat(0);">채팅하기</button>
+                <button class="open-chat-btn btn btn-outline-dark"
+                        onclick="openChatroomModal(); openChat(0);"
+                        th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
+                </button>
 
                 <button class="report_button btn btn-outline-white"
+                        onclick="openReport('board');"
                         th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
-                        onclick="openReport('board');" type="button">🚨</button>
+                        type="button">🚨
+                </button>
 
-                <button class="btn btn-warning" th:if="${authenticatedUser.admin == true}"
-                        data-th-onclick="|openRestrict('board', '${board.no}')|" type="button">경고/제재</button>
+                <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
+                        th:if="${authenticatedUser.admin == true}" type="button">경고/제재
+                </button>
             </div>
 
 
-
-
             <div class="board write-user-edit-button">
-            <!-- 기윤/ 건들지 마시오 수정 버튼 -->
-            <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
-                    th:if="${(board.sellOrSoldStatus == false) and (authenticatedUser.no == board.userNo)}">
-                수정하기
-            </button>
-
-            <!-- 삭제 버튼 -->
-            <form method="post" name="postDeleteForm" th:action="@{/board/delete}">
-                <input name="no" th:value="${board.no}" type="hidden">
-                <input name="_method" type="hidden" value="DELETE">
-                <button class="delete-button" type="button" onclick="deletePostWithDelAchieve()"
-                        th:if="${authenticatedUser.no == board.userNo}">
-                    삭제하기
+                <!-- 기윤/ 건들지 마시오 수정 버튼 -->
+                <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
+                        th:if="${(board.sellOrSoldStatus == false) and (authenticatedUser.no == board.userNo)}">
+                    수정하기
                 </button>
-            </form>
+
+                <!-- 삭제 버튼 -->
+                <form method="post" name="postDeleteForm" th:action="@{/board/delete}">
+                    <input name="no" th:value="${board.no}" type="hidden">
+                    <input name="_method" type="hidden" value="DELETE">
+                    <button class="delete-button" onclick="deletePostWithDelAchieve()"
+                            th:if="${authenticatedUser.no == board.userNo}"
+                            type="button">
+                        삭제하기
+                    </button>
+                </form>
 
                 <!-- 게시판 좋아요 버튼 -->
                 <button class="recommend_button btn btn-outline-dark"
-                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
                         th:if="#{liked == false}"
-                        type="button">🤍</button>
+                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
+                        type="button">🤍
+                </button>
 
                 <button class="recommend_button btn btn-outline-dark"
                         th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
                         th:unless="#{liked == false}"
-                        type="button">🩷</button>
+                        type="button">🩷
+                </button>
 
                 <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>
 
-        </div>
+            </div>
 
             <div class="comment-whole-box">
 
 
             <span style="font-size: 20px; border-bottom: 1px solid black">전체 댓글
-                <span th:text="${board.commentCount}" style="color: red; font-weight: bolder;"></span>개
+                <span style="color: red; font-weight: bolder;" th:text="${board.commentCount}"></span>개
             </span>
 
 
-
-            <ul class="comment-list" style="list-style: none">
-                <li th:each="comment : ${comments}" th:id="'comment-' + ${comment.no}">
-                    <div class="comment-box">
-                        <div class="comment-header">
-                            <span th:text="${comment.user.nickname}" style="font-size: 13.5px">작성자</span>
-                            <div style="display: flex; align-items: center;">
-                                <span class="comment-date" th:text="${#dates.format(comment.date, 'yyyy-MM-dd HH:mm:ss')}">작성일자</span>
-                                <button class="comment-delete-btn"
-                                        th:if="${comment.userNo == authenticatedUser.no}"
-                                        th:onclick="'deleteComment(' + ${comment.no} + ');'">❌</button>
+                <ul class="comment-list" style="list-style: none">
+                    <li th:each="comment : ${comments}" th:id="'comment-' + ${comment.no}">
+                        <div class="comment-box">
+                            <div class="comment-header">
+                                <span style="font-size: 13.5px" th:text="${comment.user.nickname}">작성자</span>
+                                <div style="display: flex; align-items: center;">
+                                    <span class="comment-date"
+                                          th:text="${#dates.format(comment.date, 'yyyy-MM-dd HH:mm:ss')}">작성일자</span>
+                                    <button class="comment-delete-btn"
+                                            th:if="${comment.userNo == authenticatedUser.no}"
+                                            th:onclick="'deleteComment(' + ${comment.no} + ');'">❌
+                                    </button>
+                                </div>
                             </div>
+                            <div class="comment-content" style="font-size: 13.5px" th:text="${comment.content}">내용</div>
                         </div>
-                        <div class="comment-content" th:text="${comment.content}" style="font-size: 13.5px">내용</div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
 
 
-            <!-- 댓글 입력 폼 -->
-            <div class="comment-form">
-                <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" rows="3" placeholder="댓글을 입력하세요"></textarea>
-                <p id="counter">0/300자</p>
-                <button class="btn btn-dark" th:onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성</button>
-            </div>
+                <!-- 댓글 입력 폼 -->
+                <div class="comment-form">
+                    <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" placeholder="댓글을 입력하세요"
+                              rows="3"></textarea>
+                    <p id="counter">0/300자</p>
+                    <button class="btn btn-dark" th:onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성
+                    </button>
+                </div>
             </div>
             <!-- 현재 로그인한 사용자 번호를 JavaScript에서 사용할 수 있도록 설정 -->
             <script>
@@ -211,11 +222,10 @@
             </script>
 
         </div>
-        </div>
+    </div>
 </main>
 
 <div th:replace="~{footer}"></div>
-
 
 
 <!--  수집품 상세 화면  -->
@@ -225,8 +235,6 @@
 <script src="/js/collection.js"></script>
 
 <script>
-
-
 
 
     function changeMainImage(src) {
