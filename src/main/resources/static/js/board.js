@@ -338,15 +338,15 @@ function tradeComplete(boardNo, categoryNo) {
 async function updateTradeAchievement(categoryNo) {
     switch (categoryNo) {
         case 1: // 건담
-            await updateAchievement("FIRST_GUNDAM");
+            await updateAchievement("FIRST_GUNDAM_TRADE");
             await updateAchievement("GUNDAM_PRO");
             break;
         case 2: // 레고
-            await updateAchievement("FIRST_LEGO");
+            await updateAchievement("FIRST_LEGO_TRADE");
             await updateAchievement("LEGO_PRO");
             break;
         case 3: // 신발
-            await updateAchievement("FIRST_SHOES");
+            await updateAchievement("FIRST_SHOES_TRADE");
             await updateAchievement("SHOE_PRO");
             break;
     }
