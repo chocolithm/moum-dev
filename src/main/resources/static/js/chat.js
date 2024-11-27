@@ -373,7 +373,18 @@ function createBoardInfo(board_info, chatroom) {
 
   const link = document.createElement("a");
   if (chatroom.board.deleted) {
-    link.onclick = () => alert("삭제된 게시글입니다.");
+    link.onclick = () => {
+      Swal.fire({
+        icon: "warning",
+        text: "삭제된 게시글입니다.",
+        backdrop: `
+            rgba(0,0,0,0.4)
+        `,
+        customClass: {
+            popup: 'no-overlay-swal'
+        }
+      })
+    }
     link.href = "#";
   } else {
     link.href = `/board/boardView?no=${chatroom.board.no}`;
@@ -519,7 +530,12 @@ function createChatInputbox(chatroomNo, participant) {
   btn.className = "chat-btn btn btn-dark";
 
   if (participant.endDate != null) {
-    btn.setAttribute("onclick", `alert("이미 탈퇴한 회원입니다.")`);
+    btn.onclick = () => {
+      Swal.fire({
+        icon: "warning",
+        text: "이미 탈퇴한 회원입니다."
+      });
+    }
   } else if (chatroomNo == 0) {
     const urlParams = new URLSearchParams(location.search);
     const boardNo = urlParams.get('no');

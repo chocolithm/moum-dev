@@ -437,8 +437,14 @@
   display: flex;
   justify-content: left; /* 썸네일 중앙 정렬 */
   margin-top: 10px;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
+.collection-form-layer .thumbnail-images::-webkit-scrollbar,
+.collection-view-layer .thumbnail-images::-webkit-scrollbar {
+  display: none;
+}
 
 
 .collection-form-layer .thumbnail-images span,

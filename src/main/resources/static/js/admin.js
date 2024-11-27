@@ -46,7 +46,11 @@ function selectAdminMenu(element) {
     case "achievement-admin": toggleAdminMenu("achievement", pageNo, pageCount); break;
     case "user-admin": toggleAdminMenu("user", pageNo, pageCount); break;
     case "report-admin": toggleAdminMenu("report", pageNo, pageCount); break;
-    default: alert("잘못된 접근입니다.");
+    default: 
+      Swal.fire({
+        icon: "error",
+        text: "잘못된 접근입니다."
+      })
   }
 }
 
@@ -533,8 +537,12 @@ function openAddPage(menu) {
 }
 
 function triggerFileInput() {
-  alert("업적 사진은 미취득 1장, 취득 1장 순으로 총 2장이 필요합니다.");
-  document.getElementById('files').click();
+  Swal.fire({
+    icon: "info",
+    text: "업적 사진은 미취득 1장, 취득 1장 순으로 총 2장이 필요합니다."
+  }).then(() => {
+    document.getElementById('files').click();
+  });
 }
 
 // 선택한 이미지 미리보기
@@ -615,67 +623,132 @@ function changeSlide(n) {
 }
 
 function addAchievement() {
-  if (confirm("등록하시겠습니까?")) {
-    const formData = new FormData();
 
-    const filesInput = document.getElementById('files');
-    for (let i = 0; i < filesInput.files.length; i++) {
-      formData.append("files", filesInput.files[i]);
-    }
-    
-    const inputs = document.querySelectorAll('table.view-table input');
-    inputs.forEach(input => {
-      formData.append(input.name, input.value);
-    });
+  Swal.fire({
+    text: "등록하시겠습니까?",
+    showCancelButton: true,
+    confirmButtonText: "확인"
+  }).then((result) => {
 
-    if (validateAchievement(formData, "add")) {
-      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+    if (result.isConfirmed) {
+      const formData = new FormData();
 
-      fetch(`/achievement/add`, {
-        method: "POST",
-        body: formData,
-        headers: {
-            [csrfHeader]: csrfToken
-        }
-      })
-        .then(response => response.text())
-        .then(response => {
-            switch (response) {
-                case "success":
-                    alert("등록했습니다.");
-                    document.querySelector("#achievement-admin").click();
-                    break;
-                case "failure":
-                    alert("등록 실패했습니다.");
-                    break;
-            }
+      const filesInput = document.getElementById('files');
+      for (let i = 0; i < filesInput.files.length; i++) {
+        formData.append("files", filesInput.files[i]);
+      }
+      
+      const inputs = document.querySelectorAll('table.view-table input');
+      inputs.forEach(input => {
+        formData.append(input.name, input.value);
+      });
+
+      if (validateAchievement(formData, "add")) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+        fetch(`/achievement/add`, {
+          method: "POST",
+          body: formData,
+          headers: {
+              [csrfHeader]: csrfToken
+          }
         })
-        .catch(error => {
-            console.error("Error adding achievement: ", error);
-        });
+          .then(response => response.text())
+          .then(response => {
+              switch (response) {
+                  case "success":
+                      Swal.fire({
+                        icon: "success",
+                        text: "등록했습니다."
+                      });
+                      document.querySelector("#achievement-admin").click();
+                      break;
+                  case "failure":
+                      Swal.fire({
+                        icon: "error",
+                        text: "등록 중 오류 발생"
+                      });
+                      break;
+              }
+          })
+          .catch(error => {
+              console.error("Error adding achievement: ", error);
+          });
+      }
     }
-  }
+  })
 }
 
 function updateAchievement() {
-  if (confirm("수정하시겠습니까?")) {
-    const formData = new FormData();
 
-    formData.append("id", document.querySelector(".achievement-id-td").innerHTML);
-    
-    const inputs = document.querySelectorAll('table.view-table input');
-    inputs.forEach(input => {
-      formData.append(input.name, input.value);
-    });
+  Swal.fire({
+    text: "수정하시겠습니까?",
+    showCancelButton: true,
+    confirmButtonText: "확인"
+  }).then((result) => {
 
-    if (validateAchievement(formData, "update")) {
+    if (result.isConfirmed) {
+      const formData = new FormData();
+
+      formData.append("id", document.querySelector(".achievement-id-td").innerHTML);
+      
+      const inputs = document.querySelectorAll('table.view-table input');
+      inputs.forEach(input => {
+        formData.append(input.name, input.value);
+      });
+
+      if (validateAchievement(formData, "update")) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+        fetch(`/achievement/update`, {
+          method: "PUT",
+          body: formData,
+          headers: {
+              [csrfHeader]: csrfToken
+          }
+        })
+          .then(response => response.text())
+          .then(response => {
+              switch (response) {
+                  case "success":
+                      Swal.fire({
+                        icon: "success",
+                        text: "수정했습니다."
+                      });
+                      document.querySelector("#achievement-admin").click();
+                      break;
+                  case "failure":
+                      Swal.fire({
+                        icon: "error",
+                        text: "수정 중 오류 발생"
+                      });
+                      break;
+              }
+          })
+          .catch(error => {
+              console.error("Error updating achievement: ", error);
+          });
+      }
+    }
+  })
+}
+
+function deleteAchievement(id) {
+
+  Swal.fire({
+    text: "삭제하시겠습니까?",
+    showCancelButton: true,
+    confirmButtonText: "확인"
+  }).then((result) => {
+
+    if (result.isConfirmed) {
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-      fetch(`/achievement/update`, {
-        method: "PUT",
-        body: formData,
+    fetch(`/achievement/delete?id=${id}`, {
+        method: "DELETE",
         headers: {
             [csrfHeader]: csrfToken
         }
@@ -684,50 +757,25 @@ function updateAchievement() {
         .then(response => {
             switch (response) {
                 case "success":
-                    alert("수정했습니다.");
+                    Swal.fire({
+                      icon: "success",
+                      text: "삭제했습니다."
+                    });
                     document.querySelector("#achievement-admin").click();
                     break;
                 case "failure":
-                    alert("수정 실패했습니다.");
+                    Swal.fire({
+                      icon: "error",
+                      text: "삭제 중 오류 발생"
+                    });
                     break;
             }
         })
         .catch(error => {
-            console.error("Error updating achievement: ", error);
+            console.error("Error deleting achievement: ", error);
         });
     }
-  }
-}
-
-function deleteAchievement(id) {
-  if (confirm("삭제하시겠습니까?")) {
-    
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
-
-    fetch(`/achievement/delete?id=${id}`, {
-      method: "DELETE",
-      headers: {
-          [csrfHeader]: csrfToken
-      }
-    })
-      .then(response => response.text())
-      .then(response => {
-          switch (response) {
-              case "success":
-                  alert("삭제했습니다.");
-                  document.querySelector("#achievement-admin").click();
-                  break;
-              case "failure":
-                  alert("삭제 실패했습니다.");
-                  break;
-          }
-      })
-      .catch(error => {
-          console.error("Error deleting achievement: ", error);
-      });
-    
-  }
+  })
 }
 
 function validateAchievement(formData, type) {
@@ -747,7 +795,13 @@ function validateAchievement(formData, type) {
     const id = document.querySelector(".view-table #id");
     id.style="border-color: #ccc";
 
-    if (formData.getAll("files").length != 2) {alert("이미지를 2장 등록하세요."); return false;}
+    if (formData.getAll("files").length != 2) {
+      Swal.fire({
+        icon: "warning",
+        text: "이미지를 2장 등록하세요."
+      });
+      return false;
+    }
     if (formData.get("id").trim() == "") {id.style="border-color: red"; return false;}
   }
 
@@ -1034,172 +1088,199 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
 
 function toggleAdminUser(element, userNo) {
   if (element.value == 0) {
-    if (confirm("관리자 권한을 해제하시겠습니까?")) {
-      fetch(`/admin/updateAdmin?admin=0&userNo=${userNo}`)
-        .then(response => response.text())
-        .then(response => {
-          if (response == "success") {
-            alert("관리자 권한 해제 완료");
-          } else if (response == "failure") {
-            element.value = 1;
-            alert("오류 발생");
-          } else if (response == "inhibited") {
-            alert("관리자 권한은 상위관리자만 설정 가능합니다.");
-          } else if (response == "self-inhibited") {
-            alert("본인 권한 수정 불가");
-          }
-        })
-        .catch(error => {
-          console.error("error setting admin: ", error);
-        })
-    } else {
-      element.value = 1;
-    }
+
+    Swal.fire({
+      text: "관리자 권한을 해제하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonText: "확인"
+    }).then((result) => {
+  
+      if (result.isConfirmed) {
+        fetch(`/admin/updateAdmin?admin=0&userNo=${userNo}`)
+          .then(response => response.text())
+          .then(response => {
+            if (response == "success") {
+              Swal.fire({
+                icon: "success",
+                text: "해제 완료"
+              });
+            } else if (response == "failure") {
+              element.value = 1;
+              Swal.fire({
+                icon: "error",
+                text: "설정 중 오류 발생"
+              });
+            } else if (response == "inhibited") {
+              Swal.fire({
+                icon: "warning",
+                text: "관리자 권한은 상위관리자만 설정 가능합니다."
+              });
+            } else if (response == "self-inhibited") {
+              Swal.fire({
+                icon: "warning",
+                text: "본인 권한 수정 불가"
+              });
+            }
+          })
+          .catch(error => {
+            console.error("error setting admin: ", error);
+          })
+      } else {
+        element.value = 1;
+      }
+    })
+
   } else if (element.value == 1) {
-    if (confirm("관리자 권한을 부여하시겠습니까?")) {
-      fetch(`/admin/updateAdmin?admin=1&userNo=${userNo}`)
-        .then(response => response.text())
-        .then(response => {
-          if (response == "success") {
-            alert("관리자 권한 설정 완료");
-          } else if (response == "failure") {
-            element.value = 0;
-            alert("오류 발생");
-          } else if (response == "inhibited") {
-            alert("관리자 권한은 상위관리자만 설정 가능합니다.");
-          } else if (response == "self-inhibited") {
-            alert("본인 권한 수정 불가");
-          }
-        })
-        .catch(error => {
-          console.error("error setting admin: ", error);
-        })
-    } else {
-      element.value = 0;
-    }
+
+    Swal.fire({
+      text: "관리자 권한을 부여하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonText: "확인"
+    }).then((result) => {
+  
+      if (result.isConfirmed) {
+        fetch(`/admin/updateAdmin?admin=1&userNo=${userNo}`)
+          .then(response => response.text())
+          .then(response => {
+            if (response == "success") {
+              Swal.fire({
+                icon: "success",
+                text: "설정 완료"
+              });
+            } else if (response == "failure") {
+              element.value = 0;
+              Swal.fire({
+                icon: "error",
+                text: "설정 중 오류 발생"
+              });
+            } else if (response == "inhibited") {
+              Swal.fire({
+                icon: "warning",
+                text: "관리자 권한은 상위관리자만 설정 가능합니다."
+              });
+            } else if (response == "self-inhibited") {
+              Swal.fire({
+                icon: "warning",
+                text: "본인 권한 수정 불가"
+              });
+            }
+          })
+          .catch(error => {
+            console.error("error setting admin: ", error);
+          })
+      } else {
+        element.value = 0;
+      }
+    })
   }
 
 }
 
 function handleReport(reportNo) {
-  if (confirm("처리하시겠습니까?")) {
-    const formData = new FormData();
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-    document.getElementById("resultCategory.no").style = "border-color: #ccc";
-    document.getElementById("resultContent").style = "border-color: #ccc";
+  Swal.fire({
+    text: "처리하시겠습니까?",
+    showCancelButton: true,
+    confirmButtonText: "확인"
+  }).then((result) => {
 
-    formData.set("no", reportNo);
-    formData.set("resultCategory.no", document.getElementById("resultCategory.no").value);
-    formData.set("resultContent", document.getElementById("resultContent").value.trim());
-
-    if (formData.get("resultCategory.no") == 0) {
-      document.getElementById("resultCategory.no").style = "border-color: red";
-      return;
-    }
-    if (formData.get("resultContent") == "") {
-      document.getElementById("resultContent").style = "border-color: red";
-      return;
-    }
-
-    fetch(`/report/updateResult`, {
-      method: "PUT",
-      body: formData,
-      headers: {
-        [csrfHeader]: csrfToken
-      }
-    })
-      .then(response => response.text())
-      .then(response => {
-        switch (response) {
-          case "success":
-            alert("처리했습니다.");
-            break;
-          case "failure":
-            alert("처리 중 오류 발생");
-            break;
-        }
-      })
-      .catch(error => {
-        console.error("Error handling report result: ", error);
-      });
-  }
-}
-
-function addMaincategory() {
-  if (confirm("등록하시겠습니까?")) {
-    const nameInput = document.querySelector("#maincategory-name");
-    const colorInput = document.querySelector("#maincategory-color");
-    const formData = new FormData();
-
-    // input.style = "border-color: #ccc";
-    formData.append("name", nameInput.value.trim());
-    formData.append("color", colorInput.value.trim());
-
-    if (formData.get("name") == "") {
-      alert("분류명을 입력해주세요.");
-      return;
-    }
-
-    if (formData.get("name").length > 7) {
-      alert("분류명은 최대 7자까지 가능합니다.");
-      return;
-    }
-    
-    if (formData.get("color") == "") {
-      alert("색상을 입력해주세요.");
-      return;
-    }
-    
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
-
-    fetch(`/collection/maincategory/add`, {
-      method: "POST",
-      body: formData,
-      headers: {
-          [csrfHeader]: csrfToken
-      }
-    })
-      .then(response => response.text())
-      .then(response => {
-          switch (response) {
-              case "success":
-                alert("등록했습니다.");
-                document.querySelector("#category-admin").click();
-                break;
-              case "exist":
-                alert("이미 등록된 이름입니다.");
-                break;
-              case "overSeven":
-                alert("분류명은 최대 7자까지 가능합니다.");
-                break;
-              case "failure":
-                alert("등록 실패했습니다.");
-                break;
-          }
-      })
-      .catch(error => {
-          console.error("Error adding achievement: ", error);
-      });
-  }
-  
-}
-
-function addSubcategory(maincategoryNo) {
-  if (confirm("등록하시겠습니까?")) {
-    const input = document.querySelector("#subcategory-name");
-    const formData = new FormData();
-
-    formData.append("name", input.value.trim());
-    formData.append("maincategory.no", maincategoryNo);
-
-    if (formData.get("name") != "") {
+    if (result.isConfirmed) {
+      const formData = new FormData();
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
       const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-      fetch(`/collection/subcategory/add`, {
+      document.getElementById("resultCategory.no").style = "border-color: #ccc";
+      document.getElementById("resultContent").style = "border-color: #ccc";
+
+      formData.set("no", reportNo);
+      formData.set("resultCategory.no", document.getElementById("resultCategory.no").value);
+      formData.set("resultContent", document.getElementById("resultContent").value.trim());
+
+      if (formData.get("resultCategory.no") == 0) {
+        document.getElementById("resultCategory.no").style = "border-color: red";
+        return;
+      }
+      if (formData.get("resultContent") == "") {
+        document.getElementById("resultContent").style = "border-color: red";
+        return;
+      }
+
+      fetch(`/report/updateResult`, {
+        method: "PUT",
+        body: formData,
+        headers: {
+          [csrfHeader]: csrfToken
+        }
+      })
+        .then(response => response.text())
+        .then(response => {
+          switch (response) {
+            case "success":
+              Swal.fire({
+                icon: "success",
+                text: "처리했습니다."
+              });
+              break;
+            case "failure":
+              Swal.fire({
+                icon: "error",
+                text: "처리 중 오류 발생"
+              });
+              break;
+          }
+        })
+        .catch(error => {
+          console.error("Error handling report result: ", error);
+        });
+    }
+
+  })
+}
+
+function addMaincategory() {
+  Swal.fire({
+    text: "등록하시겠습니까?",
+    showCancelButton: true,
+    confirmButtonText: "확인"
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+      const nameInput = document.querySelector("#maincategory-name");
+      const colorInput = document.querySelector("#maincategory-color");
+      const formData = new FormData();
+
+      // input.style = "border-color: #ccc";
+      formData.append("name", nameInput.value.trim());
+      formData.append("color", colorInput.value.trim());
+
+      if (formData.get("name") == "") {
+        Swal.fire({
+          icon: "warning",
+          text: "분류명을 입력해주세요."
+        });
+        return;
+      }
+
+      if (formData.get("name").length > 7) {
+        Swal.fire({
+          icon: "warning",
+          text: "분류명은 최대 7자까지 가능합니다."
+        });
+        return;
+      }
+      
+      if (formData.get("color") == "") {
+        Swal.fire({
+          icon: "warning",
+          text: "색상을 입력해주세요."
+        });
+        return;
+      }
+      
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+      fetch(`/collection/maincategory/add`, {
         method: "POST",
         body: formData,
         headers: {
@@ -1210,14 +1291,29 @@ function addSubcategory(maincategoryNo) {
         .then(response => {
             switch (response) {
                 case "success":
-                  alert("등록했습니다.");
-                  fetchAdminDetail("category", maincategoryNo);
+                  Swal.fire({
+                    icon: "success",
+                    text: "등록했습니다."
+                  });
+                  document.querySelector("#category-admin").click();
                   break;
                 case "exist":
-                  alert("이미 등록된 이름입니다.");
+                  Swal.fire({
+                    icon: "warning",
+                    text: "이미 등록된 이름입니다."
+                  });
+                  break;
+                case "overSeven":
+                  Swal.fire({
+                    icon: "warning",
+                    text: "분류명은 최대 7자까지 가능합니다."
+                  });
                   break;
                 case "failure":
-                  alert("등록 실패했습니다.");
+                  Swal.fire({
+                    icon: "error",
+                    text: "등록 중 오류 발생"
+                  });
                   break;
             }
         })
@@ -1225,5 +1321,60 @@ function addSubcategory(maincategoryNo) {
             console.error("Error adding achievement: ", error);
         });
     }
-  }
+  })
+  
+}
+
+function addSubcategory(maincategoryNo) {
+
+  Swal.fire({
+    text: "등록하시겠습니까?",
+    showCancelButton: true,
+    confirmButtonText: "확인"
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+      const input = document.querySelector("#subcategory-name");
+      const formData = new FormData();
+
+      formData.append("name", input.value.trim());
+      formData.append("maincategory.no", maincategoryNo);
+
+      if (formData.get("name") != "") {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+        fetch(`/collection/subcategory/add`, {
+          method: "POST",
+          body: formData,
+          headers: {
+              [csrfHeader]: csrfToken
+          }
+        })
+          .then(response => response.text())
+          .then(response => {
+              switch (response) {
+                case "success":
+                  fetchAdminDetail("category", maincategoryNo);
+                  break;
+                case "exist":
+                  Swal.fire({
+                    icon: "warning",
+                    text: "이미 등록된 이름입니다."
+                  });
+                  break;
+                case "failure":
+                  Swal.fire({
+                    icon: "error",
+                    text: "등록 중 오류 발생"
+                  });
+                  break;
+            }
+        })
+        .catch(error => {
+            console.error("Error adding achievement: ", error);
+        });
+    }
+    }
+  })
 }

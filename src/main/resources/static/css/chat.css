@@ -150,8 +150,8 @@ height: 79.6px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: calc(100vh - 306px);
-  height: calc(100vh - 306px);
+  max-height: calc(100% - 170px);
+  height: calc(100% - 170px);
 }
 
 .chatroom-layer .chat-info::-webkit-scrollbar {
