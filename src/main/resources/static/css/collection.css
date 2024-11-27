@@ -478,6 +478,7 @@
   border-color: #333; /* 호버 시 테두리 색 변경 */
 }
 
+.collection-form-layer .left-side .collection-image-btn,
 .collection-view-layer .left-side .collection-image-btn {
   font-size: 1.1rem;
   position: absolute;
@@ -487,6 +488,7 @@
   padding: 0;
 }
 
+.collection-form-layer .left-side .collection-image-btn:hover,
 .collection-view-layer .left-side .collection-image-btn:hover {
   scale: calc(1.1);
 }

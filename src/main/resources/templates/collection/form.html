@@ -14,7 +14,7 @@
     <img alt="닫기" class="close-btn" onclick="closeModal();" src="/images/common/x.png">
     <div class="left-side">
 
-        <label for="files" style="cursor: pointer; position: relative; display: block;">
+        <label for="files" style="cursor: pointer; position: relative; display: block;" id="files-label">
             <img alt="수집품 이미지 등록" class="collection-image empty-image"
                  src="/images/collections/empty-collection-image.png" style="opacity: 0.5;">
             <div class="edit-overlay">
@@ -22,22 +22,38 @@
             </div>
         </label>
 
+        <div class="collection-images" style="display: none;">
+            <div class="main-image">
+                <img alt="Main Collection Image"
+                     id="mainCollectionImage"
+                     src="/images/collections/empty-collection-image.png">
+            </div>
+
+            <div class="thumbnail-images">
+                <span class="new-image-btn">
+                    <img alt="Thumbnail Image"
+                        onclick="triggerFileInput()"
+                        src="/images/collections/empty-collection-image.png">
+                </span>
+            </div>
+        </div>
+
         <!-- <img alt="수집품 이미지 등록" class="collection-image empty-image" 
              src="/images/collections/empty-collection-image.jpg" style="opacity: 0.5;">
         <div class="edit-overlay" onClick="triggerFileInput();">
             <i class="fas fa-camera"></i>
         </div> -->
 
-        <div class="slider" style="display: none;">
+        <!-- <div class="slider" style="display: none;">
             <div class="slides"></div>
             <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
             <a class="next" onClick="changeSlide(1)">&#10095;</a>
         </div>
-        <div id="filenames"></div>
+        <div id="filenames"></div> -->
     </div>
     <div class="right-side" id="addForm">
         <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>
-        <input id="files" multiple name="files" onChange="previewImage(event);" style="display: none;" type="file">
+        <input id="files" multiple name="files" onChange="addTempFiles(event);" style="display: none;" type="file">
         <table>
             <tr>
                 <td><label for="name">상품명 *</label></td>

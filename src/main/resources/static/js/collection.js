@@ -3,9 +3,15 @@ let filesCounter = 0;
 
 // 수집품 등록 화면 열기
 function openCollectionFormModal() {
+    initFiles();
     fetchCollectionForm();
     openOverlay();
     fadeInWithFlex(document.querySelector(".collection-form-layer"));
+}
+
+function initFiles() {
+    filesArray = [];
+    filesCounter = 0;
 }
 
 // 수집품 선택 화면 열기
@@ -82,57 +88,99 @@ function fetchCollectionForm() {
 }
 // 수집품 등록 처리
 function addCollection() {
-    if (confirm("등록하시겠습니까?")) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-        const formData = new FormData();
-        formData.append("name", document.querySelector("#addForm #name").value.trim());
-        formData.append("price", document.querySelector("#addForm #price").value);
-        formData.append("maincategory.no", document.querySelector("#addForm #maincategoryNo").value);
-        formData.append("subcategory.no", document.querySelector("#addForm #subcategoryNo").value);
-        formData.append("otherCategory", document.querySelector("#addForm #otherCategory").value.trim());
-        formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value.trim());
-        formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value.trim());
-        formData.append("status.no", document.querySelector("#addForm #statusNo").value);
-
-        const filesInput = document.querySelector("#addForm #files");
-        for (let i = 0; i < filesInput.files.length; i++) {
-            formData.append("files", filesInput.files[i]);
+    Swal.fire({
+        text: "등록하시겠습니까?",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        backdrop: `
+            rgba(0,0,0,0.4)
+        `,
+        customClass: {
+            popup: 'no-overlay-swal'
         }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-        if (validateData(formData)) {
+            const formData = new FormData();
+            formData.append("name", document.querySelector("#addForm #name").value.trim());
+            formData.append("price", document.querySelector("#addForm #price").value);
+            formData.append("maincategory.no", document.querySelector("#addForm #maincategoryNo").value);
+            formData.append("subcategory.no", document.querySelector("#addForm #subcategoryNo").value);
+            formData.append("otherCategory", document.querySelector("#addForm #otherCategory").value.trim());
+            formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value.trim());
+            formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value.trim());
+            formData.append("status.no", document.querySelector("#addForm #statusNo").value);
 
-            fetch(`/collection/add`, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    [csrfHeader]: csrfToken
-                }
-            })
-                .then(response => response.text())
-                .then(response => {
-                    switch (response) {
-                        case "login":
-                            alert("로그인이 필요합니다.");
-                            location.href = "/home";
-                            break;
-                        case "success":
-                            checkCollectionAchievements(formData.get("maincategory.no"));
-                            alert("등록했습니다.");
-                            location.href = "/home";
-                            break;
+            const filesInput = document.querySelector("#addForm #files");
+            for (let i = 0; i < filesInput.files.length; i++) {
+                formData.append("files", filesInput.files[i]);
+            }
 
-                        case "failure":
-                            alert("등록에 실패했습니다.");
-                            break;
+            if (formData.get("files") == null) {
+                Swal.fire({
+                    icon: "warning",
+                    text: "사진을 1장 이상 첨부하세요.",
+                    backdrop: `
+                        rgba(0,0,0,0.4)
+                    `,
+                    customClass: {
+                        popup: 'no-overlay-swal'
+                    }
+                });
+                return;
+            }
+
+            if (validateData(formData)) {
+
+                fetch(`/collection/add`, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        [csrfHeader]: csrfToken
                     }
                 })
-                .catch(error => {
-                    console.error("Error fetching collection add:", error);
-                });
+                    .then(response => response.text())
+                    .then(response => {
+                        switch (response) {
+                            case "success":
+                                checkCollectionAchievements(formData.get("maincategory.no"));
+                                Swal.fire({
+                                    icon: "success",
+                                    text: "등록했습니다.",
+                                    backdrop: `
+                                        rgba(0,0,0,0.4)
+                                    `,
+                                    customClass: {
+                                        popup: 'no-overlay-swal'
+                                    }
+                                }).then(() => {
+                                    location.href = "/home";
+                                });
+                                break;
+
+                            case "failure":
+                                Swal.fire({
+                                    icon: "error",
+                                    text: "등록에 실패했습니다.",
+                                    backdrop: `
+                                        rgba(0,0,0,0.4)
+                                    `,
+                                    customClass: {
+                                        popup: 'no-overlay-swal'
+                                    }
+                                });
+                                break;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching collection add:", error);
+                    });
+            }
         }
-    }
+    })
 }
 
 async function checkCollectionAchievements(categoryNo) {
@@ -160,6 +208,7 @@ async function checkCollectionAchievements(categoryNo) {
 
 // 수집품 조회 화면 열기
 function openCollectionViewModal(no) {
+    initFiles();
     fetchCollectionView(no);
     openOverlay();
     fadeInWithFlex(document.getElementsByClassName("collection-view-layer")[0]);
@@ -236,55 +285,83 @@ function fetchCollectionViewFromBoard(no) {
 // 수집품 수정 처리
 function updateCollection() {
 
-    if (confirm("수정하시겠습니까?")) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-        const formData = new FormData();
-        formData.append("no", document.querySelector("#updateForm #no").value);
-        formData.append("name", document.querySelector("#updateForm #name").value.trim());
-        formData.append("price", document.querySelector("#updateForm #price").value);
-        formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
-        formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
-        formData.append("otherCategory", document.querySelector("#updateForm #otherCategory").value.trim());
-        formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value.trim());
-        formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
-        formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
-
-        for (let i = 0; i < filesArray.length; i++) {
-            formData.append("files", filesArray[i]);
+    Swal.fire({
+        text: "수정하시겠습니까?",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        backdrop: `
+            rgba(0,0,0,0.4)
+        `,
+        customClass: {
+            popup: 'no-overlay-swal'
         }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-        if (validateData(formData)) {
+            const formData = new FormData();
+            formData.append("no", document.querySelector("#updateForm #no").value);
+            formData.append("name", document.querySelector("#updateForm #name").value.trim());
+            formData.append("price", document.querySelector("#updateForm #price").value);
+            formData.append("maincategory.no", document.querySelector("#updateForm #maincategoryNo").value);
+            formData.append("subcategory.no", document.querySelector("#updateForm #subcategoryNo").value);
+            formData.append("otherCategory", document.querySelector("#updateForm #otherCategory").value.trim());
+            formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value.trim());
+            formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
+            formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
 
-            fetch(`/collection/update`, {
-                method: "PUT",
-                body: formData,
-                headers: {
-                    [csrfHeader]: csrfToken
-                }
-            })
-                .then(response => response.text())
-                .then(response => {
-                    switch (response) {
-                        case "login":
-                            alert("로그인이 필요합니다.");
-                            location.href = "/home";
-                            break;
-                        case "success":
-                            alert("수정했습니다.");
-                            fetchCollectionView(formData.get("no"));
-                            break;
-                        case "failure":
-                            alert("수정에 실패했습니다.");
-                            break;
+            for (let i = 0; i < filesArray.length; i++) {
+                formData.append("files", filesArray[i]);
+            }
+
+            if (validateData(formData)) {
+
+                fetch(`/collection/update`, {
+                    method: "PUT",
+                    body: formData,
+                    headers: {
+                        [csrfHeader]: csrfToken
                     }
                 })
-                .catch(error => {
-                    console.error("Error fetching collection update:", error);
-                });
+                    .then(response => response.text())
+                    .then(response => {
+                        switch (response) {
+                            case "success":
+                                Swal.fire({
+                                    icon: "success",
+                                    text: "수정했습니다.",
+                                    backdrop: `
+                                        rgba(0,0,0,0.4)
+                                    `,
+                                    customClass: {
+                                        popup: 'no-overlay-swal'
+                                    }
+                                }).then(() => {
+                                    fetchCollectionView(formData.get("no"));
+                                });
+                                break;
+                            case "failure":
+                                Swal.fire({
+                                    icon: "error",
+                                    text: "수정에 실패했습니다.",
+                                    backdrop: `
+                                        rgba(0,0,0,0.4)
+                                    `,
+                                    customClass: {
+                                        popup: 'no-overlay-swal'
+                                    }
+                                });
+                                break;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching collection update:", error);
+                    });
+            }
         }
-    }
+    })
 }
 
 function validateData(formData) {
@@ -292,11 +369,6 @@ function validateData(formData) {
     document.querySelector("#maincategoryNo").style = "border-color: #ccc";
     document.querySelector("#otherCategory").style = "border-color: #ccc";
     document.querySelector("#statusNo").style = "border-color: #ccc";
-
-    if (formData.get("files") == null) {
-        alert("사진을 1장 이상 첨부하세요.");
-        return false;
-    }
 
     if (formData.get("name") == "") {
         document.querySelector("#name").style = "border-color: red";
@@ -322,37 +394,66 @@ function validateData(formData) {
 // 수집품 삭제 처리
 function deleteCollection(collectionNo) {
 
-    if (confirm("삭제하시겠습니까?")) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+    Swal.fire({
+        text: "삭제하시겠습니까?",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        backdrop: `
+            rgba(0,0,0,0.4)
+        `,
+        customClass: {
+            popup: 'no-overlay-swal'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-        fetch(`/collection/delete?no=${collectionNo}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                [csrfHeader]: csrfToken
-            }
-        })
-            .then(response => response.text())
-            .then(response => {
-                switch (response) {
-                    case "login":
-                        alert("로그인이 필요합니다.");
-                        location.href = "/home";
-                        break;
-                    case "success":
-                        alert("삭제했습니다.");
-                        location.href = "/home";
-                        break;
-                    case "failure":
-                        alert("삭제에 실패했습니다.");
-                        break;
+            fetch(`/collection/delete?no=${collectionNo}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    [csrfHeader]: csrfToken
                 }
             })
-            .catch(error => {
-                console.error("Error fetching collection delete:", error);
-            });
-    }
+                .then(response => response.text())
+                .then(response => {
+                    switch (response) {
+                        case "success":
+
+                            Swal.fire({
+                                icon: "success",
+                                text: "삭제했습니다.",
+                                backdrop: `
+                                    rgba(0,0,0,0.4)
+                                `,
+                                customClass: {
+                                    popup: 'no-overlay-swal'
+                                }
+                            }).then(() => {
+                                location.href = "/home";
+                            });
+                            
+                            break;
+                        case "failure":
+                            Swal.fire({
+                                icon: "error",
+                                text: "삭제에 실패했습니다.",
+                                backdrop: `
+                                    rgba(0,0,0,0.4)
+                                `,
+                                customClass: {
+                                    popup: 'no-overlay-swal'
+                                }
+                            })
+                            break;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching collection delete:", error);
+                });
+        }
+    });
 }
 
 
@@ -395,38 +496,80 @@ function deleteCollection(collectionNo) {
 
 // 수집품 첨부파일 삭제 처리
 function deleteFile(fileNo) {
-        
-    if (confirm("사진을 삭제하시겠습니까?")) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-        fetch(`/collection/deleteFile?no=${fileNo}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                [csrfHeader]: csrfToken
+    Swal.fire({
+        text: "사진을 삭제하시겠습니까?",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        backdrop: `
+            rgba(0,0,0,0.4)
+        `,
+        customClass: {
+            popup: 'no-overlay-swal'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+
+            if (document.querySelectorAll(".current-image").length == 1) {
+                Swal.fire({
+                    icon: "warning",
+                    text: "다른 사진을 등록 후 삭제해주세요.",
+                    backdrop: `
+                        rgba(0,0,0,0.4)
+                    `,
+                    customClass: {
+                        popup: 'no-overlay-swal'
+                    }
+                });
+                return;
             }
-        })
-            .then(response => response.text())
-            .then(response => {
-                switch (response) {
-                    case "login":
-                        alert("로그인이 필요합니다.");
-                        location.href = "/home";
-                        break;
-                    case "success":
-                        alert("삭제했습니다.");
-                        fetchCollectionView(collectionNo);
-                        break;
-                    case "failure":
-                        alert("삭제에 실패했습니다.");
-                        break;
+
+            fetch(`/collection/deleteFile?no=${fileNo}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    [csrfHeader]: csrfToken
                 }
             })
-            .catch(error => {
-                console.error("Error fetching collection delete:", error);
-            });
-    }
+                .then(response => response.text())
+                .then(response => {
+                    switch (response) {
+                        case "success":
+                            Swal.fire({
+                                icon: "success",
+                                text: "삭제했습니다.",
+                                backdrop: `
+                                    rgba(0,0,0,0.4)
+                                `,
+                                customClass: {
+                                    popup: 'no-overlay-swal'
+                                }
+                            }).then(() => {
+                                fetchCollectionView(collectionNo);
+                            });
+                            break;
+                            
+                        case "failure":
+                            Swal.fire({
+                                icon: "error",
+                                text: "삭제에 실패했습니다.",
+                                backdrop: `
+                                    rgba(0,0,0,0.4)
+                                `,
+                                customClass: {
+                                    popup: 'no-overlay-swal'
+                                }
+                            });
+                            break;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching collection delete:", error);
+                });
+        }
+    })
 }
 
 // 사진 인덱스 초기화
@@ -569,6 +712,11 @@ function previewImage(event) {
 
     if (files && files.length > 0) {
 
+        if (document.querySelector(".collection-images").style.display == "none") {
+            document.querySelector(".collection-images").style.display = "block";
+            document.querySelector("#files-label").style.display = "none";
+        }
+
         for (let i = 0; i < files.length; i++) {
             const reader = new FileReader();
 
@@ -593,6 +741,9 @@ function previewImage(event) {
                 img.alt = "새 이미지";
                 img.className = "new-image";
                 img.onclick = () => changeMainImage(img.src);
+                if (i == 0) {
+                    changeMainImage(img.src)
+                }
 
                 span.append(btn, img);
 
@@ -603,6 +754,13 @@ function previewImage(event) {
             reader.readAsDataURL(files[i]);
         }
 
+        
+
+    } else {
+        if (document.querySelector("#files-label")) {
+            document.querySelector(".collection-images").style.display = "none";
+            document.querySelector("#files-label").style.display = "block";
+        }
     }
 }
 

@@ -32,7 +32,7 @@
             </div>
 
             <div class="thumbnail-images">
-                <span data-th-each="file : ${collection.attachedFiles}">
+                <span data-th-each="file : ${collection.attachedFiles}" class="current-image">
                     <button class="collection-image-btn btn"
                         data-th-onclick="'deleteFile(' + ${file.no} + ')'">⊗</button>
                     <img alt="Thumbnail Image"

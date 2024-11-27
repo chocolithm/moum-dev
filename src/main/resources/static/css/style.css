@@ -331,7 +331,7 @@ footer {
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-    z-index: 1200;
+    z-index: 1001;
     overflow: hidden;
 }
 
@@ -348,6 +348,10 @@ footer {
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+}
+
+.no-overlay.swal {
+    z-index: 2000;
 }
 
 .x {
