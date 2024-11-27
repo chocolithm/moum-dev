@@ -124,7 +124,7 @@
 
 .layer.collection-form-layer,
 .layer.collection-view-layer {
-  width: 800px;
+  width: 1000px;
   padding: 30px 50px;
 }
 
@@ -133,7 +133,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 40%;
+  width: 60%;
   margin: 1.25%;
   justify-content: center;
 }
@@ -178,20 +178,6 @@
 .collection-form-layer .left-side #filenames,
 .collection-view-layer .left-side #filenames {
   color: blue;
-}
-
-.collection-view-layer .left-side .collection-image-btns {
-  text-align: right;
-}
-
-.collection-view-layer .left-side .collection-image-btn {
-  font-size: 1.3rem;
-  padding: 0;
-  transition: 0.3s ease;
-}
-
-.collection-view-layer .left-side .collection-image-btn:hover {
-  scale: calc(1.1);
 }
 
 .collection-form-layer .left-side .prev,
@@ -239,7 +225,7 @@
 .collection-form-layer .right-side,
 .collection-view-layer .right-side {
   margin: 1.25%;
-  width: 55%;
+  width: 35%;
   display: flex;
   justify-content: center;
 }
@@ -453,6 +439,13 @@
   margin-top: 10px;
 }
 
+
+
+.collection-form-layer .thumbnail-images span,
+.collection-view-layer .thumbnail-images span {
+  position: relative;
+}
+
 .collection-form-layer .thumbnail-images img,
 .collection-view-layer .thumbnail-images img {
   width: 80px; /* 썸네일 너비 */
@@ -465,6 +458,16 @@
   transition: border-color 0.3s;
 }
 
+.collection-form-layer .thumbnail-images .new-image-btn,
+.collection-view-layer .thumbnail-images .new-image-btn {
+   background-color: rgb(251, 251, 251);
+}
+
+.collection-form-layer .thumbnail-images .new-image-btn img,
+.collection-view-layer .thumbnail-images .new-image-btn img {
+  opacity: 0.5;
+}
+
 .collection-form-layer .thumbnail-images img:last-child,
 .collection-view-layer .thumbnail-images img:last-child {
   margin-right: 0;
@@ -473,4 +476,17 @@
 .collection-form-layer .thumbnail-images img:hover,
 .collection-view-layer .thumbnail-images img:hover {
   border-color: #333; /* 호버 시 테두리 색 변경 */
+}
+
+.collection-view-layer .left-side .collection-image-btn {
+  font-size: 1.1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0.8;
+  padding: 0;
+}
+
+.collection-view-layer .left-side .collection-image-btn:hover {
+  scale: calc(1.1);
 }

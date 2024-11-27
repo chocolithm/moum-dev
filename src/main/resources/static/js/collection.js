@@ -1,14 +1,11 @@
+let filesArray = [];
+let filesCounter = 0;
+
 // 수집품 등록 화면 열기
 function openCollectionFormModal() {
     fetchCollectionForm();
     openOverlay();
     fadeInWithFlex(document.querySelector(".collection-form-layer"));
-}
-
-function closeCollectionModal() {
-    if (confirm("")) {
-        
-    }
 }
 
 // 수집품 선택 화면 열기
@@ -254,10 +251,9 @@ function updateCollection() {
         formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
         formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
 
-        const filesInput = document.querySelector("#updateForm #files");
-            for (let i = 0; i < filesInput.files.length; i++) {
-                formData.append("files", filesInput.files[i]);
-            }
+        for (let i = 0; i < filesArray.length; i++) {
+            formData.append("files", filesArray[i]);
+        }
 
         if (validateData(formData)) {
 
@@ -398,41 +394,38 @@ function deleteCollection(collectionNo) {
 
 
 // 수집품 첨부파일 삭제 처리
-function deleteFile(collectionNo) {
-    if (document.querySelectorAll(".current-image")[collectionSlideIndex]) {
-        const fileNo = parseInt(document.querySelectorAll(".current-image")[collectionSlideIndex].id.replace("collection-image-", ""), 10);
+function deleteFile(fileNo) {
         
-        if (confirm("사진을 삭제하시겠습니까?")) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
+    if (confirm("사진을 삭제하시겠습니까?")) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="csrf-header"]').getAttribute('content');
 
-            fetch(`/collection/deleteFile?no=${fileNo}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    [csrfHeader]: csrfToken
+        fetch(`/collection/deleteFile?no=${fileNo}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                [csrfHeader]: csrfToken
+            }
+        })
+            .then(response => response.text())
+            .then(response => {
+                switch (response) {
+                    case "login":
+                        alert("로그인이 필요합니다.");
+                        location.href = "/home";
+                        break;
+                    case "success":
+                        alert("삭제했습니다.");
+                        fetchCollectionView(collectionNo);
+                        break;
+                    case "failure":
+                        alert("삭제에 실패했습니다.");
+                        break;
                 }
             })
-                .then(response => response.text())
-                .then(response => {
-                    switch (response) {
-                        case "login":
-                            alert("로그인이 필요합니다.");
-                            location.href = "/home";
-                            break;
-                        case "success":
-                            alert("삭제했습니다.");
-                            fetchCollectionView(collectionNo);
-                            break;
-                        case "failure":
-                            alert("삭제에 실패했습니다.");
-                            break;
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching collection delete:", error);
-                });
-        }
+            .catch(error => {
+                console.error("Error fetching collection delete:", error);
+            });
     }
 }
 
@@ -502,19 +495,77 @@ function fetchSubcategories(maincategoryNo) {
 }
 
 // 선택한 이미지 미리보기
+// function previewImage(event) {
+//     const files = event.target.files;
+//     const empty = document.querySelector(".empty-image");
+//     const slider = document.querySelector(".slider");
+//     const slides = document.querySelector(".slides");
+//     const newImages = document.getElementsByClassName("new-image");
+//     const currentImages = document.getElementsByClassName("current-image");
+//     // const filenames = document.getElementById("filenames");
+
+//     // filenames.innerHTML = "";
+//     for (i = newImages.length - 1; i >= 0; i--) {
+//         newImages[i].remove();
+//     }
+
+//     if (files && files.length > 0) {
+
+//         for (let i = 0; i < files.length; i++) {
+//             const reader = new FileReader();
+
+//             reader.onload = function (e) {
+//                 const img = document.createElement("img");
+//                 img.src = e.target.result;
+//                 img.alt = "Uploaded Image";
+//                 img.className = "collection-image slide new-image";
+//                 img.onclick = function () {
+//                     triggerFileInput();
+//                 };
+//                 slides.appendChild(img);
+//             }
+
+//             reader.readAsDataURL(files[i]);
+//         }
+
+//         if (empty) {
+//             empty.style.display = "none";
+//         }
+
+//         slider.style.display = "block";
+//         if (slides.children.length + files.length > 1) {
+//             document.querySelector(".prev").style.display = "block";
+//             document.querySelector(".next").style.display = "block";
+//         } else {
+//             document.querySelector(".prev").style.display = "none";
+//             document.querySelector(".next").style.display = "none";
+//         }
+
+//         // Array.from(files).forEach(file => {
+//         //     const element = document.createElement("p");
+//         //     element.textContent = file.name;
+//         //     filenames.appendChild(element);
+//         // });
+//     } else if (currentImages && currentImages.length > 0) {
+//         initCollectionSlideIndex();
+//         showSlides(collectionSlideIndex);
+//     } else {
+//         if (empty) {
+//             empty.style.display = "block";
+//         }
+//         slider.style.display = "none";
+//     }
+// }
+
+function addTempFiles(event) {
+    const newFiles = Array.from(event.target.files);
+    filesArray = [...filesArray, ...newFiles];
+    previewImage(event);
+}
+
+// 선택한 이미지 미리보기
 function previewImage(event) {
     const files = event.target.files;
-    const empty = document.querySelector(".empty-image");
-    const slider = document.querySelector(".slider");
-    const slides = document.querySelector(".slides");
-    const newImages = document.getElementsByClassName("new-image");
-    const currentImages = document.getElementsByClassName("current-image");
-    // const filenames = document.getElementById("filenames");
-
-    // filenames.innerHTML = "";
-    for (i = newImages.length - 1; i >= 0; i--) {
-        newImages[i].remove();
-    }
 
     if (files && files.length > 0) {
 
@@ -522,45 +573,36 @@ function previewImage(event) {
             const reader = new FileReader();
 
             reader.onload = function (e) {
+                const span = document.createElement("span");
+                span.className = "new-image-span new-image-span-" + filesCounter;
+                span.id = filesCounter;
+
+                // <button class="collection-image-btn btn"
+                //         data-th-onclick="'deleteFile(' + ${file.no} + ')'">⊗</button>
+
+                const btn = document.createElement("button");
+                btn.className = "collection-image-btn btn"
+                btn.onclick = function () {
+                    this.parentNode.style = "display: none";
+                    filesArray[this.parentNode.id] = null;
+                };
+                btn.innerHTML = "⊗";
+
                 const img = document.createElement("img");
                 img.src = e.target.result;
-                img.alt = "Uploaded Image";
-                img.className = "collection-image slide new-image";
-                img.onclick = function () {
-                    triggerFileInput();
-                };
-                slides.appendChild(img);
+                img.alt = "새 이미지";
+                img.className = "new-image";
+                img.onclick = () => changeMainImage(img.src);
+
+                span.append(btn, img);
+
+                filesCounter++;
+                document.querySelector(".thumbnail-images").insertBefore(span, document.querySelector(".new-image-btn"));
             }
 
             reader.readAsDataURL(files[i]);
         }
 
-        if (empty) {
-            empty.style.display = "none";
-        }
-
-        slider.style.display = "block";
-        if (slides.children.length + files.length > 1) {
-            document.querySelector(".prev").style.display = "block";
-            document.querySelector(".next").style.display = "block";
-        } else {
-            document.querySelector(".prev").style.display = "none";
-            document.querySelector(".next").style.display = "none";
-        }
-
-        // Array.from(files).forEach(file => {
-        //     const element = document.createElement("p");
-        //     element.textContent = file.name;
-        //     filenames.appendChild(element);
-        // });
-    } else if (currentImages && currentImages.length > 0) {
-        initCollectionSlideIndex();
-        showSlides(collectionSlideIndex);
-    } else {
-        if (empty) {
-            empty.style.display = "block";
-        }
-        slider.style.display = "none";
     }
 }
 
@@ -583,28 +625,6 @@ function triggerFileInput() {
     document.getElementById('files').click();
 }
 
-function zoomIn(event) {
-    const mainImage = document.getElementById('mainCollectionImage');
-    const zoomGuide = document.getElementById('zoomMouseGuide');
-    const rect = mainImage.getBoundingClientRect();
-
-    // 돋보기 표시
-    zoomGuide.style.display = 'block';
-
-    // 마우스 위치 계산
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-
-    // 이미지 확대 위치 설정
-    mainImage.style.transform = `scale(2)`;
-    mainImage.style.transformOrigin = `${x}% ${y}%`;
-}
-
-function zoomOut() {
-    const mainImage = document.getElementById('mainCollectionImage');
-    const zoomGuide = document.getElementById('zoomMouseGuide');
-
-    // 원상복구
-    zoomGuide.style.display = 'none';
-    mainImage.style.transform = 'scale(1)';
+function changeMainImage(src) {
+    document.getElementById('mainCollectionImage').src = src;
 }

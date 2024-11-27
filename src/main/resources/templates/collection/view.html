@@ -13,32 +13,37 @@
 <div class="layer collection-view-layer">
     <img src="/images/common/x.png" class="close-btn" alt="닫기" onclick="closeModal();">
     <div class="left-side">
-        <div class="collection-image-btns">
-            <button class="collection-image-btn btn"></button>
+        <!-- <div class="collection-image-btns">
             <button class="collection-image-btn btn" onClick="triggerFileInput()">⊕</button>
             <button class="collection-image-btn btn"
                 data-th-onclick="'deleteFile(' + ${collection.no} + ')'">⊗</button>
-        </div>
+        </div> -->
         <div class="collection-images">
             <div class="main-image">
                 <img alt="Main Collection Image"
                      id="mainCollectionImage"
-                     onmousemove="zoomIn(event)"
-                     onmouseout="zoomOut()"
                      th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${collection.attachedFiles[0].filename}}">
-                <span id="zoomMouseGuide" style="display: none; position: relative; width: 170px; margin: 0 auto;">
+                <!-- <span id="zoomMouseGuide" style="display: none; position: relative; width: 170px; margin: 0 auto;">
                     <img alt="마우스를 올려보세요."
                          id="zoomGuideImage"
                          src="//img.echosting.cafe24.com/design/skin/admin/ko_KR/txt_product_zoom.gif"
                          style="position: absolute; top: -27px; right: 0;">
-                </span>
+                </span> -->
             </div>
 
             <div class="thumbnail-images">
-                <img alt="Thumbnail Image"
-                     th:each="file : ${collection.attachedFiles}"
-                     th:onclick="'changeMainImage(this.src)'"
-                     th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}">
+                <span data-th-each="file : ${collection.attachedFiles}">
+                    <button class="collection-image-btn btn"
+                        data-th-onclick="'deleteFile(' + ${file.no} + ')'">⊗</button>
+                    <img alt="Thumbnail Image"
+                        onclick="changeMainImage(this.src)"
+                        data-th-src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}">
+                </span>
+                <span class="new-image-btn">
+                    <img alt="Thumbnail Image"
+                        onclick="triggerFileInput()"
+                        src="/images/collections/empty-collection-image.png">
+                </span>
             </div>
         </div>
 
@@ -73,7 +78,7 @@
     <div class="right-side" id="updateForm">
         <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>
         <input data-th-value="${collection.no}" id="no" name="no" readonly type="hidden" value="101">
-        <input id="files" multiple name="files" onChange="previewImage(event);" style="display:none;" type="file">
+        <input id="files" multiple name="files" onChange="addTempFiles(event);" style="display:none;" type="file">
         <table>
             <tr>
                 <td><label for="name">상품명 *</label></td>
