@@ -117,6 +117,47 @@ INSERT INTO subcategory (subcategory_id, maincategory_id, category_name) VALUES
 (108, 1, '하이 레졸루션 모델'),
 (-999, -999, '기타');
 
+
+-- 업적 데이터
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_LOGIN', '첫 발걸음', '회원 가입 후 로그인 하세요.', '회원 가입 후 첫 로그인', '회원', 10, 1, 'FIRST_LOGIN.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('SEVEN_LOGIN', '7일의 약속', '7일 동안 로그인하세요.', '로그인 7일 카운트 (user 테이블의 last_login 활용)', '회원', 20, 7, 'SEVEN_LOGIN.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_LOGIN', '30일의 여정', '30일 동안 로그인하세요.', '로그인 30일 카운트 (user 테이블의 last_login 활용)', '회원', 30, 30, 'THIRTY_LOGIN.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('HUNDRED_LOGIN', '100번의 만남', '100일 동안 로그인하세요.', '로그인 100일 카운트 (user 테이블의 last_login 활용)', '회원', 70, 100, 'HUNDRED_LOGIN.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_POST', '첫 발자취', '첫 게시글을 작성하세요.', '게시글 1개 등록', '게시글', 10, 1, 'FIRST_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_POST', '작가의 길', '게시글을 10개 작성하세요.', '게시글 10개 등록', '게시글', 30, 10, 'TEN_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_POST', '게시글 정복자', '게시글을 30개 작성하세요.', '게시글 30개 등록', '게시글', 50, 30, 'THIRTY_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_UPT_POST', '완벽주의의 시작', '게시글을 1번 수정하세요.', '게시글 수정 1회', '게시글', 10, 1, 'FIRST_UPT_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_UPT_POST', '완벽을 향해', '게시글을 10번 수정하세요.', '게시글 수정 10회', '게시글', 30, 10, 'TEN_UPT_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_UPT_POST', '완벽주의자', '게시글을 30번 수정하세요.', '게시글 수정 30회', '게시글', 50, 30, 'THIRTY_UPT_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_DEL_POST', '첫 삭제', '게시글을 1회 삭제하세요.', '게시글 삭제 1회', '게시글', 10, 1, 'FIRST_DEL_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_DEL_POST', '흔적 지우기', '게시글을 10회 삭제하세요.', '게시글 삭제 10회', '게시글', 30, 10, 'TEN_DEL_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_DEL_POST', '게시글 정리왕', '게시글을 30회 삭제하세요.', '게시글 삭제 30회', '게시글', 50, 30, 'THIRTY_DEL_POST.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_COMMENT', '소통의 시작', '댓글을 10회 작성하세요.', '댓글 등록 10회', '게시글', 5, 10, 'TEN_COMMENT.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_COMMENT', '댓글 달인', '댓글을 30회 작성하세요.', '댓글 등록 30회', '게시글', 10, 30, 'THIRTY_COMMENT.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('HUNDRED_COMMENT', '진정한 댓글러', '댓글을 100회 작성하세요.', '댓글 등록 100회', '게시글', 30, 100, 'HUNDRED_COMMENT.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_LEGO', '첫 레고', '레고 수집품을 1개 등록하세요.', '레고 수집품 1개 등록', '수집품', 10, 1, 'FIRST_LEGO.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_LEGO', '레고의 길', '레고 수집품을 10개 등록하세요.', '레고 수집품 10개 등록', '수집품', 30, 10, 'TEN_LEGO.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_LEGO', '레고왕', '레고 수집품을 30개 등록하세요.', '레고 수집품 30개 등록', '수집품', 50, 30, 'THIRTY_LEGO.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_SHOES', '첫 신발', '신발 수집품을 1개 등록하세요.', '신발 수집품 1개 등록', '수집품', 10, 1, 'FIRST_SHOES.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_SHOES', '신발의 길', '신발 수집품을 10개 등록하세요.', '신발 수집품 10개 등록', '수집품', 30, 10, 'TEN_SHOES.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_SHOES', '신발왕', '신발 수집품을 30개 등록하세요.', '신발 수집품 30개 등록', '수집품', 50, 30, 'THIRTY_SHOES.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_GUNDAM', '첫 프라모델', '프라모델 수집품을 1개 등록하세요.', '프라모델 수집품 1개 등록', '수집품', 10, 1, 'FIRST_GUNDAM.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_GUNDAM', '프라모델의 길', '프라모델 수집품을 10개 등록하세요.', '프라모델 수집품 10개 등록', '수집품', 30, 10, 'TEN_GUNDAM.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_GUNDAM', '프라모델왕', '프라모델 수집품을 30개 등록하세요.', '프라모델 수집품 30개 등록', '수집품', 50, 30, 'THIRTY_GUNDAM.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_COLLECTION', '수집가의 길', '수집품을 10개 등록하세요.', '수집품 10개 등록', '수집품', 20, 10, 'TEN_COLLECTION.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('COLLECTION_MASTER', '진정한 수집가', '수집품을 50개 등록하세요.', '수집품 50개 등록', '수집품', 70, 50, 'COLLECTION_MASTER.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_ACHIEVEMENT', '업적도 모아볼까', '업적을 10개 획득하세요', '업적 10개 획득', '업적', 20, 10, 'TEN_ACHIEVEMENT.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_ACHIEVEMENT', '업적 수집가', '업적을 30개 획득하세요', '업적 30개 획득', '업적', 50, 30, 'THIRTY_ACHIEVEMENT.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_TRADE', '거래의 시작', '거래를 1회 진행하세요.', '거래 1회', '거래', 10, 1, 'FIRST_TRADE.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('TEN_TRADE', '거래의 달인', '거래를 10회 진행하세요.', '거래 10회', '거래', 30, 10, 'TEN_TRADE.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('THIRTY_TRADE', '수집품 거래왕', '거래를 30회 진행하세요.', '거래 30회', '거래', 50, 30, 'THIRTY_TRADE.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_SHOES_TRADE', '첫 신발 거래', '신발을 1회 거래하세요.', '신발 거래 1회', '거래', 20, 1, 'FIRST_SHOES_TRADE.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('SHOE_PRO', '신발만 거래해', '신발을 10회 거래하세요.', '신발 거래 10회', '거래', 30, 10, 'SHOE_PRO.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_LEGO_TRADE', '첫 레고 거래', '레고를 1회 거래하세요.', '레고 거래 1회', '거래', 20, 1, 'FIRST_LEGO_TRADE.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('LEGO_PRO', '레고만 거래해', '레고를 10회 거래하세요.', '레고 거래 10회', '거래', 30, 10, 'LEGO_PRO.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('FIRST_GUNDAM_TRADE', '첫 프라모델 거래', '프라모델을 1회 거래하세요.', '프라모델 거래 1회', '거래', 20, 1, 'FIRST_GUNDAM_TRADE.png');
+INSERT INTO achievement(achievement_id, name, content, acquisition_condition, location, score, max_count, photo) VALUES('GUNDAM_PRO', '프라모델만 거래해', '프라모델을 10회 거래하세요.', '프라모델 거래 10회', '거래', 30, 10, 'GUNDAM_PRO.png');
+
 -- 회원 데이터
 INSERT INTO user (user_id, email, nickname, password, start_date, admin) VALUES
 (1, 'admin@test.com', '관리자', '$2a$10$v3qFJAESrWNRNOgkbMBvUu.GfcPVxvw8Sc9dZtL3YVdGop549CvKe', now(), 1),
@@ -503,13 +544,6 @@ INSERT INTO collection_photo (photo_id, collection_id, filename, origin_filename
 -- (4, 2),
 -- (4, 3);
 
--- 업적 데이터
--- INSERT INTO achievement (achievement_id, name, content, photo, acquisition_condition, location, score, max_count) VALUES
--- ('FIRST_POST', '첫 게시글', '첫 번째 게시글을 작성하세요', 'first_post.png', '게시글 1개 작성', '커뮤니티', 50, 1),
--- ('COLLECTOR_NOVICE', '초보 수집가', '첫 번째 수집품을 등록하세요', 'collector_novice.png', '수집품 1개 등록', '수집품 관리', 10, 1),
--- ('LEGO_MASTER', '레고 마스터', '레고 수집품 10개를 등록하세요', 'lego_master.png', '레고 수집품 10개 등록', '수집품 관리', 20, 10),
--- ('SHOE_ENTHUSIAST', '신발 애호가', '신발 수집품 10개를 등록하세요', 'shoe_enthusiast.png', '신발 수집품 10개 등록', '수집품 관리', 30, 10),
--- ('GUNDAM_PRO', '건담 프로', '건담 프라모델 10개를 등록하세요', 'gundam_pro.png', '건담 프라모델 10개 등록', '수집품 관리', 40, 10);
 
 -- 회원 업적 데이터
 -- INSERT INTO user_achievement (user_id, achievement_id, progress, get_date, current_count) VALUES

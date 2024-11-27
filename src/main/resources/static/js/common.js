@@ -3,7 +3,7 @@
 let emailChecked = false;
 let passwordMatch = false;
 
-getWikiLink();
+// getWikiLink();
 
 function openOverlay() {
     fadeIn(document.getElementsByClassName("overlay")[0]);
@@ -107,6 +107,7 @@ async function updateAchievement(
     try {
         const response = await fetch(`/achievement/updateCount?id=${achievement_id}`);
         const result = await response.text();
+        console.log(`updateAchievement: ${achievement_id}`);
 
         // 이미 취득한 업적
         if (result === "ignored") {
@@ -149,15 +150,15 @@ async function updateAchievement(
 }
 
 // 위키 링크
-function getWikiLink() {
-    const hostname = location.hostname;
-    const wikilink = document.getElementById("wiki-link");
-    if (hostname.startsWith("localhost") || hostname.startsWith("dev")) {
-        wikilink.href = "http://dev.moum.bangdpool.com:3000/w/Moum";
-    } else if (hostname.startsWith("moum")) {
-        wikilink.href = "https://wiki.moum.bangdpool.com/w/Moum";
-    }
-}
+// function getWikiLink() {
+//     const hostname = location.hostname;
+//     const wikilink = document.getElementById("wiki-link");
+//     if (hostname.startsWith("localhost") || hostname.startsWith("dev")) {
+//         wikilink.href = "http://dev.moum.bangdpool.com:3000/w/Moum";
+//     } else if (hostname.startsWith("moum")) {
+//         wikilink.href = "https://wiki.moum.bangdpool.com/w/Moum";
+//     }
+// }
 
 // 로그인
 
