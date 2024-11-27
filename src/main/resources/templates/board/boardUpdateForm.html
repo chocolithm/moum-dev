@@ -16,12 +16,10 @@
 </head>
 
 <body>
-
 <div th:replace="~{header}"></div>
 
 <main>
-    <div class="summernote-scope">
-<div class="container mt-4">
+<div class="container mt-4" style="width: 1000px">
     <h2>게시글 수정</h2>
     <form enctype="multipart/form-data" id="updateForm">
         <input data-th-name="${_csrf.parameterName}" data-th-value="${_csrf.token}" type="hidden"/>
@@ -82,7 +80,6 @@
 
     </form>
 </div>
-    </div>
 
 <script src="/js/common.js"></script>
 
