@@ -1,230 +1,678 @@
+@charset "utf-8";
+@import url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
+@import "alert.css";
+@import "chat.css";
+@import "report.css";
+
 * {
-  box-sizing: content-box;
+  font-family: "Noto Sans KR", sans-serif;
+  color: black;
+  font-style: normal;
 }
 
-html, body {
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+a {
+  text-decoration: none;
+}
+
+select::-webkit-scrollbar {
+  display: none;
+}
+
+
+body {
   position: relative;
+  margin: 0 auto;
 }
 
-.title {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  top: 50%;
-  color: #fff;
-  font-weight: 100;
-  font-size: 3em;
-  font-family: 'Pacifico', cursive;
-}
 
-.title .avatar {
-  width: 40px;
-  height: 40px;
-  background-image: url(../img/avatar.jpg);
-  display: inline-block;
-  border-radius: 50%;
-  background-size: 100%;
-}
-
-.noite {
-  background: -webkit-linear-gradient(top, rgb(0, 0, 0) 50%, rgb(25, 19, 39)80%, rgb(43, 32, 72));
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow: hidden;
-}
-
-.constelacao {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  animation: rotate 600s infinite linear;
-}
-
-.estrela {
-  background-color: white;
-  border-radius: 50%;
-  position: absolute;
-  animation-name: estrela;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-.estrela.style1 { animation-duration: 0.5s; animation-name: estrela; }
-.estrela.style2 { animation-duration: 1s; animation-name: estrela; }
-.estrela.style3 { animation-duration: 1.5s; animation-name: estrela; }
-.estrela.style4 { animation-duration: 2s; animation-name: estrelaDestacada; }
-
-.estrela.tam1 { width: 1px; height: 1px; }
-.estrela.tam2 { width: 2px; height: 2px; }
-.estrela.tam3 { width: 3px; height: 3px; }
-
-.estrela.opacity1 { opacity:  1; }
-.estrela.opacity2 { opacity: .5; }
-.estrela.opacity3 { opacity: .1; }
-
-.meteoro {
-  position: absolute;
-  background-color: #fff;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  transform: rotate(-35deg);
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-duration: 1s;
-}
-
-.meteoro:before {
+.clearfix::before, .clearfix::after {
+  display: block;
   content: "";
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 10px;
-  width: 0;
-  height: 0;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-  border-left: 85px solid white;
-  position: absolute;
-  left: 2px;
+  clear: both;
+}
+
+/* 다크 모드에서 제목 색상 변경 myinfo*/
+body.dark-mode h1 {
+  color: white;
+}
+
+/* header */
+header {
+  padding: 20px;
+  position: sticky;
   top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid black;
+  background: white;
+  z-index: 100;
 }
 
-.meteoro.style1 { animation-name: meteoroStyle1; }
-.meteoro.style2 { animation-name: meteoroStyle2; }
-.meteoro.style3 { animation-name: meteoroStyle3; }
-.meteoro.style4 { animation-name: meteoroStyle4; }
+header > h1 {
+  display: inline;
+  font-size: 14px;
+}
 
-.lua {
+header img {
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+header .logo {
+  height: 60px;  /* 원하는 크기로 조절 */
+  width: auto;   /* 비율 유지 */
+}
+
+/* 로고 이미지에만 호버 효과 적용 */
+header img.logo:hover {
+  transform: scale(1.1);
+  /* 이미지 크기 확대 */
+}
+
+header img:not(.logo):hover {
+  transform: none;
+  /* 호버 시 변형 없애기 */
+}
+
+header > nav {
+  display: inline;
+  font-size: 20px;
+}
+
+header > nav > ul {
+  list-style-type: none;
+  display: inline;
+}
+
+header .profile-image {
+  width: 24px;
+}
+
+/* main */
+main {
+  padding: 20px 10px;
+  overflow: hidden;
+}
+
+main h1 {
+  margin: 20px 0;
+  margin-left: 5%;
+}
+
+main .main-image {
+  background: black;
+  position: relative;
+  height: 320px;
+  width: 120%;
+  left: -10%;
+  text-align: center;
+}
+
+main .main-image-text h1 {
+  padding-top: 100px;
+}
+
+main .main-image-text * {
+  color: white;
+}
+
+main .main-image-text .btn {
+  background: white;
+  color: black;
+  font-size: 16px;
+}
+
+/* 임시 */
+
+.main-middle-box h2 {
+  font-weight: bold;
+  /* 텍스트를 볼드체로 설정 */
+}
+
+main .main-middle {
+  margin-top: 80px;
+}
+
+.main-middle-image {
+
+  width: 300px;
+  /* 원하는 너비 */
+  height: auto;
+  /* 높이를 자동으로 조정 (비율 유지) */
+}
+
+.main-middle {
+  display: flex;
+  /* Flexbox 레이아웃을 사용 */
+  gap: 20px;
+  /* 박스 사이에 20px 간격 추가 */
+  justify-content: center;
+  /* 가운데 정렬 */
+}
+
+.main-middle-box {
+  flex: 1;
+  /* 각 박스를 동일한 너비로 설정 */
+  text-align: center;
+  /* 텍스트와 이미지를 가운데 정렬 */
+}
+
+
+/* 잠시 막아두겠습니다
+main .main-middle {
+    margin-top: 160px;
+}
+
+main .main-middle .main-middle-box {
+    width: 28%;
+    height: 380px;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    border: 1px solid lightgrey;
+    border-radius: 45px;
+    float: left;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+main .main-middle .main-middle-box h2 {
+    position: relative;
+    top: -80px;
+}
+
+main .main-middle .main-middle-box .main-middle-image {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    top: -50px;
+}
+*/
+
+
+main .main-bottom {
+  margin-top: 80px;
+  text-align: center;
+}
+
+main .main-bottom .main-bottom-box {
+  width: 28%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  float: left;
+  text-align: center;
+}
+
+main .main-bottom .main-bottom-box .main-bottom-image {
+  width: 100%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+/* footer */
+footer {
+  height: 100px;
+}
+
+
+/* btn */
+.btn {
+  display: inline-block;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 주석 처리 (양지윤)
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+*/
+
+.btn a {
+  text-decoration: none;
+  color: black;
+}
+
+.btn-light {
+  background-color: white;
+}
+
+.pos-right {
   position: absolute;
-  right: 200px;
-  top: 150px;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  box-shadow: 0 0 160px 0px #fff, 0 0 30px -4px #fff, 0 0 8px 2px rgba(255, 255, 255, 0.26);
-  background-color: #fff;
-  animation-name: lua;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-duration: 10s;
+  right: 30px;
 }
 
-.lua .textura {
-  background-image: url(https://raw.githubusercontent.com/interaminense/starry-sky/master/src/img/bgMoon.png);
-  background-position: center;
-  background-size: 100%;
+.login-state {
+  display: inline-flex;
+}
+
+/* layer */
+
+.layer {
+  text-align: center;
+  background: white;
+  width: 700px;
+  margin: 0 auto;
+  border-radius: 25px;
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1200;
+  overflow: hidden;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.x {
+  width: 30px;
+  height: 30px;
   position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: 50%;
+  top: 5%;
+  left: 90%;
+}
+
+.x:hover {
+  cursor: pointer;
+}
+
+
+/* table */
+table {
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+table, tr, td {
+  border: 1px solid black;
+}
+
+th {
+  background-color: #c2c2c2;
+  padding: 5px;
+}
+
+td {
+  padding: 5px;
+}
+
+/* achievement*/
+.achievement-user-progress {
+  overflow-y: auto;
+}
+
+.achievement-user-progress::-webkit-scrollbar {
+  display: none;
+}
+
+.achievement-user-progress .achievement-photo {
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.achievement-user-progress .achievement-photo:hover {
+  transform: translateY(-5px);
+  /* 마우스 올리면 살짝 위로 올라오는 효과 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  /* 그림자 강화 */
+}
+
+.achievement-user-progress .achievement-photo span {
+  display: inline-block;
+}
+
+.achievement-user-progress .achievement-image {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  display: block;
+}
+
+.achievement-user-progress .achievement-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.achievement-user-progress .achievement-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: center;
+  width: calc(100% - 100px);
+}
+
+.achievement-user-progress .achievement-details > div:first-child {
+  font-weight: bold;
+}
+
+.achievement-user-progress .achievement-details > div:nth-child(2) {
+  font-size: 14px;
+  color: #666;
+}
+
+.achievement-user-progress .achievement-details > div:last-child {
+  font-size: 14px;
+  color: #666;
+}
+
+.achievement-user-progress .progress-bar-container {
+  width: 100%;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
   overflow: hidden;
-  opacity: 0.4;
+  margin: 10px 0;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.floresta {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+/*.achievement-user-progress .progress-bar-container:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+.achievement-user-progress .progress-bar {
+  height: 20px;
+  border-radius: 5px;
+  transition: width 0.5s;
 }
 
-.floresta img {
-  width: 100%;
+.achievement-user-progress .progress-bar.low {
+  background-color: #ff4d4d;
+  /* 0% ~ 49%: 빨간색 */
+}
+
+.achievement-user-progress .progress-bar.medium {
+  background-color: #ffcc00;
+  /* 50% ~ 79%: 노란색 */
+}
+
+.achievement-user-progress .progress-bar.high {
+  background-color: #76c7c0;
+  /* 80% ~ 100%: 녹색 */
+}
+
+.achievement-user-progress .progress-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.achievement-user-progress .filter-container {
+  margin: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+/* 체크박스 스타일 */
+.achievement-user-progress .filter {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.achievement-user-progress .achievement-box {
+  width: 45%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.achievement-user-progress .achievement-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+.info-achievement-container {
+  margin-top: 1rem;
+  /* 각 업적 간 여백 */
+  height: calc(100% - 60px);
+  /* 제목과 헤더를 위한 공간 제외 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+
+.info-achievement-details div {
+  margin-bottom: 5px;
+  /* 각 div 간의 여백 */
+  overflow: hidden;
+  align: center;
+}
+
+.info-achievement-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.info-progress-bar-container {
+  background-color: #f0f0f0;
+  /* 진행도 바 배경색 */
+  border-radius: 4px;
+  /* 둥글게 */
+  overflow: hidden;
+  /* 자식 요소가 부모 영역을 넘지 않게 */
+  align: center;
+}
+
+.info-progress-bar {
+  height: 10px;
+  /* 진행도 바 높이 */
+  transition: width 0.3s;
+  /* 부드러운 애니메이션 효과 */
+  align: center;
+}
+
+.info-progress-bar.low {
+  background-color: #e74c3c;
+  align: center;
+}
+
+.info-progress-bar.medium {
+  background-color: #f1c40f;
+  align: center;
+}
+
+.info-progress-bar.high {
+  background-color: #2ecc71;
+  align: center;
+}
+
+.my-achievement-container .achievement-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.my-achievement-container .my-achievement-inner-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.my-achievement-container .yourinfo-achievement-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.my-achievement-container .achievement-img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.my-achievement-container .your-achievement-img-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.my-achievement-container .achievement-img-container .achievement-img,
+.my-achievement-container .your-achievement-img-container .achievement-img {
+  width: auto;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/*.my-achievement-container .achievement-img-container .achievement-img:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+.my-achievement-container .my-achievement-box {
+  height: auto;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  justify-content: space-around;
+}
+
+.my-achievement-container .your-achievement-box {
+  height: auto;
+  margin: 5px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.my-achievement-container .my-achievement-box .achievement-details-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+/*.my-achievement-container .my-achievement-box:hover,*/
+/*.my-achievement-container .your-achievement-box:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+.my-achievement-container .achievement-progress {
+  height: 10px;
+  margin: 5px 0;
+}
+
+.my-achievement-container .progress-percent {
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+main > .slider-container {
+  position: relative;
+  left: -20px;
+  width: 100vw;
+  height: 0;
+  padding-bottom: 26.67%;
+  overflow: hidden;
+}
+
+main > .slider-container .slider {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
+  display: flex;
+  width: 500%;
+  height: 100%;
+  transition: transform 1s ease-in-out;
 }
 
-@keyframes escurecer {
-  0%   { top: 0; }
-  100% { top: 100%; }
+main > .slider-container .slider img {
+  width: 20%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
-@keyframes estrela {
-  0% {
-    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.05);
-  }
-  50% {
-    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
-  }
-  100% {
-    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.05);
-  }
+main > .slider-container .slider {
+  transform: translateX(0);
 }
 
-@keyframes estrelaDestacada {
-  0% {
-    background-color: #FFFFFF;
-    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 1);
+
+
+/* 작은 화면에서 드롭다운 버튼이 충분히 크고 클릭할 수 있게 만들어줍니다 */
+@media (max-width: 576px) {
+  .btn-group .dropdown-toggle {
+    font-size: 13px;
+    padding: 8px 10px;
   }
-  20% {
-    background-color: #FFC4C4;
-    box-shadow: 0 0 10px 0px rgb(255, 196, 196, 1);
-  }
-  80% {
-    background-color: #C4CFFF;
-    box-shadow: 0 0 10px 0px rgb(196, 207, 255, 1);
-  }
-  100% {
-    background-color: #FFFFFF;
-    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.2);
+
+  .dropdown-menu {
+    max-height: 200px;
   }
 }
 
-@keyframes meteoroStyle1 {
-  0% { opacity: 0; right: 300px; top: 100px; }
-  30% { opacity: .3; }
-  60% { opacity: .3; }
-  100% { opacity: 0; right: 1000px; top: 600px; }
+
+/* 마이홈 스위치 */
+/* 스위치의 기본 배경을 하얀색으로 설정 */
+.form-check-input {
+  background-color: white; /* 기본 배경을 하얀색으로 */
+  /*border-color: white; !* 테두리도 하얀색 *!*/
 }
 
-@keyframes meteoroStyle2 {
-  0% { opacity: 0; right: 700px; top: 100px; }
-  30% { opacity: 1; }
-  60% { opacity: 1; }
-  100% { opacity: 0; right: 1400px; top: 600px; }
+/* 체크된 상태에서만 스위치가 검정색으로 변하게 설정 */
+.form-check-input:checked {
+  background-color: #000; /* 체크된 상태에서 배경 검정색 */
+  border-color: #000; /* 체크된 상태에서 테두리 검정색 */
 }
 
-@keyframes meteoroStyle3 {
-  0% { opacity: 0; right: 300px; top: 300px; }
-  30% { opacity: 1; }
-  60% { opacity: 1; }
-  100% { opacity: 0; right: 1000px; top: 800px; }
+/* 체크된 상태에서 스위치 슬라이드 부분을 검정으로 설정 */
+.form-check-input:checked ~ .form-check-label::before {
+  background-color: #000; /* 슬라이드 부분 검정 */
 }
 
-@keyframes meteoroStyle4 {
-  0% { opacity: 0; right: 700px; top: 300px; }
-  30% { opacity: 1; }
-  60% { opacity: 1; }
-  100% { opacity: 0; right: 1400px; top: 800px; }
-}
-
-@keyframes lua {
-  0%{
-    box-shadow: 0 0 160px 0px #fff, 0 0 30px -4px #fff, 0 0 8px 2px rgba(255, 255, 255, 0.26);
-  }
-  50% {
-    box-shadow: 0 0 80px 0px #fff, 0 0 30px -4px #fff, 0 0 8px 2px rgba(255, 255, 255, 0.26);
-  }
-  100% {
-    box-shadow: 0 0 160px 0px #fff, 0 0 30px -4px #fff, 0 0 8px 2px rgba(255, 255, 255, 0.26);
-  }
-}
-
-@keyframes rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
+/* 슬라이드의 기본 색상은 하얀색 */
+.form-check-input:before {
+  background-color: white; /* 기본 슬라이드 부분 하얀색 */
 }

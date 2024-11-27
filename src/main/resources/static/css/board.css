@@ -771,6 +771,7 @@ button {
 
 .comment-list {
     list-style: none; /* 기본 목록 스타일 제거 */
+    max-width: 840px;
     margin: 0; /* 기본 여백 제거 */
     padding: 0; /* 기본 안쪽 여백 제거 */
 }
@@ -779,11 +780,16 @@ button {
     margin-bottom: 10px; /* 각 댓글 간의 간격 설정 */
 }
 
+/* 댓글 박스 스타일 */
 .comment-box {
-    padding: 10px; /* 댓글 박스의 내부 여백 */
-    border-top: 1px solid #e9ecef; /* 테두리 추가 */
-    background-color: #ffffff; /* 배경색 추가 */
+    padding: 10px; /* 댓글 박스 내부 여백 */
+    border-top: 1px solid #e9ecef; /* 테두리 */
+    background-color: #ffffff; /* 배경색 */
+    word-wrap: break-word; /* 긴 단어가 있을 경우 줄바꿈 처리 */
+    overflow-wrap: break-word; /* 단어가 박스를 넘어가지 않도록 처리 */
+    white-space: normal; /* 텍스트가 박스를 넘어가지 않도록 줄바꿈 활성화 */
 }
+
 
 
 
@@ -824,13 +830,20 @@ button {
 
 /* 댓글 내용 스타일 */
 .comment-content {
-    /* 필요에 따라 추가 스타일 적용 */
+    font-size: 13.5px;
+    color: #333;
+    word-wrap: break-word; /* 긴 단어가 줄바꿈 되도록 처리 */
+    overflow-wrap: break-word; /* 박스를 넘어가지 않도록 처리 */
+    white-space: pre-wrap; /* 줄바꿈과 공백을 유지하면서 줄바꿈 활성화 */
+    line-height: 1.5; /* 텍스트 간격을 적절히 조정 */
 }
+
 .comment-count {
-    margin-left: auto; /* 댓글 개수를 오른쪽 끝으로 배치 */
-    padding-left: 10px; /* 날짜와 간격 추가 */
-    color: #8c8c8c; /* 댓글 개수 색상 */
-    font-weight: bold; /* 강조를 위해 볼드체 */
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #8c8c8c;
+    font-weight: bold;
 }
 
 .trade-info {
@@ -979,7 +992,7 @@ a {
 }
 
 .item-content {
-    padding: 5px;
+    padding: 15px;
 }
 
 .item-title {
@@ -1003,6 +1016,45 @@ a {
     font-size: 0.9em;
     color: #666;
 }
+
+/* item-number-info 부모 div에 flexbox 레이아웃 적용 */
+.item-number-info {
+    display: flex; /* 자식 요소들을 나란히 배치 */
+    gap: 10px; /* 작성자와 작성일 사이의 간격 */
+    align-items: center; /* 세로 정렬을 맞추기 위해 추가 */
+}
+.item-number-nickname {
+    display: flex;
+    justify-content: space-between; /* 날짜와 댓글 개수를 양쪽으로 배치 */
+    align-items: normal; /* 수직 정렬 */
+    font-size: 0.9em;
+    color: #666;
+    font-weight: bold; /* 볼드체로 설정 */
+}
+
+.item-number-date {
+    display: flex;
+    align-items: normal; /* 수직 정렬 */
+    font-size: 0.7em;
+    color: #b8b8b8;
+}
+
+.item-number-view {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #8c8c8c;
+    font-weight: bold;
+}
+
+.item-number-like {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #8c8c8c;
+    font-weight: bold;
+}
+
 .navigation-pill {
     width: 100%;
     max-width: 840px;

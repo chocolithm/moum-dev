@@ -4,6 +4,7 @@
 <head>
     <meta name="csrf-token" th:content="${_csrf.token}"/>
     <meta name="csrf-header" th:content="${_csrf.headerName}"/>
+    <link data-th-href="@{/css/test.css}" rel="stylesheet">
     <meta charset="UTF-8">
     <title>게시글 등록</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -17,6 +18,7 @@
 <body>
 <div th:replace="~{header}"></div>
 
+<main>
 <div class="container mt-4" style="height: 1400px">
     <h2>게시글 등록</h2>
     <form enctype="multipart/form-data" id="postForm">
@@ -100,6 +102,8 @@
         </div>
     </form>
 </div>
+</main>
+<div th:replace="~{footer :: footer}"></div>
 </body>
 
 <script>
