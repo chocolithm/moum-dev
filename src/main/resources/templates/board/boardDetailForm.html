@@ -20,13 +20,10 @@
 
 <main>
     <div class="summernote-scope">
-    <div class="container mt-4" style="height: 1400px">
+    <div class="container mt-4" style="height: 1400px; width: 1000px">
     <h2>게시글 등록</h2>
     <form enctype="multipart/form-data" id="postForm">
-        <!-- 등록 버튼 -->
-        <div style="text-align: right;">
-            <button class="board-add-button btn btn-dark" onclick="addDetailPost()" type="button">등록하기</button>
-        </div>
+
         <!-- CSRF 토큰 -->
         <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 
@@ -59,7 +56,10 @@
             <label for="content">내용</label>
             <textarea class="form-control" id="content" name="content"></textarea>
         </div>
-
+        <!-- 등록 버튼 -->
+        <div style="text-align: right;">
+            <button class="board-add-button btn btn-dark" onclick="addDetailPost()" type="button">등록하기</button>
+        </div>
         <!-- 거래 게시글 전용 필드 -->
         <div id="tradeFields" style="display: none;">
             <!-- 가격 입력 -->
@@ -138,7 +138,7 @@
         // Summernote 초기화
         $('#content').summernote({
             placeholder: '내용을 입력하세요 (최대 2048자)',
-            height: 300,
+            height: 600,
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'italic', 'underline', 'strikethrough']],
