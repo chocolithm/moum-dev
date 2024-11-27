@@ -61,6 +61,10 @@
   align-items: center;
 }
 
+.chatroom-layer .chatroom .chatroom-user .nickname {
+  font-size: 0.9rem;
+}
+
 .chatroom-layer .chatroom .chatroom-user .profile {
   width: 40px;
   height: 40px;
@@ -75,6 +79,7 @@
   font-size: 0.9rem;
   overflow: visible;
   position: relative;
+  justify-content: center;
 }
 
 .chatroom-layer .chatroom .chatroom-content > .message {
