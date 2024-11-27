@@ -81,6 +81,7 @@
       c.user_id as sender_id,
       cr.user_id as participant_id,
       u.nickname,
+      u.photo,
       c.message,
       c.chat_date
     from

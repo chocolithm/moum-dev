@@ -159,7 +159,9 @@ function fetchChatroomList() {
         chatspan.className = "chatroom-content";
 
         const img = document.createElement("img");
-        img.src = participant.photo == null ? "/images/user/default1.png" : "/images/user/default2.png";
+        img.src = participant.photo == null
+          ? "/images/user/default1.png"
+          : `https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/${participant.photo}`;
         img.alt = "프로필";
         img.className = "profile";
 
@@ -464,6 +466,12 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
 
 // 채팅 데이터 출력
 function createChatContent(message_box, loginUser, chat) {
+  const img = document.createElement("img");
+  img.className = "chat-profile-img";
+  img.src = chat.sender.photo == null
+          ? "/images/user/default1.png"
+          : `https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/${chat.sender.photo}`;
+
   const time = document.createElement("span");
   time.className = "message-time";
   time.innerHTML = calcTime(chat.chatDate);
@@ -480,7 +488,11 @@ function createChatContent(message_box, loginUser, chat) {
     message_box.append(time, message);
     message_box.className = "message-box owner-message-box";
   } else {
-    message_box.append(nickname, message, time);
+    const left_span = document.createElement("span");
+    const right_span = document.createElement("span");
+    left_span.append(img);
+    right_span.append(nickname, message, time);
+    message_box.append(left_span, right_span);
     message_box.className = "message-box guest-message-box";
   }
 }
