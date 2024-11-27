@@ -103,6 +103,7 @@ function openChatroomModal() {
 
   const chat_btn = document.querySelector(".chat-btn");
   const chatroom_layer = document.querySelector(".chatroom-layer");
+  chatroom_layer.style.backgroundColor = "white";
 
   fetchChatroomList();
   chat_btn.onclick = () => closeChatroomModal();
@@ -131,6 +132,7 @@ function closeChatroomModal() {
 function fetchChatroomList() {
 
   const chatroom_layer = document.querySelector(".chatroom-layer");
+  chatroom_layer.style.backgroundColor = "white";
 
   fetch(`/chat/listRoom`)
     .then(response => response.json())
@@ -211,6 +213,7 @@ function openChat(chatroomNo, participant) {
 
     setTimeout(async function () {
       chatroom_layer.innerHTML = "";
+      chatroom_layer.style.backgroundColor = "lightgrey";
 
       try {
         await fetchChatroom(chatroomNo);

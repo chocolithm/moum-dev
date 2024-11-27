@@ -35,7 +35,6 @@
   transition: 0.3s ease;
 }
 
-
 .chatroom-layer .chatroom > span {
   display: flex;
   flex-direction: column;
@@ -160,10 +159,13 @@
 
 .chatroom-layer .chat-info .owner-message-box .message {
   border-bottom-right-radius: 0;
+  background-color: black;
+  color: white;
 }
 
 .chatroom-layer .chat-info .guest-message-box .message {
   border-bottom-left-radius: 0;
+  background-color: white;
 }
 
 .chatroom-layer .chat-info .guest-message-box .chat-profile-img {
