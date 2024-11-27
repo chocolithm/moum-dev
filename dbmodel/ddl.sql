@@ -108,16 +108,17 @@ ALTER TABLE user
 
 -- 게시글
 CREATE TABLE board (
-    board_id   INTEGER      NOT NULL COMMENT '게시글 번호', -- 게시글 번호
-    title      VARCHAR(255) NOT NULL COMMENT '제목', -- 제목
-    content    TEXT         NOT NULL COMMENT '내용', -- 내용
-    user_id    INTEGER      NOT NULL COMMENT '작성자 번호', -- 작성자 번호
-    post_date  DATETIME     NOT NULL DEFAULT now() COMMENT '작성일자', -- 작성일자
-    view_count INTEGER      NOT NULL DEFAULT 0 COMMENT '조회수', -- 조회수
-    is_public  TINYINT      NOT NULL DEFAULT 1 COMMENT '공개', -- 공개
-    is_deleted TINYINT      NOT NULL DEFAULT 0 COMMENT '삭제', -- 삭제
-    board_type VARCHAR(255) NOT NULL COMMENT '구분', -- 구분
-    is_popular TINYINT(1)   NOT NULL COMMENT '인기게시글' -- 인기게시글
+    board_id        INTEGER      NOT NULL COMMENT '게시글 번호', -- 게시글 번호
+    title           VARCHAR(255) NOT NULL COMMENT '제목', -- 제목
+    content         TEXT         NOT NULL COMMENT '내용', -- 내용
+    user_id         INTEGER      NOT NULL COMMENT '작성자 번호', -- 작성자 번호
+    post_date       DATETIME     NOT NULL DEFAULT now() COMMENT '작성일자', -- 작성일자
+    view_count      INTEGER      NOT NULL DEFAULT 0 COMMENT '조회수', -- 조회수
+    is_public       TINYINT      NOT NULL DEFAULT 1 COMMENT '공개', -- 공개
+    is_deleted      TINYINT      NOT NULL DEFAULT 0 COMMENT '삭제', -- 삭제
+    board_type      VARCHAR(255) NOT NULL COMMENT '구분', -- 구분
+    is_popular      TINYINT(1)   NOT NULL COMMENT '인기게시글', -- 인기게시글
+    maincategory_id INTEGER NOT NULL COMMENT '대분류' -- 대분류
 )
 COMMENT '게시글';
 

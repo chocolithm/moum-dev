@@ -21,6 +21,7 @@
     <association property="sender" javaType="moum.project.vo.User">
       <id column="sender_id" property="no"/>
       <result column="nickname" property="nickname"/>
+      <result column="photo" property="photo"/>
     </association>
   </resultMap>
 
@@ -81,6 +82,7 @@
       c.user_id as sender_id,
       cr.user_id as participant_id,
       u.nickname,
+      u.photo,
       c.message,
       c.chat_date
     from
