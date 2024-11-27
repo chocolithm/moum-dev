@@ -131,7 +131,11 @@ async function updateAchievement(
 
             await updateAchievement("TEN_ACHIEVEMENT");
             await updateAchievement("THIRTY_ACHIEVEMENT");
-            
+
+            // Custom Event 발행
+            const event = new CustomEvent('achievementAcquired', { detail: { achievementId: achievement_id } });
+            document.dispatchEvent(event);
+
             if (onAcquired) onAcquired();
             return;
         }
@@ -141,12 +145,14 @@ async function updateAchievement(
             if (onFailure) onFailure();
             return;
         }
-        
+
     } catch (error) {
         console.error("Error updating achievement count:", error);
         if (onFailure) onFailure();
     }
 }
+
+
 
 // 위키 링크
 function getWikiLink() {
