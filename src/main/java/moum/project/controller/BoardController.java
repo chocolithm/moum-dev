@@ -372,6 +372,8 @@ public class BoardController {
     // 로그인한 사용자 정보 가져오기
     User loginUser = userService.getByEmail(userDetails.getUsername());
 
+    Achievement primaryAchievement = achievementService.findPrimary(board.getUser().getNo());
+
     // 수집품의 첨부파일 목록 가져오기
     if (board.getBoardType().equals("trade") && board.getCollection() != null) {
       Collection collection = collectionService.get(board.getCollection().getNo());
@@ -379,8 +381,10 @@ public class BoardController {
     }
 
     // 게시글 작성자 여부 추가
+    model.addAttribute("board", board);
     model.addAttribute("authenticated", board.getUserNo() == loginUser.getNo());
     model.addAttribute("authenticatedUser", loginUser);
+    model.addAttribute("primaryAchievement", primaryAchievement);
 
     // 추천수 가져오기
     int likeCount = likesService.countLikesByBoard(no);

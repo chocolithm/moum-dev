@@ -52,15 +52,10 @@
                     <span th:text="${board.title}">게시글 제목</span>
                 </h1>
                 <div class="post-meta">
-                    <span th:text="${board.user.nickname}" class="author-name" onclick="showProfilePopup(event)">작성자</span>
                     <span>조회수: <span th:text="${board.viewCount}">0</span></span>
                     <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>
                     <div class="post-meta-date">
                         <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
-                    </div>
-                    <!-- 프로필 보기 팝업 -->
-                    <div id="profilePopup" class="profile-popup" style="display: none;">
-                        <button data-th-onclick="'viewProfile(' + ${board.user.no} + ')'">프로필 보기</button>
                     </div>
                 </div>
 
@@ -88,8 +83,37 @@
                 게시글 내용
             </div>
 
+
             <!-- 추천/신고 버튼 -->
             <div class="action-buttons">
+                <!-- 게시판 myinfo  -->
+                <div class="board-myinfo-data">
+                    <div class="my-info-container" th:if="${board.user}" th:object="${board.user}">
+                        <!--                    <div class="profile-img-container">-->
+                        <!--                        <div class="profile-img-inner-container">-->
+                        <!--                            <a th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'}" target="_blank">-->
+                        <!--                                <img class="profile-img"-->
+                        <!--                                     th:src="'https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'} + '?type=f&w=400&h=400'"-->
+                        <!--                                     alt="프로필 이미지"/>-->
+                        <!--                            </a>-->
+                        <!--                        </div>-->
+                        <!--                    </div>-->
+                        <div class="my-info-right-container-header">
+                            <div class="my-primary-achievement" data-th-if="${primaryAchievement}">
+                                <img alt="대표업적 이미지" class="my-primary-achievement-img"
+                                     data-th-src="${'/images/achievement/complete/' + primaryAchievement.photo}">
+                                <span data-th-text="${primaryAchievement.name}"></span>
+                            </div>
+                            <div class="user-nickname">
+                                <span th:text="${board.user.nickname}" class="author-name" onclick="showProfilePopup(event)">작성자</span>
+                                <!-- 프로필 보기 팝업 -->
+                                <div id="profilePopup" class="profile-popup" style="display: none;">
+                                    <button data-th-onclick="'viewProfile(' + ${board.user.no} + ')'">프로필 보기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
                 <!-- 거래완료 버튼 -->
@@ -99,14 +123,6 @@
                         th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ', ' + ${board.maincategory.no} + ')'">
                     거래완료
                 </button>
-
-
-                <!-- 게시판 myinfo  -->
-                <div class="board-myinfo-data">
-                    <span th:text="${board.user.nickname}">작성자</span>
-<!--                    <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>-->
-                </div>
-
 
                 <button th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}"
                         class="open-chat-btn btn btn-outline-dark" onclick="openChatroomModal(); openChat(0);">채팅하기</button>

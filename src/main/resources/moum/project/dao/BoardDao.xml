@@ -43,6 +43,7 @@
             <id column="writer_id" property="no"/>
             <result column="nickname" property="nickname"/>
             <result column="end_date" property="endDate"/>
+            <result column="user_photo" property="photo"/>
         </association>
 
         <association property="maincategory" javaType="moum.project.vo.Maincategory">
@@ -98,6 +99,7 @@
         b.user_id,
         u.user_id as writer_id,
         u.nickname,
+        u.photo as user_photo,
         u.end_date,
         b.post_date,
         b.view_count,
