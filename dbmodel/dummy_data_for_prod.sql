@@ -1,5 +1,5 @@
 -- 유형 대분류 데이터
-INSERT INTO maincategory (maincategory_id, category_name) VALUES
+INSERT INTO maincategory (maincategory_id, category_name, color) VALUES
 (1, '건담프라모델', 'purple'),
 (2, '레고', 'yellow'),
 (3, '신발', 'blue'),

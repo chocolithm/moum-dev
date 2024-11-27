@@ -4,4 +4,5 @@
 -- user_restricted 테이블에 comment 컬럼 추가
 -- collection 테이블에 is_deleted 컬럼 추가
 -- maincategory에 color 컬럼 추가
+-- board에 is_popular 컬럼 추가
 -- collection_photo에 is_primary 컬럼 추가

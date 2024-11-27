@@ -116,7 +116,8 @@ CREATE TABLE board (
     view_count INTEGER      NOT NULL DEFAULT 0 COMMENT '조회수', -- 조회수
     is_public  TINYINT      NOT NULL DEFAULT 1 COMMENT '공개', -- 공개
     is_deleted TINYINT      NOT NULL DEFAULT 0 COMMENT '삭제', -- 삭제
-    board_type VARCHAR(255) NOT NULL COMMENT '구분' -- 구분
+    board_type VARCHAR(255) NOT NULL COMMENT '구분', -- 구분
+    is_popular TINYINT(1)   NOT NULL COMMENT '인기게시글' -- 인기게시글
 )
 COMMENT '게시글';
 
@@ -461,7 +462,7 @@ CREATE TABLE collection_photo (
     collection_id   INTEGER      NOT NULL COMMENT '수집품 번호', -- 수집품 번호
     filename        VARCHAR(255) NOT NULL COMMENT '파일명', -- 파일명
     origin_filename VARCHAR(255) NOT NULL COMMENT '원본파일명', -- 원본파일명
-    is_primary      TINYINT(0)   NOT NULL DEFAULT 0 COMMENT '대표사진', --대표사진
+    is_primary      TINYINT(1)   NOT NULL DEFAULT 0
 )
 COMMENT '수집품 첨부파일';
 
