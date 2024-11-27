@@ -298,7 +298,6 @@ body {
 
 .action-buttons {
     display: flex;
-    justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
 }
@@ -1222,7 +1221,6 @@ a {
     border: 1px solid #d6d6d6; /* 검은색 테두리 추가 */
     display: flex;
     gap: 10px;
-    justify-content: flex-end;
 }
 
 .post-content {
@@ -1230,7 +1228,7 @@ a {
     padding: 20px;
     background: #ffffff;
     border-radius: 8px;
-    border: 1px solid #d6d6d6; /* 검은색 테두리 추가 */
+    border: 1px solid #d6d6d6; /* 검은색 테두리 추가 햣*/
 
 }
 
@@ -1478,4 +1476,70 @@ a {
 
 .thumbnail-images img:hover {
     border-color: #333; /* 호버 시 테두리 색 변경 */
+}
+
+.my-info-container {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.profile-img-container {
+    margin-right: 1rem;
+    position: relative;
+}
+
+.profile-img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border: 2px solid #f8f9fa;
+}
+
+.my-info-right-container-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.my-primary-achievement {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.my-primary-achievement-img {
+    width: 20px;
+    height: 20px;
+}
+
+.achievement-name {
+    font-size: 0.85rem;
+}
+
+.author-name {
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.author-name:hover {
+    text-decoration: underline;
+}
+
+.profile-popup {
+    display: none;
+    position: absolute;
+    background: white;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    z-index: 1000;
+}
+
+.profile-popup button {
+    white-space: nowrap;
+    font-size: 0.9rem;
 }
