@@ -99,15 +99,6 @@ main h1 {
   margin-left: 5%;
 }
 
-main .main-image {
-  background: black;
-  position: relative;
-  height: 320px;
-  width: 120%;
-  left: -10%;
-  text-align: center;
-}
-
 main .main-image-text h1 {
   padding-top: 100px;
 }

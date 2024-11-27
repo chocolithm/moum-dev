@@ -20,6 +20,30 @@
         <div class="post-grid">
             <!-- 메인 이미지 섹션 -->
 
+            <!-- 수집품 사진 영역 -->
+            <div th:if="${board.boardType == 'trade' and board.tradeType == 'sell' and board.collection != null}" class="collection-images">
+                <div class="main-image">
+                    <img id="mainCollectionImage"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}"
+                         alt="Main Collection Image"
+                         onmousemove="zoomIn(event)"
+                         onmouseout="zoomOut()">
+                    <span id="zoomMouseGuide" style="display: none; position: relative; width: 170px; margin: 0 auto;">
+                        <img src="//img.echosting.cafe24.com/design/skin/admin/ko_KR/txt_product_zoom.gif"
+                             id="zoomGuideImage"
+                             alt="마우스를 올려보세요."
+                             style="position: absolute; top: -27px; right: 0;">
+                    </span>
+                </div>
+
+                <div class="thumbnail-images">
+                    <img th:each="file : ${board.collection.attachedFiles}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}"
+                         alt="Thumbnail Image"
+                         th:onclick="'changeMainImage(this.src)'">
+                </div>
+            </div>
+
 
             <!-- 게시글 헤더 -->
             <div class="post-header">
@@ -184,6 +208,47 @@
 <script src="/js/collection.js"></script>
 
 <script>
+
+
+
+
+    function changeMainImage(src) {
+        document.getElementById('mainCollectionImage').src = src;
+    }
+
+
+    function zoomIn(event) {
+        const mainImage = document.getElementById('mainCollectionImage');
+        const zoomGuide = document.getElementById('zoomMouseGuide');
+        const rect = mainImage.getBoundingClientRect();
+
+        // 돋보기 표시
+        zoomGuide.style.display = 'block';
+
+        // 마우스 위치 계산
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+        // 이미지 확대 위치 설정
+        mainImage.style.transform = `scale(2)`;
+        mainImage.style.transformOrigin = `${x}% ${y}%`;
+    }
+
+    function zoomOut() {
+        const mainImage = document.getElementById('mainCollectionImage');
+        const zoomGuide = document.getElementById('zoomMouseGuide');
+
+        // 원상복구
+        zoomGuide.style.display = 'none';
+        mainImage.style.transform = 'scale(1)';
+    }
+
+
+
+
+
+
+
     function showProfilePopup(event) {
         var popup = document.getElementById('profilePopup');
         popup.style.display = 'block';

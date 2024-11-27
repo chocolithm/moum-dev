@@ -372,6 +372,12 @@ public class BoardController {
     // 로그인한 사용자 정보 가져오기
     User loginUser = userService.getByEmail(userDetails.getUsername());
 
+    // 수집품의 첨부파일 목록 가져오기
+    if (board.getBoardType().equals("trade") && board.getCollection() != null) {
+      Collection collection = collectionService.get(board.getCollection().getNo());
+      board.setCollection(collection);
+    }
+
     // 게시글 작성자 여부 추가
     model.addAttribute("authenticated", board.getUserNo() == loginUser.getNo());
     model.addAttribute("authenticatedUser", loginUser);
