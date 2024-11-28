@@ -70,9 +70,11 @@ public class BoardController {
   public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
       @RequestParam(value = "size", defaultValue = "12") int size,
       @RequestParam(value = "keyword", required = false) String keyword,
-      @RequestParam(value = "categoryNo", required = false) Integer categoryNo, Model model)
+      @RequestParam(value = "categoryNo", required = false) Integer categoryNo, Model model,
+      @AuthenticationPrincipal UserDetails userDetails)
       throws Exception {
 
+    User loginUser = userService.getByEmail(userDetails.getUsername());
     int offset = (page - 1) * size;
     List<Board> popularBoards;
     int totalBoards;
@@ -114,6 +116,13 @@ public class BoardController {
     etcCategory.setName("기타");
     maincategoryList.add(etcCategory);
     model.addAttribute("maincategoryList", maincategoryList);
+
+    // 업적 랭킹 정보 추가
+    List<Achievement> userRankList = achievementService.listByUserRank();
+    model.addAttribute("rankList", userRankList);
+
+    Achievement userAchievementRank = achievementService.findRankByUser(loginUser.getNo());
+    model.addAttribute("rankNowUserList", userAchievementRank);
 
     return "board/popularList";
   }
@@ -197,9 +206,11 @@ public class BoardController {
   public String tradeHomeSell(@RequestParam(value = "page", defaultValue = "1") int page,
       @RequestParam(value = "size", defaultValue = "12") int size,
       @RequestParam(value = "keyword", required = false) String keyword,
-      @RequestParam(value = "categoryNo", required = false) Integer categoryNo, Model model)
+      @RequestParam(value = "categoryNo", required = false) Integer categoryNo, Model model,
+      @AuthenticationPrincipal UserDetails userDetails)
       throws Exception {
 
+    User loginUser = userService.getByEmail(userDetails.getUsername());
     int offset = (page - 1) * size;
     List<Board> tradeSellPosts;
     int totalTradeSellPosts;
@@ -229,6 +240,14 @@ public class BoardController {
     maincategoryList.add(etcCategory);
     model.addAttribute("maincategoryList", maincategoryList);
 
+
+    // 업적 랭킹 정보 추가
+    List<Achievement> userRankList = achievementService.listByUserRank();
+    model.addAttribute("rankList", userRankList);
+
+    Achievement userAchievementRank = achievementService.findRankByUser(loginUser.getNo());
+    model.addAttribute("rankNowUserList", userAchievementRank);
+
     return "board/tradeHomeSell"; // Thymeleaf 템플릿 이름
   }
 
@@ -237,9 +256,11 @@ public class BoardController {
   public String tradeHomeBuy(@RequestParam(value = "page", defaultValue = "1") int page,
       @RequestParam(value = "size", defaultValue = "12") int size,
       @RequestParam(value = "keyword", required = false) String keyword,
-      @RequestParam(value = "categoryNo", required = false) Integer categoryNo, Model model)
+      @RequestParam(value = "categoryNo", required = false) Integer categoryNo, Model model,
+      @AuthenticationPrincipal UserDetails userDetails)
       throws Exception {
 
+    User loginUser = userService.getByEmail(userDetails.getUsername());
     int offset = (page - 1) * size;
     List<Board> tradeBuyPosts;
     int totalTradeBuyPosts;
@@ -267,6 +288,14 @@ public class BoardController {
     etcCategory.setName("기타");
     maincategoryList.add(etcCategory);
     model.addAttribute("maincategoryList", maincategoryList);
+
+
+    // 업적 랭킹 정보 추가
+    List<Achievement> userRankList = achievementService.listByUserRank();
+    model.addAttribute("rankList", userRankList);
+
+    Achievement userAchievementRank = achievementService.findRankByUser(loginUser.getNo());
+    model.addAttribute("rankNowUserList", userAchievementRank);
 
     return "board/tradeHomeBuy"; // Thymeleaf 템플릿 이름
   }

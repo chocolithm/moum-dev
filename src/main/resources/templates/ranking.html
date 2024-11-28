@@ -37,7 +37,7 @@
 
                             <!-- 내 등수 -->
                             <tr
-                                data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row'">
+                                data-th-class="${rankNowUserList.rank == 1 ? 'gold' : (rankNowUserList.rank == 2 ? 'silver' : (rankNowUserList.rank == 3 ? 'bronze' : 'normal'))} + ' table-row my-ranking'">
                                 <td class="ps-4">
                                     <div
                                         data-th-class="'rank-badge ' + ${rankNowUserList.rank == 1 ? 'rank-1' : (rankNowUserList.rank == 2 ? 'rank-2' : (rankNowUserList.rank == 3 ? 'rank-3' : 'rank-other'))}">
@@ -45,7 +45,7 @@
                                     </div>
                                 </td>
                                 <td class="align-middle fw-bold" data-th-text="${rankNowUserList.user.nickname}"></td>
-                                <td class="align-middle pe-4">
+                                <td class="align-middle">
                                     <span class="score-badge" data-th-text="${rankNowUserList.score} + '점'"></span>
                                 </td>
                             </tr>
@@ -62,6 +62,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        const container = document.querySelector(".achievement-ranking-container");
         const tbody = document.querySelector(".achievement-ranking-container tbody");
         const rows = document.querySelectorAll(".achievement-ranking-container tbody tr");
         let currentIndex = 0;
@@ -69,7 +70,7 @@
 
         function showAllRows() {
             rows.forEach(row => {
-                row.style.position = 'static';
+                row.style.position = 'relative';
                 row.style.opacity = '1';
             });
             tbody.style.height = 'auto';

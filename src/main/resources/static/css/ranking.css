@@ -37,7 +37,6 @@
 }
 
 .ranking-card table tbody {
-    position: relative;
     display: block;
     height: 65px;
     max-height: 200px;
@@ -56,6 +55,7 @@
     width: 300px;
     left: 0;
     display: table;
+    border: none;
 }
 
 .ranking-card table tbody::-webkit-scrollbar {
@@ -104,8 +104,7 @@
 
 /* 랭킹 순위 및 닉네임 스타일 */
 .table-row td {
-    font-size: 1.125rem;
-    /* 표 내용 크기 */
+    font-size: 1rem;
 }
 
 .table-row .rank-badge {
