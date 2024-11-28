@@ -125,28 +125,26 @@
                         </div>
                     </div>
                 </div>
+                <!-- 추천/신고 버튼 -->
+                <button class="open-chat-btn btn btn-outline-dark"
+                        onclick="openChatroomModal(); openChat(0);"
+                        th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
+                </button>
+                <button class="open-chat-btn btn btn-outline-dark"
+                        onclick="openChatroomModal(); openChat(0);"
+                        th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
+                </button>
 
+                <button class="report_button btn btn-outline-white"
+                        onclick="openReport('board');"
+                        th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
+                        type="button">🚨
+                </button>
+
+                <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
+                        th:if="${authenticatedUser.admin == true}" type="button">경고/제재
+                </button>
             </div>
-
-            <!-- 추천/신고 버튼 -->
-            <button class="open-chat-btn btn btn-outline-dark"
-                    onclick="openChatroomModal(); openChat(0);"
-                    th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
-            </button>
-            <button class="open-chat-btn btn btn-outline-dark"
-                    onclick="openChatroomModal(); openChat(0);"
-                    th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
-            </button>
-
-            <button class="report_button btn btn-outline-white"
-                    onclick="openReport('board');"
-                    th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
-                    type="button">🚨
-            </button>
-
-            <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
-                    th:if="${authenticatedUser.admin == true}" type="button">경고/제재
-            </button>
 
             <div class="board write-user-edit-button">
                 <!-- 기윤/ 건들지 마시오 수정 버튼 -->
