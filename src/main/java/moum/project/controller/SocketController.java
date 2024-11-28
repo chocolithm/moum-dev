@@ -3,6 +3,7 @@ package moum.project.controller;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AlertService;
+import moum.project.service.ChatKafkaProducer;
 import moum.project.service.ChatService;
 import moum.project.vo.Alert;
 import moum.project.vo.Chat;
@@ -22,9 +23,10 @@ public class SocketController {
   private final ChatService chatService;
   private final AlertService alertService;
   private final SimpUserRegistry simpUserRegistry;
+  private final ChatKafkaProducer chatKafkaProducer;
 
   @MessageMapping("/chat/{roomNo}")
-  @SendTo("/receive/chat/{roomNo}")
+//  @SendTo("/receive/chat/{roomNo}")
   public Chat sendMessage(
       @DestinationVariable String roomNo,
       Chat chat) throws Exception {
@@ -66,7 +68,8 @@ public class SocketController {
           alertService.updateTime(alert.getNo());
         }
       }
-
+      String message = chat.getMessage();
+      chatKafkaProducer.sendMessage("chat-topic", message);
       return chat;
     } else {
       return null;
