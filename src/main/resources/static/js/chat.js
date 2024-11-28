@@ -8,17 +8,23 @@ function connect(chatroomNo) {
     const socket = new SockJS("/ws");
     stompChatClient = StompJs.Stomp.over(socket);
     stompChatClient.connect({}, function (frame) {
-      stompChatClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
-        showMessage(JSON.parse(message.body));
-      });
-      resolve();
-    },
-      function (error) {
-        console.error("error connecting to chatroom: ", error);
-        reject();
-      });
+          stompChatClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
+            try {
+              const parsedMessage = JSON.parse(message.body); // JSON 파싱 시도
+              showMessage(parsedMessage); // 성공 시 메시지 표시
+            } catch (error) {
+              console.error("Invalid JSON received:", message.body, error);
+            }
+          });
+          resolve();
+        },
+        function (error) {
+          console.error("Error connecting to chatroom:", error);
+          reject();
+        });
   });
 }
+
 
 // 소켓 통신 연결 해제
 function disconnect() {
