@@ -945,7 +945,7 @@ a {
 
 
 .search-bar {
-    margin-left: 1550px;
+    margin-left: 345px;
     width: 100%;
     max-width: 1550px;
     display: flex;
@@ -1542,4 +1542,17 @@ a {
 .profile-popup button {
     white-space: nowrap;
     font-size: 0.9rem;
+}
+
+
+/* 랭킹 css */
+
+.ranking-search {
+    width: 957px;
+    display: flex;
+}
+
+.ranking-system {
+    position: relative;
+    display: inline-block;
 }
