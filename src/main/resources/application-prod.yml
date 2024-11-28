@@ -1,9 +1,9 @@
 spring:
   kafka:
-#    bootstrap-servers: moum-b-65tv-100657996.kr.cdss.naverncp.com:9094,
-#      moum-b-65tw-100657996.kr.cdss.naverncp.com:9094,
-#      moum-b-65tx-100657996.kr.cdss.naverncp.com:9094
-    bootstrap-servers: 10.0.3.6:9092,10.0.3.7:9092,10.0.3.8:9092
+    bootstrap-servers: moum-b-65tv-100657996.kr.cdss.naverncp.com:9094,
+      moum-b-65tw-100657996.kr.cdss.naverncp.com:9094,
+      moum-b-65tx-100657996.kr.cdss.naverncp.com:9094
+#    bootstrap-servers: 10.0.3.6:9092,10.0.3.7:9092,10.0.3.8:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
