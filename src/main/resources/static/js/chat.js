@@ -491,9 +491,9 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
 function createChatContent(message_box, loginUser, chat) {
   const img = document.createElement("img");
   img.className = "chat-profile-img";
-  img.src = chat.sender.photo == null
-          ? "/images/user/default1.png"
-          : `https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/${chat.sender.photo}`;
+  // img.src = chat.sender.photo == null
+  //         ? "/images/user/default1.png"
+  //         : `https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/${chat.sender.photo}`;
 
   const time = document.createElement("span");
   time.className = "message-time";
