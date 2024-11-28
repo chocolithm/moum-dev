@@ -1,6 +1,7 @@
 package moum.project.controller;
 
 import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
 import moum.project.service.AlertService;
 import moum.project.service.ChatKafkaProducer;
@@ -10,7 +11,6 @@ import moum.project.vo.Chat;
 import moum.project.vo.Chatroom;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,9 +68,17 @@ public class SocketController {
           alertService.updateTime(alert.getNo());
         }
       }
-      String message = chat.getMessage();
-      chatKafkaProducer.sendMessage("chat-topic", message);
+
+      // Kafka 메시지 발행
+      boolean kafkaSuccess = false;
+      try {
+        chatKafkaProducer.sendMessage("chat-topic", roomNo, chat.getMessage());
+      } catch (Exception e) {
+        System.err.println("Failed to send message to Kafka: " + e.getMessage());
+      }
+
       return chat;
+
     } else {
       return null;
     }
