@@ -1556,3 +1556,10 @@ a {
     position: relative;
     display: inline-block;
 }
+
+.info-chat {
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+}
