@@ -125,14 +125,13 @@
                         </div>
                     </div>
                 </div>
-                <!-- 추천/신고 버튼 -->
+
+                <div class="info-chat">
+                <!-- 추천 버튼 -->
                 <button class="open-chat-btn btn btn-outline-dark"
                         onclick="openChatroomModal(); openChat(0);"
-                        th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
-                </button>
-                <button class="open-chat-btn btn btn-outline-dark"
-                        onclick="openChatroomModal(); openChat(0);"
-                        th:if="${authenticatedUser.no != board.userNo && board.boardType == 'trade'}">채팅하기
+                        th:if="${authenticatedUser.no != board.userNo}"
+                        style="margin-top: 25px; margin-bottom: 25px">채팅하기
                 </button>
 
                 <button class="report_button btn btn-outline-white"
@@ -144,6 +143,8 @@
                 <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
                         th:if="${authenticatedUser.admin == true}" type="button">경고/제재
                 </button>
+                </div>
+
             </div>
 
             <div class="board write-user-edit-button">

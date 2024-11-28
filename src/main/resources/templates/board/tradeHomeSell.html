@@ -89,43 +89,61 @@
             </div>
         </div>
 
-        <!-- 검색 바 -->
-        <div class="search-bar">
-            <form method="get" th:action="@{/board/tradeHomeSell}">
-                <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" th:value="${keyword}" type="text">
-                <input name="size" th:value="${size}" type="hidden">
-                <input name="categoryNo" th:value="${categoryNo}" type="hidden">
-                <button class="btn btn-dark" type="submit">검색</button>
-            </form>
+        
+        <div class="ranking-search">
+            <!-- 랭킹 시스템 !-->
+            <div class="ranking-system">
+                <div th:replace="~{ranking}"></div>
+            </div>
+
+
+            <!-- 검색 바 -->
+            <div class="search-bar">
+                <form method="get" th:action="@{/board/tradeHomeSell}">
+                    <input class="search-input" name="keyword" placeholder="검색어를 입력하세요" th:value="${keyword}" type="text">
+                    <input name="size" th:value="${size}" type="hidden">
+                    <input name="categoryNo" th:value="${categoryNo}" type="hidden">
+                    <button class="btn btn-dark" type="submit">검색</button>
+                </form>
+            </div>
         </div>
 
-        <!-- 페이징 컨트롤 -->
+        <!-- 페이징 !-->
         <div class="pagination-container mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    <!-- 이전 버튼 -->
+                    <!-- Previous Button -->
                     <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
                         <a class="page-link bg-white text-dark"
-                           th:href="@{/board/tradeHomeSell(page=${currentPage == 1 ? 1 : currentPage - 1}, size=${size}, keyword=${keyword}, categoryNo=${categoryNo})}">Previous</a>
+                           th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">이전</a>
                     </li>
 
-                    <!-- 페이지 번호 -->
+                    <!-- Page Numbers -->
                     <li class="page-item"
                         th:classappend="${i == currentPage ? 'active' : ''}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                        <a class="page-link bg-dark text-white"
-                           th:href="@{/board/tradeHomeSell(page=${i}, size=${size}, keyword=${keyword}, categoryNo=${categoryNo})}"
+                        <a class="page-link"
+                           th:classappend="${i == currentPage ? 'bg-dark text-white' : 'bg-white text-dark'}"
+                           th:href="@{/board/boardList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"
                            th:text="${i}"></a>
                     </li>
 
-                    <!-- 다음 버튼 -->
+                    <!-- Next Button -->
                     <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
                         <a class="page-link bg-white text-dark"
-                           th:href="@{/board/tradeHomeSell(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=${size}, keyword=${keyword}, categoryNo=${categoryNo})}">Next</a>
+                           th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">다음</a>
                     </li>
                 </ul>
             </nav>
         </div>
+
+        <!-- Custom CSS to remove the blue outline on link buttons -->
+        <style>
+            .pagination .page-link:focus {
+                outline: none;
+                box-shadow: none;
+            }
+        </style>
 
 
     </div>
