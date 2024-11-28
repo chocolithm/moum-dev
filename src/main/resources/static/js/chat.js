@@ -9,8 +9,8 @@ function connect(chatroomNo) {
     stompChatClient = StompJs.Stomp.over(socket);
     stompChatClient.connect({}, function (frame) {
       stompChatClient.subscribe(`/receive/chat/${chatroomNo}`, function (message) {
-        // showMessage(JSON.parse(message.body));
-        showMessage((message.body));
+        showMessage(JSON.parse(message.body));
+        // showMessage((message.body));
 
       });
       resolve();

@@ -72,7 +72,8 @@ public class SocketController {
       // Kafka 메시지 발행
       boolean kafkaSuccess = false;
       try {
-        chatKafkaProducer.sendMessage("chat-topic", roomNo, chat.getMessage());
+//        chatKafkaProducer.sendMessage("chat-topic", roomNo, chat.getMessage());
+        chatKafkaProducer.sendMessage("chat-topic", roomNo, chat);
       } catch (Exception e) {
         System.err.println("Failed to send message to Kafka: " + e.getMessage());
       }
