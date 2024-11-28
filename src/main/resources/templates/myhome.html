@@ -111,6 +111,42 @@
         }
     })
 
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const thumbnailContainer = document.querySelector(".thumbnail-images");
+
+    //     let isDragging = false;
+    //     let startX, scrollLeft;
+
+    //     // 마우스 다운
+    //     thumbnailContainer.addEventListener("mousedown", (e) => {
+    //         isDragging = true;
+    //         thumbnailContainer.classList.add("active");
+    //         startX = e.pageX - thumbnailContainer.offsetLeft; // 시작 위치
+    //         scrollLeft = thumbnailContainer.scrollLeft; // 현재 스크롤 위치
+    //     });
+
+    //     // 마우스 업
+    //     thumbnailContainer.addEventListener("mouseup", () => {
+    //         isDragging = false;
+    //         thumbnailContainer.classList.remove("active");
+    //     });
+
+    //     // 마우스 아웃
+    //     thumbnailContainer.addEventListener("mouseleave", () => {
+    //         isDragging = false;
+    //         thumbnailContainer.classList.remove("active");
+    //     });
+
+    //     // 마우스 이동
+    //     thumbnailContainer.addEventListener("mousemove", (e) => {
+    //         if (!isDragging) return; // 드래그 중이 아니면 무시
+    //         e.preventDefault();
+    //         const x = e.pageX - thumbnailContainer.offsetLeft;
+    //         const walk = (x - startX) * 2; // 스크롤 이동량 조정 (속도)
+    //         thumbnailContainer.scrollLeft = scrollLeft - walk;
+    //     });
+    // });
+
 </script>
 </body>
 </html>
