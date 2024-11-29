@@ -15,8 +15,12 @@ public interface BoardDao {
     List<Board> list(); // 모든 게시글 조회
 
     Board selectById(int boardId); // 특정 게시글 조회
+    Board selectByBraggingId(int boardId);
+
+    void insertBragging(Board board); // 새 게시글 생성
 
     void insert(Board board); // 새 게시글 생성
+
 
     void insertTrade(Board board); // 새 게시글 생성
 

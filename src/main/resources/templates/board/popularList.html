@@ -53,7 +53,7 @@
                     <button class="category-button recent" onclick="location.href='/board/boardList'">최근 게시글</button>
                 </div>
                 <div class="button-group-right">
-                    <button class="category-button write-button" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
+                    <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">글쓰기</button>
                 </div>
             </div>
         </div>
@@ -113,7 +113,7 @@
                     <!-- Previous Button -->
                     <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
                         <a class="page-link bg-white text-dark"
-                           th:href="@{/board/boardList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">이전</a>
+                           th:href="@{/board/popularList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">이전</a>
                     </li>
 
                     <!-- Page Numbers -->
@@ -122,14 +122,14 @@
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
                         <a class="page-link"
                            th:classappend="${i == currentPage ? 'bg-dark text-white' : 'bg-white text-dark'}"
-                           th:href="@{/board/boardList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"
+                           th:href="@{/board/popularList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"
                            th:text="${i}"></a>
                     </li>
 
                     <!-- Next Button -->
                     <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
                         <a class="page-link bg-white text-dark"
-                           th:href="@{/board/boardList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">다음</a>
+                           th:href="@{/board/popularList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">다음</a>
                     </li>
                 </ul>
             </nav>

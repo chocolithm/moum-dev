@@ -1,0 +1,342 @@
+<!-- boardView.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세보기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/collection.css}" type="text/css">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div th:replace="~{header}"></div>
+<main style="background-color: white">
+    <div class="page-container">
+        <div class="post-grid">
+            <!-- 메인 이미지 섹션 -->
+
+                <!-- 수집품 사진 영역 -->
+                <div class="collection-images"
+                     th:if="${board.boardType == 'bragging' and board.collection != null}">
+                    <div class="main-image">
+                        <img alt="Main Collection Image"
+                             id="mainCollectionImage"
+                             onmousemove="zoomIn(event)"
+                             onmouseout="zoomOut()"
+                             th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}">
+                        <span id="zoomMouseGuide" style="display: none; position: relative; width: 170px; margin: 0 auto;">
+                            <img alt="마우스를 올려보세요."
+                                 id="zoomGuideImage"
+                                 src="//img.echosting.cafe24.com/design/skin/admin/ko_KR/txt_product_zoom.gif"
+                                 style="position: absolute; top: -27px; right: 0;">
+                        </span>
+                    </div>
+
+                    <div class="thumbnail-images">
+                        <img alt="Thumbnail Image"
+                             th:each="file : ${board.collection.attachedFiles}"
+                             th:onclick="'changeMainImage(this.src)'"
+                             th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}">
+                    </div>
+                </div>
+
+
+            <!-- 게시글 헤더 -->
+            <div class="post-header">
+                <h1 class="post-title">
+                    <small class="text-muted" th:text="'[' + ${board.maincategory.name} + ']'">[카테고리]</small>
+                    <span th:text="${board.title}">게시글 제목</span>
+                </h1>
+                <div class="post-meta">
+                    <span>조회수: <span th:text="${board.viewCount}">0</span></span>
+                    <span>추천수: <span id="likeCount" th:text="${board.likeCount}">0</span></span>
+                    <div class="post-meta-date">
+                        <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 거래 정보 (있는 경우) -->
+            <div class="trade-info" th:if="${board.boardType == 'bragging'}">
+                <div class="trade-box">
+<!--                    <div><strong>가격:</strong> <span th:text="${board.formattedPrice}">0</span>원</div>-->
+<!--                    <div><strong>거래 상태:</strong> <span th:text="${board.sellOrSoldStatus ? '거래완료' : '거래중'}">미설정</span>-->
+<!--                    </div>-->
+<!--                    <div><strong>거래 방식:</strong> <span-->
+<!--                            th:text="${board.tradeType == 'sell' ? '판매' : '구매'}">거래 방식 없음</span></div>-->
+<!--                    &lt;!&ndash; 거래완료 버튼 &ndash;&gt;-->
+<!--                    <button class="trade-complete"-->
+<!--                            th:attr="disabled=${board.sellOrSoldStatus}"-->
+<!--                            th:if="${(authenticatedUser.no == board.userNo or authenticatedUser.admin) and board.sellOrSoldStatus == false and board.boardType == 'trade'}"-->
+<!--                            th:onclick="${board.sellOrSoldStatus} ? null : 'tradeComplete(' + ${board.no} + ', ' + ${board.maincategory.no} + ')'">-->
+<!--                        거래완료-->
+<!--                    </button>-->
+
+                    <!-- 수집품 정보 보기 버튼 -->
+                    <button class="btn btn-info collection-info-button"
+                            th:if="${board.collection != null}"
+                            th:onclick="'openCollectionViewModalFromBoard(' + ${board.collection.no} + ')'">
+                        수집품 정보 보기
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- 게시글 내용 -->
+            <div class="post-content" th:utext="${board.content}">
+                게시글 내용
+            </div>
+
+
+            <div class="action-buttons">
+                <!-- 게시판 myinfo  -->
+                <div class="board-myinfo-data">
+                    <div class="my-info-container" th:if="${board.user}" th:object="${board.user}">
+                        <div class="profile-img-container">
+                            <div class="profile-img-container">
+                                <div class="profile-img-inner-container">
+                                    <a target="_blank" th:href="'https://kr.object.ncloudstorage.com/bitcamp-moum/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'}">
+                                        <img alt="프로필 이미지" class="profile-img rounded-circle"
+                                             th:src="'https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/' + *{photo != null ? 'user/profile/' + photo : 'images/default-profile.png'} + '?type=f&w=200&h=200'"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-info-right-container-header">
+                            <div class="my-primary-achievement" data-th-if="${primaryAchievement}">
+                                <img alt="대표업적 이미지" class="my-primary-achievement-img"
+                                     data-th-src="${'https://qc02pnrw5255.edge.naverncp.com/JjKIB1bIlV/achievement/complete/' + primaryAchievement.photo + '?type=f&w=20&h=20'}">
+                                <span data-th-text="${primaryAchievement.name}"></span>
+                            </div>
+                            <div class="user-nickname">
+                                <span class="author-name" onclick="showProfilePopup(event)"
+                                      th:text="${board.user.nickname}">작성자</span>
+                                <!-- 프로필 보기 팝업 -->
+                                <div class="profile-popup" id="profilePopup" style="display: none;">
+                                    <button data-th-onclick="'viewProfile(' + ${board.user.no} + ')'">프로필 보기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-chat">
+                <!-- 추천 버튼 -->
+                <button class="open-chat-btn btn btn-outline-dark"
+                        onclick="openChatroomModal(); openChat(0);"
+                        th:if="${authenticatedUser.no != board.userNo}"
+                        style="margin-top: 25px; margin-bottom: 25px">채팅하기
+                </button>
+
+                <button class="report_button btn btn-outline-white"
+                        onclick="openReport('board');"
+                        th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
+                        type="button">🚨
+                </button>
+
+                <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
+                        th:if="${authenticatedUser.admin == true}" type="button">경고/제재
+                </button>
+                </div>
+
+            </div>
+
+            <div class="board write-user-edit-button">
+                <!-- 기윤/ 건들지 마시오 수정 버튼 -->
+                <button class="edit-button" data-th-onclick="'editPost(' + ${board.no}+')'"
+                        th:if="${(board.sellOrSoldStatus == false) and (authenticatedUser.no == board.userNo)}">
+                    수정하기
+                </button>
+
+                <!-- 삭제 버튼 -->
+                <form method="post" name="postDeleteForm" th:action="@{/board/delete}">
+                    <input name="no" th:value="${board.no}" type="hidden">
+                    <input name="_method" type="hidden" value="DELETE">
+                    <button class="delete-button" onclick="deletePostWithDelAchieve()"
+                            th:if="${authenticatedUser.no == board.userNo}"
+                            type="button">
+                        삭제하기
+                    </button>
+                </form>
+
+                <!-- 게시판 좋아요 버튼 -->
+                <button class="recommend_button btn btn-outline-dark"
+                        th:if="${liked == false}"
+                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
+                        type="button">🤍
+                </button>
+
+                <button class="recommend_button btn btn-outline-dark"
+                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
+                        th:unless="${liked == false}"
+                        type="button">🩷
+                </button>
+                <span id="likeCount2" th:text="${board.likeCount}"></span>
+
+            </div>
+
+            <div class="comment-whole-box">
+
+
+            <span style="font-size: 20px; border-bottom: 1px solid black">전체 댓글
+                <span style="color: red; font-weight: bolder;" th:text="${board.commentCount}"></span>개
+            </span>
+
+
+                <ul class="comment-list" style="list-style: none">
+                    <li th:each="comment : ${comments}" th:id="'comment-' + ${comment.no}">
+                        <div class="comment-box">
+                            <div class="comment-header">
+                                <span style="font-size: 13.5px" th:text="${comment.user.nickname}">작성자</span>
+                                <div style="display: flex; align-items: center;">
+                                    <span class="comment-date"
+                                          th:text="${#dates.format(comment.date, 'yyyy-MM-dd HH:mm:ss')}">작성일자</span>
+                                    <button class="comment-delete-btn"
+                                            th:if="${comment.userNo == authenticatedUser.no}"
+                                            th:onclick="'deleteComment(' + ${comment.no} + ');'">❌
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="comment-content" style="font-size: 13.5px" th:text="${comment.content}">내용</div>
+                        </div>
+                    </li>
+                </ul>
+
+
+                <!-- 댓글 입력 폼 -->
+                <div class="comment-form">
+                    <textarea id="commentContent" maxlength="300" oninput="countingLength(this)" placeholder="댓글을 입력하세요"
+                              rows="3"></textarea>
+                    <p id="counter">0/300자</p>
+                    <button class="btn btn-dark" th:onclick="'addComment(' + ${board.no} + ')'" type="button">댓글 작성
+                    </button>
+                </div>
+            </div>
+            <!-- 현재 로그인한 사용자 번호를 JavaScript에서 사용할 수 있도록 설정 -->
+            <script>
+                const authenticatedUserNo = [[${authenticatedUser.no}]];
+            </script>
+
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{footer}"></div>
+
+
+<!--  수집품 상세 화면  -->
+<div class="layer collection-view-layer"></div>
+
+<script src="/js/board.js"></script>
+<script src="/js/collection.js"></script>
+
+<script>
+
+
+    function changeMainImage(src) {
+        document.getElementById('mainCollectionImage').src = src;
+    }
+
+
+    function zoomIn(event) {
+        const mainImage = document.getElementById('mainCollectionImage');
+        const zoomGuide = document.getElementById('zoomMouseGuide');
+        const rect = mainImage.getBoundingClientRect();
+
+        // 돋보기 표시
+        zoomGuide.style.display = 'block';
+
+        // 마우스 위치 계산
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+        // 이미지 확대 위치 설정
+        mainImage.style.transform = `scale(2)`;
+        mainImage.style.transformOrigin = `${x}% ${y}%`;
+    }
+
+    function zoomOut() {
+        const mainImage = document.getElementById('mainCollectionImage');
+        const zoomGuide = document.getElementById('zoomMouseGuide');
+
+        // 원상복구
+        zoomGuide.style.display = 'none';
+        mainImage.style.transform = 'scale(1)';
+    }
+
+
+
+
+
+
+
+    function showProfilePopup(event) {
+        var popup = document.getElementById('profilePopup');
+        popup.style.display = 'block';
+        popup.style.left = event.pageX + 'px';
+        popup.style.top = event.pageY + 'px';
+    }
+
+    function viewProfile(userNo) {
+        window.location.href = '/user/info/' + userNo;
+    }
+
+    // 페이지 다른 곳을 클릭하면 팝업 닫기
+    document.addEventListener('click', function(event) {
+        var popup = document.getElementById('profilePopup');
+        var authorName = document.querySelector('.author-name');
+        if (popup.style.display === 'block' && !popup.contains(event.target) && event.target !== authorName) {
+            popup.style.display = 'none';
+        }
+    });
+
+    // 수집품 조회 화면 열기 (게시글에서 호출)
+    function openCollectionViewModalFromBoard(collectionNo) {
+        fetchCollectionViewFromBoard(collectionNo);
+        openOverlay();
+        fadeInWithFlex(document.querySelector(".collection-view-layer"));
+    }
+
+    function fetchCollectionViewFromBoard(no) {
+        console.log("Fetching collection view for board:", no);
+
+        fetch(`/collection/viewFromBoard?no=${no}`)
+            .then(response => {
+                if (!response.ok) {
+                    console.error("Failed to fetch collection view:", response.statusText);
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                console.log("Fetched HTML:", html); // 서버에서 반환한 HTML을 출력
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                const newContent = doc.querySelector('.collection-view-layer').innerHTML;
+                if (newContent) {
+                    document.querySelector('.collection-view-layer').innerHTML = newContent;
+
+                    // 필요한 이벤트 초기화
+                    document.addEventListener("DOMContentLoaded", function () {
+                        showSlides(collectionSlideIndex);
+                    });
+                } else {
+                    console.error("HTML does not contain '.collection-view-layer'.");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching collection view:", error);
+            });
+    }
+
+
+</script>
+</body>
+</html>

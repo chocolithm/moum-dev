@@ -1287,7 +1287,50 @@ a {
     gap: 10px; /* 버튼 간격 */
     white-space: nowrap; /* 한 줄로 유지 */
 }
+.category-filter-container .category-button {
+    border: 1px solid #ddd; /* 명확히 지정 */
+}
 
+.bragging-category-button{
+    display: inline-block;
+    background-color: #ffffff;
+    border: 2px solid #ffffff; /* 테두리를 두껍게 */
+    border-radius: 25px; /* 더 둥글게 */
+    padding: 15px 30px; /* 버튼 안의 여백을 증가 */
+    font-size: 18px; /* 글씨 크기 증가 */
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+}
+
+/* 활성화된 버튼 */
+.bragging-category-button.active {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* 버튼 호버 효과 */
+.bragging-category-button:hover {
+    background-color: #f0f0f0;
+    color: #000;
+    transform: scale(1.05); /* 버튼을 약간 확대 */
+}
+
+
+.bragging-button-group-right {
+    margin-left: auto;
+    display: flex; /* 플렉스 박스 사용 */
+    gap: 15px; /* 버튼 간 간격 증가 */
+}
+
+.bragging-button-group-right .bragging-category-button {
+    flex: 0 1 auto; /* 버튼 크기 자동 조정 */
+    width: 180px; /* 버튼 너비 고정 (필요 시 제거) */
+    height: 60px; /* 버튼 높이 고정 */
+}
 
 
 /* 버튼 스타일 */

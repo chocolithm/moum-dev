@@ -12,6 +12,9 @@ public interface BoardService {
 
     Board get(int no) throws Exception;
 
+    Board getBragging(int no) throws Exception;
+
+
     boolean update(Board board) throws Exception;
 
     boolean completeTrade(int no) throws Exception;

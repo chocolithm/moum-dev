@@ -135,6 +135,47 @@
     </select>
 
 
+    <select id="selectByBraggingId" resultMap="BoardMap" parameterType="int">
+        SELECT
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.user_id as writer_id,
+        u.nickname,
+        u.photo as user_photo,
+        u.end_date,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        b.maincategory_id,
+        mc.category_name,
+        tb.collection_id,
+        c.name AS collection_name,
+        bp.photo_id,
+        bp.board_id AS bp_board_id,
+        bp.filename,
+        bp.origin_filename,
+        cp.photo_id AS collection_photo_id,
+        cp.filename AS collection_filename,
+        cp.origin_filename AS collection_origin_filename,
+        (SELECT COUNT(*) FROM comment c WHERE c.board_id = b.board_id) AS comment_count
+
+        FROM
+        board b
+        LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
+        LEFT JOIN bragging_board tb ON b.board_id = tb.board_id
+        LEFT JOIN collection c ON tb.collection_id = c.collection_id
+        LEFT JOIN collection_photo cp ON c.collection_id = cp.collection_id
+        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        WHERE
+        b.board_id = #{no} AND b.is_deleted = 0
+    </select>
+
+
 
 
 
@@ -192,6 +233,20 @@
         #{price},
         #{sellOrSoldStatus},
         #{tradeType}
+        )
+    </insert>
+
+
+
+    <!-- insertTrade 수정 -->
+    <insert id="insertBragging" parameterType="moum.project.vo.Board">
+        INSERT INTO bragging_board (
+        board_id,
+        collection_id
+        )
+        VALUES (
+        #{no},
+        #{collection.no}
         )
     </insert>
 
@@ -344,6 +399,7 @@
         WHERE
         b.is_deleted = 0
         AND b.is_popular = TRUE
+        AND b.board_type = 'general'
         ORDER BY
         b.post_date DESC
         LIMIT #{offset}, #{limit}
@@ -979,10 +1035,6 @@
 
 
 
-
-
-
-
     <!-- 자랑하기 게시글 페이징 조회 (listBraggingPosts) -->
     <select id="listBraggingPosts" resultMap="BoardMap" parameterType="map">
         SELECT
@@ -998,15 +1050,16 @@
         b.board_type,
         mc.maincategory_id,
         mc.category_name, -- 추가: maincategory 데이터를 가져옴
-        bp.photo_id,
-        bp.filename,
-        bp.origin_filename,
+        bp.photo_id as collection_photo_id,
+        bp.filename as collection_filename,
+        bp.origin_filename as collection_origin_filename,
         COUNT(l.board_id) AS like_count
         FROM
         board b
         LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id -- maincategory 테이블과 조인
         LEFT JOIN user u ON b.user_id = u.user_id
-        LEFT JOIN board_photo bp ON b.board_id = bp.board_id
+        LEFT JOIN bragging_board bb ON b.board_id = bb.board_id
+        LEFT JOIN collection_photo bp ON bb.collection_id = bp.collection_id
         LEFT JOIN likes l ON b.board_id = l.board_id
         WHERE b.is_deleted = 0 AND b.board_type = 'bragging'
         GROUP BY
@@ -1025,16 +1078,48 @@
         WHERE board_type = 'bragging' AND is_deleted = 0
     </select>
 
-    <!-- 3. 조회수 100 이상 인기 자랑하기 게시글 목록 조회 -->
-    <select id="listBraggingPopularPosts" resultMap="BoardMap">
+
+
+
+
+
+
+
+
+
+
+    <!-- 자랑하기 게시글 페이징 조회 (listBraggingPopularPosts) -->
+    <select id="listBraggingPopularPosts" resultMap="BoardMap" parameterType="map">
         SELECT
-        b.board_id, b.title, b.content, b.user_id, b.post_date, b.view_count,
-        b.is_public, b.is_deleted, b.board_type,
-        mc.maincategory_id, mc.category_name
-        FROM board b
-        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
-        WHERE b.board_type = 'bragging' AND b.is_deleted = 0 AND b.view_count >= #{minViewCount}
-        ORDER BY b.view_count DESC
+        b.board_id,
+        b.title,
+        b.content,
+        b.user_id,
+        u.nickname,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        mc.maincategory_id,
+        mc.category_name, -- 추가: maincategory 데이터를 가져옴
+        bp.photo_id as collection_photo_id,
+        bp.filename as collection_filename,
+        bp.origin_filename as collection_origin_filename,
+        COUNT(l.board_id) AS like_count
+        FROM
+        board b
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id -- maincategory 테이블과 조인
+        LEFT JOIN user u ON b.user_id = u.user_id
+        LEFT JOIN bragging_board bb ON b.board_id = bb.board_id
+        LEFT JOIN collection_photo bp ON bb.collection_id = bp.collection_id
+        LEFT JOIN likes l ON b.board_id = l.board_id
+        WHERE b.is_deleted = 0 AND b.board_type = 'bragging' AND b.is_popular = 1
+        GROUP BY
+        b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,
+        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename
+        ORDER BY
+        b.board_id DESC
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -1044,6 +1129,12 @@
         FROM board
         WHERE board_type = 'bragging' AND is_deleted = 0 AND view_count >= #{minViewCount}
     </select>
+
+
+
+
+
+
 
     <!-- 5. 조회수 100 이상 인기 자랑하기 게시글 검색 -->
     <select id="searchBraggingPopularPosts" resultMap="BoardMap">

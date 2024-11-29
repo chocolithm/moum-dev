@@ -60,6 +60,9 @@ public class DefaultBoardService implements BoardService {
         if (board.getBoardType().equals("trade")) {
             boardDao.insertTrade(board);
         }
+        if (board.getBoardType().equals("bragging")) {
+            boardDao.insertBragging(board);
+        }
     }
 
 
@@ -72,6 +75,11 @@ public class DefaultBoardService implements BoardService {
     @Override
     public Board get(int no) throws Exception {
         return boardDao.selectById(no); // 게시글 조회 로직
+    }
+
+    @Override
+    public Board getBragging(int no) throws Exception {
+        return boardDao.selectByBraggingId(no); // 게시글 조회 로직
     }
 
     @Override

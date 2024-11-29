@@ -61,47 +61,7 @@ public class BoardController {
 
 
 
-  @GetMapping("/braggingPopularList")
-  public String braggingPopularList(@RequestParam(value = "page", defaultValue = "1") int page,
-                                    @RequestParam(value = "size", defaultValue = "12") int size,
-                                    @RequestParam(value = "keyword", required = false) String keyword,
-                                    @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
-                                    Model model,
-                                    @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-    int offset = (page - 1) * size;
-    List<Board> popularBraggingPosts;
-    int totalBraggingPosts;
-
-    // 검색 조건에 따라 게시글 조회
-    if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
-      popularBraggingPosts = boardService.searchBraggingPopularPosts(keyword, categoryNo, offset, size, 100);
-      totalBraggingPosts = boardService.countBraggingPopularSearchResults(keyword, categoryNo, 100);
-    } else {
-      popularBraggingPosts = boardService.listBraggingPopularPosts(offset, size, 100);
-      totalBraggingPosts = boardService.countBraggingPopularPosts(100);
-    }
-
-    // 댓글 개수 추가
-    for (Board board : popularBraggingPosts) {
-      int commentCount = commentService.countCommentsByBoardId(board.getNo());
-      board.setCommentCount(commentCount);
-    }
-
-    // 페이징 처리
-    int totalPages = (int) Math.ceil((double) totalBraggingPosts / size);
-    model.addAttribute("popularBraggingPosts", popularBraggingPosts);
-    model.addAttribute("currentPage", page);
-    model.addAttribute("totalPages", totalPages);
-    model.addAttribute("keyword", keyword);
-    model.addAttribute("categoryNo", categoryNo);
-
-    // Maincategory 목록 추가
-    List<Maincategory> maincategoryList = categoryService.listMaincategory();
-    model.addAttribute("maincategoryList", maincategoryList);
-
-    return "board/braggingPopularList";
-  }
 
   @GetMapping("/braggingList")
   public String listBraggingPosts(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -236,6 +196,52 @@ public class BoardController {
     return "board/boardList";
   }
 
+
+
+
+
+
+  @GetMapping("/braggingPopularList")
+  public String braggingPopularList(@RequestParam(value = "page", defaultValue = "1") int page,
+                                    @RequestParam(value = "size", defaultValue = "12") int size,
+                                    @RequestParam(value = "keyword", required = false) String keyword,
+                                    @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
+                                    Model model,
+                                    @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    int offset = (page - 1) * size;
+    List<Board> popularBraggingPosts;
+    int totalBraggingPosts;
+
+    // 검색 조건에 따라 게시글 조회
+    if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
+      popularBraggingPosts = boardService.searchBraggingPopularPosts(keyword, categoryNo, offset, size, 100);
+      totalBraggingPosts = boardService.countBraggingPopularSearchResults(keyword, categoryNo, 100);
+    } else {
+      popularBraggingPosts = boardService.listBraggingPopularPosts(offset, size, 100);
+      totalBraggingPosts = boardService.countBraggingPopularPosts(100);
+    }
+
+    // 댓글 개수 추가
+    for (Board board : popularBraggingPosts) {
+      int commentCount = commentService.countCommentsByBoardId(board.getNo());
+      board.setCommentCount(commentCount);
+    }
+
+    // 페이징 처리
+    int totalPages = (int) Math.ceil((double) totalBraggingPosts / size);
+    model.addAttribute("popularBraggingPosts", popularBraggingPosts);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+    model.addAttribute("keyword", keyword);
+    model.addAttribute("categoryNo", categoryNo);
+
+    // Maincategory 목록 추가
+    List<Maincategory> maincategoryList = categoryService.listMaincategory();
+    model.addAttribute("maincategoryList", maincategoryList);
+
+    return "board/braggingPopularList";
+  }
 
   @GetMapping("/popularList")
   public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -539,6 +545,65 @@ public class BoardController {
     model.addAttribute("comments", comments);
     model.addAttribute("liked", hasLiked);
     return "board/boardView";
+  }
+
+
+  @GetMapping("/braggingBoardView")
+  public String braggingBoardView(@RequestParam("no") int no, Model model,
+                     @AuthenticationPrincipal UserDetails userDetails, WebRequest webRequest) throws Exception {
+
+    // 게시글 상세 정보 가져오기
+    Board board = boardService.getBragging(no);
+    if (board == null) {
+      throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다: " + no);
+    }
+
+    // 로그인한 사용자 정보 가져오기
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+
+    Achievement primaryAchievement = achievementService.findPrimary(board.getUser().getNo());
+
+    // 수집품의 첨부파일 목록 가져오기
+    if (board.getBoardType().equals("bragging") && board.getCollection() != null) {
+      Collection collection = collectionService.get(board.getCollection().getNo());
+      board.setCollection(collection);
+    }
+
+    // 게시글 작성자 여부 추가
+    model.addAttribute("board", board);
+    model.addAttribute("authenticated", board.getUserNo() == loginUser.getNo());
+    model.addAttribute("authenticatedUser", loginUser);
+    model.addAttribute("primaryAchievement", primaryAchievement);
+
+    // 추천수 가져오기
+    int likeCount = likesService.countLikesByBoard(no);
+    board.setLikeCount(likeCount); // Board 객체에 추천수를 설정
+
+    // 댓글 개수 가져오기
+    int commentCount = commentService.countCommentsByBoardId(no);
+    board.setCommentCount(commentCount); // Board 객체에 댓글 개수를 설정
+
+    // 세션에서 해당 게시글을 조회한 이력이 있는지 확인
+    String sessionAttributeKey = "viewedBoard_" + no;
+    Boolean hasViewed = (Boolean) webRequest.getAttribute(sessionAttributeKey, WebRequest.SCOPE_SESSION);
+
+    // 조회 이력이 없으면 조회수 증가 및 세션에 기록
+    if (hasViewed == null || !hasViewed) {
+      boardService.increaseViewCount(board.getNo());
+      webRequest.setAttribute(sessionAttributeKey, true, WebRequest.SCOPE_SESSION);
+    }
+
+    // 댓글 목록 가져오기
+    List<CommentResponse> comments = commentService.findAllComment(no);
+
+    // 좋아요 정보 가져오기
+    boolean hasLiked = likesService.hasLiked(board.getNo(), loginUser.getNo());
+
+    // 모델에 게시글과 댓글 정보 추가
+    model.addAttribute("board", board);
+    model.addAttribute("comments", comments);
+    model.addAttribute("liked", hasLiked);
+    return "board/braggingBoardView";
   }
 
 
@@ -885,6 +950,14 @@ public class BoardController {
 
         // 거래 상태를 '거래중'으로 설정 (false가 거래중)
         board.setSellOrSoldStatus(false);
+      }
+
+      if ("bragging".equals(board.getBoardType())) {
+        // 수집품 설정
+        if (collectionNo != null) {
+          Collection collection = collectionService.get(collectionNo);
+          board.setCollection(collection);
+        }
       }
 
       // 첨부 파일 업로드 및 설정
