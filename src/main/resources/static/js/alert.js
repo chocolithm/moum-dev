@@ -17,7 +17,7 @@ function openAlertModal() {
   fadeIn(alert_layer);
   alert_btn.onclick = () => closeAlertModal();
 
-  document.querySelector("main").addEventListener("click", function () {
+  document.querySelector("main").addEventListener("mousedown", function () {
     closeAlertModal();
   }, { once: true });
 }

@@ -968,6 +968,8 @@ a {
     gap: 15px;
     padding: 20px;
     background: #ffffff;
+    background-image: url("https://img.freepik.com/free-vector/display-window-with-picture-frame_1017-1616.jpg");
+    background-repeat: space;
     border-radius: 8px;
     grid-template-rows: repeat(3, 350px); /* 3행 각각 높이 300px로 설정 */
 }

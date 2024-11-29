@@ -111,7 +111,7 @@ function openChatroomModal() {
   chat_btn.onclick = () => closeChatroomModal();
   fadeIn(chatroom_layer);
 
-  document.querySelector("main").addEventListener("onmousedown", function () {
+  document.querySelector("main").addEventListener("mousedown", function () {
     closeChatroomModal();
   }, { once: true });
 }
