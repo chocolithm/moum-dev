@@ -252,8 +252,8 @@ public class BoardController {
     } else {
       popularBoards = boardService.listPopularByPage(offset, size);
       totalBoards = boardService.countPopularPosts();
-//      System.out.println(popularBoards.get(0));
     }
+    System.out.println("게시글 수: " + popularBoards.size());
     // 각 게시글의 댓글 개수 설정 및 maincategory 확인
     for (Board board : popularBoards) {
       int commentCount = commentService.countCommentsByBoardId(board.getNo());

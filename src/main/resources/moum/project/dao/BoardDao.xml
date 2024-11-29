@@ -393,6 +393,8 @@
         b.is_deleted = 0
         AND b.is_popular = TRUE
         AND b.board_type = 'general'
+        GROUP BY
+        b.board_id
         ORDER BY
         b.post_date DESC
         LIMIT #{offset}, #{limit}
@@ -787,6 +789,8 @@
         <if test="categoryNo != null">
             AND b.maincategory_id = #{categoryNo}
         </if>
+        GROUP BY
+        b.board_id
         ORDER BY
         b.board_id DESC
         LIMIT #{offset}, #{limit}
