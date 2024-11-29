@@ -21,4 +21,6 @@ public interface CollectionService {
 
   boolean deleteFile(int no) throws Exception;
 
+  boolean setPrimaryPhoto(Collection collection, int fileNo) throws Exception;
+
 }

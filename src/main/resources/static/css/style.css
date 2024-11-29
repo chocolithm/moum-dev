@@ -323,7 +323,7 @@ footer {
     background: white;
     width: 700px;
     margin: 0 auto;
-    border-radius: 25px;
+    border-radius: 10px;
     display: none;
     position: fixed;
     top: 50%;

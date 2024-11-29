@@ -76,4 +76,15 @@ public class DefaultCollectionService implements CollectionService {
   public boolean deleteFile(int no) throws Exception {
     return collectionDao.deleteFile(no);
   }
+
+  @Override
+  @Transactional
+  public boolean setPrimaryPhoto(Collection collection, int fileNo) throws Exception {
+    if (collectionDao.deleteFilesExceptOne(collection.getNo(), fileNo)) {
+      if (collectionDao.insertFiles(collection)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
