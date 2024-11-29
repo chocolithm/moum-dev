@@ -451,11 +451,16 @@
   position: relative;
 }
 
+/* .collection-form-layer .collection-images #mainCollectionImage,
+.collection-view-layer .collection-images #mainCollectionImage {
+  height: 80%;
+} */
+
 .collection-form-layer .main-image,
 .collection-view-layer .main-image {
   position: relative;
-  max-width: 400px;
-  max-height: 400px;
+  width: 400px;
+  height: 400px;
   margin: 0 auto;
   overflow: hidden;
 }

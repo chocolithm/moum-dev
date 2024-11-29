@@ -113,6 +113,7 @@ function addCollection() {
             formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value.trim());
             formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value.trim());
             formData.append("status.no", document.querySelector("#addForm #statusNo").value);
+            formData.append("memo", document.querySelector("#addForm #memo").value);
 
             const filesInput = document.querySelector("#addForm #files");
             for (let i = 0; i < filesInput.files.length; i++) {
@@ -311,6 +312,7 @@ function updateCollection() {
             formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value.trim());
             formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
             formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
+            formData.append("memo", document.querySelector("#updateForm #memo").value);
 
             for (let i = 0; i < filesArray.length; i++) {
                 formData.append("files", filesArray[i]);
@@ -742,7 +744,7 @@ function previewImage(event) {
                 img.className = "new-image";
                 img.onclick = () => changeMainImage(img.src);
                 if (i == 0) {
-                    changeMainImage(img.src)
+                    changeMainImageFromForm(img);
                 }
 
                 span.append(btn, img);
@@ -781,6 +783,10 @@ function filterCategories(element) {
 
 function triggerFileInput() {
     document.getElementById('files').click();
+}
+
+function changeMainImageFromForm(element) {
+    document.getElementById('mainCollectionImage').src = element.src;
 }
 
 function changeMainImage(element) {
