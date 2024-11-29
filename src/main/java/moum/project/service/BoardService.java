@@ -12,6 +12,9 @@ public interface BoardService {
 
     Board get(int no) throws Exception;
 
+    Board getBragging(int no) throws Exception;
+
+
     boolean update(Board board) throws Exception;
 
     boolean completeTrade(int no) throws Exception;
@@ -91,10 +94,8 @@ public interface BoardService {
     int countBraggingSearchResults(String keyword, Integer categoryNo) throws Exception;
 
     // Bragging Popular 관련 메서드
-    List<Board> listBraggingPopularPosts(int offset, int size, int minViewCount);
-    int countBraggingPopularPosts(int minViewCount);
-    List<Board> searchBraggingPopularPosts(String keyword, Integer categoryNo, int offset, int size, int minViewCount);
-    int countBraggingPopularSearchResults(String keyword, Integer categoryNo, int minViewCount);
+    List<Board> listWeeklyPopularBraggingPosts(int offset, int size);
+    int countWeeklyBraggingPopularPosts();
 
 
 }

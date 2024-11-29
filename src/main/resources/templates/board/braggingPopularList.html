@@ -26,110 +26,61 @@
 <main style="background-color: white">
     <div class="page-container">
 
-        <div class="category-filter-container">
-            <div class="filter-buttons-wrapper">
-                <div class="filter-buttons" id="categoryButtons">
-                    <!-- 전체 카테고리 버튼 -->
-                    <a class="btn category-button"
-                       th:classappend="${categoryNo == null ? 'active' : ''}"
-                       th:href="@{/board/braggingPopularList(categoryNo=null, keyword=${keyword})}">
-                        전체
-                    </a>
-                    <!-- 카테고리 동적 추가 -->
-                    <a th:each="category : ${maincategoryList}"
-                       class="btn category-button"
-                       th:classappend="${category.no == categoryNo ? 'active' : ''}"
-                       th:href="@{/board/braggingPopularList(categoryNo=${category.no}, keyword=${keyword})}"
-                       th:text="${category.name}">
-                    </a>
-                </div>
+
+
+
+        <div class="grid-item">
+            <div class="bragging-button-group-right">
+                <button class="bragging-category-button active" onclick="location.href='/board/braggingPopularList'">금주의 수집품</button>
+                <button class="bragging-category-button recent" onclick="location.href='/board/braggingList'">전시품
+                </button>
             </div>
         </div>
 
-
         <div class="grid-option">
             <div class="grid-item">
-                <div class="button-group-left">
-                    <button class="category-button active" onclick="location.href='/board/braggingPopularList'">인기 게시글</button>
-                    <button class="category-button recent" onclick="location.href='/board/braggingList'">최근 게시글
-                    </button>
-                </div>
-                <div class="button-group-right">
-                    <button class="category-button write-button" onclick="location.href='/board/boardDetailForm'">글쓰기
-                    </button>
-                </div>
+
+
             </div>
         </div>
 
         <div class="grid-container">
             <!-- 각 게시글을 반복하여 표시 -->
-            <div class="grid-item" th:each="bragging : ${recentBraggings}">
+            <div class="grid-item" th:each="board : ${popularBraggingPosts}">
                 <!-- 첨부된 이미지가 있을 경우 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
-                <a th:href="@{/bragging/braggingView(no=${bragging.no})}">
+                <a th:href="@{/board/braggingBoardView(no=${board.no})}">
                     <img alt="게시글 이미지"
                          class="item-image"
-                         th:if="${bragging.attachedFiles != null and #lists.size(bragging.attachedFiles) > 0}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/bragging/' + ${bragging.attachedFiles[0].filename}}">
-                    <img alt="기본 이미지"
-                         class="item-image"
-                         th:if="${bragging.attachedFiles == null or #lists.size(bragging.attachedFiles) == 0}"
-                         th:src="@{/images/bragging/defaultBraggingPicture.jpg}">
+                         th:if="${board.collection.attachedFiles != null and #lists.size(board.collection.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}">
+
                 </a>
 
                 <!-- 게시글 내용 영역 -->
                 <div class="item-content">
                     <!-- 게시글 링크 (이미지 외에도 다른 내용에도 링크 적용 가능) -->
-                    <a th:href="@{/bragging/braggingView(no=${bragging.no})}">
+                    <a th:href="@{/board/boardView(no=${board.no})}">
                         <!-- 게시글 제목 -->
-                        <div class="item-title" th:text="${bragging.title}">게시글 제목</div>
+                        <div class="item-title" th:text="${board.title}">게시글 제목</div>
                     </a>
 
                     <!-- 게시글 작성자와 작성일 -->
                     <div class="item-number-info">
-                        <div class="item-number-nickname" th:text="${bragging.user.nickname}">작성자</div>
-                        <div class="item-number-date" th:text="${#dates.format(bragging.postDate, 'yyyy.MM.dd.')}">
-                            2024-11-15
-                        </div>
+                        <div class="item-number-nickname" th:text="${board.user.nickname}">작성자</div>
+
                     </div>
 
                     <!-- 게시글 조회수 및 추천수 -->
                     <div class="item-numbers">
-                        <div class="item-number-view" th:text="'👁️‍🗨️ ' + ${bragging.viewCount}">👁️‍🗨️ 100</div>
-                        <div class="item-number-like" th:text="'🤍 ' + ${bragging.likeCount}">🤍 50</div>
-                        <div class="comment-count" th:text="'🗨️ ' + ${bragging.commentCount} + ''">🗨️ 20</div>
+                        <div class="item-number-view" th:text="'👁️‍🗨️ ' + ${board.viewCount}">👁️‍🗨️ 100</div>
+                        <div class="item-number-like" th:text="'🤍 ' + ${board.likeCount}">🤍 50</div>
                     </div>
                 </div>
             </div>
         </div>
 
 
-        <!-- 페이징 !-->
-        <div class="pagination-container mt-4">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <!-- Previous Button -->
-                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link bg-white text-dark"
-                           th:href="@{/bragging/braggingPopularList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">이전</a>
-                    </li>
 
-                    <!-- Page Numbers -->
-                    <li class="page-item"
-                        th:classappend="${i == currentPage ? 'active' : ''}"
-                        th:each="i : ${#numbers.sequence(1, totalPages)}">
-                        <a class="page-link"
-                           th:classappend="${i == currentPage ? 'bg-dark text-white' : 'bg-white text-dark'}"
-                           th:href="@{/bragging/braggingPopularList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"
-                           th:text="${i}"></a>
-                    </li>
-
-                    <!-- Next Button -->
-                    <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link bg-white text-dark"
-                           th:href="@{/bragging/braggingPopularList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">다음</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
 
         <!-- Custom CSS to remove the blue outline on link buttons -->

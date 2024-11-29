@@ -26,38 +26,40 @@
 <main style="background-color: white">
     <div class="page-container">
 
-        <div class="category-filter-container">
-            <div class="filter-buttons-wrapper">
-                <div class="filter-buttons" id="categoryButtons">
-                    <!-- 전체 카테고리 버튼 -->
-                    <a class="btn category-button"
-                       draggable="false"
-                       th:classappend="${categoryNo == null ? 'active' : ''}"
-                       th:href="@{/board/braggingList(categoryNo=null, keyword=${keyword})}"> <!-- 여기 추가 -->
-                        전체
-                    </a>
-                    <!-- 동적으로 카테고리 버튼 추가 -->
-                    <a class="btn category-button"
-                       draggable="false"
-                       th:classappend="${category.no == categoryNo ? 'active' : ''}"
-                       th:each="category : ${maincategoryList}"
-                       th:href="@{/board/braggingList(categoryNo=${category.no}, keyword=${keyword})}"
-                       th:text="${category.name}"> <!-- 여기 추가 -->
-                    </a>
-                </div>
+<!--        <div class="category-filter-container">-->
+<!--            <div class="filter-buttons-wrapper">-->
+<!--                <div class="filter-buttons" id="categoryButtons">-->
+<!--                    &lt;!&ndash; 전체 카테고리 버튼 &ndash;&gt;-->
+<!--                    <a class="btn category-button"-->
+<!--                       draggable="false"-->
+<!--                       th:classappend="${categoryNo == null ? 'active' : ''}"-->
+<!--                       th:href="@{/board/braggingList(categoryNo=null, keyword=${keyword})}"> &lt;!&ndash; 여기 추가 &ndash;&gt;-->
+<!--                        전체-->
+<!--                    </a>-->
+<!--                    &lt;!&ndash; 동적으로 카테고리 버튼 추가 &ndash;&gt;-->
+<!--                    <a class="btn category-button"-->
+<!--                       draggable="false"-->
+<!--                       th:classappend="${category.no == categoryNo ? 'active' : ''}"-->
+<!--                       th:each="category : ${maincategoryList}"-->
+<!--                       th:href="@{/board/braggingList(categoryNo=${category.no}, keyword=${keyword})}"-->
+<!--                       th:text="${category.name}"> &lt;!&ndash; 여기 추가 &ndash;&gt;-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="grid-item">
+            <div class="button-group-left">
+                <button class="category-button popular" onclick="location.href='/board/braggingPopularList'">금주의 수집품</button>
+                <button class="category-button recent active" onclick="location.href='/board/braggingList'">전시품
+                </button>
             </div>
         </div>
 
-
         <div class="grid-option">
             <div class="grid-item">
-                <div class="button-group-left">
-                    <button class="category-button popular" onclick="location.href='/board/braggingPopularList'">인기 게시글</button>
-                    <button class="category-button recent active" onclick="location.href='/board/braggingList'">최근 게시글
-                    </button>
-                </div>
+
                 <div class="button-group-right">
-                    <button class="category-button write-button" onclick="location.href='/board/boardDetailForm'">글쓰기
+                    <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">전시하기
                     </button>
                 </div>
             </div>
@@ -67,21 +69,17 @@
             <!-- 각 게시글을 반복하여 표시 -->
             <div class="grid-item" th:each="board : ${braggingBoards}">
                 <!-- 첨부된 이미지가 있을 경우 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
-                <a th:href="@{/board/boardView(no=${board.no})}">
+                <a th:href="@{/board/braggingBoardView(no=${board.no})}">
                     <img alt="게시글 이미지"
                          class="item-image"
-                         th:if="${board.attachedFiles != null and #lists.size(board.attachedFiles) > 0}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/board/' + ${board.attachedFiles[0].filename}}">
-                    <img alt="기본 이미지"
-                         class="item-image"
-                         th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
-                         th:src="@{/images/board/defaultBraggingPicture.jpg}">
+                         th:if="${board.collection.attachedFiles != null and #lists.size(board.collection.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}">
                 </a>
 
                 <!-- 게시글 내용 영역 -->
                 <div class="item-content">
                     <!-- 게시글 링크 (이미지 외에도 다른 내용에도 링크 적용 가능) -->
-                    <a th:href="@{/board/boardView(no=${board.no})}">
+                    <a th:href="@{/board/braggingBoardView(no=${board.no})}">
                         <!-- 게시글 제목 -->
                         <div class="item-title" th:text="${board.title}">게시글 제목</div>
                     </a>
