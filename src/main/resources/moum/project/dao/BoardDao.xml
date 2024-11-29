@@ -1049,19 +1049,20 @@
         b.is_deleted,
         b.board_type,
         mc.maincategory_id,
-        mc.category_name, -- 추가: maincategory 데이터를 가져옴
-        bp.photo_id as collection_photo_id,
-        bp.filename as collection_filename,
-        bp.origin_filename as collection_origin_filename,
+        mc.category_name,
+        bp.photo_id AS collection_photo_id,
+        bp.filename AS collection_filename,
+        bp.origin_filename AS collection_origin_filename,
         COUNT(l.board_id) AS like_count
         FROM
         board b
-        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id -- maincategory 테이블과 조인
+        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id
         LEFT JOIN user u ON b.user_id = u.user_id
         LEFT JOIN bragging_board bb ON b.board_id = bb.board_id
         LEFT JOIN collection_photo bp ON bb.collection_id = bp.collection_id
         LEFT JOIN likes l ON b.board_id = l.board_id
-        WHERE b.is_deleted = 0 AND b.board_type = 'bragging'
+        WHERE
+        b.is_deleted = 0 AND b.board_type = 'bragging'
         GROUP BY
         b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,
         b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename
@@ -1069,6 +1070,7 @@
         b.board_id DESC
         LIMIT #{offset}, #{limit}
     </select>
+
 
 
     <!-- 2. 자랑하기 게시글 총 개수 조회 -->
@@ -1085,10 +1087,7 @@
 
 
 
-
-
-
-    <!-- 이전 주(월요일~일요일) 추천 상위 게시글 조회 -->
+    <!-- 추천 수가 1 이상인 자랑하기 게시글 조회 (등록 순서 기준) -->
     <select id="listWeeklyPopularBraggingPosts" resultMap="BoardMap">
         SELECT
         b.board_id,
@@ -1117,17 +1116,59 @@
         WHERE
         b.is_deleted = 0
         AND b.board_type = 'bragging'
-        AND b.post_date BETWEEN
-        DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(DATE(NOW())) + 7 DAY) -- 이전 주 월요일
-        AND DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(DATE(NOW())) + 1 DAY) -- 이전 주 일요일
         GROUP BY
         b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,
         b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename
-        HAVING like_count > 0 -- 추천 수가 0 이상인 게시글만 포함
+        HAVING like_count >= 1
         ORDER BY
-        like_count DESC
+        b.post_date DESC -- 등록순 정렬
         LIMIT 10
     </select>
+
+
+
+
+
+    <!--    &lt;!&ndash; 이전 주(월요일~일요일) 추천 상위 게시글 조회 &ndash;&gt;-->
+<!--    <select id="listWeeklyPopularBraggingPosts" resultMap="BoardMap">-->
+<!--        SELECT-->
+<!--        b.board_id,-->
+<!--        b.title,-->
+<!--        b.content,-->
+<!--        b.user_id,-->
+<!--        u.nickname,-->
+<!--        b.post_date,-->
+<!--        b.view_count,-->
+<!--        b.is_public,-->
+<!--        b.is_deleted,-->
+<!--        b.board_type,-->
+<!--        mc.maincategory_id,-->
+<!--        mc.category_name,-->
+<!--        bp.photo_id AS collection_photo_id,-->
+<!--        bp.filename AS collection_filename,-->
+<!--        bp.origin_filename AS collection_origin_filename,-->
+<!--        COUNT(l.board_id) AS like_count-->
+<!--        FROM-->
+<!--        board b-->
+<!--        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id-->
+<!--        LEFT JOIN user u ON b.user_id = u.user_id-->
+<!--        LEFT JOIN bragging_board bb ON b.board_id = bb.board_id-->
+<!--        LEFT JOIN collection_photo bp ON bb.collection_id = bp.collection_id-->
+<!--        LEFT JOIN likes l ON b.board_id = l.board_id-->
+<!--        WHERE-->
+<!--        b.is_deleted = 0-->
+<!--        AND b.board_type = 'bragging'-->
+<!--        AND b.post_date BETWEEN-->
+<!--        DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(DATE(NOW())) + 7 DAY) &#45;&#45; 이전 주 월요일-->
+<!--        AND DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(DATE(NOW())) + 1 DAY) &#45;&#45; 이전 주 일요일-->
+<!--        GROUP BY-->
+<!--        b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,-->
+<!--        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename-->
+<!--        HAVING like_count > 0 &#45;&#45; 추천 수가 0 이상인 게시글만 포함-->
+<!--        ORDER BY-->
+<!--        like_count DESC-->
+<!--        LIMIT 10-->
+<!--    </select>-->
 
 
 
