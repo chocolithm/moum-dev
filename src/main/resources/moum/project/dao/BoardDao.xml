@@ -61,7 +61,6 @@
     </resultMap>
 
 
-
     <!-- 게시글 목록 조회 -->
     <select id="list" resultMap="BoardMap">
         SELECT
@@ -176,10 +175,6 @@
     </select>
 
 
-
-
-
-
     <!-- 새로운 첨부파일 추가 -->
     <insert id="insertAttachedFiles" parameterType="java.util.List">
         INSERT INTO board_photo (
@@ -198,7 +193,8 @@
     </insert>
 
 
-    <insert id="insert" parameterType="moum.project.vo.Board" useGeneratedKeys="true" keyProperty="no" keyColumn="board_id">
+    <insert id="insert" parameterType="moum.project.vo.Board" useGeneratedKeys="true" keyProperty="no"
+            keyColumn="board_id">
         INSERT INTO board (
         title,
         content,
@@ -235,7 +231,6 @@
         #{tradeType}
         )
     </insert>
-
 
 
     <!-- insertTrade 수정 -->
@@ -315,7 +310,6 @@
     </update>
 
 
-
     <!-- 조회수 증가 (increaseViewCount) -->
     <update id="increaseViewCount" parameterType="int">
         UPDATE board
@@ -363,7 +357,6 @@
         post_date DESC
         LIMIT #{no}
     </select>
-
 
 
     <select id="listPopularByPage" resultMap="BoardMap">
@@ -483,8 +476,6 @@
     </select>
 
 
-
-
     <!-- 게시글 페이징 조회 (listByPage) -->
     <select id="listByPage" resultMap="BoardMap" parameterType="map">
         SELECT
@@ -514,7 +505,8 @@
         b.is_deleted = 0
         GROUP BY
         b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,
-        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename
+        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename,
+        bp.origin_filename
         ORDER BY
         b.board_id DESC
         LIMIT #{offset}, #{limit}
@@ -524,47 +516,47 @@
     <!-- 관리자 게시글관리 목록 조회 -->
     <select id="listByPageFromAdmin" resultMap="BoardMap" parameterType="map">
         SELECT
-            b.board_id,
-            b.title,
-            b.user_id,
-            u.user_id as writer_id,
-            u.nickname,
-            u.end_date,
-            b.post_date,
-            b.view_count,
-            b.is_public,
-            b.is_deleted,
-            b.board_type,
-            COUNT(l.board_id) AS like_count
+        b.board_id,
+        b.title,
+        b.user_id,
+        u.user_id as writer_id,
+        u.nickname,
+        u.end_date,
+        b.post_date,
+        b.view_count,
+        b.is_public,
+        b.is_deleted,
+        b.board_type,
+        COUNT(l.board_id) AS like_count
         FROM
-            board b
-            left join user u on b.user_id = u.user_id
-            left join likes l on b.board_id = l.board_id
+        board b
+        left join user u on b.user_id = u.user_id
+        left join likes l on b.board_id = l.board_id
         WHERE
-            b.is_deleted = 0
-            <if test="board.no != 0">
-                AND b.board_id = #{board.no}
-            </if>
-            <if test="board.title != null">
-                AND b.title LIKE CONCAT('%', #{board.title}, '%')
-            </if>
-            <if test="board.user != null and board.user.nickname != null">
-                AND u.nickname LIKE CONCAT('%', #{board.user.nickname}, '%')
-            </if>
-            <if test="board.postDateString != null">
-                AND b.post_date LIKE CONCAT(#{board.postDateString}, '%')
-            </if>
-            <if test="board.viewCount > -1">
-                AND b.view_count = #{board.viewCount}
-            </if>
+        b.is_deleted = 0
+        <if test="board.no != 0">
+            AND b.board_id = #{board.no}
+        </if>
+        <if test="board.title != null">
+            AND b.title LIKE CONCAT('%', #{board.title}, '%')
+        </if>
+        <if test="board.user != null and board.user.nickname != null">
+            AND u.nickname LIKE CONCAT('%', #{board.user.nickname}, '%')
+        </if>
+        <if test="board.postDateString != null">
+            AND b.post_date LIKE CONCAT(#{board.postDateString}, '%')
+        </if>
+        <if test="board.viewCount > -1">
+            AND b.view_count = #{board.viewCount}
+        </if>
         GROUP BY
-            b.board_id, b.title, b.user_id, u.user_id, u.nickname, u.end_date,
-            b.post_date, b.view_count, b.is_public, b.is_deleted, b.board_type
+        b.board_id, b.title, b.user_id, u.user_id, u.nickname, u.end_date,
+        b.post_date, b.view_count, b.is_public, b.is_deleted, b.board_type
         <if test="board.likeCount > -1">
             HAVING COUNT(l.board_id) = #{board.likeCount}
         </if>
         ORDER BY
-            b.board_id desc
+        b.board_id desc
         LIMIT #{pageNo}, #{pageCount}
     </select>
 
@@ -572,34 +564,34 @@
     <select id="countFromAdmin" parameterType="moum.project.vo.Board">
         SELECT count(*)
         FROM
-            (SELECT count(*)
-            FROM
-                board b
-                left join user u on b.user_id = u.user_id
-                left join likes l on b.board_id = l.board_id
-            WHERE
-                b.is_deleted = 0
-                <if test="no != 0">
-                    AND b.board_id = #{no}
-                </if>
-                <if test="title != null">
-                    AND b.title LIKE CONCAT('%', #{title}, '%')
-                </if>
-                <if test="user != null and user.nickname != null">
-                    AND u.nickname LIKE CONCAT('%', #{user.nickname}, '%')
-                </if>
-                <if test="postDateString != null">
-                    AND b.post_date LIKE CONCAT(#{postDateString}, '%')
-                </if>
-                <if test="viewCount > -1">
-                    AND b.view_count = #{viewCount}
-                </if>
-            GROUP BY
-                b.board_id, b.title, b.user_id, u.user_id, u.nickname, u.end_date,
-                b.post_date, b.view_count, b.is_public, b.is_deleted, b.board_type
-            <if test="likeCount > -1">
-                HAVING COUNT(l.board_id) = #{likeCount}
-            </if>
+        (SELECT count(*)
+        FROM
+        board b
+        left join user u on b.user_id = u.user_id
+        left join likes l on b.board_id = l.board_id
+        WHERE
+        b.is_deleted = 0
+        <if test="no != 0">
+            AND b.board_id = #{no}
+        </if>
+        <if test="title != null">
+            AND b.title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="user != null and user.nickname != null">
+            AND u.nickname LIKE CONCAT('%', #{user.nickname}, '%')
+        </if>
+        <if test="postDateString != null">
+            AND b.post_date LIKE CONCAT(#{postDateString}, '%')
+        </if>
+        <if test="viewCount > -1">
+            AND b.view_count = #{viewCount}
+        </if>
+        GROUP BY
+        b.board_id, b.title, b.user_id, u.user_id, u.nickname, u.end_date,
+        b.post_date, b.view_count, b.is_public, b.is_deleted, b.board_type
+        <if test="likeCount > -1">
+            HAVING COUNT(l.board_id) = #{likeCount}
+        </if>
         ) AS count_table
     </select>
 
@@ -849,6 +841,7 @@
         WHERE
         b.is_deleted = 0
         AND b.is_popular = TRUE
+        AND b.board_type = 'general'
         <if test="keyword != null and keyword != ''">
             AND b.title LIKE CONCAT('%', #{keyword}, '%')
         </if>
@@ -861,8 +854,6 @@
     </select>
 
 
-
-
     <!-- 인기 게시글 검색 결과의 총 개수 조회 -->
     <select id="countPopularByKeywordAndCategory" resultType="int" parameterType="map">
         SELECT COUNT(*)
@@ -873,6 +864,7 @@
         WHERE
         b.is_deleted = 0
         AND b.is_popular = TRUE
+        AND b.board_type = 'general'
         <if test="keyword != null and keyword != ''">
             AND b.title LIKE CONCAT('%', #{keyword}, '%')
         </if>
@@ -931,7 +923,6 @@
         b.post_date DESC
         LIMIT #{offset}, #{limit}
     </select>
-
 
 
     <!-- 검색 결과의 총 개수 조회 -->
@@ -1021,20 +1012,6 @@
     </select>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- 자랑하기 게시글 페이징 조회 (listBraggingPosts) -->
     <select id="listBraggingPosts" resultMap="BoardMap" parameterType="map">
         SELECT
@@ -1065,12 +1042,12 @@
         b.is_deleted = 0 AND b.board_type = 'bragging'
         GROUP BY
         b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,
-        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename
+        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename,
+        bp.origin_filename
         ORDER BY
         b.board_id DESC
         LIMIT #{offset}, #{limit}
     </select>
-
 
 
     <!-- 2. 자랑하기 게시글 총 개수 조회 -->
@@ -1079,12 +1056,6 @@
         FROM board
         WHERE board_type = 'bragging' AND is_deleted = 0
     </select>
-
-
-
-
-
-
 
 
     <!-- 추천 수가 1 이상인 자랑하기 게시글 조회 (등록 순서 기준) -->
@@ -1118,7 +1089,8 @@
         AND b.board_type = 'bragging'
         GROUP BY
         b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,
-        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename
+        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename,
+        bp.origin_filename
         HAVING like_count >= 1
         ORDER BY
         b.post_date DESC -- 등록순 정렬
@@ -1126,50 +1098,46 @@
     </select>
 
 
-
-
-
     <!--    &lt;!&ndash; 이전 주(월요일~일요일) 추천 상위 게시글 조회 &ndash;&gt;-->
-<!--    <select id="listWeeklyPopularBraggingPosts" resultMap="BoardMap">-->
-<!--        SELECT-->
-<!--        b.board_id,-->
-<!--        b.title,-->
-<!--        b.content,-->
-<!--        b.user_id,-->
-<!--        u.nickname,-->
-<!--        b.post_date,-->
-<!--        b.view_count,-->
-<!--        b.is_public,-->
-<!--        b.is_deleted,-->
-<!--        b.board_type,-->
-<!--        mc.maincategory_id,-->
-<!--        mc.category_name,-->
-<!--        bp.photo_id AS collection_photo_id,-->
-<!--        bp.filename AS collection_filename,-->
-<!--        bp.origin_filename AS collection_origin_filename,-->
-<!--        COUNT(l.board_id) AS like_count-->
-<!--        FROM-->
-<!--        board b-->
-<!--        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id-->
-<!--        LEFT JOIN user u ON b.user_id = u.user_id-->
-<!--        LEFT JOIN bragging_board bb ON b.board_id = bb.board_id-->
-<!--        LEFT JOIN collection_photo bp ON bb.collection_id = bp.collection_id-->
-<!--        LEFT JOIN likes l ON b.board_id = l.board_id-->
-<!--        WHERE-->
-<!--        b.is_deleted = 0-->
-<!--        AND b.board_type = 'bragging'-->
-<!--        AND b.post_date BETWEEN-->
-<!--        DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(DATE(NOW())) + 7 DAY) &#45;&#45; 이전 주 월요일-->
-<!--        AND DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(DATE(NOW())) + 1 DAY) &#45;&#45; 이전 주 일요일-->
-<!--        GROUP BY-->
-<!--        b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,-->
-<!--        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename-->
-<!--        HAVING like_count > 0 &#45;&#45; 추천 수가 0 이상인 게시글만 포함-->
-<!--        ORDER BY-->
-<!--        like_count DESC-->
-<!--        LIMIT 10-->
-<!--    </select>-->
-
+    <!--    <select id="listWeeklyPopularBraggingPosts" resultMap="BoardMap">-->
+    <!--        SELECT-->
+    <!--        b.board_id,-->
+    <!--        b.title,-->
+    <!--        b.content,-->
+    <!--        b.user_id,-->
+    <!--        u.nickname,-->
+    <!--        b.post_date,-->
+    <!--        b.view_count,-->
+    <!--        b.is_public,-->
+    <!--        b.is_deleted,-->
+    <!--        b.board_type,-->
+    <!--        mc.maincategory_id,-->
+    <!--        mc.category_name,-->
+    <!--        bp.photo_id AS collection_photo_id,-->
+    <!--        bp.filename AS collection_filename,-->
+    <!--        bp.origin_filename AS collection_origin_filename,-->
+    <!--        COUNT(l.board_id) AS like_count-->
+    <!--        FROM-->
+    <!--        board b-->
+    <!--        LEFT JOIN maincategory mc ON b.maincategory_id = mc.maincategory_id-->
+    <!--        LEFT JOIN user u ON b.user_id = u.user_id-->
+    <!--        LEFT JOIN bragging_board bb ON b.board_id = bb.board_id-->
+    <!--        LEFT JOIN collection_photo bp ON bb.collection_id = bp.collection_id-->
+    <!--        LEFT JOIN likes l ON b.board_id = l.board_id-->
+    <!--        WHERE-->
+    <!--        b.is_deleted = 0-->
+    <!--        AND b.board_type = 'bragging'-->
+    <!--        AND b.post_date BETWEEN-->
+    <!--        DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(DATE(NOW())) + 7 DAY) &#45;&#45; 이전 주 월요일-->
+    <!--        AND DATE_SUB(DATE(NOW()), INTERVAL WEEKDAY(DATE(NOW())) + 1 DAY) &#45;&#45; 이전 주 일요일-->
+    <!--        GROUP BY-->
+    <!--        b.board_id, mc.maincategory_id, mc.category_name, u.nickname, b.post_date, b.title,-->
+    <!--        b.content, b.user_id, b.view_count, b.is_public, b.is_deleted, b.board_type, bp.photo_id, bp.filename, bp.origin_filename-->
+    <!--        HAVING like_count > 0 &#45;&#45; 추천 수가 0 이상인 게시글만 포함-->
+    <!--        ORDER BY-->
+    <!--        like_count DESC-->
+    <!--        LIMIT 10-->
+    <!--    </select>-->
 
 
     <!-- 주간(월요일~일요일) 자랑하기 게시글 총 개수 조회 -->
@@ -1182,10 +1150,6 @@
         AND post_date BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
         AND DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 6 DAY)
     </select>
-
-
-
-
 
 
     <!-- 5. 조회수 100 이상 인기 자랑하기 게시글 검색 -->
