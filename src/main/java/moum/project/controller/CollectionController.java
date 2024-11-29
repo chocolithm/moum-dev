@@ -2,6 +2,7 @@ package moum.project.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -306,6 +307,26 @@ public class CollectionController {
     }
 
     if (categoryService.addMaincategory(maincategory)) {
+      return "success";
+    }
+    return "failure";
+  }
+
+  @GetMapping("/setPrimaryPhoto")
+  @ResponseBody
+  public String setPrimaryPhoto(int collectionNo, int fileNo) throws Exception {
+    Collection collection = collectionService.get(collectionNo);
+    List<AttachedFile> attachedFileList = collection.getAttachedFiles();
+
+    Iterator<AttachedFile> iterator = attachedFileList.iterator();
+    while (iterator.hasNext()) {
+      AttachedFile attachedFile = iterator.next();
+      if (attachedFile.getNo() == fileNo) {
+        iterator.remove(); // 안전하게 제거
+      }
+    }
+
+    if (collectionService.setPrimaryPhoto(collection, fileNo)) {
       return "success";
     }
     return "failure";

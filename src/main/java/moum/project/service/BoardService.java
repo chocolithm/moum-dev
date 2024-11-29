@@ -24,8 +24,6 @@ public interface BoardService {
 
     List<Board> selectRecent(int limit);
 
-    List<Board> listAll() throws Exception;
-
     List<Board> listPopularByPage(int offset, int limit) throws Exception;
 
     int countPopularPosts() throws Exception;
@@ -34,7 +32,6 @@ public interface BoardService {
 
     List<Board> listTradeBuyPosts() throws Exception;
 
-    List<Board> listBraggingPosts() throws Exception;
 
     List<Board> listByPage(int pageNo, int pageCount) throws Exception;
 
@@ -86,6 +83,18 @@ public interface BoardService {
 
     int countTradeBuyPostsByKeywordAndCategory(String keyword, Integer categoryNo) throws Exception;
 
+
+    // Bragging 관련 메서드
+    List<Board> listBraggingPosts(int offset, int limit) throws Exception;
+    int countBraggingPosts() throws Exception;
+    List<Board> searchBraggingPosts(String keyword, Integer categoryNo, int offset, int limit) throws Exception;
+    int countBraggingSearchResults(String keyword, Integer categoryNo) throws Exception;
+
+    // Bragging Popular 관련 메서드
+    List<Board> listBraggingPopularPosts(int offset, int size, int minViewCount);
+    int countBraggingPopularPosts(int minViewCount);
+    List<Board> searchBraggingPopularPosts(String keyword, Integer categoryNo, int offset, int size, int minViewCount);
+    int countBraggingPopularSearchResults(String keyword, Integer categoryNo, int minViewCount);
 
 
 }

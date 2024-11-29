@@ -32,6 +32,15 @@
             <select class="form-control" id="boardType" name="boardType" required>
                 <option value="general">일반 게시글</option>
                 <option value="trade">거래 게시글</option>
+                <option value="bragging">자랑하기 게시글</option>
+            </select>
+        </div>
+
+        <!-- 수집품 선택 (자랑하기 게시글 전용) -->
+        <div class="form-group" id="braggingFields" style="display: none;">
+            <label for="braggingCollectionNo">수집품 선택</label>
+            <select class="form-control" id="braggingCollectionNo" name="collection.no">
+                <option disabled selected value="">수집품을 선택하세요</option>
             </select>
         </div>
 
@@ -222,24 +231,59 @@
         });
     }
 
+
+
+    $(document).ready(function () {
+        // 게시글 종류 변경 시 필드 표시/숨기기
+        $('#boardType').change(function () {
+            const boardType = $(this).val();
+            $('#tradeFields').toggle(boardType === 'trade');
+            $('#braggingFields').toggle(boardType === 'bragging');
+        });
+
+        // 초기 로딩 시 필드 상태 설정
+        const initialBoardType = $('#boardType').val();
+        $('#tradeFields').toggle(initialBoardType === 'trade');
+        $('#braggingFields').toggle(initialBoardType === 'bragging');
+
+        // 수집품 목록 로드 (자랑하기 전용)
+        loadBraggingCollections();
+    });
+
+    function loadBraggingCollections() {
+        $.ajax({
+            url: '/collection/list',
+            method: 'GET',
+            success: function (data) {
+                const collectionSelect = $('#braggingCollectionNo');
+                data.forEach(function (collection) {
+                    collectionSelect.append('<option value="' + collection.no + '">' + collection.name + '</option>');
+                });
+            },
+            error: function () {
+                alert('수집품 목록을 불러오는 데 실패했습니다.');
+            }
+        });
+    }
+
+
+
+
+
     function addDetailPost() {
         const formData = new FormData($('#postForm')[0]);
 
         // 유효성 검사
         if (!formData.get("title")) { alert("제목을 입력하세요"); return; }
         if (!formData.get("content")) { alert("내용을 입력하세요"); return; }
-        if (formData.get("boardType") === "trade") {
-            if (!formData.get("tradeType")) {
-                alert("판매/구매를 선택해주세요");
-                return;
-            }
-            if (formData.get("tradeType") === "sell" && !formData.get("collection.no")) {
+        if (formData.get("boardType") === "bragging") {
+            if (!formData.get("collection.no")) {
                 alert("수집품을 선택해주세요");
                 return;
             }
         }
 
-        // 이미지 필수 확인
+        // 기존 처리
         const base64Images = [];
         $('.note-editing-area img').each(function () {
             const imageUrl = $(this).attr('src');
@@ -247,16 +291,10 @@
                 base64Images.push(imageUrl);
             }
         });
-        if (base64Images.length === 0) {
-            alert("사진을 최소 1개 업로드해주세요");
-            return;
-        }
 
-        // base64 이미지를 파일로 변환
         base64Images.forEach((base64Image) => {
             const imageData = imageUrls.find(image => image.url === base64Image);
             const fileName = imageData.name;
-
             const file = base64ToFile(base64Image, fileName);
             formData.append('files', file);
         });
@@ -272,16 +310,17 @@
             },
             success: async function (response) {
                 if (response === 'success') {
-                    await updateAchievement("THIRTY_POST");
-                    await updateAchievement("TEN_POST");
-                    await updateAchievement("FIRST_POST");
-
                     alert('게시글이 등록되었습니다.');
-                    const tradeType = formData.get("tradeType");
-                    if (tradeType === "sell") {
-                        window.location.href = '/board/tradeHomeSell';
-                    } else if (tradeType === "buy") {
-                        window.location.href = '/board/tradeHomeBuy';
+                    const boardType = formData.get("boardType");
+                    if (boardType === "bragging") {
+                        window.location.href = '/board/braggingList';
+                    } else if (boardType === "trade") {
+                        const tradeType = formData.get("tradeType");
+                        if (tradeType === "sell") {
+                            window.location.href = '/board/tradeHomeSell';
+                        } else if (tradeType === "buy") {
+                            window.location.href = '/board/tradeHomeBuy';
+                        }
                     } else {
                         window.location.href = '/board/boardList';
                     }

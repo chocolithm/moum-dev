@@ -20,10 +20,6 @@ public class DefaultBoardService implements BoardService {
     @NonNull
     BoardDao boardDao;
 
-    @Override
-    public List<Board> listAll() throws Exception {
-        return boardDao.listAll();
-    }
 
     @Override
     public List<Board> listPopularByPage(int offset, int limit) throws Exception {
@@ -45,10 +41,7 @@ public class DefaultBoardService implements BoardService {
         return boardDao.listTradeBuyPosts(10);
     }
 
-    @Override
-    public List<Board> listBraggingPosts() throws Exception {
-        return boardDao.listBraggingPosts();
-    }
+
 
     @Override
     public void add(Board board) throws Exception {
@@ -312,4 +305,47 @@ public class DefaultBoardService implements BoardService {
         return boardDao.countTradeBuyPostsByKeywordAndCategory(params);
     }
 
+
+
+    // Bragging 관련 메서드
+    @Override
+    public List<Board> listBraggingPosts(int offset, int limit) throws Exception {
+        return boardDao.listBraggingPosts(offset, limit);
+    }
+
+    @Override
+    public int countBraggingPosts() throws Exception {
+        return boardDao.countBraggingPosts();
+    }
+
+    @Override
+    public List<Board> searchBraggingPosts(String keyword, Integer categoryNo, int offset, int limit) throws Exception {
+        return boardDao.searchBraggingPosts(keyword, categoryNo, offset, limit);
+    }
+
+    @Override
+    public int countBraggingSearchResults(String keyword, Integer categoryNo) throws Exception {
+        return boardDao.countBraggingSearchResults(keyword, categoryNo);
+    }
+
+    // Bragging Popular 관련 메서드
+    @Override
+    public List<Board> listBraggingPopularPosts(int offset, int size, int minViewCount) {
+        return boardDao.listBraggingPopularPosts(offset, size, minViewCount);
+    }
+
+    @Override
+    public int countBraggingPopularPosts(int minViewCount) {
+        return boardDao.countBraggingPopularPosts(minViewCount);
+    }
+
+    @Override
+    public List<Board> searchBraggingPopularPosts(String keyword, Integer categoryNo, int offset, int size, int minViewCount) {
+        return boardDao.searchBraggingPopularPosts(keyword, categoryNo, offset, size, minViewCount);
+    }
+
+    @Override
+    public int countBraggingPopularSearchResults(String keyword, Integer categoryNo, int minViewCount) {
+        return boardDao.countBraggingPopularSearchResults(keyword, categoryNo, minViewCount);
+    }
 }

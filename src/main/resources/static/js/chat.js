@@ -489,8 +489,8 @@ function fetchMoreChatContent(chatroomNo, pageNo) {
 
 // 채팅 데이터 출력
 function createChatContent(message_box, loginUser, chat) {
-  const img = document.createElement("img");
-  img.className = "chat-profile-img";
+  // const img = document.createElement("img");
+  // img.className = "chat-profile-img";
   // img.src = chat.sender.photo == null
   //         ? "/images/user/default1.png"
   //         : `https://kr.object.ncloudstorage.com/bitcamp-moum/user/profile/${chat.sender.photo}`;
@@ -511,11 +511,12 @@ function createChatContent(message_box, loginUser, chat) {
     message_box.append(time, message);
     message_box.className = "message-box owner-message-box";
   } else {
-    const left_span = document.createElement("span");
+    // const left_span = document.createElement("span");
     const right_span = document.createElement("span");
-    left_span.append(img);
+    // left_span.append(img);
     right_span.append(nickname, message, time);
-    message_box.append(left_span, right_span);
+    // message_box.append(left_span, right_span);
+    message_box.append(right_span);
     message_box.className = "message-box guest-message-box";
   }
 }

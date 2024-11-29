@@ -113,6 +113,7 @@ function addCollection() {
             formData.append("purchasePlace", document.querySelector("#addForm #purchasePlace").value.trim());
             formData.append("storageLocation", document.querySelector("#addForm #storageLocation").value.trim());
             formData.append("status.no", document.querySelector("#addForm #statusNo").value);
+            formData.append("memo", document.querySelector("#addForm #memo").value);
 
             const filesInput = document.querySelector("#addForm #files");
             for (let i = 0; i < filesInput.files.length; i++) {
@@ -311,6 +312,7 @@ function updateCollection() {
             formData.append("purchasePlace", document.querySelector("#updateForm #purchasePlace").value.trim());
             formData.append("storageLocation", document.querySelector("#updateForm #storageLocation").value.trim());
             formData.append("status.no", document.querySelector("#updateForm #statusNo").value);
+            formData.append("memo", document.querySelector("#updateForm #memo").value);
 
             for (let i = 0; i < filesArray.length; i++) {
                 formData.append("files", filesArray[i]);
@@ -740,9 +742,9 @@ function previewImage(event) {
                 img.src = e.target.result;
                 img.alt = "새 이미지";
                 img.className = "new-image";
-                img.onclick = () => changeMainImage(img.src);
+                img.onclick = () => changeCollectionMainImage(img.src);
                 if (i == 0) {
-                    changeMainImage(img.src)
+                    changeCollectionMainImageFromForm(img);
                 }
 
                 span.append(btn, img);
@@ -770,7 +772,7 @@ function filterCategories(element) {
 
     if (element.checked) {
         for (i = 0; i < items.length; i++) {
-            fadeIn(items[i]);
+            fadeInWithFlex(items[i]);
         }
     } else {
         for (i = 0; i < items.length; i++) {
@@ -783,6 +785,65 @@ function triggerFileInput() {
     document.getElementById('files').click();
 }
 
-function changeMainImage(src) {
-    document.getElementById('mainCollectionImage').src = src;
+function changeCollectionMainImageFromForm(element) {
+    document.querySelector('.left-side .collection-images #mainCollectionImage').src = element.src;
+}
+
+function changeCollectionMainImage(element) {
+    const src = element.src;
+    const index = element.getAttribute('index');
+    const collectionNo = element.getAttribute('collection-no');
+    const fileNo = element.getAttribute('file-no');
+    const is_primary_btn = document.querySelector('.is-primary-btn');
+
+    document.querySelector('.left-side .collection-images #mainCollectionImage').src = src;
+
+    if (index > 0) {
+        is_primary_btn.className = "is-primary-btn set-primary-btn btn";
+        is_primary_btn.onclick = () => setPrimaryPhoto(collectionNo, fileNo);
+    } else {
+        is_primary_btn.className = "is-primary-btn btn";
+        is_primary_btn.onclick = () => {};
+    }
+}
+
+function setPrimaryPhoto(collectionNo, fileNo) {
+    Swal.fire({
+        text: "대표사진을 변경하시겠습니까?",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        backdrop: `
+            rgba(0,0,0,0.4)
+        `,
+        customClass: {
+            popup: 'no-overlay-swal'
+        }
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            fetch(`/collection/setPrimaryPhoto?collectionNo=${collectionNo}&fileNo=${fileNo}`)
+            .then(response => response.text())
+            .then(response => {
+                if (response == "success") {
+                    fetchCollectionView(collectionNo);
+                }
+                
+                if (response == "failure") {
+                    Swal.fire({
+                        icon: "error",
+                        text: "변경에 실패했습니다. 잠시 후 다시 시도해주세요.",
+                        backdrop: `
+                            rgba(0,0,0,0.4)
+                        `,
+                        customClass: {
+                            popup: 'no-overlay-swal'
+                        }
+                    })
+                }
+            })
+            .catch(error => {
+                console.error("error setting primary photo: ", error);
+            })
+        }
+    })
 }

@@ -316,18 +316,68 @@
 }
 
 .bookmark {
-  position: absolute;
-  top: 0;
-  right: 10px;
-  width: 15px;
-  height: 20px;
   color: white;
   font-size: 20px;
   font-weight: bold;
   text-align: center;
   line-height: 180px; /* 세로 가운데 정렬 */
   clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+  width: 15px;
+  height: 20px;
 }
+
+.sidemenu div.form-check {
+  position: relative;
+}
+
+.sidemenu-bookmark {
+  position: absolute;
+  right: -20px;
+  top: 0;
+}
+
+.card-bookmark {
+  position: relative;
+  top: -10px;
+  right: -80px;
+}
+
+/* .set-primary-btn {
+  font-size: 1.2rem;
+  position: absolute;
+  top: -40px;
+  left: 20px;
+} */
+
+.is-primary-btn {
+  font-size: 1.4rem; /* 이모지 크기 조정 */
+  position: absolute;
+  /* top: -40px; */
+  padding: 0;
+  left: 10px;
+  bottom: 90px;
+}
+
+.is-primary-btn.set-primary-btn {
+  font-size: 1.4rem; /* 이모지 크기 조정 */
+  position: absolute;
+  /* top: -40px; */
+  left: 10px;
+  bottom: 90px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  
+  color: transparent;
+  text-shadow: 
+    1px 1px 0px #fff,
+    -1px -1px 0px #fff,
+    1px -1px 0px #fff,
+    -1px 1px 0px #fff,
+    0px 0px 4px black;
+}
+
 
 .edit-overlay {
   position: absolute;
@@ -399,13 +449,19 @@
 .collection-form-layer .collection-images,
 .collection-view-layer .collection-images {
   margin-bottom: 20px;
+  position: relative;
 }
+
+/* .collection-form-layer .collection-images #mainCollectionImage,
+.collection-view-layer .collection-images #mainCollectionImage {
+  height: 80%;
+} */
 
 .collection-form-layer .main-image,
 .collection-view-layer .main-image {
   position: relative;
-  max-width: 400px;
-  max-height: 400px;
+  width: 400px;
+  height: 400px;
   margin: 0 auto;
   overflow: hidden;
 }

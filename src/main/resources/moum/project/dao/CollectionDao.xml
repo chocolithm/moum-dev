@@ -15,6 +15,7 @@
     <result column="post_date" property="postDate"/>
     <result column="other_category" property="otherCategory"/>
     <result column="is_deleted" property="isDeleted"/>
+    <result column="memo" property="memo"/>
 
     <association property="user" javaType="moum.project.vo.User">
       <id column="user_id" property="no"/>
@@ -55,9 +56,9 @@
   <insert id="insert" parameterType="moum.project.vo.Collection"
           useGeneratedKeys="true" keyColumn="collection_id" keyProperty="no">
     insert into collection(user_id, subcategory_id, name, status_id, other_category,
-      purchase_date, purchase_place, price, storage_location)
+      purchase_date, purchase_place, price, storage_location, memo)
     values(#{user.no}, #{subcategory.no}, #{name}, #{status.no}, #{otherCategory},
-      #{purchaseDate}, #{purchasePlace}, #{price}, #{storageLocation})
+      #{purchaseDate}, #{purchasePlace}, #{price}, #{storageLocation}, #{memo})
   </insert>
 
   <select id="list" resultMap="CollectionMap" parameterType="int">
@@ -69,6 +70,7 @@
       c.subcategory_id,
       c.other_category,
       c.status_id,
+      c.memo,
       cs.status_name,
       cp.photo_id,
       cp.filename,
@@ -97,6 +99,7 @@
       c.purchase_place,
       c.storage_location,
       c.status_id,
+      c.memo,
       cs.status_name,
       cp.photo_id,
       cp.filename,
@@ -109,6 +112,7 @@
     where
       c.is_deleted = 0
       and c.collection_id = #{no}
+    order by cp.photo_id
   </select>
 
   <select id="findByFileNo" resultMap="CollectionMap" parameterType="int">
@@ -124,7 +128,8 @@
       c.purchase_place,
       c.storage_location,
       c.status_id,
-      cs.status_name
+      cs.status_name,
+      c.memo
     from
       collection c
       left join collection_status cs on c.status_id = cs.status_id
@@ -144,7 +149,8 @@
       purchase_date = #{purchaseDate},
       purchase_place = #{purchasePlace},
       price = #{price},
-      storage_location = #{storageLocation}
+      storage_location = #{storageLocation},
+      memo = #{memo}
     where
       collection_id = #{no}
   </update>
@@ -181,6 +187,12 @@
   <delete id="deleteFiles" parameterType="int">
     delete from collection_photo
     where collection_id = #{no}
+  </delete>
+
+  <delete id="deleteFilesExceptOne" parameterType="map">
+    delete from collection_photo
+    where collection_id = #{collectionNo}
+    and photo_id != #{photoNo}
   </delete>
 
     <!-- 특정 컬렉션 조회 쿼리 -->

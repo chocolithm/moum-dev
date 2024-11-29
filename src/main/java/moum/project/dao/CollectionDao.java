@@ -4,6 +4,7 @@ import java.util.List;
 import moum.project.vo.AttachedFile;
 import moum.project.vo.Collection;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface CollectionDao {
@@ -26,4 +27,8 @@ public interface CollectionDao {
   boolean deleteFile(int no) throws Exception;
 
   boolean deleteFiles(int no) throws Exception;
+
+  boolean deleteFilesExceptOne(
+      @Param("collectionNo") int collectionNo,
+      @Param("photoNo") int photoNo) throws Exception;
 }

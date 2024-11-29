@@ -19,6 +19,7 @@
                 data-th-onclick="'deleteFile(' + ${collection.no} + ')'">⊗</button>
         </div> -->
         <div class="collection-images">
+            <button class="is-primary-btn btn">🌟</button>
             <div class="main-image">
                 <img alt="Main Collection Image"
                      id="mainCollectionImage"
@@ -32,12 +33,15 @@
             </div>
 
             <div class="thumbnail-images">
-                <span data-th-each="file : ${collection.attachedFiles}" class="current-image">
+                <span data-th-each="file, index : ${collection.attachedFiles}" class="current-image">
                     <button class="collection-image-btn btn"
                         data-th-onclick="'deleteFile(' + ${file.no} + ')'">⊗</button>
                     <img alt="Thumbnail Image"
-                        onclick="changeMainImage(this.src)"
-                        data-th-src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}">
+                        data-th-index="${index.index}"
+                        data-th-collection-no="${collection.no}"
+                        data-th-file-no="${file.no}"
+                        data-th-src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${file.filename}}"
+                        onclick="changeCollectionMainImage(this)">
                 </span>
                 <span class="new-image-btn">
                     <img alt="Thumbnail Image"
@@ -145,6 +149,10 @@
                         </option>
                     </select>
                 </td>
+            </tr>
+            <tr>
+                <td><label for="memo">메모</label></td>
+                <td><input data-th-value="${collection.memo}" id="memo" name="memo" type="text" value="메모"></td>
             </tr>
             <tr>
                 <td colspan="2">
