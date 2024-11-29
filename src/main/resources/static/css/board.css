@@ -1606,3 +1606,9 @@ a {
     gap: 8px !important;
     margin-left: auto !important;
 }
+
+
+.just-box {
+    display: flex;
+    height: 30px;
+}
