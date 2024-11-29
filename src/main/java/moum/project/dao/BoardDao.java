@@ -30,8 +30,6 @@ public interface BoardDao {
 
     List<Board> selectRecent(int limit); // 최근 게시글 조회
 
-    // 전체 게시글 조회
-    List<Board> listAll();
 
     // 인기 게시글 조회
     List<Board> listPopularByPage(@Param("offset") int offset, @Param("limit") int limit) throws Exception;
@@ -43,8 +41,6 @@ public interface BoardDao {
     List<Board> listTradeBuyPosts(int limit);
 
 
-    // 자랑하기 게시글 조회
-    List<Board> listBraggingPosts();
 
     void updateTrade(Board board);
 
@@ -106,5 +102,21 @@ public interface BoardDao {
     List<Board> searchTradeBuyPostsByPage(Map<String, Object> params) throws Exception;
 
     int countTradeBuyPostsByKeywordAndCategory(Map<String, Object> params) throws Exception;
+
+
+
+
+        // Bragging 관련 메서드
+        List<Board> listBraggingPosts(@Param("offset") int offset, @Param("limit") int limit);
+        int countBraggingPosts();
+        List<Board> searchBraggingPosts(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo, @Param("offset") int offset, @Param("limit") int limit);
+        int countBraggingSearchResults(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo);
+
+        // Bragging Popular 관련 메서드
+        List<Board> listBraggingPopularPosts(@Param("offset") int offset, @Param("limit") int limit, @Param("minViewCount") int minViewCount);
+        int countBraggingPopularPosts(@Param("minViewCount") int minViewCount);
+        List<Board> searchBraggingPopularPosts(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo, @Param("offset") int offset, @Param("limit") int limit, @Param("minViewCount") int minViewCount);
+        int countBraggingPopularSearchResults(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo, @Param("minViewCount") int minViewCount);
+
 
 }

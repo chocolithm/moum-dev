@@ -36,6 +36,19 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
+                           data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/braggingList\'' : '
+                           swal(\'로그인이 필요합니다!!\',
+                           \'\',
+                           {icon: \'warning\'}
+                           ).then((value) => {if(value) {
+                           openLoginModal();
+                           }
+                           })'" href="#">
+                            <span class="fw-bold">전시하기</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
                            data-th-onclick="${#authorization.expression('isAuthenticated()')} ? 'location.href=\'/board/tradeHomeSell\'' : '
                            swal(\'로그인이 필요합니다!!\',
                            \'\',

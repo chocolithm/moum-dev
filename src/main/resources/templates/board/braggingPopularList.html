@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>자랑하기 게시판</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/board.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/ranking.css}" type="text/css">
+    <script>
+        // 페이지 로드 시 삭제 완료 메시지 표시
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get("deleted") === "true")     {
+                alert("삭제되었습니다.");
+            }
+        };
+    </script>
+</head>
+
+<body>
+<div th:replace="~{header}"></div>
+
+<main style="background-color: white">
+    <div class="page-container">
+
+        <div class="category-filter-container">
+            <div class="filter-buttons-wrapper">
+                <div class="filter-buttons" id="categoryButtons">
+                    <!-- 전체 카테고리 버튼 -->
+                    <a class="btn category-button"
+                       th:classappend="${categoryNo == null ? 'active' : ''}"
+                       th:href="@{/board/braggingPopularList(categoryNo=null, keyword=${keyword})}">
+                        전체
+                    </a>
+                    <!-- 카테고리 동적 추가 -->
+                    <a th:each="category : ${maincategoryList}"
+                       class="btn category-button"
+                       th:classappend="${category.no == categoryNo ? 'active' : ''}"
+                       th:href="@{/board/braggingPopularList(categoryNo=${category.no}, keyword=${keyword})}"
+                       th:text="${category.name}">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="grid-option">
+            <div class="grid-item">
+                <div class="button-group-left">
+                    <button class="category-button active" onclick="location.href='/board/braggingPopularList'">인기 게시글</button>
+                    <button class="category-button recent" onclick="location.href='/board/braggingList'">최근 게시글
+                    </button>
+                </div>
+                <div class="button-group-right">
+                    <button class="category-button write-button" onclick="location.href='/board/boardDetailForm'">글쓰기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <!-- 각 게시글을 반복하여 표시 -->
+            <div class="grid-item" th:each="bragging : ${recentBraggings}">
+                <!-- 첨부된 이미지가 있을 경우 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
+                <a th:href="@{/bragging/braggingView(no=${bragging.no})}">
+                    <img alt="게시글 이미지"
+                         class="item-image"
+                         th:if="${bragging.attachedFiles != null and #lists.size(bragging.attachedFiles) > 0}"
+                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/bragging/' + ${bragging.attachedFiles[0].filename}}">
+                    <img alt="기본 이미지"
+                         class="item-image"
+                         th:if="${bragging.attachedFiles == null or #lists.size(bragging.attachedFiles) == 0}"
+                         th:src="@{/images/bragging/defaultBraggingPicture.jpg}">
+                </a>
+
+                <!-- 게시글 내용 영역 -->
+                <div class="item-content">
+                    <!-- 게시글 링크 (이미지 외에도 다른 내용에도 링크 적용 가능) -->
+                    <a th:href="@{/bragging/braggingView(no=${bragging.no})}">
+                        <!-- 게시글 제목 -->
+                        <div class="item-title" th:text="${bragging.title}">게시글 제목</div>
+                    </a>
+
+                    <!-- 게시글 작성자와 작성일 -->
+                    <div class="item-number-info">
+                        <div class="item-number-nickname" th:text="${bragging.user.nickname}">작성자</div>
+                        <div class="item-number-date" th:text="${#dates.format(bragging.postDate, 'yyyy.MM.dd.')}">
+                            2024-11-15
+                        </div>
+                    </div>
+
+                    <!-- 게시글 조회수 및 추천수 -->
+                    <div class="item-numbers">
+                        <div class="item-number-view" th:text="'👁️‍🗨️ ' + ${bragging.viewCount}">👁️‍🗨️ 100</div>
+                        <div class="item-number-like" th:text="'🤍 ' + ${bragging.likeCount}">🤍 50</div>
+                        <div class="comment-count" th:text="'🗨️ ' + ${bragging.commentCount} + ''">🗨️ 20</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 페이징 !-->
+        <div class="pagination-container mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <!-- Previous Button -->
+                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                        <a class="page-link bg-white text-dark"
+                           th:href="@{/bragging/braggingPopularList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">이전</a>
+                    </li>
+
+                    <!-- Page Numbers -->
+                    <li class="page-item"
+                        th:classappend="${i == currentPage ? 'active' : ''}"
+                        th:each="i : ${#numbers.sequence(1, totalPages)}">
+                        <a class="page-link"
+                           th:classappend="${i == currentPage ? 'bg-dark text-white' : 'bg-white text-dark'}"
+                           th:href="@{/bragging/braggingPopularList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"
+                           th:text="${i}"></a>
+                    </li>
+
+                    <!-- Next Button -->
+                    <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+                        <a class="page-link bg-white text-dark"
+                           th:href="@{/bragging/braggingPopularList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">다음</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Custom CSS to remove the blue outline on link buttons -->
+        <style>
+            .pagination-container {
+                position: absolute;
+                top: 1800px;
+            }
+
+            .pagination .page-link:focus {
+                outline: none;
+                box-shadow: none;
+            }
+        </style>
+
+    </div>
+</main>
+
+<footer th:replace="~{footer :: footer}"></footer>
+<!-- JavaScript 코드 삽입 -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="/js/board.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let isDragging = false;
+        let isMouseDown = false;
+        let startX = 0;
+        let scrollStart = 0;
+        let dragThreshold = 5;
+
+        const container = document.querySelector('.filter-buttons-wrapper');
+
+        // 드래그 시작
+        container.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            isDragging = false; // 드래그 상태 초기화
+            startX = e.pageX;
+            scrollStart = container.scrollLeft;
+            container.style.cursor = 'grabbing';
+        });
+
+        // 드래그 중
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+
+            const deltaX = e.pageX - startX;
+
+            if (Math.abs(deltaX) > dragThreshold) {
+                isDragging = true;
+                container.scrollLeft = scrollStart - deltaX;
+            }
+        });
+
+        // 마우스 버튼을 놓을 때
+        document.addEventListener('mouseup', (e) => {
+            if (isMouseDown) {
+                container.style.cursor = 'grab';
+                isMouseDown = false;
+                setTimeout(() => { isDragging = false; }, 50); // 약간의 지연 후 드래그 상태 해제
+            }
+        });
+
+        // 클릭 이벤트 처리
+        const links = container.querySelectorAll('a');
+        links.forEach(link => {
+            // 클릭 이벤트에서 드래그 여부에 따라 기본 동작 제어
+            link.addEventListener('click', (e) => {
+                if (isDragging) {
+                    e.preventDefault(); // 드래그 중이면 클릭 동작 막기
+                }
+            });
+
+            // dragstart 이벤트 막기 (링크 드래그 방지)
+            link.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

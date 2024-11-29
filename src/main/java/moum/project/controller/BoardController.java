@@ -60,72 +60,108 @@ public class BoardController {
   private final BoardDao boardDao;
 
 
-  // 전체 게시글 조회
-  @GetMapping("/all")
-  public List<Board> getAllPosts() throws Exception {
-    return boardService.listAll();
-  }
 
-  @GetMapping("/popularList")
-  public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "size", defaultValue = "12") int size,
-      @RequestParam(value = "keyword", required = false) String keyword,
-      @RequestParam(value = "categoryNo", required = false) Integer categoryNo, Model model,
-      @AuthenticationPrincipal UserDetails userDetails)
-      throws Exception {
+  @GetMapping("/braggingPopularList")
+  public String braggingPopularList(@RequestParam(value = "page", defaultValue = "1") int page,
+                                    @RequestParam(value = "size", defaultValue = "12") int size,
+                                    @RequestParam(value = "keyword", required = false) String keyword,
+                                    @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
+                                    Model model,
+                                    @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-    User loginUser = userService.getByEmail(userDetails.getUsername());
     int offset = (page - 1) * size;
-    List<Board> popularBoards;
-    int totalBoards;
+    List<Board> popularBraggingPosts;
+    int totalBraggingPosts;
 
-    // 검색 및 필터링 조건에 따라 메서드 호출
+    // 검색 조건에 따라 게시글 조회
     if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
-      popularBoards =
-          boardService.searchPopularByCategoryAndPage(keyword, categoryNo, offset, size);
-      totalBoards = boardService.countPopularByKeywordAndCategory(keyword, categoryNo);
+      popularBraggingPosts = boardService.searchBraggingPopularPosts(keyword, categoryNo, offset, size, 100);
+      totalBraggingPosts = boardService.countBraggingPopularSearchResults(keyword, categoryNo, 100);
     } else {
-      popularBoards = boardService.listPopularByPage(offset, size);
-      totalBoards = boardService.countPopularPosts();
-//      System.out.println(popularBoards.get(0));
+      popularBraggingPosts = boardService.listBraggingPopularPosts(offset, size, 100);
+      totalBraggingPosts = boardService.countBraggingPopularPosts(100);
     }
-    // 각 게시글의 댓글 개수 설정 및 maincategory 확인
-    for (Board board : popularBoards) {
+
+    // 댓글 개수 추가
+    for (Board board : popularBraggingPosts) {
       int commentCount = commentService.countCommentsByBoardId(board.getNo());
-      board.setCommentCount(commentCount); // 댓글 개수 저장
-
-      // Debugging용 로그: maincategory 확인
-      if (board.getMaincategory() == null) {
-        System.out.println("maincategory is null for board ID: " + board.getNo());
-      }
+      board.setCommentCount(commentCount);
     }
 
-    // 페이징 데이터 계산
-    int totalPages = (int) Math.ceil((double) totalBoards / size);
-    model.addAttribute("popularBoards", popularBoards);
+    // 페이징 처리
+    int totalPages = (int) Math.ceil((double) totalBraggingPosts / size);
+    model.addAttribute("popularBraggingPosts", popularBraggingPosts);
     model.addAttribute("currentPage", page);
     model.addAttribute("totalPages", totalPages);
     model.addAttribute("keyword", keyword);
     model.addAttribute("categoryNo", categoryNo);
-    model.addAttribute("size", size);
 
-    // 카테고리 목록 추가
+    // Maincategory 목록 추가
     List<Maincategory> maincategoryList = categoryService.listMaincategory();
+    model.addAttribute("maincategoryList", maincategoryList);
+
+    return "board/braggingPopularList";
+  }
+
+  @GetMapping("/braggingList")
+  public String listBraggingPosts(@RequestParam(value = "page", defaultValue = "1") int page,
+                                  @RequestParam(value = "size", defaultValue = "12") int size,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
+                                  @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
+                                  Model model,
+                                  @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+
+    int offset = (page - 1) * size;
+
+    List<Board> braggingBoards;
+    int totalBoards;
+
+    // 검색 조건에 따라 게시글 조회
+    if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
+      braggingBoards = boardService.searchBraggingPosts(keyword, categoryNo, offset, size);
+      totalBoards = boardService.countBraggingSearchResults(keyword, categoryNo);
+    } else {
+      braggingBoards = boardService.listBraggingPosts(offset, size);
+      totalBoards = boardService.countBraggingPosts();
+    }
+
+    // 댓글 개수 추가
+    for (Board board : braggingBoards) {
+      int commentCount = commentService.countCommentsByBoardId(board.getNo());
+      board.setCommentCount(commentCount);
+    }
+
+    // 로그인한 사용자 정보 추가 (옵션)
+    if (userDetails != null) {
+      String email = userDetails.getUsername();
+      User loginUser = userService.getByEmail(email);
+      model.addAttribute("authenticatedUser", loginUser);
+    }
+
+    // 페이징 처리
+    int totalPages = (int) Math.ceil((double) totalBoards / size);
+    model.addAttribute("braggingBoards", braggingBoards); // braggingBoards로 전달
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+    model.addAttribute("keyword", keyword);
+    model.addAttribute("categoryNo", categoryNo);
+
+    // Maincategory 목록 추가
+    List<Maincategory> maincategoryList = categoryService.listMaincategory();
+    model.addAttribute("maincategoryList", maincategoryList);
+
+    // "기타" 카테고리 추가
     Maincategory etcCategory = new Maincategory();
     etcCategory.setNo(-999);
     etcCategory.setName("기타");
     maincategoryList.add(etcCategory);
-    model.addAttribute("maincategoryList", maincategoryList);
 
-    // 업적 랭킹 정보 추가
-    List<Achievement> userRankList = achievementService.listByUserRank();
-    model.addAttribute("rankList", userRankList);
-
-    Achievement userAchievementRank = achievementService.findRankByUser(loginUser.getNo());
-    model.addAttribute("rankNowUserList", userAchievementRank);
-
-    return "board/popularList";
+    return "board/braggingList";
   }
+
+
+
+
 
   @GetMapping("/boardList")
   public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -201,7 +237,66 @@ public class BoardController {
   }
 
 
+  @GetMapping("/popularList")
+  public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
+                            @RequestParam(value = "size", defaultValue = "12") int size,
+                            @RequestParam(value = "keyword", required = false) String keyword,
+                            @RequestParam(value = "categoryNo", required = false) Integer categoryNo, Model model,
+                            @AuthenticationPrincipal UserDetails userDetails)
+          throws Exception {
 
+    User loginUser = userService.getByEmail(userDetails.getUsername());
+    int offset = (page - 1) * size;
+    List<Board> popularBoards;
+    int totalBoards;
+
+    // 검색 및 필터링 조건에 따라 메서드 호출
+    if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
+      popularBoards =
+              boardService.searchPopularByCategoryAndPage(keyword, categoryNo, offset, size);
+      totalBoards = boardService.countPopularByKeywordAndCategory(keyword, categoryNo);
+    } else {
+      popularBoards = boardService.listPopularByPage(offset, size);
+      totalBoards = boardService.countPopularPosts();
+//      System.out.println(popularBoards.get(0));
+    }
+    // 각 게시글의 댓글 개수 설정 및 maincategory 확인
+    for (Board board : popularBoards) {
+      int commentCount = commentService.countCommentsByBoardId(board.getNo());
+      board.setCommentCount(commentCount); // 댓글 개수 저장
+
+      // Debugging용 로그: maincategory 확인
+      if (board.getMaincategory() == null) {
+        System.out.println("maincategory is null for board ID: " + board.getNo());
+      }
+    }
+
+    // 페이징 데이터 계산
+    int totalPages = (int) Math.ceil((double) totalBoards / size);
+    model.addAttribute("popularBoards", popularBoards);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+    model.addAttribute("keyword", keyword);
+    model.addAttribute("categoryNo", categoryNo);
+    model.addAttribute("size", size);
+
+    // 카테고리 목록 추가
+    List<Maincategory> maincategoryList = categoryService.listMaincategory();
+    Maincategory etcCategory = new Maincategory();
+    etcCategory.setNo(-999);
+    etcCategory.setName("기타");
+    maincategoryList.add(etcCategory);
+    model.addAttribute("maincategoryList", maincategoryList);
+
+    // 업적 랭킹 정보 추가
+    List<Achievement> userRankList = achievementService.listByUserRank();
+    model.addAttribute("rankList", userRankList);
+
+    Achievement userAchievementRank = achievementService.findRankByUser(loginUser.getNo());
+    model.addAttribute("rankNowUserList", userAchievementRank);
+
+    return "board/popularList";
+  }
   @GetMapping("/tradeHomeSell")
   public String tradeHomeSell(@RequestParam(value = "page", defaultValue = "1") int page,
       @RequestParam(value = "size", defaultValue = "12") int size,
