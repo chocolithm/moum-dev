@@ -110,17 +110,21 @@ public interface BoardDao {
 
 
 
-        // Bragging 관련 메서드
-        List<Board> listBraggingPosts(@Param("offset") int offset, @Param("limit") int limit);
-        int countBraggingPosts();
-        List<Board> searchBraggingPosts(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo, @Param("offset") int offset, @Param("limit") int limit);
-        int countBraggingSearchResults(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo);
-
-        // Bragging Popular 관련 메서드
-        List<Board> listBraggingPopularPosts(@Param("offset") int offset, @Param("limit") int limit, @Param("minViewCount") int minViewCount);
-        int countBraggingPopularPosts(@Param("minViewCount") int minViewCount);
-        List<Board> searchBraggingPopularPosts(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo, @Param("offset") int offset, @Param("limit") int limit, @Param("minViewCount") int minViewCount);
-        int countBraggingPopularSearchResults(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo, @Param("minViewCount") int minViewCount);
+    // Bragging 관련 메서드
+    List<Board> listBraggingPosts(@Param("offset") int offset, @Param("limit") int limit);
+    int countBraggingPosts();
+    List<Board> searchBraggingPosts(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo, @Param("offset") int offset, @Param("limit") int limit);
+    int countBraggingSearchResults(@Param("keyword") String keyword, @Param("categoryNo") Integer categoryNo);
 
 
+    List<Board> listWeeklyPopularBraggingPosts(@Param("offset") int offset, @Param("limit") int limit);
+    int countWeeklyBraggingPopularPosts();
+
+    List<Board> searchBraggingPopularPosts(@Param("keyword") String keyword,
+                                           @Param("categoryNo") Integer categoryNo,
+                                           @Param("offset") int offset,
+                                           @Param("limit") int limit);
+
+    int countBraggingPopularSearchResults(@Param("keyword") String keyword,
+                                          @Param("categoryNo") Integer categoryNo);
 }

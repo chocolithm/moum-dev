@@ -202,25 +202,16 @@ public class BoardController {
 
 
   @GetMapping("/braggingPopularList")
-  public String braggingPopularList(@RequestParam(value = "page", defaultValue = "1") int page,
-                                    @RequestParam(value = "size", defaultValue = "12") int size,
-                                    @RequestParam(value = "keyword", required = false) String keyword,
-                                    @RequestParam(value = "categoryNo", required = false) Integer categoryNo,
-                                    Model model,
-                                    @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+  public String braggingPopularList(
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value = "size", defaultValue = "10") int size,
+          Model model) throws Exception {
 
     int offset = (page - 1) * size;
-    List<Board> popularBraggingPosts;
-    int totalBraggingPosts;
 
-    // 검색 조건에 따라 게시글 조회
-    if (categoryNo != null || (keyword != null && !keyword.isEmpty())) {
-      popularBraggingPosts = boardService.searchBraggingPopularPosts(keyword, categoryNo, offset, size, 100);
-      totalBraggingPosts = boardService.countBraggingPopularSearchResults(keyword, categoryNo, 100);
-    } else {
-      popularBraggingPosts = boardService.listBraggingPopularPosts(offset, size, 100);
-      totalBraggingPosts = boardService.countBraggingPopularPosts(100);
-    }
+    // 주간 인기 게시글 조회 (지난 주 월요일 ~ 지난 주 일요일)
+    List<Board> popularBraggingPosts = boardService.listWeeklyPopularBraggingPosts(offset, size);
+    int totalBraggingPosts = boardService.countWeeklyBraggingPopularPosts();
 
     // 댓글 개수 추가
     for (Board board : popularBraggingPosts) {
@@ -233,15 +224,12 @@ public class BoardController {
     model.addAttribute("popularBraggingPosts", popularBraggingPosts);
     model.addAttribute("currentPage", page);
     model.addAttribute("totalPages", totalPages);
-    model.addAttribute("keyword", keyword);
-    model.addAttribute("categoryNo", categoryNo);
-
-    // Maincategory 목록 추가
-    List<Maincategory> maincategoryList = categoryService.listMaincategory();
-    model.addAttribute("maincategoryList", maincategoryList);
 
     return "board/braggingPopularList";
   }
+
+
+
 
   @GetMapping("/popularList")
   public String popularList(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -303,6 +291,9 @@ public class BoardController {
 
     return "board/popularList";
   }
+
+
+
   @GetMapping("/tradeHomeSell")
   public String tradeHomeSell(@RequestParam(value = "page", defaultValue = "1") int page,
       @RequestParam(value = "size", defaultValue = "12") int size,
