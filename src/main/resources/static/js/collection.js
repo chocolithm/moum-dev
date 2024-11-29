@@ -742,9 +742,9 @@ function previewImage(event) {
                 img.src = e.target.result;
                 img.alt = "새 이미지";
                 img.className = "new-image";
-                img.onclick = () => changeMainImage(img.src);
+                img.onclick = () => changeCollectionMainImage(img.src);
                 if (i == 0) {
-                    changeMainImageFromForm(img);
+                    changeCollectionMainImageFromForm(img);
                 }
 
                 span.append(btn, img);
@@ -785,18 +785,18 @@ function triggerFileInput() {
     document.getElementById('files').click();
 }
 
-function changeMainImageFromForm(element) {
-    document.getElementById('mainCollectionImage').src = element.src;
+function changeCollectionMainImageFromForm(element) {
+    document.querySelector('.left-side .collection-images #mainCollectionImage').src = element.src;
 }
 
-function changeMainImage(element) {
+function changeCollectionMainImage(element) {
     const src = element.src;
     const index = element.getAttribute('index');
     const collectionNo = element.getAttribute('collection-no');
     const fileNo = element.getAttribute('file-no');
     const is_primary_btn = document.querySelector('.is-primary-btn');
 
-    document.getElementById('mainCollectionImage').src = src;
+    document.querySelector('.left-side .collection-images #mainCollectionImage').src = src;
 
     if (index > 0) {
         is_primary_btn.className = "is-primary-btn set-primary-btn btn";

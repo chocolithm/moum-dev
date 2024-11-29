@@ -353,6 +353,7 @@
   font-size: 1.4rem; /* 이모지 크기 조정 */
   position: absolute;
   /* top: -40px; */
+  padding: 0;
   left: 10px;
   bottom: 90px;
 }
