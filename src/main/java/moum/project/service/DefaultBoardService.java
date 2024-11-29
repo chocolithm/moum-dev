@@ -336,24 +336,33 @@ public class DefaultBoardService implements BoardService {
         return boardDao.countBraggingSearchResults(keyword, categoryNo);
     }
 
-    // Bragging Popular 관련 메서드
+//    // Bragging Popular 관련 메서드
+//    public List<Board> listBraggingPopularPosts(int offset, int limit) {
+//        return boardDao.listBraggingPopularPosts(offset, limit);
+//    }
+//
+//    public int countBraggingPopularPosts() {
+//        return boardDao.countBraggingPopularPosts();
+//    }
+
     @Override
-    public List<Board> listBraggingPopularPosts(int offset, int size, int minViewCount) {
-        return boardDao.listBraggingPopularPosts(offset, size, minViewCount);
+    public List<Board> listWeeklyPopularBraggingPosts(int offset, int size) {
+        return boardDao.listWeeklyPopularBraggingPosts(offset, size);
     }
 
     @Override
-    public int countBraggingPopularPosts(int minViewCount) {
-        return boardDao.countBraggingPopularPosts(minViewCount);
+    public int countWeeklyBraggingPopularPosts() {
+        return boardDao.countWeeklyBraggingPopularPosts();
     }
 
-    @Override
-    public List<Board> searchBraggingPopularPosts(String keyword, Integer categoryNo, int offset, int size, int minViewCount) {
-        return boardDao.searchBraggingPopularPosts(keyword, categoryNo, offset, size, minViewCount);
+
+
+    public List<Board> searchBraggingPopularPosts(String keyword, Integer categoryNo, int offset, int limit) {
+        return boardDao.searchBraggingPopularPosts(keyword, categoryNo, offset, limit);
     }
 
-    @Override
-    public int countBraggingPopularSearchResults(String keyword, Integer categoryNo, int minViewCount) {
-        return boardDao.countBraggingPopularSearchResults(keyword, categoryNo, minViewCount);
+    public int countBraggingPopularSearchResults(String keyword, Integer categoryNo) {
+        return boardDao.countBraggingPopularSearchResults(keyword, categoryNo);
     }
+
 }

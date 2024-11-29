@@ -40,10 +40,7 @@
         <div class="grid-option">
             <div class="grid-item">
 
-                <div class="button-group-right">
-                    <button class="btn btn-dark" onclick="location.href='/board/boardDetailForm'">전시하기
-                    </button>
-                </div>
+
             </div>
         </div>
 
@@ -51,7 +48,7 @@
             <!-- 각 게시글을 반복하여 표시 -->
             <div class="grid-item" th:each="board : ${popularBraggingPosts}">
                 <!-- 첨부된 이미지가 있을 경우 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
-                <a th:href="@{/board/boardView(no=${board.no})}">
+                <a th:href="@{/board/braggingBoardView(no=${board.no})}">
                     <img alt="게시글 이미지"
                          class="item-image"
                          th:if="${board.collection.attachedFiles != null and #lists.size(board.collection.attachedFiles) > 0}"
@@ -70,49 +67,20 @@
                     <!-- 게시글 작성자와 작성일 -->
                     <div class="item-number-info">
                         <div class="item-number-nickname" th:text="${board.user.nickname}">작성자</div>
-                        <div class="item-number-date" th:text="${#dates.format(board.postDate, 'yyyy.MM.dd.')}">
-                            2024-11-15
-                        </div>
+
                     </div>
 
                     <!-- 게시글 조회수 및 추천수 -->
                     <div class="item-numbers">
                         <div class="item-number-view" th:text="'👁️‍🗨️ ' + ${board.viewCount}">👁️‍🗨️ 100</div>
                         <div class="item-number-like" th:text="'🤍 ' + ${board.likeCount}">🤍 50</div>
-                        <div class="comment-count" th:text="'🗨️ ' + ${board.commentCount} + ''">🗨️ 20</div>
                     </div>
                 </div>
             </div>
         </div>
 
 
-        <!-- 페이징 !-->
-        <div class="pagination-container mt-4">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <!-- Previous Button -->
-                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link bg-white text-dark"
-                           th:href="@{/board/braggingPopularList(page=${currentPage == 1 ? 1 : currentPage - 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">이전</a>
-                    </li>
 
-                    <!-- Page Numbers -->
-                    <li class="page-item"
-                        th:classappend="${i == currentPage ? 'active' : ''}"
-                        th:each="i : ${#numbers.sequence(1, totalPages)}">
-                        <a class="page-link"
-                           th:classappend="${i == currentPage ? 'bg-dark text-white' : 'bg-white text-dark'}"
-                           th:href="@{/board/braggingPopularList(page=${i}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}"
-                           th:text="${i}"></a>
-                    </li>
-
-                    <!-- Next Button -->
-                    <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link bg-white text-dark"
-                           th:href="@{/board/braggingPopularList(page=${currentPage == totalPages ? totalPages : currentPage + 1}, size=12, keyword=${keyword}, categoryNo=${categoryNo})}">다음</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
 
         <!-- Custom CSS to remove the blue outline on link buttons -->
