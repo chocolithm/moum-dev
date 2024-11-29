@@ -937,17 +937,27 @@ function fetchAdminDetail(menu, no, fromPopState = false) {
       if (menu == "achievement") {
         const achievement = data;
         content_section.innerHTML = `
-          <div class="img-div">            
-            <div class="slider">
-              <div class="slides">
-                <img alt="수집품 이미지" class="achievement-img slide current-image"
-                  src="https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/complete/${achievement.photo}">
-                <img alt="수집품 이미지" class="achievement-img slide current-image" style="display: none;"
-                  src="https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/${achievement.photo}">
-              </div>
-              <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
-              <a class="next" onClick="changeSlide(1)">&#10095;</a>
+          <div class="img-div">
+
+            <div class="main-image">
+                <img alt="Achievement Image"
+                    id="mainAchievementImage"
+                    src="https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/${achievement.photo}">
             </div>
+
+            <div class="thumbnail-images">
+                <span>
+                    <img alt="Thumbnail Image"
+                        src="https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/${achievement.photo}"
+                        onclick="changeAchievementMainImage(this)">
+                </span>
+                <span>
+                    <img alt="Thumbnail Image"
+                        src="https://kr.object.ncloudstorage.com/bitcamp-moum/achievement/complete/${achievement.photo}"
+                        onclick="changeAchievementMainImage(this)">
+                </span>
+            </div>
+
           </div>
           <table class="view-table">
             <tbody>
@@ -1377,4 +1387,8 @@ function addSubcategory(maincategoryNo) {
     }
     }
   })
+}
+
+function changeAchievementMainImage(element) {
+    document.querySelector('#mainAchievementImage').src = element.src;
 }
