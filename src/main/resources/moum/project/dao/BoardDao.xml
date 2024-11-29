@@ -413,6 +413,7 @@
         WHERE
         b.is_deleted = 0
         AND b.is_popular = TRUE
+        AND b.board_type = 'general'
     </select>
 
     <update id="updateIsPopular" parameterType="map">
