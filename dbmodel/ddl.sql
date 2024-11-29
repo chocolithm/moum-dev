@@ -259,6 +259,13 @@ CREATE TABLE report (
 )
 COMMENT '신고';
 
+CREATE TABLE bragging_board (
+    board_id INT NOT NULL,
+    collection_id INT NOT NULL,
+    CONSTRAINT fk_bragging_board_board FOREIGN KEY (board_id) REFERENCES board(board_id),
+    CONSTRAINT fk_bragging_board_collection FOREIGN KEY (collection_id) REFERENCES collection(collection_id)
+);
+
 -- 신고
 ALTER TABLE report
     ADD CONSTRAINT PK_report -- 신고 기본키
