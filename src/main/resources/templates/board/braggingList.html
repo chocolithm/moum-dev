@@ -26,31 +26,35 @@
 <main style="background-color: white">
     <div class="page-container">
 
-<!--        <div class="category-filter-container">-->
-<!--            <div class="filter-buttons-wrapper">-->
-<!--                <div class="filter-buttons" id="categoryButtons">-->
-<!--                    &lt;!&ndash; 전체 카테고리 버튼 &ndash;&gt;-->
-<!--                    <a class="btn category-button"-->
-<!--                       draggable="false"-->
-<!--                       th:classappend="${categoryNo == null ? 'active' : ''}"-->
-<!--                       th:href="@{/board/braggingList(categoryNo=null, keyword=${keyword})}"> &lt;!&ndash; 여기 추가 &ndash;&gt;-->
-<!--                        전체-->
-<!--                    </a>-->
-<!--                    &lt;!&ndash; 동적으로 카테고리 버튼 추가 &ndash;&gt;-->
-<!--                    <a class="btn category-button"-->
-<!--                       draggable="false"-->
-<!--                       th:classappend="${category.no == categoryNo ? 'active' : ''}"-->
-<!--                       th:each="category : ${maincategoryList}"-->
-<!--                       th:href="@{/board/braggingList(categoryNo=${category.no}, keyword=${keyword})}"-->
-<!--                       th:text="${category.name}"> &lt;!&ndash; 여기 추가 &ndash;&gt;-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="category-filter-container">
+            <div class="filter-buttons-wrapper">
+                <div class="filter-buttons" id="categoryButtons">
+                    <!-- 전체 카테고리 버튼 -->
+                    <a class="btn category-button"
+                       draggable="false"
+                       th:classappend="${categoryNo == null ? 'active' : ''}"
+                       th:href="@{/board/braggingList(categoryNo=null, keyword=${keyword})}"> <!-- 여기 추가 -->
+                        전체
+                    </a>
+                    <!-- 동적으로 카테고리 버튼 추가 -->
+                    <a class="btn category-button"
+                       draggable="false"
+                       th:classappend="${category.no == categoryNo ? 'active' : ''}"
+                       th:each="category : ${maincategoryList}"
+                       th:href="@{/board/braggingList(categoryNo=${category.no}, keyword=${keyword})}"
+                       th:text="${category.name}"> <!-- 여기 추가 -->
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="just-box">
+
+        </div>
         <div class="grid-item">
-            <div class="button-group-left">
-                <button class="category-button popular" onclick="location.href='/board/braggingPopularList'">금주의 수집품</button>
-                <button class="category-button recent active" onclick="location.href='/board/braggingList'">전시품
+            <div class="bragging-button-group-right">
+                <button class="bragging-category-button popular" onclick="location.href='/board/braggingPopularList'">금주의 수집품</button>
+                <button class="bragging-category-button active" onclick="location.href='/board/braggingList'">전시품
                 </button>
             </div>
         </div>
