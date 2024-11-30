@@ -56,6 +56,10 @@ public class HomeController {
     model.addAttribute("collectionList", collectionList);
     model.addAttribute("maincategoryList", maincategoryList);
 
+    if (loginUser.isAdmin()) {
+      return "admin/management";
+    }
+
     // OAuth2 로그인인 경우 myhome으로 리다이렉트
 //    if (userDetails.getAttributes() != null) {
 //      return "redirect:/myhome";
