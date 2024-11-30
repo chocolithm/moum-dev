@@ -228,7 +228,7 @@ function fetchAdminData(menu, pageNo, pageCount, fromPopState) {
               <td>${formatDate(user.startDate).substring(0, 10)}</td>
               <td>${formatDate(user.lastLogin).substring(0, 10)}</td>
               <td>${user.admin === false ? "" : "관리자"}</td>
-              <td>${user.provider == null ? "" : user.provider}</td>
+              <td>${user.userSns == null ? "" : user.userSns.provider}</td>
             </tr>
           `;
         });
