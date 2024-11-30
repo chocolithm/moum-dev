@@ -1,4 +1,5 @@
 let achievementSlideIndex = 0;
+let filesArray = [];
 
 // 로딩 시 메뉴에 onclick 부여
 const adminSelects = document.querySelectorAll(".sidemenu input");
@@ -489,17 +490,31 @@ function openAddPage(menu) {
         content_section.innerHTML = content;
   }
 
+  // <img alt="업적 사진 등록" class="achievement-img empty-image" onClick="triggerFileInput();"
+  //            src="/images/collections/empty-collection.png">
+  //       <div class="slider" style="display: none;">
+  //         <div class="slides"></div>
+  //         <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
+  //         <a class="next" onClick="changeSlide(1)">&#10095;</a>
+  //       </div>
+
   if (menu == "achievement") {
     content_section.innerHTML = `
       <div class="img-div">
-        <img alt="업적 사진 등록" class="achievement-img empty-image" onClick="triggerFileInput();"
-             src="/images/collections/empty-collection.png">
-        <div class="slider" style="display: none;">
-          <div class="slides"></div>
-          <a class="prev" onClick="changeSlide(-1)">&#10094;</a>
-          <a class="next" onClick="changeSlide(1)">&#10095;</a>
+        <div class="main-image">
+          <img alt="Main Collection Image"
+                id="mainCollectionImage"
+                src="/images/collections/empty-collection-image.png">
         </div>
-        <input id="files" multiple name="files" onChange="previewImage(event);" style="display: none;" type="file">
+
+        <div class="thumbnail-images">
+          <span class="new-image-btn">
+              <img alt="Thumbnail Image"
+                  onclick="triggerFileInput()"
+                  src="/images/collections/empty-collection-image.png">
+          </span>
+        </div>
+        <input id="files" multiple name="files" onChange="addTempFiles(event);" style="display: none;" type="file">
       </div>
       <table class="view-table">
         <tbody>
@@ -1391,4 +1406,11 @@ function addSubcategory(maincategoryNo) {
 
 function changeAchievementMainImage(element) {
     document.querySelector('#mainAchievementImage').src = element.src;
+}
+
+
+function addTempFiles(event) {
+  const newFiles = Array.from(event.target.files);
+  filesArray = [...filesArray, ...newFiles];
+  previewImage(event);
 }
