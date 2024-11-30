@@ -509,7 +509,7 @@ function openAddPage(menu) {
         </div>
       </label>
 
-      <div class="img-div add-achievement">
+      <div class="img-div add-achievement" style="display: none";>
         <div class="main-image">
           <img alt="Achievement Image"
                 id="mainAchievementImage"
