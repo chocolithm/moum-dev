@@ -194,8 +194,9 @@ async function restrict(category, categoryNo) {
                             Swal.fire({
                                 icon: "success",
                                 text: "처리되었습니다."
-                            });
-                            location.href="/board/boardList";
+                            }).then(() => {
+                                location.href="/board/boardList";
+                            })
                         }
                     })
                     .catch(error => {

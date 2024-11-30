@@ -307,6 +307,11 @@
   justify-content: center;
 }
 
+.img-div.add-achievement {
+  margin-bottom: 20px;
+  position: relative;
+}
+
 .main-image {
   position: relative;
   width: 300px;
