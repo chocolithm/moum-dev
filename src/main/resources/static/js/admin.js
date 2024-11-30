@@ -1440,10 +1440,10 @@ function previewImage(event) {
           reader.onload = function (e) {
               const span = document.createElement("span");
               span.className = "new-image-span";
-              span.id = filesCounter;
 
               // <button class="collection-image-btn btn"
               //         data-th-onclick="'deleteFile(' + ${file.no} + ')'">⊗</button>
+
 
               const img = document.createElement("img");
               img.src = e.target.result;
@@ -1453,7 +1453,6 @@ function previewImage(event) {
 
               span.append(img);
 
-              filesCounter++;
               document.querySelector(".thumbnail-images").insertBefore(span, document.querySelector(".new-image-btn"));
               document.querySelector(".new-image-btn").style.display = "none";
           }
