@@ -1445,11 +1445,15 @@ function previewImage(event) {
               //         data-th-onclick="'deleteFile(' + ${file.no} + ')'">⊗</button>
 
 
+
               const img = document.createElement("img");
               img.src = e.target.result;
               img.alt = "새 이미지";
               img.className = "new-image";
-              img.onclick = () => changeAchievementMainImage(img.src);
+              img.onclick = () => changeAchievementMainImage(img);
+              if (i == 0) {
+                changeAchievementMainImage(img);
+              }
 
               span.append(img);
 
