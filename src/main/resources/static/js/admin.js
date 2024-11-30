@@ -1423,3 +1423,50 @@ function addTempFiles(event) {
   filesArray = [...filesArray, ...newFiles];
   previewImage(event);
 }
+
+function previewImage(event) {
+  const files = event.target.files;
+
+  if (files && files.length > 0) {
+
+      if (document.querySelector(".collection-images").style.display == "none") {
+          document.querySelector(".collection-images").style.display = "block";
+          document.querySelector("#files-label").style.display = "none";
+      }
+
+      for (let i = 0; i < files.length; i++) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+              const span = document.createElement("span");
+              span.className = "new-image-span new-image-span-" + filesCounter;
+              span.id = filesCounter;
+
+              // <button class="collection-image-btn btn"
+              //         data-th-onclick="'deleteFile(' + ${file.no} + ')'">⊗</button>
+
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              img.alt = "새 이미지";
+              img.className = "new-image";
+              img.onclick = () => changeAchievementMainImage(img.src);
+
+              span.append(img);
+
+              filesCounter++;
+              document.querySelector(".thumbnail-images").insertBefore(span, document.querySelector(".new-image-btn"));
+              document.querySelector(".new-image-btn").style.display = "none";
+          }
+
+          reader.readAsDataURL(files[i]);
+      }
+
+      
+
+  } else {
+      if (document.querySelector("#files-label")) {
+          document.querySelector(".collection-images").style.display = "none";
+          document.querySelector("#files-label").style.display = "block";
+      }
+  }
+}
