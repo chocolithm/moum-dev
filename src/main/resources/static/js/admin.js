@@ -1429,8 +1429,8 @@ function previewImage(event) {
 
   if (files && files.length > 0) {
 
-      if (document.querySelector(".collection-images").style.display == "none") {
-          document.querySelector(".collection-images").style.display = "block";
+      if (document.querySelector(".img-div").style.display == "none") {
+          document.querySelector(".img-div").style.display = "block";
           document.querySelector("#files-label").style.display = "none";
       }
 
@@ -1465,7 +1465,7 @@ function previewImage(event) {
 
   } else {
       if (document.querySelector("#files-label")) {
-          document.querySelector(".collection-images").style.display = "none";
+          document.querySelector(".img-div").style.display = "none";
           document.querySelector("#files-label").style.display = "block";
       }
   }
