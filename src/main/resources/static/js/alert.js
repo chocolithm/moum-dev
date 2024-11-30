@@ -189,7 +189,7 @@ function executeAlert(alert) {
   } else if (alert.category == "achievement") {
     location.href = `/user/myInfo`;
   } else if (alert.category == "comment") {
-    location.href = `/board/boardView?no=${alert.categoryNo}#comments-section`;
+    location.href = `/board/boardView?no=${alert.categoryNo}#comment-whole-box`;
   } else if (alert.category == "boardWarning") {
     location.href = `/board/boardView?no=${alert.categoryNo}`;
   }
