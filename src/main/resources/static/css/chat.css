@@ -191,6 +191,7 @@
   border-bottom-right-radius: 0;
   background-color: black;
   color: white;
+  border: 0.5px solid lightgrey;
 }
 
 .chatroom-layer .chat-info .guest-message-box .message {

@@ -238,7 +238,7 @@ function openChat(chatroomNo, participant) {
     setTimeout(async function () {
       chatroom_layer.innerHTML = "";
       // chatroom_layer.style.backgroundColor = "#eaeaef";
-      chatroom_layer.style.backgroundColor = "lightgrey";
+      chatroom_layer.style.backgroundColor = "rgb(240, 240, 240)";
 
       try {
         await fetchChatroom(chatroomNo);
