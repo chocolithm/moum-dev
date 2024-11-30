@@ -60,6 +60,11 @@
         <id column="collection_id" property="no"/>
         <result column="name" property="name"/>
       </association>
+
+      <collection property="attachedFiles" ofType="moum.project.vo.AttachedFile">
+          <id column="photo_id" property="no"/>
+          <result column="filename" property="filename"/>
+      </collection>
     </association>
 
   </resultMap>
@@ -106,6 +111,8 @@
       b.board_id,
       b.title,
       b.user_id as owner_id,
+      bp.photo_id,
+      bp.filename,
       uo.nickname as owner_nickname,
       uo.photo as owner_photo,
       uo.end_date as owner_end_date,
@@ -118,6 +125,7 @@
       chatroom cr
       left join user up on cr.user_id = up.user_id
       left join board b on cr.board_id = b.board_id
+      left join board_photo bp on b.board_id = bp.board_id
       left join user uo on b.user_id = uo.user_id
       inner join (
         select chatroom_id, user_id, message, chat_date, chat_read

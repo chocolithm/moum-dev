@@ -156,9 +156,9 @@ function fetchChatroomList() {
         div.className = "chatroom";
         div.onclick = () => openChat(chatroom.no, participant);
 
-        const boardDiv = document.createElement("div");
-        boardDiv.className = "chatroom-board-info";
-        boardDiv.innerHTML = chatroom.board.title;
+        // const boardDiv = document.createElement("div");
+        // boardDiv.className = "chatroom-board-info";
+        // boardDiv.innerHTML = chatroom.board.title;
 
         const contentDiv = document.createElement("div");
         contentDiv.className = "chatroom-content-info";
@@ -194,9 +194,24 @@ function fetchChatroomList() {
         date.className = "date";
         date.innerHTML = formatDate(chatroom.chatDate);
 
+        const photospan = document.createElement("span");
+        photospan.className = "photo-span";
+
+        const photo = document.createElement("img");
+        photo.className = "board-photo";
+        photo.src = chatroom.board.attachedFiles.length > 0
+          ? `https://kr.object.ncloudstorage.com/bitcamp-moum/board/${chatroom.board.attachedFiles[0].filename}`
+          : "";
+          
+        photo.style = chatroom.board.attachedFiles.length > 0
+          ? ""
+          : "display: none";
+
+
         chatspan.append(message, date);
-        contentDiv.append(userspan, chatspan);
-        div.append(boardDiv, contentDiv);
+        photospan.append(photo);
+        contentDiv.append(userspan, chatspan, photospan);
+        div.append(contentDiv);
 
         chatroom_layer.append(div);
       });
@@ -222,6 +237,7 @@ function openChat(chatroomNo, participant) {
 
     setTimeout(async function () {
       chatroom_layer.innerHTML = "";
+      // chatroom_layer.style.backgroundColor = "#eaeaef";
       chatroom_layer.style.backgroundColor = "lightgrey";
 
       try {

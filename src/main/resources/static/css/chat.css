@@ -35,7 +35,6 @@
   align-items: center;
   border: 1px solid lightgrey;
   transition: 0.3s ease;
-  margin: 3px 0;
 }
 
 .chatroom-layer .chatroom span {
@@ -74,16 +73,15 @@
 }
 
 .chatroom-layer .chatroom .chatroom-content {
-  width: 230px;
+  width: 160px;
   margin: 10px;
   font-size: 0.9rem;
-  overflow: visible;
   position: relative;
   justify-content: center;
 }
 
 .chatroom-layer .chatroom .chatroom-content > .message {
-  overflow: hidden;
+  overflow: hidden !important;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: visible;
@@ -104,6 +102,18 @@
 
 .chatroom-layer .chatroom .chatroom-content > .date {
   color: lightgrey;
+}
+
+.chatroom-layer .chatroom .photo-span {
+  height: 60px;
+  width: 60px;
+  display: flex;
+  margin-top: 10px;
+}
+
+.chatroom-layer .chatroom .board-photo {
+  height: 60px;
+  width: 60px;
 }
 
 .chatroom-layer .no-room-message {
