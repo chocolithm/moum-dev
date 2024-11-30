@@ -134,15 +134,29 @@
                         style="margin-top: 25px; margin-bottom: 25px">채팅하기
                 </button>
 
+                <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
+                        th:if="${authenticatedUser.admin == true}" type="button">경고/제재
+                </button>
+
                 <button class="report_button btn btn-outline-white"
                         onclick="openReport('board');"
                         th:if="${board.userNo != authenticatedUser.no and authenticatedUser.admin == false}"
                         type="button">🚨
                 </button>
 
-                <button class="btn btn-warning" data-th-onclick="|openRestrict('board', '${board.no}')|"
-                        th:if="${authenticatedUser.admin == true}" type="button">경고/제재
+                <!-- 게시판 좋아요 버튼 -->
+                <button class="recommend_button btn btn-outline-dark"
+                        th:if="${liked == false}"
+                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
+                        type="button">🤍
                 </button>
+
+                <button class="recommend_button btn btn-outline-dark"
+                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
+                        th:unless="${liked == false}"
+                        type="button">🩷
+                </button>
+                <span id="likeCount2" th:text="${board.likeCount}"></span>
                 </div>
 
             </div>
@@ -164,20 +178,6 @@
                         삭제하기
                     </button>
                 </form>
-
-                <!-- 게시판 좋아요 버튼 -->
-                <button class="recommend_button btn btn-outline-dark"
-                        th:if="${liked == false}"
-                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
-                        type="button">🤍
-                </button>
-
-                <button class="recommend_button btn btn-outline-dark"
-                        th:onclick="'toggleLike(' + ${board.no} + ', ' + ${authenticatedUser.no} + '); changeText(this);'"
-                        th:unless="${liked == false}"
-                        type="button">🩷
-                </button>
-                <span id="likeCount2" th:text="${board.likeCount}"></span>
 
             </div>
 
