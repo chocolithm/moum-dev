@@ -1439,7 +1439,7 @@ function previewImage(event) {
 
           reader.onload = function (e) {
               const span = document.createElement("span");
-              span.className = "new-image-span new-image-span-" + filesCounter;
+              span.className = "new-image-span";
               span.id = filesCounter;
 
               // <button class="collection-image-btn btn"
