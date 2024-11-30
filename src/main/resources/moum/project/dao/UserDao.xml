@@ -47,18 +47,20 @@
 
     <select id="findBy" resultMap="UserMap" parameterType="int">
         select
-        user_id,
-        nickname,
-        email,
-        admin,
-        photo,
-        start_date,
-        end_date,
-        last_login
+            u.user_id,
+            u.nickname,
+            u.email,
+            u.admin,
+            u.photo,
+            u.start_date,
+            u.end_date,
+            u.last_login
+            us.provider
         from
-        user
+            user u
+            left join user_sns us on u.user_id = us.user_id
         where
-        user_id=#{no}
+            u.user_id=#{no}
     </select>
 
 
