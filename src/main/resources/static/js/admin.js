@@ -500,15 +500,16 @@ function openAddPage(menu) {
 
   if (menu == "achievement") {
     content_section.innerHTML = `
-      <div class="img-div add-achievement">
-        <label for="files" style="cursor: pointer; position: relative; display: block;" id="files-label">
-          <img alt="수집품 이미지 등록" class="collection-image empty-image"
-                src="/images/collections/empty-collection-image.png" style="opacity: 0.5;">
-          <div class="edit-overlay">
-              <i class="fas fa-camera"></i>
-          </div>
-        </label>
+    
+      <label for="files" style="cursor: pointer; position: relative; display: block;" id="files-label">
+        <img alt="수집품 이미지 등록" class="collection-image empty-image"
+              src="/images/collections/empty-collection-image.png" style="opacity: 0.5;">
+        <div class="edit-overlay">
+            <i class="fas fa-camera"></i>
+        </div>
+      </label>
 
+      <div class="img-div add-achievement">
         <div class="main-image">
           <img alt="Achievement Image"
                 id="mainAchievementImage"
