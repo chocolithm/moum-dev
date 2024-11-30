@@ -134,6 +134,8 @@ function addComment(boardId) {
         // 댓글 입력창 초기화
         document.getElementById("commentContent").value = "";
         countingLength(document.getElementById("commentContent"));
+
+        fetch(`/alert/add?category=comment&categoryNo=${boardId}`);
     })
     .catch(error => {
         console.error("댓글 추가 실패:", error);
