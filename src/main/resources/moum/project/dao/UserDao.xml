@@ -54,7 +54,8 @@
             u.photo,
             u.start_date,
             u.end_date,
-            u.last_login
+            u.last_login,
+            us.sns_account_id,
             us.provider
         from
             user u
