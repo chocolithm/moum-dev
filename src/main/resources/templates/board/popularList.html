@@ -72,18 +72,28 @@
                          th:if="${board.attachedFiles == null or #lists.size(board.attachedFiles) == 0}"
                          th:src="@{/images/board/defaultBoardPicture.jpg}">
                 </a>
-
-                <!-- 게시글 내용 -->
+                <!-- 게시글 내용 영역 -->
                 <div class="item-content">
+                    <!-- 게시글 링크 (이미지 외에도 다른 내용에도 링크 적용 가능) -->
                     <a th:href="@{/board/boardView(no=${board.no})}">
+                        <!-- 게시글 제목 -->
                         <div class="item-title" th:text="${board.title}">게시글 제목</div>
-                        <div class="item-number" th:text="'조회수: ' + ${board.viewCount}">조회수: 100</div>
-                        <div class="item-number" th:text="'추천수: ' + ${board.likeCount}">추천수: 50</div>
-                        <div class="item-number">
-                            <span th:text="${#dates.format(board.postDate, 'yyyy-MM-dd HH:mm')}">2024-11-15 12:34</span>
-                            <span class="comment-count" th:text="'🗨️' + ${board.commentCount} + ''"></span>
-                        </div>
                     </a>
+
+                    <!-- 게시글 작성자와 작성일 -->
+                    <div class="item-number-info">
+                        <div class="item-number-nickname" th:text="${board.user.nickname}">작성자</div>
+                        <div class="item-number-date" th:text="${#dates.format(board.postDate, 'yyyy.MM.dd.')}">
+                            2024-11-15
+                        </div>
+                    </div>
+
+                    <!-- 게시글 조회수 및 추천수 -->
+                    <div class="item-numbers">
+                        <div class="item-number-view" th:text="'👁️‍🗨️ ' + ${board.viewCount}">👁️‍🗨️ 100</div>
+                        <div class="item-number-like" th:text="'🤍 ' + ${board.likeCount}">🤍 50</div>
+                        <div class="comment-count" th:text="'🗨️ ' + ${board.commentCount} + ''">🗨️ 20</div>
+                    </div>
                 </div>
             </div>
         </div>

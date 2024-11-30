@@ -204,9 +204,9 @@ public class BoardController {
   @GetMapping("/braggingPopularList")
   public String braggingPopularList(
           @RequestParam(value = "page", defaultValue = "1") int page,
-          @RequestParam(value = "size", defaultValue = "10") int size,
           Model model) throws Exception {
 
+    int size = 3; // 고정된 size 값
     int offset = (page - 1) * size;
 
     // 주간 인기 게시글 조회 (지난 주 월요일 ~ 지난 주 일요일)
@@ -227,6 +227,7 @@ public class BoardController {
 
     return "board/braggingPopularList";
   }
+
 
 
 

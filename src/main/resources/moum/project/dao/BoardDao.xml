@@ -1099,7 +1099,7 @@
         HAVING like_count >= 1
         ORDER BY
         b.post_date DESC -- 등록순 정렬
-        LIMIT 10
+        LIMIT 3
     </select>
 
 

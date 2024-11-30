@@ -168,6 +168,20 @@
     font-weight: bolder;
 }
 
+/* 페이징 컨테이너 위치 조정 */
+.bragging-pagination-container {
+    margin-top: 20px; /* 페이지 네비게이션과 게시글 간 간격 */
+    display: flex;
+    justify-content: center;
+}
+
+/* 페이지 링크 크기 조정 */
+.bragging-pagination li a {
+    padding: 10px 16px; /* 패딩을 늘려 클릭 영역 확대 */
+    font-size: 16px; /* 글씨 크기 증가 */
+}
+
+
 /* 페이징 스타일 */
 .pagination ul {
     display: flex;
@@ -547,6 +561,82 @@ body {
     font-size: 1rem;
     text-align: center;
 }
+
+
+
+/*!* 미디어 쿼리 내 추가 조정 (필요 시) *!*/
+/*@media (max-width: 880px) {*/
+/*    .bragging-grid-container {*/
+/*        width: 100%;*/
+/*        grid-template-columns: 1fr; !* 작은 화면에서는 한 열로 변경 *!*/
+/*        padding: 10px;*/
+/*    }*/
+
+/*    !* 게시글 박스 수정 *!*/
+/*    .bragging-grid-container .grid-item {*/
+/*        position: relative; !* 배지 위치 설정을 위해 추가 *!*/
+/*        background: #ffffff;*/
+/*        border-radius: 8px;*/
+/*        overflow: hidden;*/
+/*        transition: transform 0.2s;*/
+/*        border: 1px solid #E2E2E2;*/
+/*        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05);*/
+/*        height: auto; !* 높이를 자동으로 설정 *!*/
+/*    }*/
+
+/*    !* 순위 배지 스타일 (미디어 쿼리 외부) *!*/
+/*    .bragging-rank-badge {*/
+/*        position: absolute;*/
+/*        top: 10px;*/
+/*        right: 10px;*/
+/*        background-color: rgba(255, 215, 0, 0.9); !* 금색 배경 *!*/
+/*        color: #000;*/
+/*        padding: 5px 10px;*/
+/*        border-radius: 20px;*/
+/*        font-weight: bold;*/
+/*        font-size: 14px;*/
+/*        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);*/
+/*        z-index: 10;*/
+/*    }*/
+
+/*    !* 순위 배지에 등수별 색상 추가 *!*/
+/*    .bragging-rank-badge.rank-1 {*/
+/*        background-color: gold;*/
+/*        color: #fff;*/
+/*    }*/
+
+/*    .bragging-rank-badge.rank-2 {*/
+/*        background-color: silver;*/
+/*        color: #fff;*/
+/*    }*/
+
+/*    .bragging-rank-badge.rank-3 {*/
+/*        background-color: brown;*/
+/*        color: #fff;*/
+/*    }*/
+
+
+/*    !* 이미지 크기 조정 *!*/
+/*    .bragging-item-image {*/
+/*        height: 200px; !* 이미지 높이 줄이기 *!*/
+/*    }*/
+
+/*    !* 게시글 내용 패딩 조정 *!*/
+/*    .bragging-item-content {*/
+/*        padding: 15px;*/
+/*    }*/
+
+/*    !* 게시글 제목 크기 조정 *!*/
+/*    .bragging-item-title {*/
+/*        font-size: 1.2em;*/
+/*    }*/
+
+/*    !* 게시글 메타 정보 크기 조정 *!*/
+/*    .bragging-item-number-info {*/
+/*        font-size: 0.9em;*/
+/*    }*/
+/*}*/
+
 
 @media screen and (max-width: 745px) {
     .ranking-section {
@@ -931,6 +1021,20 @@ button {
 a {
     text-decoration: none;
 }
+
+
+/* page-container 수정 */
+.bragging-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1000px; /* grid-container와 일치 */
+    height: auto;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+
 .page-container {
     display: flex;
     flex-direction: column;
@@ -984,6 +1088,30 @@ a {
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05); /* 연한 그림자 */
 }
 
+/* grid-container 수정: 2개의 열로 설정 */
+.bragging-grid-container {
+    width: 1000px; /* 필요 시 조정 */
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2개의 열 */
+    gap: 30px; /* 간격을 늘려 게시글을 더 크게 표시 */
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+/* grid-item 수정: 높이와 너비 조정 */
+.bragging-grid-container .grid-item {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    border: 1px solid #E2E2E2;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05);
+    height: 500px; /* 높이를 늘려 더 크게 표시 */
+}
+
+
 .grid-item-list {
     background: #ffffff;
     border-radius: 8px;
@@ -991,6 +1119,44 @@ a {
     transition: transform 0.2s;
     height: 350px; /* 높이를 300px로 고정 설정 */
 }
+
+
+/* 이미지 크기 증가 */
+.bragging-item-image {
+    width: 100%;
+    height: 300px; /* 높이를 늘려 더 크게 표시 */
+    object-fit: cover;
+}
+
+/* 게시글 내용 영역 */
+.bragging-item-content {
+    justify-content: center;
+    padding: 20px; /* 패딩을 늘려 여백 확보 */
+}
+
+/* 게시글 제목 */
+.bragging-item-title {
+    text-align: center; /* 텍스트 중앙 정렬 */
+    font-size: 1.5em; /* 글씨 크기 증가 */
+    font-weight: 900; /* 가능한 가장 굵게 설정 */
+    margin-bottom: 12px;
+}
+
+
+
+/* 게시글 메타 정보 */
+.bragging-item-number-info {
+    justify-content: center;
+    font-size: 1em; /* 글씨 크기 증가 */
+    color: #555;
+}
+
+
+
+
+
+
+
 
 
 
@@ -1034,9 +1200,15 @@ a {
 }
 .item-number-nickname {
     display: flex;
-    justify-content: space-between; /* 날짜와 댓글 개수를 양쪽으로 배치 */
-    align-items: normal; /* 수직 정렬 */
+    justify-content: space-between;
     font-size: 0.9em;
+    color: #666;
+}
+.bragging-item-number-nickname {
+    display: flex;
+    justify-content: center; /* 날짜와 댓글 개수를 양쪽으로 배치 */
+    align-items: normal; /* 수직 정렬 */
+    font-size: 1.5em;
     color: #666;
     font-weight: bold; /* 볼드체로 설정 */
 }
@@ -1060,6 +1232,22 @@ a {
     display: flex;
     justify-content: space-between;
     font-size: 0.9em;
+    color: #8c8c8c;
+    font-weight: bold;
+}
+
+.bragging-item-number-view {
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
+    color: #8c8c8c;
+    font-weight: bold;
+}
+
+.bragging-item-number-like {
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
     color: #8c8c8c;
     font-weight: bold;
 }
@@ -1322,10 +1510,12 @@ a {
 }
 
 
+/* 기존 .bragging-button-group-right 수정 */
 .bragging-button-group-right {
-    margin-left: auto;
-    display: flex; /* 플렉스 박스 사용 */
-    gap: 15px; /* 버튼 간 간격 증가 */
+    display: flex;
+    gap: 15px;
+    justify-content: center; /* 버튼들을 중앙에 정렬 */
+    width: 1000px; /* 전체 너비 사용 */
 }
 
 .bragging-button-group-right .bragging-category-button {
@@ -1333,6 +1523,7 @@ a {
     width: 180px; /* 버튼 너비 고정 (필요 시 제거) */
     height: 60px; /* 버튼 높이 고정 */
 }
+
 
 
 /* 버튼 스타일 */

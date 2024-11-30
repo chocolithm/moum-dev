@@ -13,7 +13,7 @@
         // 페이지 로드 시 삭제 완료 메시지 표시
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get("deleted") === "true")     {
+            if (urlParams.get("deleted") === "true") {
                 alert("삭제되었습니다.");
             }
         };
@@ -23,15 +23,12 @@
 <body>
 <div th:replace="~{header}"></div>
 
-<main style="background-color: white">
-    <div class="page-container">
+<main style="background-color: white; height: 1840px">
+    <div class="bragging-page-container">
 
-
-
-
-        <div class="grid-item">
+        <div class="bragging-grid-container grid-item">
             <div class="bragging-button-group-right">
-                <button class="bragging-category-button active" onclick="location.href='/board/braggingPopularList'">금주의 수집품</button>
+                <button class="bragging-category-button active" onclick="location.href='/board/braggingPopularList'">금주의 전시품</button>
                 <button class="bragging-category-button recent" onclick="location.href='/board/braggingList'">전시품
                 </button>
             </div>
@@ -39,58 +36,53 @@
 
         <div class="grid-option">
             <div class="grid-item">
-
-
+                <!-- 추가적인 옵션이 필요하다면 여기에 작성 -->
             </div>
         </div>
 
-        <div class="grid-container">
-            <!-- 각 게시글을 반복하여 표시 -->
-            <div class="grid-item" th:each="board : ${popularBraggingPosts}">
+        <!-- 각 게시글을 반복하여 표시 -->
+        <div class="bragging-grid-container">
+            <div class="grid-item" th:each="board, iterStat : ${popularBraggingPosts}">
+
                 <!-- 첨부된 이미지가 있을 경우 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
                 <a th:href="@{/board/braggingBoardView(no=${board.no})}">
                     <img alt="게시글 이미지"
-                         class="item-image"
+                         class="bragging-item-image"
                          th:if="${board.collection.attachedFiles != null and #lists.size(board.collection.attachedFiles) > 0}"
                          th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}">
-
                 </a>
 
                 <!-- 게시글 내용 영역 -->
-                <div class="item-content">
+                <div class="bragging-item-content">
                     <!-- 게시글 링크 (이미지 외에도 다른 내용에도 링크 적용 가능) -->
                     <a th:href="@{/board/boardView(no=${board.no})}">
                         <!-- 게시글 제목 -->
-                        <div class="item-title" th:text="${board.title}">게시글 제목</div>
+                        <div class="bragging-item-title" th:text="${board.title}">게시글 제목</div>
                     </a>
 
                     <!-- 게시글 작성자와 작성일 -->
-                    <div class="item-number-info">
-                        <div class="item-number-nickname" th:text="${board.user.nickname}">작성자</div>
-
+                    <div class="bragging-item-number-info">
+                        <div class="bragging-item-number-nickname" th:text="${board.user.nickname}">작성자</div>
                     </div>
 
                     <!-- 게시글 조회수 및 추천수 -->
                     <div class="item-numbers">
-                        <div class="item-number-view" th:text="'👁️‍🗨️ ' + ${board.viewCount}">👁️‍🗨️ 100</div>
-                        <div class="item-number-like" th:text="'🤍 ' + ${board.likeCount}">🤍 50</div>
+                        <div class="bragging-item-number-view" th:text="'👁️‍🗨️ ' + ${board.viewCount}">👁️‍🗨️ 100</div>
+                        <div class="bragging-item-number-like" th:text="'🤍 ' + ${board.likeCount}">🤍 50</div>
                     </div>
                 </div>
             </div>
         </div>
 
 
-
-        </div>
-
         <!-- Custom CSS to remove the blue outline on link buttons -->
         <style>
-            .pagination-container {
+            .bragging-pagination-container {
                 position: absolute;
                 top: 1800px;
             }
 
-            .pagination .page-link:focus {
+            .bragging-pagination .page-link:focus {
                 outline: none;
                 box-shadow: none;
             }
