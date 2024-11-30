@@ -1019,6 +1019,20 @@ button {
 a {
     text-decoration: none;
 }
+
+
+/* page-container 수정 */
+.bragging-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1000px; /* grid-container와 일치 */
+    height: auto;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+
 .page-container {
     display: flex;
     flex-direction: column;
@@ -1184,11 +1198,9 @@ a {
 }
 .item-number-nickname {
     display: flex;
-    justify-content: space-between; /* 날짜와 댓글 개수를 양쪽으로 배치 */
-    align-items: normal; /* 수직 정렬 */
+    justify-content: space-between;
     font-size: 0.9em;
     color: #666;
-    font-weight: bold; /* 볼드체로 설정 */
 }
 .bragging-item-number-nickname {
     display: flex;
