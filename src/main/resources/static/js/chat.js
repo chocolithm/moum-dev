@@ -394,7 +394,7 @@ function createBoardInfo(board_info, chatroom) {
 
   const transaction_price = document.createElement("span");
   transaction_price.className = "transaction-price";
-  transaction_price.innerHTML = chatroom.board.price != 0 ? chatroom.board.price + "원" : "가격 미정";
+  transaction_price.innerHTML = chatroom.board.price != 0 ? chatroom.board.price.toLocaleString() + "원" : "가격 미정";
 
   const link = document.createElement("a");
   if (chatroom.board.deleted) {
