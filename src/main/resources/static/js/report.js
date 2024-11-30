@@ -177,9 +177,7 @@ async function restrict(category, categoryNo) {
         await fetch(`/board/get?no=${categoryNo}`)
             .then(response => response.json())
             .then(board => {
-                content.value = `
-                    %5B${board.title}%5D ${content.value}
-                `;
+                content.value = `%5B${board.title}%5D ${content.value}`;
             })
     }
 
