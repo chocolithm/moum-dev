@@ -182,13 +182,14 @@ function fetchChatroomList() {
 
         userspan.append(img, nickname);
 
+        if (loginUser.no != chatroom.senderNo && chatroom.read == 0) {
+          userspan.innerHTML += `<span class='unread-count'>${chatroom.count}</span>`;
+        }
+
         const message = document.createElement("div");
         message.className = "message";
         message.innerHTML = chatroom.lastMessage;
 
-        if (loginUser.no != chatroom.senderNo && chatroom.read == 0) {
-          message.innerHTML = `<span class='unread-count'>${chatroom.count}</span> ` + message.innerHTML;
-        }
 
         const date = document.createElement("div");
         date.className = "date";

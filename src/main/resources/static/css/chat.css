@@ -58,6 +58,7 @@
   width: 130px;
   margin: 10px;
   align-items: center;
+  position: relative;
 }
 
 .chatroom-layer .chatroom .chatroom-user .nickname {
@@ -88,14 +89,14 @@
   position: relative;
 }
 
-.chatroom-layer .chatroom .chatroom-content > .message .unread-count {
+.chatroom-layer .chatroom .unread-count {
   background-color: red;
   color: white;
   padding: 3px 6px;
   border-radius: 50px;
   position: absolute;
+  left: 125px;
   top: 10px;
-  left: -30px;
   z-index: 10;
   white-space: nowrap;
 }
