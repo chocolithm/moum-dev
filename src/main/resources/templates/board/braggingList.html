@@ -76,8 +76,9 @@
                 <a th:href="@{/board/braggingBoardView(no=${board.no})}">
                     <img alt="게시글 이미지"
                          class="item-image"
-                         th:if="${board.collection.attachedFiles != null and #lists.size(board.collection.attachedFiles) > 0}"
+                         th:if="${board.collection != null and board.collection.attachedFiles != null and #lists.size(board.collection.attachedFiles) > 0}"
                          th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}">
+
                 </a>
 
                 <!-- 게시글 내용 영역 -->

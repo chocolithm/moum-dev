@@ -29,8 +29,7 @@
         <div class="bragging-grid-container grid-item">
             <div class="bragging-button-group-right">
                 <button class="bragging-category-button active" onclick="location.href='/board/braggingPopularList'">금주의 전시품</button>
-                <button class="bragging-category-button recent" onclick="location.href='/board/braggingList'">전시품
-                </button>
+                <button class="bragging-category-button recent" onclick="location.href='/board/braggingList'">전시품</button>
             </div>
         </div>
 
@@ -42,49 +41,67 @@
 
         <!-- 각 게시글을 반복하여 표시 -->
         <div class="bragging-grid-container">
-            <div class="grid-item" th:each="board, iterStat : ${popularBraggingPosts}">
+            <div th:each="board, iterStat : ${popularBraggingPosts}">
+                <!-- 제목 추가 (게시글 박스 바깥 상단 중앙) -->
+                <div th:if="${iterStat.index == 0}" class="first-place-title">
+                    <h2>금주의 추천수</h2>
+                </div>
+                <div th:if="${iterStat.index == 1}" class="first-place-title">
+                    <h2>금주의 조회수</h2>
+                </div>
 
-                <!-- 첨부된 이미지가 있을 경우 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
-                <a th:href="@{/board/braggingBoardView(no=${board.no})}">
-                    <img alt="게시글 이미지"
-                         class="bragging-item-image"
-                         th:if="${board.collection.attachedFiles != null and #lists.size(board.collection.attachedFiles) > 0}"
-                         th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}">
-                </a>
+                <!-- 게시글 박스 -->
+                <div class="grid-item">
+                    <!-- 게시글 내용 영역 -->
+                    <div class="bragging-item-content">
+                        <!-- 첨부된 이미지가 있을 경우 해당 이미지를 클릭하면 게시글 상세 페이지로 이동 -->
+                        <a th:href="@{/board/braggingBoardView(no=${board.no})}">
+                            <img alt="게시글 이미지"
+                                 class="bragging-item-image"
+                                 th:if="${board.collection != null and board.collection.attachedFiles != null and #lists.size(board.collection.attachedFiles) > 0}"
+                                 th:src="@{'https://kr.object.ncloudstorage.com/bitcamp-moum/collection/' + ${board.collection.attachedFiles[0].filename}}">
+                        </a>
 
-                <!-- 게시글 내용 영역 -->
-                <div class="bragging-item-content">
-                    <!-- 게시글 링크 (이미지 외에도 다른 내용에도 링크 적용 가능) -->
-                    <a th:href="@{/board/boardView(no=${board.no})}">
-                        <!-- 게시글 제목 -->
-                        <div class="bragging-item-title" th:text="${board.title}">게시글 제목</div>
-                    </a>
+                        <!-- 게시글 링크 -->
+                        <a th:href="@{/board/boardView(no=${board.no})}">
+                            <!-- 게시글 제목 -->
+                            <div class="bragging-item-title" th:text="${board.title}">게시글 제목</div>
+                        </a>
 
-                    <!-- 게시글 작성자와 작성일 -->
-                    <div class="bragging-item-number-info">
-                        <div class="bragging-item-number-nickname" th:text="${board.user.nickname}">작성자</div>
-                    </div>
+                        <!-- 게시글 작성자와 작성일 -->
+                        <div class="bragging-item-number-info">
+                            <div class="bragging-item-number-nickname" th:text="${board.user.nickname}">작성자</div>
+                        </div>
 
-                    <!-- 게시글 조회수 및 추천수 -->
-                    <div class="item-numbers">
-                        <div class="bragging-item-number-view" th:text="'👁️‍🗨️ ' + ${board.viewCount}">👁️‍🗨️ 100</div>
-                        <div class="bragging-item-number-like" th:text="'🤍 ' + ${board.likeCount}">🤍 50</div>
+                        <!-- 게시글 조회수 및 추천수 -->
+                        <div class="item-numbers">
+                            <div class="bragging-item-number-view" th:text="'👁️‍🗨️ ' + ${board.viewCount}">👁️‍🗨️ 100</div>
+                            <div class="bragging-item-number-like" th:text="'🤍 ' + ${board.likeCount}">🤍 50</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <!-- Custom CSS to remove the blue outline on link buttons -->
+        <!-- 수정된 스타일 -->
         <style>
-            .bragging-pagination-container {
-                position: absolute;
-                top: 1800px;
+            .first-place-title {
+                text-align: center;
+                margin-top: 10px;
+                margin-bottom: 20px;
             }
-
-            .bragging-pagination .page-link:focus {
-                outline: none;
-                box-shadow: none;
+            .first-place-title h2 {
+                display: inline-flex;
+                align-items: center;
+                padding: 10px 20px;
+                color: black;
+                border-radius: 10px;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            .first-place-title h2::before {
+                content: '🏆';
+                margin-right: 10px;
             }
         </style>
 
