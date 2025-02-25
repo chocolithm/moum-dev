@@ -33,19 +33,38 @@
 3. [프로젝트 구조](#3-프로젝트-구조)
 4. [주요 기능](#4-주요-기능)
 5. [화면구성](#5-화면-구성)
-6. [배포](#6-배포)
+6. [배포 및 시스템 구조](#6-배포-및-시스템-구조)
+7. [트러블슈팅](#7-트러블슈팅)
 
   
 <br>
 
 ## 1. 기획 및 설계
-#### 화면 기획
+#### 화면 
+<img src="README_images/ui_prototype.png" style="width: 50%">
+
 Figma를 통해 UI Prototype을 작성함으로써 기능 흐름을 시각적으로 확인하고 팀원간 디자인 방향 공유
+
 #### Use Case 작성
+<p>
+  <img src="README_images/actor.png" style="width: 45%; vertical-align: middle;">
+  <img src="README_images/use_case.png" style="width: 45%; vertical-align: middle;">
+</p>
+
+
 Figma 기반으로 UseCase를 작성하여 Actor를 식별하고, 사용자의 요구사항 및 시스템과의 상호작용을 확인
+
 #### DB Modeling
+<img src="README_images/erd.png" style="width: 50%;">
+
 Exerd 기반으로 DB Modeling 진행하여 데이터 구조 및 관계 설정
+
 #### 커뮤니케이션
+<p>
+  <img src="README_images/notion.png" style="width: 45%;">
+  <img src="README_images/slack.png" style="width: 43%;">
+</p>
+
 Notion을 통해 팀원 각자의 작업사항 및 회의록 공유<br>
 github - slack 연동으로 push 알림 구성
 
@@ -290,6 +309,7 @@ OpenNamu를 활용하여 수집가들만을 위한 위키페이지 제공
 **파일 업로드 및 관리**  
 클라우드 스토리지를 활용한 이미지 및 파일 업로드
 
+
 <br>
 
 ## 5. 화면 구성
@@ -297,13 +317,315 @@ OpenNamu를 활용하여 수집가들만을 위한 위키페이지 제공
 **발표자료** : https://1drv.ms/p/s!Asad0zibIBicikUbIypvONh4avO7?e=poq9vJ  
 **발표영상** : https://www.youtube.com/watch?v=eKirps0OGmg&t=1607s
 
+<details>
+  <summary>회원가입/로그인</summary>
+  
+### 회원가입/로그인
+<img src="README_images/user/login_main.png">
+
+- 메인화면 우측 상단 [시작하기] 버튼으로 로그인 화면 표출
+- 자체회원 및 SNS 로그인 제공
+
+<br>
+<p>
+  <img src="README_images/user/join.png" style="width: 45%; vertical-align: middle;">
+  <img src="README_images/user/login.png" style="width: 45%; vertical-align: middle;">
+</p>
+
+- 회원가입 시 닉네임 중복검사 및 이메일 인증 진행
+- 비밀번호 규칙 설정: 최소 8자 / 영문, 숫자, 특수문자 포함
+
+<br>
+마이페이지
+<img src="README_images/user/mypage.png">
+
+- 프로필사진 변경, 닉네임 및 비밀번호 변경, SNS 계정 연동 지원
+</details>
+
+<details>
+  <summary>수집품/마이홈</summary>
+
+### 수집품/마이홈
+마이홈
+<img src="README_images/collection/myhome.png">
+
+- 로그인 시 마이홈 페이지로 연결
+- 수집품 등록 및 관리 지원
+- 수집품 카테고리에 따른 필터 지원
+
+<br>
+수집품 등록
+<img src="README_images/collection/collection.png">
+
+- 사진 및 필요정보 입력 후 수집품
+</details>
+
+<details>
+  <summary>게시글</summary>
+
+### 게시글
+전시게시글
+<img src="README_images/board/exhibition.png">
+일반게시글
+<img src="README_images/board/general.png">
+거래게시글
+<img src="README_images/board/trade.png">
+
+- 게시글을 전시, 일반, 거래게시글로 구분하여 독립적 목적 부여
+- 전시게시글은 특정 기간 내 특정 추천 수 만족 시 자동 게재
+- 거래게시글은 사용자간 수집품 거래 지원
+
+<br>
+게시글 상세
+<img src="README_images/board/board_detail.png">
+<img src="README_images/board/comment.png">
+
+- 제목, 내용, 댓글 등 게시글 정보 게시
+- 하단 프로필 박스에서 작성자 정보 확인 및 신고, 추천 지원
+- 거래게시글의 경우 [채팅하기] 버튼 표시
+
+<br>
+게시글 등록
+<img src="README_images/board/board_add.png">
+
+- Summernote.js 활용
+</details>
+
+<details>
+  <summary>업적</summary>
+
+### 업적
+
+<img src="README_images/achievement/mypage.png">
+
+- 사용자의 플랫폼 활동 고취를 위해 업적시스템 적용
+- 마이페이지 우측에서 현재 진행중인 업적 확인 가능
+
+<br>
+<img src="README_images/achievement/detail_1.png">
+<img src="README_images/achievement/detail_2.png">
+
+- 더보기 버튼 클릭 시 미획득 업적 목록을 진행도 순으로 출력
+- 전체 / 획득 / 미획득 업적 목록 조회 가능
+
+<br>
+<img src="README_images/achievement/myhome.png">
+
+- 회원가입 후 첫 로그인 시, 알림을 통해 첫 업적 취득을 알려줌으로써 업적 시스템 소개
+</details>
+
+<details>
+  <summary>채팅</summary>
+
+### 채팅
+
+<img src="README_images/chat/main.png">
+
+- 우측 상단 채팅 버튼을 통해 채팅 UI 접근
+
+<br>
+<p>
+  <img src="README_images/chat/chatrooms.png" style="width: 45%">
+  <img src="README_images/chat/chat.png" style="width: 45%">
+</p>
+
+- 채팅방 목록에서 상대방 정보, 최근메시지, 관련게시글 사진 확인
+- 특정 방 클릭 시 해당 채팅창으로 이동
+- 새로운 메시지 발행 시 상대방에게 알림 전송
+
+<br>
+<img src="README_images/chat/livechat.png">
+
+- 참가자가 모두 채팅방을 보고 있다면 별도 알림 발행하지 않음
+</details>
+
+<details>
+  <summary>알림</summary>
+
+### 알림
+
+<img src="README_images/alert/main.png">
+
+- 우측 상단 알림 버튼을 통해 알림 UI 접근
+- 새로운 알림이 있을 시 종 색깔 변경하여 표시
+
+<br>
+<p>
+  <img src="README_images/alert/list.png" style="width: 45%">
+  <img src="README_images/alert/all_read.png" style="width: 44%">
+</p>
+
+- 특정 알림 클릭 시 유형에 따라 화면 이동 (채팅: 채팅방 / 댓글: 게시글 / 업적: 마이페이지 등)
+- 알림창 상단 [모두 읽기] 버튼으로 알림 읽음처리 가능
+</details>
+
+<details>
+  <summary>관리자</summary>
+
+### 관리자
+
+<img src="README_images/admin/main.png">
+
+- 관리자 계정으로 로그인 시 별도 관리자 화면으로 이동
+
+<br>
+<img src="README_images/admin/search.png">
+
+- 컬럼별 검색 기능 제공
+
+<br>
+<img src="README_images/admin/category.png">
+<img src="README_images/admin/achievement.png">
+<img src="README_images/admin/user.png">
+
+- 게시글, 수집품 분류, 업적, 회원, 신고 관리 지원
+- 회원 관리 시 슈퍼어드민 계정에 한하여 관리자권한 부여/회수 가능
+</details>
+
+<details>
+  <summary>신고</summary>
+
+### 신고
+
+<img src="README_images/report/main.png">
+<img src="README_images/report/report_page.png">
+
+- 게시글 프로필 영역에서 부적절한 게시글 신고 지원
+
+<br>
+<img src="README_images/report/admin.png">
+<p>
+  <img src="README_images/report/result_1.png" style="width: 60%; vertical-align: middle;">
+  <img src="README_images/report/result_2.png" style="width: 35%; vertical-align: middle;">
+</p>
+
+- 신고된 게시글은 관리자 화면에서 확인 가능
+- 관리자는 해당 게시글 경고/삭제 조치 및 기록
+- 필요에 따라 기각 처리
+
+<br>
+<img src="README_images/report/alert.png" style="width: 50%">
+
+- 경고/삭제 시 대상자에게 알림 발행
+</details>
+
+<details>
+  <summary>하비위키</summary>
+
+### 하비위키
+
+<img src="README_images/wiki/main.png">
+
+- 수집가들만의 정보 공유를 위해 자체 위키 제공
+- OPENNamu 활용
+
+<br>
+<img src="README_images/wiki/page.png">
+<img src="README_images/wiki/edit.png">
+
+- 나무위키와 유사한 UI로 정보 제공
+- NamuMark 언어를 활용하여 편집 가능
+</details>
+
+
 <br>
 
-## 6. 배포
-**CI/CD 자동화**  
-Github의 webhook, Jenkins 및 Docker를 활용하여 자동 배포 환경 구축
+## 6. 배포 및 시스템 구조
+#### 배포
+<img src="README_images/devops/jenkins.png">
 
-**서버 환경**  
-Spring Boot 기반의 백엔드  
-Load Balancer를 통해 서버 이중화  
-Nginx 리버스 프록시 적용
+- Github의 webhook, Jenkins 및 Docker를 활용하여 자동 배포 환경 구축
+- 개발서버는 Git Push 발생 시 자동으로 Jenkins Build 진행
+- 운영서버는 개발자 검토 후 수동 Build 진행 및 이중화 배포
+
+#### 시스템 구조
+<img src="README_images/devops/architecture.png">
+
+- 클라이언트 요청 시 Application Load Balancer가 Round Robin으로 분배
+- 서버는 단일 Storage, 단일 Database를 사용하며 Standby Database로 장애 대비
+- 다중서버간 메시지 전송을 위해 Apache Kafka 활용
+- NCP Certification Manager로 SSL 적용
+- NCP Image Optimizer로 이미지 리사이즈 및 크롭
+- Moum 도메인과 Wiki 도메인 요청 구분을 위해 Nginx 리버스 프록시 적용
+
+
+<br>
+
+## 7. 트러블슈팅
+
+<details>
+  <summary>프로필 사진 변경 오류</summary>
+
+### 현상
+운영 서버 이중화 이후, 프로필 사진 변경 시 서버 오류 발생
+
+### 해결시도 1
+**원인** : Spring 용량 설정, 또는 NCP Storage 용량 설정 문제로 추측
+
+**시도** : Spring 및 Storage 용량 설정 재확인
+
+**결과** : Local 및 Dev에서 프로필 사진 변경 가능함을 확인하였으나, 운영서버에서 동일한 오류 발생
+
+### 해결시도 2
+**원인** : 다중 도메인 및 SSL 적용을 위해 운영서버에 nginx를 도입하였는데, 설정 용량 기본값이 1M인 것을 확인
+
+**시도** : 클라이언트 최대 바디 사이즈를 100M으로 변경
+
+**결과** : 운영 서버에서 프로필 사진 변경 가능함을 확인
+
+</details>
+
+<details>
+  <summary>게시글 사진 등록 오류</summary>
+
+### 현상
+게시글 사진 첨부 시, 게시글 등록여부와 관계없이 첨부 즉시 Storage에 저장되는 문제 확인
+
+### 해결시도
+**원인** : Summernote Editor에서 이미지 첨부 후처리 시 바로 Storage에 업로드하는 것으로 확인
+
+**시도**
+- 이미지 첨부 시 Base64 데이터로 Summernote content에 저장
+- 서버에 등록 요청 시 content 내 Base64를 탐지
+- 탐지된 데이터를 Storage에 업로드한 후 URL을 반환받아 content 치환
+
+**결과** : 게시글 사진 첨부 정상 작동 확인    
+
+</details>
+
+<details>
+  <summary>Opennamu Docker container 오류</summary>
+
+### 현상
+오픈소스인 Opennamu 활용을 시도하였으나, 제공된 Dockerfile이 정상 동작하지 않아 container 실행 불가
+
+### 해결시도
+**원인** : Opennamu 소스 내 Dockerfile은 존재하나, 공식적으로는 Docker를 지원하지 않는 것으로 확인
+
+**시도** : 별도 Ubuntu container 내부에서 Opennamu를 내려받아 직접 실행
+
+**결과** : Docker container 실행 확인
+
+</details>
+
+<details>
+  <summary>채팅 Socket 통신 불가</summary>
+
+### 현상
+운영서버 이중화 이후, 채팅방 입장 시 403 에러 발생으로 Socket 통신 연결 불가
+
+### 해결시도 1
+**원인** : 기존 Socket통신이 단일서버 내 이루어지도록 구성되어 있어, ALB 및 이중화 구조에서 오류 발생하는 것으로 추측
+
+**시도** : 메시지 중개자로서 Kafka를 도입하여 다중서버 간 통신이 가능할 것을 기대
+
+**결과** : Local 및 Dev에서 Kafka를 통해 통신이 가능함을 확인했으나, 운영서버에서는 동일한 오류 발생
+
+### 해결시도 2
+**원인** : 다중 도메인 및 SSL 적용을 위해 운영서버에 nginx를 도입하였는데, Websocket 경로를 처리하지 않는 것으로 확인
+
+**시도** : /ws 경로로 들어오는 요청을 WebSocket 프로토콜로 업그레이드하도록 설정 추가
+
+**결과** : 운영 서버에서의 Socket 통신 성공 확인
+
+</details>
